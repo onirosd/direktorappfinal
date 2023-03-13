@@ -759,23 +759,23 @@ class RestrictionController extends Controller
                                         }
                                         else $error = true;
                                     }
-                                    else $error_ar = ["row" => "> Error at row: ".$row,'value' => "'desEstado' and 'desModulo'=>'ANARES' did't match for this row."];
+                                    else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'desEstado' and 'desModulo'=>'ANARES' no coinciden en esta fila."];
                                 }
-                                else $error_ar = ["row" => "> Error at row: ".$row,'value' => "'codProyIntegrante' value did't find for this row."];
+                                else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'codProyIntegrante' el valor no se encuentra en la fila"];
                             }
-                            else $error_ar = ["row" => "> Error at row: ".$row,'value' => "'codProyecto'=>$projectId and 'desCorreo'=>$Responsable did't find."];
+                            else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'codProyecto'=>$projectId and 'desCorreo'=>$Responsable no se encuentran"];
                         }
-                        else $error_ar = ["row" => "> Error at row: ".$row,'value' => "'desTipoRestricciones'=>$TipoRestriccion could not find in records."];
+                        else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'desTipoRestricciones'=>$TipoRestriccion no se encontro el valor en el maestro de tipo de restricciones"];
                     }
-                    else $error_ar = ["row" => "> Error at row: ".$row,'value' => "'dayFechaRequerida'=>$FechaRequerida could not insert in Date Time column because of incorrect formate."];
+                    else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'dayFechaRequerida'=>$FechaRequerida la fecha no se puede ingresar, el formato es incorrecto."];
                 }
-                else $error_ar = ["row" => "> Error at row: ".$row,'value' => "'dayFechaConciliada'=>$FechaConciliada could not insert in Date Time column because of incorrect formate."];
+                else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'dayFechaConciliada'=>$FechaConciliada la fecha no se puede ingresar, el formato es incorrecto."];
                 if($error_ar){
                     $error = true;
                     array_push($errors,$error_ar);
                 }
             }
-            return ["success"=>$success,"error" => $error,"successMessage"=> "Excel file imported success!", "errorMessage"=>"Something of records cannot be imported!","errors" => $errors];
+            return ["success"=>$success,"error" => $error,"successMessage"=> "Los registros fuerón importados con exito ! ", "errorMessage"=>"Algunos registros no pueden ser importados !","errors" => $errors];
         }
         catch (\Exception $e) {
             return ["error"=>true,"message"=>$e->getMessage()];

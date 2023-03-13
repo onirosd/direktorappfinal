@@ -170,7 +170,10 @@
         </ul>
       </div>
       <div class="flex sm:flex-wrap" v-if="!isDisabled">
-        <div class="flex items-center mr-4 cursor-pointer sm:mb-2">
+        <div
+        class="flex items-center mr-4 cursor-pointer sm:mb-2"
+        @click="exportData"
+        >
           <span class="text-xs text-[#002B6B] mr-1">Descargar excel</span>
           <img src="../../assets/images/icons/download.svg" alt="" />
         </div>
@@ -435,7 +438,10 @@
       @closeModal="closeModal"
       @deleteFront="deleteFront"
     />
-    <uploadExcel v-if="modalName === 'uploadExcel'" @closeModal="closeModal" />
+    <uploadExcel
+    v-if="modalName === 'uploadExcel'"
+    @closeModal="closeModal"
+    />
     <!-- <Confirm
       :confirmHeader="'Eliminar usuario'"
       :header="''"
@@ -449,6 +455,8 @@
 </template>
 
 <script>
+// import excelParser from "../excel-parser";
+import exportFromJSON from "export-from-json";
 import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 
 import AddFront from "../../components/AddFront.vue";
@@ -491,6 +499,7 @@ export default {
     SelectOption,
     ToggleColumn,
     AddRowData,
+    exportFromJSON
   },
   data: function () {
     return {
@@ -607,6 +616,99 @@ export default {
     };
   },
   methods: {
+
+
+   exportDataFromJSON:function (data, newFileName, fileExportType) {
+    if (!data) return;
+    try {
+      const fileName = newFileName || "exported-data";
+      const exportType = exportFromJSON.types[fileExportType || "xls"];
+      exportFromJSON({ data, fileName, exportType });
+    } catch (e) {
+      throw new Error("Parsing failed!");
+    }
+    },
+    exportData: function (payload) {
+
+    let table = document.getElementById("tbldownload");
+    let elements  = table.querySelectorAll('tbody > tr');
+
+    /* Declaring array variable */
+    let rows =[];
+
+    elements.forEach(element => {
+      let row = {}
+      let elements2 = element.querySelectorAll('td.downExcel:not(.hidden)');
+      // console.log(elements2)
+      elements2.forEach(element0 => {
+            let data = element0.querySelectorAll('input,select')[0];
+            try{
+                // console.log(element.classList.contains('hidden'))
+              if(data.tagName == 'SELECT'){
+                row[data.name] =  data.options[data.selectedIndex].text
+                // row.push(data.options[data.selectedIndex].text)
+
+              }
+
+              if (data.tagName == 'INPUT'){
+                // row.push(data.value)
+                row[data.name] =  data.value
+              }
+
+            }catch(e){
+              row.push(element0.innerText)
+            }
+            // if ( typeof data.tagName !== 'undefined') {
+            //   console.log(data.tagName)
+            // }
+            // console.log(element0.tagName)
+
+      });
+
+      rows.push(row)
+    });
+    // console.log(this.hideCols)
+    // console.log(rows)
+    this.exportDataFromJSON(rows, null, null);
+    //   //iterate through rows of table
+    // for(var i=0,row; row = table.rows[i];i++){
+    //     //rows would be accessed using the "row" variable assigned in the for loop
+    //     //Get each cell value/column from the row
+    //     let column1 = row.cells[0].innerText;
+    //     let column2 = row.cells[1].innerText;
+    //     let column3 = row.cells[2].innerText;
+    //     let column4 = row.cells[3].innerText;
+    //     let column5 = row.cells[4].innerText;
+
+    // /* add a new records in the array */
+    //     rows.push(
+    //         [
+    //             column1,
+    //             column2,
+    //             column3,
+    //             column4,
+    //             column5
+    //         ]
+    //     );
+
+    //     }
+        // let csvContent = "data:text/csv;charset=utf-8,";
+        //  /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+        // rows.forEach(function(rowArray){
+        //     let row = rowArray.join(";");
+        //     csvContent += row + "\r\n";
+        // });
+
+        // /* create a hidden <a> DOM node and set its download attribute */
+        // var encodedUri = encodeURI(csvContent);
+        // var link = document.createElement("a");
+        // link.setAttribute("href", encodedUri);
+        // link.setAttribute("download", "Stock_Price_Report.csv");
+        // document.body.appendChild(link);
+        //  /* download the data file named "Stock_Price_Report.csv" */
+        // link.click();
+},
+
     setColumnsStatus: function (payload) {
       let point = this;
       store.dispatch("update_hidden_columns", payload).then((response) => {
@@ -676,9 +778,15 @@ export default {
       }
     },
     closeModal: async function () {
+
+      if (this.modalName == 'uploadExcel'){
+
+        await this.callMounted();
+
+      }
+
       this.modalName = "";
       this.personalizeOpen = false;
-      await this.callMounted();
     },
 
     deleteFront: function (payload) {
@@ -1331,6 +1439,37 @@ export default {
   },
   mounted: async function () {
     await this.callMounted();
+    // window.addEventListener('resize', this.ResizeActually);
+    // this.ResizeActually()
+
+    // await store.dispatch('get_infoPerson');
+    // console.log(">> entro 1")
+    // await store.dispatch('getNameProy').then((response) => {
+    //   this.nameProyecto = response
+    // });
+    // console.log(">> entro 2")
+    // await store.dispatch('get_datos_restricciones').then((response) => {
+
+    //   this.statusRestriction    = this.$store.state.estadoRestriccion;
+    //   this.$store.state.sidebar = false;
+
+    //   if (this.statusRestriction === false){
+    //     this.disabledItems   = true
+    //     this.statusDraggable = true
+    //   }else{
+    //     this.disabledItems   = false
+    //     this.statusDraggable = false
+
+
+    //   }
+
+
+
+    // });
+    // console.log(">> entro 3")
+    // await this.filterSectionHeight()
+
+    // this.pageloadflag = true
   },
 
   created: function () {},

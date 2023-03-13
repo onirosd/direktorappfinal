@@ -8,8 +8,8 @@
             </button>
             <TableTooltip v-if="isOpen" @tooltip="openModal" :ResizeActually="ResizeActually" />
           </td>
-          <td :class="{'hidden': hideCols.indexOf('exercise') > -1}"> <input :disabled="!statusRestriction"  @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad})" v-model="restriction_data.desActividad" type="text" class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> </td>
-          <td :class="{'hidden': hideCols.indexOf('restriction') > -1}"> <input :disabled="!statusRestriction"  @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})" v-model="restriction_data.desRestriccion" type="text" class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> </td>
+          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('exercise') > -1}"> <input name="Actividad" :disabled="!statusRestriction"  @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad})" v-model="restriction_data.desActividad" type="text" class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded " :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> </td>
+          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restriction') > -1}"> <input name="Restriccion" :disabled="!statusRestriction"  @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})" v-model="restriction_data.desRestriccion" type="text" class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> </td>
           <!-- <td>ass</td>
           <td></td>
           <td>11</td>
@@ -19,8 +19,9 @@
            -->
 
 
-          <td class = "" :class="{'hidden': hideCols.indexOf('restrictionType') > -1}">
+          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restrictionType') > -1}">
             <select
+            name="Tipo"
             v-if="statusRestriction"
             v-model="restriction_data.codTipoRestriccion"
             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded  selectPer"
@@ -34,14 +35,15 @@
           </option>
 
           </select>
-          <input :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.desTipoRestriccion" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+          <input name="Tipo" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.desTipoRestriccion" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
 
           </td>
 
-          <td :class="{'hidden': hideCols.indexOf('date_required') > -1}">
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_required') > -1}">
 
             <input
+                name="diaRequerido"
                 v-if="statusRestriction"
                 :disabled="!statusRestriction"
                 @change="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"
@@ -51,7 +53,7 @@
                 :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
             />
 
-            <input :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaRequerida" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+            <input name="diaRequerido" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaRequerida" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
 
             <!-- <v-date-picker v-if="statusRestriction" @click="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"  ref="datepicker"  v-model="restriction_data.dayFechaRequerida" mode="date" is24hr: false class="flex relative  cursor-pointer cursor-pointer"  >
@@ -71,7 +73,7 @@
 
           </td>
 
-          <td :class="{'hidden': hideCols.indexOf('date_conciliad') > -1}">
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_conciliad') > -1}">
 
             <!-- <v-date-picker v-if="statusRestriction" @click="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"  ref="datepicker"  v-model="(restriction_data.dayFechaConciliada)" mode="date" is24hr: false class="flex relative  cursor-pointer cursor-pointer" >
                 <template v-slot="{ inputValue, inputEvents }" >
@@ -87,6 +89,7 @@
               <input  :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada2" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> -->
 
               <input
+                name="diaconciliado"
                 v-if="statusRestriction"
                 :disabled="!statusRestriction"
                 @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
@@ -96,13 +99,13 @@
                 :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
               />
 
-              <input :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+              <input name="diaconciliado" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
 
           </td>
 
-          <td :class="{'hidden': hideCols.indexOf('responsible') > -1}">
-            <select v-if="statusRestriction && getOptionResponsables().length > 0"
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible') > -1}">
+            <select name="responsable"  v-if="statusRestriction && getOptionResponsables().length > 0"
 
             v-model="restriction_data.idUsuarioResponsable"
             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
@@ -116,13 +119,14 @@
             </option>
 
           </select>
-          <input :disabled="(!statusRestriction || getOptionResponsables().length == 0)" v-if="!statusRestriction || getOptionResponsables().length == 0" :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')" :value="restriction_data.desUsuarioResponsable" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+          <input name="responsable" :disabled="(!statusRestriction || getOptionResponsables().length == 0)" v-if="!statusRestriction || getOptionResponsables().length == 0" :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')" :value="restriction_data.desUsuarioResponsable" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
           </td>
-          <td :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><nav class="px-2 text-xs h-8 mt-2">{{ restriction_data.desAreaResponsable}}</nav></td>
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="arearesponsable" type="text" :value="restriction_data.desAreaResponsable" readonly class="px-2 text-xs h-8 mt-2"/></td>
 
-          <td :class="{'hidden': hideCols.indexOf('condition') > -1}">
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
               <select v-if="statusRestriction"
+              name="estado"
               v-model="restriction_data.codEstadoActividad"
               class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
               :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
@@ -135,11 +139,13 @@
               </option>
 
             </select>
-          <input :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.desEstadoActividad" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+          <input name="estado" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.desEstadoActividad" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
           </td>
 
-          <td></td>
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('applicant') > -1}">
+            <input name="solicitante" type="text" value="" readonly class="px-2 text-xs h-8 mt-2"/>
+          </td>
         </tr>
 
 </template>

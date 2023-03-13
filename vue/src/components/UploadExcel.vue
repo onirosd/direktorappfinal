@@ -1,14 +1,14 @@
 <template>
   <Modal :header="'Cargar Restricciones'" :modalType="'deleteRow'" :paragraphs="paragraphs">
       <!-- <span class="text-center leading-6 mb-2 w-full"> Suba un archivo excel con el formato correcto  o descargue el formato desde Aqui.</span> -->
-      <button class="h-14 sm:w-full rounded px-8 text-base leading-4 mt-10 bg-white text-black d-flex border" @click="selectFile">
+      <button class="h-14 w-full rounded px-8 text-base leading-4 mt-10 bg-white text-black d-flex border" @click="selectFile">
         <img src="/src/assets/images/icons/upload.svg" class="inverted" alt="">
         Subir Archivo Excel
       </button>
       <div class="alert alert-success" v-if="response.success">{{response.successMessage}}</div>
       <div class="alert alert-danger" v-if="response.error">{{response.errorMessage}}</div>
-      <div class="mt-10 mb-2 w-full">
-        <label>Log Messages</label>
+      <div class="mt-10  w-full text-sm">
+        Mensaje de Errores
       </div>
       <textarea
         style="background: #8080801a"
@@ -18,14 +18,14 @@
         v-model="logs"
         disabled></textarea>
       <input type="file" @change="onFileChange" ref="fileInput" style="display:none">
-      <div class="bottom">
-        <div class="col-md-6">
-          <button class="h-14 sm:w-full rounded px-8 text-base leading-4 mt-10 bg-white text-black"  @click="this.$emit('closeModal')">
-            Close
+      <div class="flex flex-row mb-4 w-full">
+        <div class="h-14 w-full rounded border-2 basis-1/2 ">
+          <button class=" w-full h-14 rounded border-2"  @click="this.$emit('closeModal')">
+            Cerrar
           </button>
         </div>
-        <div class="col-md-6">
-          <button class="h-14 sm:w-full rounded px-8 text-base leading-4 mt-10 bg-orange text-white" @click="uploadExcel">
+        <div class="h-14 w-full rounded border-2 basis-1/2 ">
+          <button class=" w-full h-14 bg-orange text-white rounded border-2" @click="uploadExcel">
             Subir Excel
           </button>
         </div>
@@ -62,7 +62,7 @@ export default {
     },
     onFileChange(e) {
       const file = e.target.files[0]
-      this.addLog(` > selected file - ${file.name}`)
+      this.addLog(` > Archivo seleccionado - ${file.name}`)
       this.file = file
       this.file_url = URL.createObjectURL(file)
     },
@@ -73,14 +73,14 @@ export default {
     async uploadExcel(){
       let formData = new FormData()
       formData.append('excelFile',this.file)
-      this.addLog(` > uploading file - ${this.file.name}`)
+      this.addLog(` > Archivo Cargado - ${this.file.name}`)
       this.response.error = false
       this.response.success = false
       await axiosClient.post(`/uploadExcel/${sessionStorage.getItem('Id')}/${sessionStorage.getItem("constraintid")}`,formData).then(res => {
         if(res.data.success){
           this.response.success = true
           this.response.successMessage = res.data.successMessage
-          this.addLog(` > "exited with success" \n message - ${res.data.successMessage}`)
+          this.addLog(` > "Finalizo con exito !" \n mensaje - ${res.data.successMessage}`)
           // this.$emit('closeModal')
         }
         if(res.data.error){
@@ -88,7 +88,7 @@ export default {
           this.response.errorMessage = res.data.errorMessage
           const errors = res.data.errors
           for (let index = 0; index < errors.length; index++) {
-            this.addLog(` ${errors[index].row} \n message - ${errors[index].value}`)
+            this.addLog(` ${errors[index].row} \n mensaje - ${errors[index].value}`)
           }
         }
       }).catch(err => console.log(err))

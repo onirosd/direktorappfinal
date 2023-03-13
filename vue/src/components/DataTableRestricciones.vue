@@ -2,7 +2,7 @@
   <div>
 
   <!-- <nav @click="validamosArray"> click aqui para ver </nav> -->
-  <table class="w-full">
+  <table class="w-full" id="tbldownload">
     <thead class="bg-[#DCE4F9]">
       <tr :class="{ 'h-14': tableType === 'scroll' }">
         <th
