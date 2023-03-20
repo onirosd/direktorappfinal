@@ -5,12 +5,39 @@
       >Asigna los miembros de tu primer proyecto
     </span>
     <div class="flex justify-between sm:flex-col mb-8">
-      <div class="flex flex-col w-[32%] sm:w-full sm:mb-8">
+      <div class="flex flex-col w-[6%] sm:w-full sm:mb-8">
+        <span class="text-sm leading-6 mb-4">Acción</span>
+
+        <div
+              class="h-[52px] w-full mb-4  rounded px-4"
+              v-for="(user, index) in users"
+              :key="index"
+        >
+
+          <button
+            @click="eliminarUsuario(user.codProyIntegrante)"
+            class="p-2 rounded-full bg-red-500 text-white w-[2em] mt-2"
+
+
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+
+        </div>
+
+
+      </div>
+
+      <div class="flex flex-col w-[30%] sm:w-full sm:mb-8">
         <span class="text-sm leading-6 mb-4">Ingresa el correo del miembro</span>
-        <div class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded" v-for="(user, index) in users">
+        <div
+            class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded rounded"
+            :class="{ 'invalid-input': (user.error_userEmail != undefined)  }"
+            v-for="(user, index) in users" v-bind:key="user.id" >
 
             <input type="hidden" v-model="user.id">
             <input
+
               type="text"
 
               :key="index"
@@ -18,6 +45,8 @@
               v-model="user.userEmail"
               class="h-[52px] w-full mb-2 rounded px-4"
               @keyup='loadSuggestions(user.userEmail, index);'
+              @focus="limpiarErrores()"
+
 
             />
             <br>
@@ -46,26 +75,16 @@
         </div>
 
       </div>
-
-      <div class="flex flex-col w-[32%] sm:w-full sm:mb-8">
+      <div class="flex flex-col w-[30%] sm:w-full sm:mb-8">
         <span class="text-sm leading-6 mb-4">Selecciona el rol</span>
-        <!-- <Select
-          v-for="(user, index) in users"
-          :key="index"
-          :indexVal="index"
-          :typeVal="'text'"
-          :placeHolder="'Selecciona*'"
-          :selType="'role'"
-
-          v-model="user.userRole"
-          :options="rolIntegrantes"
-        /> -->
 
         <select
         v-model="value.userRole"
         v-for="(value, index) in users"
         :key="index"
         class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+        :class="{ 'invalid-input': (value.error_userRole != undefined)  }"
+        @focus="limpiarErrores()"
         >
           <option
           v-for="item in rolIntegrantes" v-bind:key="item.value" v-bind:value = "item.value" :selected="value.userRole" >
@@ -75,7 +94,7 @@
         </select>
 
       </div>
-      <div class="flex flex-col w-[32%] sm:w-full">
+      <div class="flex flex-col w-[30%] sm:w-full">
         <span class="text-sm leading-6 mb-4"
           >Selecciona área al que pertenece</span
         >
@@ -85,6 +104,8 @@
         v-for="(value, index) in users"
         :key="index"
         class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+        :class="{ 'invalid-input': (value.error_userArea != undefined)  }"
+        @focus="limpiarErrores()"
         >
           <option
           v-for="item in areaIntegrantes" v-bind:key="item.value" v-bind:value = "item.value" :selected="value.userArea" >
@@ -95,14 +116,22 @@
 
       </div>
     </div>
-    <div class="flex cursor-pointer mb-8" @click="addUser">
+    <div class="flex cursor-pointer mb-8" >
       <img
-        src="../assets/images/icons/tooltip-person-add-active.svg"
+        src="../assets/tooltip-person-add-active.svg"
         class="mr-2"
         alt=""
       />
-      <span class="text-base leading-4 text-orange">Agregar miembro</span>
+      <span class="text-base leading-4 text-orange" @click="addUser">Agregar miembro</span>
     </div>
+
+    <span class="text-red-500 flex items-start" v-if="!validarMiembros()">
+        <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938-1.463A9.986 9.986 0 0011 19.103V22h2v-2.897a9.986 9.986 0 005.938-9.54l-.698-.107L17.246 5H6.754l-.694 3.456-.698.107z"/>
+        </svg>
+        <span>El proyecto necesita que agregues miembros.</span>
+    </span>
+
   </div>
 </template>
 
@@ -115,15 +144,71 @@ export default {
   },
   data: function () {
     return {
+      flgNotenemosmiembros:false,
+      correlative : -999,
       areaIntegrantes : [],
       rolIntegrantes  : [],
-      // userSugerencias : [],
       suggestiondata:[],
       users: [],
       search: ""
     };
   },
   methods: {
+
+    limpiarErrores : function (){
+
+      this.users.forEach((user,index) => {
+
+        try {
+
+           delete this.users[index]['error_userEmail'];
+           delete this.users[index]['error_userRole'];
+           delete this.users[index]['error_userArea'];
+
+        } catch (error) {
+
+        }
+
+
+
+      });
+
+    },
+    validarMiembros : function (){
+      return this.users.length > 0 ? true : false
+    },
+    validarCampos : function () {
+
+      // console.log(this.users)
+      let conteoErrores = 0
+      this.users.forEach((user,index) => {
+        // console.log(">>> dataaaa ")
+        // console.log(user)
+        // console.log(index)
+        if(user['userEmail'].trim() == ''){
+          this.users[index]['error_userEmail'] = 'Llenar el campo de correo de usuario'
+          conteoErrores++;
+        }
+        if(user['userRole'] == ''){
+          this.users[index]['error_userRole'] = 'Elige el rol del usuario'
+          conteoErrores++;
+        }
+        if(user['userArea'] == ''){
+          this.users[index]['error_userArea'] = 'Elige el area del usuario'
+          conteoErrores++;
+        }
+      });
+
+      console.log(">> impresion de la data de users <<")
+      console.log(this.users)
+
+      return conteoErrores;
+    },
+    eliminarUsuario : function (codProyIntegrante) {
+
+      this.users = this.users.filter(item => item.codProyIntegrante !== codProyIntegrante);
+
+    },
     probar : function () {
       console.log(this.users)
     },
@@ -135,13 +220,15 @@ export default {
       else if (param === "district") this.districtStatus = !this.districtStatus;
     },
     addUser: function () {
+      this.correlative  = this.correlative + 1
       var temp = {
+        codProyIntegrante : this.correlative ,
         userEmail: "",
         userRole: "",
         userArea: "",
         suggestiondata : []
       };
-      console.log("as")
+      // console.log("as")
       this.users.push(temp);
 
     },
@@ -194,3 +281,9 @@ export default {
 
 };
 </script>
+
+<style>
+  .invalid-input {
+    border-color: red !important;
+  }
+</style>

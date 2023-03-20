@@ -1,12 +1,12 @@
 <template>
 
     <button class="w-16 sm:w-14 h-full flex items-center justify-center bg-[#001E4A]" @click.stop="clickBell">
-        <img src="../../assets/images/icons/bell.svg" alt="" class="sm:hidden"/>
+        <img src="../../assets/bell.svg" alt="" class="sm:hidden"/>
         <span style="color: white">{{messages.length}}</span>
 
-        <img src="../../assets/images/icons/phone-menu.svg" alt="" class="hidden sm:block"
+        <img src="../../assets/phone-menu.svg" alt="" class="hidden sm:block"
         />
-        <img src="../../assets/images/icons/close.svg" alt="" class="hidden sm:block"
+        <img src="../../assets/close.svg" alt="" class="hidden sm:block"
         />
     </button>
 
@@ -29,7 +29,7 @@
       block py-2 w-full rounded-xl mt-2
       " @click.stop="checkNotification(index)">
                 {{msg.desDescripción}}
-                <img src="../../assets/images/icons/ic_arrow-down.svg" alt="" class="sm:hidden float-right mr-2" v-show="isChecked[index]"/>
+                <img src="../../assets/ic_arrow-down.svg" alt="" class="sm:hidden float-right mr-2" v-show="isChecked[index]"/>
             </li>
         </ul>
     </div>

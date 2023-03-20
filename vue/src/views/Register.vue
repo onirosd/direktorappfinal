@@ -1,3 +1,66 @@
+<style src="vue-multiselect/dist/vue-multiselect.css"/>
+
+<style>
+
+.multiselect__single {
+    padding-top: 5px !important;
+}
+
+.multiselect__placeholder {
+  display: inline-block !important;
+  margin-bottom: 0px !important;
+  padding-top: 0px !important;
+}
+
+
+.multiselect__element {
+  /* background: #428bca !important; */
+  font-family: inherit !important;
+font-weight: normal !important;
+color: none !important;
+/* font-size: 11px !important; */
+line-height: normal! important;
+}
+
+.multiselect__option--highlight {
+  background: #428bca !important;
+  font-family: inherit !important;
+font-weight: normal !important;
+color: none !important;
+/* font-size: 11px !important; */
+line-height: normal! important;
+}
+
+.multiselect__option--highlight:after {
+  background: #428bca !important;
+}
+
+.multiselect__tags {
+width: 100% !important;
+font-family: inherit !important;
+font-weight: normal !important;
+color: none !important;
+border: none !important;
+height: 100% !important;
+/* font-size: 11px !important; */
+line-height: normal! important;
+}
+
+.multiselect__placeholder{
+  /* margin-left: 10px;
+  margin-top: 2px; */
+  font-size: 16px !important;
+}
+
+.multiselect__tag {
+  background: #f0f0f0 !important;
+  border: 1px solid rgba(60, 60, 60, 0.26) !important;
+  /* color: black !important; */
+  margin-bottom: 0px !important;
+  margin-right: 5px !important;
+}
+
+</style>
 <template>
   <div class="flex flex-col w-[450px] sm:w-full text-base">
     <span class="text-center sm:text-left text-[28px] leading-9 mb-10 sm:mb-8">¡Registrate gratis!</span>
@@ -44,13 +107,54 @@
           class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
 
 
-          <TInput
+          <!-- <TInput
           name="nombreempresa"
           v-model="user.nombreempresa"
           :errors="errors"
           placeholder="Nombre de la empresa"
 
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput> -->
+
+    <div class="h-[52px] border border-[#8A9CC9] rounded ">
+    <VueMultiselect
+            ref="multiselect"
+            v-model="value"
+            :options="options"
+            track-by="id"
+            label="name"
+            :custom-label="nameFormatter"
+            ::multiple="false"
+            @select="obtenemosvalor"
+            placeholder="Busca tu empresa"
+            @search-change="loadSuggestions"
+
+            :show-no-results="true"
+            :max-height="300"
+            :limit-text="limitesResultados"
+            :options-limit="50"
+            :limit="3"
+            open-direction="bottom"
+            :style="'font-size:100%; height: 100%;'"
+            :showNoOptions="false"
+
+            :prevent-autofocus="true"
+            :disabled="desabilitarEmpresa"
+
+
+
+
+
+
+            >
+
+          <template #noResult>
+
+            <div @click="eventoparaagregar" class="cursor-pointer">  + ¿ Agregar Nueva Empresa ? </div>
+          </template>
+
+    </VueMultiselect>
+  </div>
+    <!-- <nav>{{user}}</nav> -->
 
         <TInput
           type="email"
@@ -61,7 +165,10 @@
           class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
 
 
-          <select
+
+
+
+          <!-- <select
           v-model="user.cargo"
           :errors="errors"
           class="w-full h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"
@@ -73,7 +180,7 @@
             {{ item.nameCargo }}
           </option>
 
-          </select>
+          </select> -->
 
         <TInput
           type="password"
@@ -93,6 +200,10 @@
 
 
 
+
+
+
+
       <div class="flex flex-col w-[450px] sm:w-full text-base">
         <TButtonLoading
           :loading="loading"
@@ -102,65 +213,197 @@
         </TButtonLoading>
       </div>
     </form>
+
   </div>
+
+  <NewCompany
+  v-if="modalName === 'newproject'"
+  @closeModal   ="closeModal"
+  @crearEmpresa = "datosProyecto"
+  v-model="datapasar"
+  />
+
 </template>
 
-<script setup>
-import { ref } from "vue";
-// import { LockClosedIcon } from "@heroicons/vue/solid";
+
+<script>
+import VueMultiselect from 'vue-multiselect'
 import store from "../store";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
 import TButtonLoading from "../components/core/TButtonLoading.vue";
 import TInput from "../components/core/TInput.vue";
 import Alert from "../components/core/Alert.vue";
-import { computed } from "vue";
+import NewCompany from '../components/NewCompany.vue'
+export default {
+   name: "Login",
+   components: {
+    // LockClosedIcon,
+    Alert,
+    TButtonLoading,
+    TInput,
+    VueMultiselect,
+    ref,
+    NewCompany
+   },
+   data() {
+     return {
 
-const router = useRouter();
-const user = {
-  name: "",
-  lastname:"",
-  celular: "",
-  nombreempresa:"",
-  email: "",
-  password: "",
-  cargo:""
-};
-const loading = ref(false);
-const errors = ref({});
-const cargos  = computed(() => store.state.cargos);
+       value    :  null,
+       loading  :  false,
+       isLoading: false,
+       errors : {},
+       user : {
+          email: "",
+          password: "",
+       },
+       options: [],
+       user : {
+                name: "",
+                lastname:"",
+                celular: "",
+                nombreempresa:"",
+                codempresa: null,
+                email: "",
+                password: "",
+                cargo:""
+              },
+       modalName : "",
+       desabilitarEmpresa: false
+     };
+   },
+   methods:{
+      closeModal: function () {
+        // this.searchText = ""
+        // this.business   = ""
+        // if (this.modalName === "") this.$store.commit("increaseHint");
+         this.modalName = "";
+      },
+      datosProyecto: function (datos) {
 
+      this.$store.dispatch('save_newempresa', datos)
+          .then((response) => {
 
-store.dispatch("get_cargos");
+            this.modalName      = "";
+            this.suggestiondata = [];
 
+            if (response["flag"] == 1){
 
-// function selectedStudentId() {
-//     user.cargo = this.cargos?.codCargo;
-//   }
+              // this.business   = response["registro"]["cod_Empresa"];
+              // this.searchText = response["registro"]["des_Empresa"];
+              this.value                = {id:response["registro"]["cod_Empresa"] , name:response["registro"]["des_Empresa"]}
+              this.user.codempresa      =  response["registro"]["cod_Empresa"];
+              this.user.nombreempresa      =  response["registro"]["des_Empresa"];
+              this.desabilitarEmpresa   = false;
 
-function onlyNumber ($event) {
-   //console.log($event.keyCode); //keyCodes value
-   let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
-   if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
-      $event.preventDefault();
-   }
-}
+            }
 
-function register(ev) {
-  ev.preventDefault();
-  loading.value = true;
-  store
-    .dispatch("register", user)
-    .then(() => {
-      loading.value = false;
-      router.push({
-        name: "Login",
       });
-    })
-    .catch((error) => {
-      loading.value = false;
-      if (error.response.status === 422) {
-        errors.value = error.response.data.errors;
+
+      },
+
+      limitesResultados (count) {
+        return `y ${count} Empresas mas.`
+      },
+      obtenemosvalor({id,name}){
+        this.user.codempresa = id;
+        this.user.nombreempresa = name;
+      },
+      eventoparaagregar(){
+
+        // this.internalSearch = true
+        this.$refs.multiselect.search = '';
+        this.desabilitarEmpresa   = true;
+        this.modalName      = 'newproject';
+        this.value          = null;
+        // console.log(">>>>>>>")
+      },
+      nameFormatter({id, name}){
+        return `${name}`;
+      },
+      onlyNumber ($event) {
+
+          let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+          if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
+              $event.preventDefault();
+          }
+      },
+      clearSuggestions () {
+        this.selectedCountries = []
+      },
+      loadSuggestions: function(data){
+
+        var el              = this;
+				this.suggestiondata = [];
+
+        this.isLoading = true
+
+				// if(data != ''){
+
+          var enviamos = { buscar : data }
+          this.$store.dispatch('get_buscar', enviamos)
+          .then((response) => {
+            el.options  = []
+            //console.log(response)
+            for (let index = 0; index < response.length; index++) {
+              el.options.push({id:response[index]["cod_Empresa"], name: response[index]["des_Empresa"]})
+            }
+              // el.options.push({id:-999, name: '+ Agregar Nueva Empresa'})
+              this.isLoading = false
+            // el.suggestiondata  = data
+          })
+
+				// }
+
+      },
+
+      // loadSuggestions: function(e){
+			// 	var el = this;
+			// 	this.suggestiondata = [];
+
+			// 	if(this.searchText != ''){
+      //     var enviamos = { buscar : this.searchText }
+      //     this.$store.dispatch('get_buscar', enviamos)
+      //     .then((response) => {
+      //       let data = []
+      //       //console.log(response)
+      //       for (let index = 0; index < response.length; index++) {
+      //         data.push({cod_Empresa:response[index]["cod_Empresa"], des_Empresa: response[index]["des_Empresa"]})
+      //       }
+      //       data.push({cod_Empresa:-999, des_Empresa: '+ Agregar Nueva Empresa'})
+      //       el.suggestiondata  = data
+      //     })
+
+			// 	}
+
+			// },
+
+
+      register(ev) {
+        ev.preventDefault();
+        this.loading = true;
+        store
+          .dispatch("register", this.user)
+          .then(() => {
+            this.loading = false;
+            this.$router.push({
+              name: "Login",
+            });
+          })
+          .catch((error) => {
+            this.loading = false;
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
+          });
       }
-    });
-}
+
+   },
+  //  mounted() {
+  //   console.log("entrando al mounted")
+  //   this.value = this.options.find(option => option.id === this.user.codempresa);
+
+  //  },
+
+  }
+
 </script>

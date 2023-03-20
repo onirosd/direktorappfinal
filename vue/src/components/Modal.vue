@@ -8,7 +8,7 @@
       max-h-[750px] justify-between"
     >
       <img
-        src="../assets/images/icons/modal-close.svg"
+        src="../assets/modal-close.svg"
         alt=""
         class="absolute top-4 right-4 cursor-pointer"
         @click="$parent.$emit('closeModal')"

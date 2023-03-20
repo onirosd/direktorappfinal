@@ -27,14 +27,14 @@
               <span class="flex items-center">
                 <img
                   v-if="route.img"
-                  :src="'src/assets/images/icons/' + route.img + '.svg'"
+                  :src="path+'/' + route.img + '.svg'"
                   v-bind:alt="route.img "
 
                 />
                 <span class="px-2">{{ route.label }}</span>
               </span>
               <img
-                src="../../assets/images/icons/arrow-up.svg"
+                src="../../assets/arrow-up.svg"
                 class="justify-items-center flex transition"
                 :class="{
                   'rotate-180': route.isOpen,
@@ -71,7 +71,7 @@
         @click="$emit('toggleSidebar')"
       >
         <img
-          src="../../assets/images/icons/arrow-left.svg"
+          src="../../assets/arrow-left.svg"
           alt=""
           class="justify-items-center"
         />
@@ -84,7 +84,7 @@
       @click="$emit('toggleSidebar')"
     >
       <img
-        src="../../assets/images/icons/arrow-left.svg"
+        src="../../assets/arrow-left.svg"
         alt=""
         class="rotate-180"
       />
@@ -101,6 +101,7 @@ export default {
   },
   data: function () {
     return {
+      path : import.meta.env.VITE_WEB_FIN_BASE_URL,
       routes: [
         {
           id: "start",
@@ -112,7 +113,7 @@ export default {
             {
               id: "create_project",
               label: "Tus proyectos",
-              path: "/create_project",
+              path: "/proyectos",
               title: "Administra y crea tus proyectos",
               cerrar: false
             },
@@ -128,7 +129,7 @@ export default {
             {
               id: "restrictions_analysis",
               label: "Analisis de restricciones",
-              path: "/restrictions_analysis",
+              path: "/restricciones",
               title: "Administra el analisis de restricciones, crea restricciones , genera reportes y envia alertas.",
               cerrar: false
             },

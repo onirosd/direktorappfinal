@@ -2,7 +2,7 @@
   <Modal :header="'Cargar Restricciones'" :modalType="'deleteRow'" :paragraphs="paragraphs">
       <!-- <span class="text-center leading-6 mb-2 w-full"> Suba un archivo excel con el formato correcto  o descargue el formato desde Aqui.</span> -->
       <button class="h-14 w-full rounded px-8 text-base leading-4 mt-10 bg-white text-black d-flex border" @click="selectFile">
-        <img src="/src/assets/images/icons/upload.svg" class="inverted" alt="">
+        <img :src="path+'/upload.svg'" class="inverted" alt="">
         Subir Archivo Excel
       </button>
       <div class="alert alert-success" v-if="response.success">{{response.successMessage}}</div>
@@ -44,6 +44,7 @@ export default {
   },
   data: function () {
     return {
+      path : import.meta.env.VITE_WEB_FIN_BASE_URL,
       paragraphs: [],
       logs: '',
       file_url : null,

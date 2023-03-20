@@ -47,6 +47,7 @@ Route::post('/get_projectreport', [ProjectController::class, 'get_projectreport'
 Route::post('/get_projectuser', [ProjectController::class, 'get_projectuser']);
 Route::post('/update_restriction_member', [RestrictionController::class, 'update_member']);
 Route::post('/update_restriction_state', [RestrictionController::class, 'update_state']);
+Route::post('/update_project_state', [ProjectController::class, 'update_state']);
 Route::post('/update_hidden_columns', [RestrictionController::class, 'update_hidden']);
 
 Route::post('/add_front', [RestrictionController::class, 'add_front']);

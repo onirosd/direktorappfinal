@@ -7,13 +7,13 @@
           class="px-4 py-3 rounded-tl-[7px] w-24 absolute left-0 bg-[#DCE4F9] h-14 flex"
         >
           <img
-            src="../assets/images/icons/full-screen.svg"
+            src="../assets/full-screen.svg"
             class="cursor-pointer"
             @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName})"
             alt=""
           />
           <img
-            src="../assets/images/icons/add-row.svg"
+            src="../assets/add-row.svg"
             class="cursor-pointer w-[32px] ml-[4px]"
             @click="$emit('addRowModal', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName})"
             alt=""

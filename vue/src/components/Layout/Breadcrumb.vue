@@ -9,7 +9,7 @@
       >
         <img
           v-if="i !== 0"
-          src="../../assets/images/icons/arrow-right.svg"
+          src="../../assets/arrow-right.svg"
           alt=""
           class="mx-[5px]"
           :class="{'sm:hidden': i== paths.length - 2}"
@@ -19,7 +19,7 @@
     </ul>
     <span class="text-orange flex text-xs items-center" v-if="settingFlag">
       <span class="mr-1 sm:hidden"> Configurar reporte </span>
-      <img src="../../assets/images/icons/setting.svg" alt="" />
+      <img src="../../assets/setting.svg" alt="" />
     </span>
   </div>
 </template>

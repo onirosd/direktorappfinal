@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
     <div class="flex relative w-full h-16 sm:h-14 bg-[#002B6B]">
-      <img src="../../assets/images/mobile-logo.png" class="absolute left-8 top-3" alt="">
+      <img src="../../assets/mobile-logo.png" class="absolute left-8 top-3" alt="">
     </div>
     <div class="flex flex-col items-center px-72 py-24 sm:px-8 sm:py-16 sm:text-center">
       <span class="text-5xl sm:text-4xl leading-[60px] sm:leading-[48px] mb-2">¡Bienvenidos a Direktor!</span>
@@ -17,7 +17,7 @@ export default {
   name: 'welcome-view',
   methods: {
     next: function() {
-      this.$router.push('/start/create_project');
+      this.$router.push('/start/proyectos');
     }
   },
   computed: {

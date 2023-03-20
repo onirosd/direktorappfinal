@@ -19,7 +19,7 @@
             placeholder="Personalizar"
           />
           <img
-            src="../../assets/images/icons/ic_arrow-down.svg"
+            src="../../assets/ic_arrow-down.svg"
             alt=""
             class="absolute flex transition top-1/2 right-4 -translate-y-1/2 cursor-pointer"
             :class="{
@@ -39,7 +39,7 @@
             placeholder="Filtrar"
           />
           <img
-            src="../../assets/images/icons/ic_arrow-down.svg"
+            src="../../assets/ic_arrow-down.svg"
             alt=""
             class="absolute flex transition top-1/2 right-4 -translate-y-1/2 cursor-pointer"
             :class="{ 'rotate-180': filterOpen, 'rotate-0': !filterOpen }"
@@ -56,14 +56,14 @@
           @click="openModal('addFront')"
         >
           <span class="text-xs text-orange">Agregar frente</span>
-          <img src="../../assets/images/icons/btn-plus.svg" alt="" />
+          <img src="../../assets/btn-plus.svg" alt="" />
         </button>
         <button
           class="w-[140px] sm:w-full h-8 px-4 flex justify-between items-center border-2 border-orange rounded mr-4 sm:mb-2"
           @click="openModal('addPhase')"
         >
           <span class="text-xs text-orange">Agregar Fase</span>
-          <img src="../../assets/images/icons/btn-plus.svg" alt="" />
+          <img src="../../assets/btn-plus.svg" alt="" />
         </button>
         <button
           class="w-[110px] sm:w-full h-8 px-4 flex justify-between items-center border-2 rounded"
@@ -84,7 +84,7 @@
             Eliminar
           </span>
           <img
-            src="../../assets/images/icons/tooltip-delete.svg"
+            src="../../assets/tooltip-delete.svg"
             :class="{ 'content-deleteActive': !isDisabled }"
             alt=""
           />
@@ -97,7 +97,7 @@
           </li>
           <li class="text-[#616E8E] flex">
             <img
-              src="../../assets/images/icons/arrow-right.svg"
+              src="../../assets/arrow-right.svg"
               alt=""
               class="mx-[5px]"
             />
@@ -108,15 +108,15 @@
       <div class="flex sm:flex-wrap" v-if="!isDisabled">
         <div class="flex items-center mr-4 cursor-pointer sm:mb-2">
           <span class="text-xs text-[#002B6B] mr-1">Descargar excel</span>
-          <img src="../../assets/images/icons/download.svg" alt="" />
+          <img src="../../assets/download.svg" alt="" />
         </div>
         <div class="flex items-center mr-4 cursor-pointer sm:mb-2">
           <span class="text-xs text-[#002B6B] mr-1">Importar excel</span>
-          <img src="../../assets/images/icons/upload.svg" alt="" />
+          <img src="../../assets/upload.svg" alt="" />
         </div>
         <div class="flex items-center cursor-pointer sm:mb-2" @click="openModal('downloadReport')">
           <span class="text-xs text-[#002B6B] mr-1">Descargar reporte</span>
-          <img src="../../assets/images/icons/download.svg" alt="" />
+          <img src="../../assets/download.svg" alt="" />
         </div>
       </div>
     </div>
@@ -132,7 +132,7 @@
           >
             <span class="text-xl text-activeText">{{ frente.desFrente }}</span>
             <img
-              src="../../assets/images/icons/ic_arrow-down.svg"
+              src="../../assets/ic_arrow-down.svg"
               alt=""
               class="flex transition"
               :class="{ 'rotate-180': frente.isOpen, 'rotate-0': !frente.isOpen }"
@@ -162,7 +162,7 @@
                 <div class="flex sm:flex-col justify-between sm:mb-10">
                     <div class="flex mb-6 items-start cursor-pointer" @click="openModal({param: 'toggleColumn', frontId: frente.id, phaseId: fase.id})">
                       <img
-                        src="../../assets/images/icons/visibility.svg"
+                        src="../../assets/visibility.svg"
                         alt=""
                         class="mr-1"
                       />
@@ -173,7 +173,7 @@
 
                     <div class="flex items-end mb-6 cursor-pointer ">
                       <img
-                        src="../../assets/images/icons/upload.svg"
+                        src="../../assets/upload.svg"
                         alt=""
                         class="mr-1"
                       />

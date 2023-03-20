@@ -20,17 +20,25 @@
             </div>
           </div>
         </Alert> -->
+
+        <div class="mb-4 ">
         <input
           type="text"
           placeholder="Nombre del proyecto*"
           v-model="projectName"
-          :errors="errors"
-          class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+          :class="{ 'invalid-input': (errors.projectName != undefined)  }"
+          class="h-[52px] w-full border border-[#8A9CC9] rounded px-4 "
+          @focus="limpiarErrores()"
+
+
         />
 
-        <div
-        class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded "
+        <div class="text-[0.7em]">{{ errors.projectName }}</div>
+      </div>
 
+        <div
+           class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded "
+           :class="{ 'invalid-input': (errors.business != undefined)  }"
         >
 	  		<div class="w-full"
         >
@@ -38,7 +46,7 @@
 		  		<input type='text' @keyup='loadSuggestions' placeholder='Empresa'
             class="pl-4 foco_empresa"
 		  			v-model='searchText'
-            @focus="this.focoEmpresa = true"
+            @focus="(this.focoEmpresa = true); limpiarErrores();"
 
 
       			>	<br>
@@ -60,7 +68,7 @@
               <div class="flex flex-col w-[10%] foco_empresa">
 
                 <img
-                  src="../assets/images/icons/close.svg"
+                  src="../assets/close.svg"
                   alt=""
                   class="w-[50%] cursor-pointer foco_empresa"
                   @click='itemSelected(-100)'
@@ -84,38 +92,57 @@
 		  		</ul>
 		  		</div>
 	  		</div>
+        <div class="text-[0.7em]">{{ errors.business }}</div>
 	  	</div>
 
 
+      <div class="mb-4 ">
         <input
           type="text"
           placeholder="Plazo"
           v-model="term"
           @keypress="onlyNumber"
-          class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+          class="h-[52px] w-full border border-[#8A9CC9] rounded px-4"
+          :class="{ 'invalid-input': (errors.term != undefined)  }"
+          @focus="limpiarErrores()"
         />
-        <div class="flex  mb-4">
+
+        <div class="text-[0.7em]">{{ errors.coveredArea }}</div>
+
+
+       </div>
+
+        <div class=" mb-4">
+        <div class="flex">
           <input
             type="text"
             placeholder="Área techada"
             v-model="coveredArea"
             @keypress="onlyNumber"
+            @focus="limpiarErrores()"
             class="h-[52px] w-[82%] border border-[#8A9CC9] rounded-l pl-4 pr-[116px]"
+            :class="{ 'invalid-input': (errors.coveredArea != undefined)  }"
           />
 
-          <div class="w-[18%] border border-[#8A9CC9] rounded-r px-4">
+          <div class="w-[18%] border border-[#8A9CC9] rounded-r px-4"
+              :class="{ 'invalid-input': (errors.coveredArea != undefined)  }"
+          >
             <p class="font-normal text-[#8A9CC9] mt-[30%] ml-[10%]">m2</p>
 
           </div>
         </div>
 
-        <div class="flex mb-4 w-full">
+        <div class="text-[0.7em]">{{ errors.coveredArea }}</div>
+
+        </div>
+
+        <div class=" mb-4 w-full">
 
           <select
           v-model="projectType"
-          :errors="errors"
           class="h-[52px] w-full border border-[#8A9CC9] rounded pl-4 selectPer2"
-
+          :class="{ 'invalid-input': (errors.projectType != undefined)  }"
+          @focus="limpiarErrores()"
           >
           <option disabled value="">Tipo de Proyecto</option>
           <option
@@ -124,6 +151,8 @@
           </option>
 
           </select>
+
+          <div class="text-[0.7em]">{{ errors.projectType }}</div>
 
         </div>
 
@@ -140,7 +169,10 @@
         class="h-[52px] w-full border border-[#8A9CC9] rounded pl-4 pr-[116px] mb-4 relative flex"
      /> -->
 
-     <div class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded ">
+      <div
+          class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded "
+          :class="{ 'invalid-input': (errors.ubigeo != undefined)  }"
+      >
 	  		<div >
           <input type="hidden" v-model="ubigeo">
 		  		<input
@@ -150,8 +182,9 @@
                  @keypress=" searchTextUbigeoFlg = 0"
                  class="border border-[#8A9CC9] rounded px-4 foco_ubigeo"
                  @blur="focoUbigeo = true"
+                 @focus="limpiarErrores()"
 
-      			>
+      			/>
           <br>
 		  		<div
 
@@ -170,7 +203,7 @@
               <div class="flex flex-col w-[10%] foco_ubigeo">
 
                 <img
-                  src="../assets/images/icons/close.svg"
+                  src="../assets/close.svg"
                   alt=""
                   class="w-[50%] cursor-pointer foco_ubigeo"
                   @click='itemSelectedUbigeo(-100)'
@@ -196,79 +229,82 @@
 		  		</ul>
 		  		</div>
 	  		</div>
+        <div class="text-[0.7em]">{{ errors.ubigeo }}</div>
 	  	</div>
 
       </div>
 
 
       <div class="flex flex-col w-[48%] sm:w-full">
-        <v-date-picker v-model="startDate" mode="date" class="mb-4" >
-          <template v-slot="{ inputValue, inputEvents }" >
+        <div class=" mb-4">
+            <v-date-picker v-model="startDate" mode="date" class="rounded" >
+              <template v-slot="{ inputValue, inputEvents }" >
+                <input
+                  class="h-[52px] w-full  border border-[#8A9CC9] rounded px-4"
+                  :class="{ 'invalid-input': (errors.startDate != undefined)  }"
+                  placeholder="Fecha de inicio*"
+                  :value="inputValue"
+                  v-on="inputEvents"
+                  @focus="limpiarErrores()"
+                />
+              </template>
+            </v-date-picker>
+            <div class="text-[0.7em]">{{ errors.startDate }}</div>
+        </div>
+
+        <div class="mb-4 ">
+          <div class="flex h-[52px] rounded ">
             <input
-              class="h-[52px] w-full  border border-[#8A9CC9] rounded px-4"
-              placeholder="Fecha de inicio*"
-              :value="inputValue"
-              v-on="inputEvents"
+              type="text"
+              placeholder="Monto referencial"
+              v-model="referenceAmount"
+              @keyup="formatNumber"
+              @focus="limpiarErrores()"
+              class="h-[52px] w-[82%] mb-4 border border-[#8A9CC9] rounded-l px-4 "
+              :class="{ 'invalid-input': (errors.referenceAmount != undefined)  }"
             />
-          </template>
-        </v-date-picker>
 
-        <div class="flex mb-4 h-[52px] rounded">
-        <input
-          type="number"
-          placeholder="Monto referencial"
-          v-model="referenceAmount"
-          @keypress="onlyNumber"
-          class="h-[52px] w-[82%] mb-4 border border-[#8A9CC9] rounded-l px-4"
-        />
+            <div
+              class="w-[18%] border border-[#8A9CC9] rounded-r "
+              :class="{ 'invalid-input': (errors.codMoneda != undefined)  }"
+            >
+              <select
+              v-model="codMoneda"
+              class="flex  right-0 h-full justify-between border-[#8A9CC9] w-full selectPer1"
+              @focus="limpiarErrores()"
 
-          <div class="w-[18%] border border-[#8A9CC9] rounded-r ">
-
-          <select
-          v-model="codMoneda"
-          :errors="errors"
-          class="flex  right-0 h-full justify-between border-[#8A9CC9] w-full selectPer1"
-
-          >
-
-          <option
-          v-for="item in listaMonedas" v-bind:key="item.codMoneda" v-bind:value = "item.codMoneda">
-            {{ item.desSimbolo }}
-          </option>
-
-          </select>
-
-
-          <!-- <img
-            src="../assets/images/icons/ic_arrow-down.svg"
-            alt=""
-            class=" mt-[-45%] ml-[50%]"
-          /> -->
+              >
+              <option
+              v-for="item in listaMonedas" v-bind:key="item.codMoneda" v-bind:value = "item.codMoneda">
+                {{ item.desSimbolo }}
+              </option>
+              </select>
+            </div>
+          </div>
+          <div class="text-[0.7em]">{{ errors.referenceAmount }}{{ errors.codMoneda }}</div>
         </div>
 
-
-
+        <div class="mb-4 ">
+          <div class="flex h-[52px]">
+              <input
+                  type="text"
+                  placeholder="Área construída"
+                  v-model="builtArea"
+                  @keypress="onlyNumber"
+                  @focus="limpiarErrores()"
+                  class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded-l px-4 w-[82%]"
+                  :class="{ 'invalid-input': (errors.builtArea != undefined)  }"
+              />
+              <div
+                class="w-[18%] border border-[#8A9CC9] rounded-r px-4"
+                :class="{ 'invalid-input': (errors.builtArea != undefined)  }"
+              >
+                  <p class="font-normal text-[#8A9CC9] mt-[30%] ml-[10%]">m2</p>
+              </div>
+          </div>
+          <div class="text-[0.7em]">{{ errors.builtArea }}</div>
         </div>
-    <div class="flex  mb-4  h-[52px]">
-     <input
-          type="text"
-          placeholder="Área construída"
-          v-model="builtArea"
-          @keypress="onlyNumber"
-          class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded-l px-4 w-[82%]"
-        />
-    <div
-      class="w-[18%] border border-[#8A9CC9] rounded-r px-4"
-    >
-      <p class="font-normal text-[#8A9CC9] mt-[30%] ml-[10%]">m2</p>
-      <!-- <img
-        src="../assets/images/icons/ic_arrow-down.svg"
-        @click="handleClick('coveredArea')"
 
-        class=" mt-[-20%] ml-[50%]"
-      /> -->
-    </div>
-  </div>
         <input
           type="text"
           placeholder="País*"
@@ -310,6 +346,7 @@
 <script>
 // import autocomplete from 'vue-autocomplete-input-tag'
 // import vClickOutside from 'v-click-outside'
+
 import NewCompany from './NewCompany.vue'
 import Loading from 'vue-loading-overlay';
 export default {
@@ -376,10 +413,175 @@ export default {
   },
   methods: {
 
-    // dataVerificamos: function (param) {
-    //   console.log(param)
+    formatNumber() {
+      // remueve los puntos que haya en el string monto
+      let number = this.referenceAmount.replace(/\./g, '')
 
-    // },
+      // conserva solo los números en el string del monto
+      number = number.replace(/[^0-9]/g, '')
+
+      // da formato a los números
+      let formattedNumber = new Intl.NumberFormat().format(number)
+
+      // actualiza el valor de la variable "monto" con el nuevo valor
+      this.referenceAmount = formattedNumber
+    },
+
+//     formatoMiles(valor) {
+//       let num = parseFloat(valor.replace(/,/g, "")).toFixed(2);
+//       let separadorDecimal = ".";
+//       let separadorMiles = ",";
+//       let signoMoneda = "";
+
+//       // Separa los miles desde la posición decimal
+//       let parteEntera = num.split(".")[0];
+//       let parteDecimal = num.split(".")[1];
+
+//       if (parteEntera.length > 3) {
+//         // Agrega comas separadoras de miles y regresa el resultado
+//         this.formatearNumerosComa(parteEntera, separadorMiles) +
+//           separadorDecimal +
+//           parteDecimal;
+//       } else {
+//         return valor;
+//       }
+//     },
+//     formatearNumerosComa(numero, separadorMiles) {
+//       let arrayNumero = numero.split("");
+//       let contador = 0;
+
+//       for (let i = arrayNumero.length - 1; i >= 0; i--) {
+//         contador++;
+//         if (contador % 3 === 0 && i !== 0) {
+//           arrayNumero[i] = separadorMiles + arrayNumero[i];
+//           contador = 0;
+//         }
+//       }
+
+//       return arrayNumero.join("");
+//     },
+
+//     formatPrices(campo) {
+//       this[campo] = parseFloat(this[campo])
+//                         .toLocaleString('es-ES', {
+//                            minimumFractionDigits: 2, maximumFractionDigits: 2
+//                          })
+//     },
+
+//     formatPrices0(inputName) {
+//       // aplicar formato al precio
+//       this.referenceAmount = (this.referenceAmount).toString().replace(/\D/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+//       // // aplicar formato al monto
+//       // let monto = this.monto.replace(/[^\d]/g,'');
+//       // this.monto = (monto/100).toLocaleString('es-MX');
+//     },
+
+
+//     formatNumber() {
+//       // eliminar caracteres no numericos
+//       let formatted = this.number.replace(/\D/g,'');
+//       // insertar comas cada tres digitos ivertidos
+//       formatted = formatted.split('').reverse().join('')
+//           .replace(/(\d{3})/g, '$1,')
+//           .split('').reverse().join('');
+//       // asignar a v-model
+//       this.number = formatted;
+//     },
+
+//     convertirdecimal: function (x) {
+//   // Reemplaza todas las comas y cualquier carácter que no sea un dígito
+//   x = x.toString().replace(/,/g, "").replace(/\D/g,"");
+
+//   // Divide el número en miles, de tres en tres, y añade comas
+//   var pattern = /(-?\d+)(\d{2})/;
+
+//   while(pattern.test(x)) {
+//     x = x.replace(pattern, "$1,$2");
+//   }
+
+//   return x;
+// },
+
+//   handleInput: function ($event) {
+//     // Obtiene el valor ingresado por el usuario.
+//     const value = $event.target.value;
+
+//     // Modifica el valor ingresado para que tenga formato de miles.
+//     const formattedValue = this.convertirdecimal(value);
+
+//     // Establece el nuevo valor con formato de miles en el input.
+//     $event.target.value = formattedValue;
+//   },
+
+
+    limpiarErrores: function (campo) {
+      this.errors = [];
+      // delete this.errors[campo];
+
+    },
+
+    dataVerificamos: function () {
+      console.log(">>> entramos a  ver")
+      console.log(this.term)
+
+      let  cant_error  = 0
+      if (!this.projectName.trim()) {
+        this.errors.projectName = 'El campo Nombre es requerido';
+        cant_error++;
+      }
+
+      if (this.business == '') {
+        this.errors.business = 'El campo Empresa es requerido';
+        cant_error++;
+      }
+
+      if (this.term.trim() == '') {
+        this.errors.term = 'Ingresa valores correctos en el campo Plazo';
+        cant_error++;
+      }
+
+      if (this.coveredArea.trim() == '') {
+        this.errors.coveredArea = 'Ingresa valores correctos en el campo Area Techada';
+        cant_error++;
+      }
+
+      if (this.projectType == '' ) {
+        this.errors.projectType = 'Elige un tipo de proyecto.';
+        cant_error++;
+      }
+
+      if (this.ubigeo == '0' || this.ubigeo == '') {
+        this.errors.ubigeo = 'Elige una Ubicacion geografica de forma correcta.';
+        cant_error++;
+      }
+
+      if (this.startDate == '' ) {
+        this.errors.startDate = 'Elija la fecha requerida.';
+        cant_error++;
+      }
+
+      if (this.referenceAmount == '') {
+        this.errors.referenceAmount = 'Ingrese monto referencial.';
+        cant_error++;
+      }
+
+
+      if (this.codMoneda == '') {
+        this.errors.codMoneda = 'Elija el tipo de moneda del monto.';
+        cant_error++;
+      }
+
+
+      if (this.builtArea == '') {
+        this.errors.builtArea = 'Ingrese el area construida';
+        cant_error++;
+      }
+
+      console.log(cant_error+">>>>")
+
+      return cant_error;
+    },
 
     sinFocoEmpresa: function (param) {
 
@@ -653,7 +855,7 @@ export default {
   -moz-appearance: none;
   appearance: none;
 
-  background: transparent url("../assets/images/icons/ic_arrow-down.svg") no-repeat 70%;
+  background: transparent url("../assets/ic_arrow-down.svg") no-repeat 70%;
 
 
 }
@@ -665,7 +867,7 @@ export default {
   -moz-appearance: none;
   appearance: none;
 
-  background: transparent url("../assets/images/icons/ic_arrow-down.svg") no-repeat 92%;
+  background: transparent url("../assets/ic_arrow-down.svg") no-repeat 92%;
 
 
 }
@@ -692,6 +894,12 @@ export default {
       /* margin-left: -1em; */
 
   }
+
+
+  .invalid-input {
+    border-color: red !important;
+  }
+
 
 
 </style>

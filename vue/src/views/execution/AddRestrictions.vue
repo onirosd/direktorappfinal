@@ -32,7 +32,7 @@
             placeholder="Personalizar"
           />
           <img
-            src="../../assets/images/icons/ic_arrow-down.svg"
+            src="../../assets/ic_arrow-down.svg"
             alt=""
             class="absolute flex transition top-1/2 right-4 -translate-y-1/2 cursor-pointer"
             :class="{
@@ -52,7 +52,7 @@
             placeholder="Filtrar"
           />
           <img
-            src="../../assets/images/icons/ic_arrow-down.svg"
+            src="../../assets/ic_arrow-down.svg"
             alt=""
             class="absolute flex transition top-1/2 right-4 -translate-y-1/2 cursor-pointer"
             :class="{ 'rotate-180': filterOpen, 'rotate-0': !filterOpen }"
@@ -74,7 +74,7 @@
       <div class="flex sm:flex-col sm:mb-2" v-if="!fullScreen">
         <button
           :disabled="isDisabled"
-          class="w-[120px] sm:w-full h-8 px-3 flex justify-between items-center border-2 border-orange rounded mr-2 sm:mb-2"
+          class="w-[120px] sm:w-full h-8 px-3 flex justify-between items-center border-2 border-orange rounded mr-2 sm:mb-2 "
           @click="openModal({ param: 'addFront' })"
           :class="{
             'border-orange': !isDisabled,
@@ -90,7 +90,7 @@
           >
             Agregar frente
           </span>
-          <img src="../../assets/images/icons/btn-plus.svg" alt="" />
+          <img src="../../assets/btn-plus.svg" alt="" />
         </button>
         <button
           :disabled="isDisabled"
@@ -110,7 +110,7 @@
           >
             Agregar Fase
           </span>
-          <img src="../../assets/images/icons/btn-plus.svg" alt="" />
+          <img src="../../assets/btn-plus.svg" alt="" />
         </button>
         <button
           class="w-[110px] sm:w-full h-8 px-3 flex justify-between items-center border-2 rounded mr-2 sm:mb-2"
@@ -131,7 +131,7 @@
             Eliminar
           </span>
           <img
-            src="../../assets/images/icons/tooltip-delete-active.svg"
+            src="../../assets/tooltip-delete-active.svg"
             alt=""
           />
         </button>
@@ -161,7 +161,7 @@
           </li>
           <li class="text-[#616E8E] flex">
             <img
-              src="../../assets/images/icons/arrow-right.svg"
+              src="../../assets/arrow-right.svg"
               alt=""
               class="mx-[5px]"
             />
@@ -170,26 +170,27 @@
         </ul>
       </div>
       <div class="flex sm:flex-wrap" v-if="!isDisabled">
-        <div
+        <a
         class="flex items-center mr-4 cursor-pointer sm:mb-2"
-        @click="exportData"
+        @click="downloadFile"
+
         >
-          <span class="text-xs text-[#002B6B] mr-1">Descargar excel</span>
-          <img src="../../assets/images/icons/download.svg" alt="" />
-        </div>
+          <span class="text-xs text-[#002B6B] mr-1">Descargar plantilla</span>
+          <img src="../../assets/download.svg" alt="" />
+      </a>
         <div
           class="flex items-center mr-4 cursor-pointer sm:mb-2"
           @click="openModal({ param: 'uploadExcel' })"
         >
           <span class="text-xs text-[#002B6B] mr-1">Importar excel</span>
-          <img src="../../assets/images/icons/upload.svg" alt="" />
+          <img src="../../assets/upload.svg" alt="" />
         </div>
         <div
           class="flex items-center cursor-pointer sm:mb-2"
-          @click="openModal('downloadReport')"
+          @click="exportData"
         >
           <span class="text-xs text-[#002B6B] mr-1">Descargar reporte</span>
-          <img src="../../assets/images/icons/download.svg" alt="" />
+          <img src="../../assets/download.svg" alt="" />
         </div>
       </div>
     </div>
@@ -204,7 +205,7 @@
           >
             <span class="text-xl text-activeText">{{ frente.desFrente }}</span>
             <img
-              src="../../assets/images/icons/ic_arrow-down.svg"
+              src="../../assets/ic_arrow-down.svg"
               alt=""
               class="flex transition"
               :class="{
@@ -248,7 +249,7 @@
                     "
                   >
                     <img
-                      src="../../assets/images/icons/visibility.svg"
+                      src="../../assets/visibility.svg"
                       alt=""
                       class="mr-1"
                     />
@@ -271,7 +272,7 @@
                       class="flex items-end mb-6 cursor-pointer text-xs text-[#002B6B]"
                     >
                       <img
-                        src="../../assets/images/icons/upload.svg"
+                        src="../../assets/upload.svg"
                         alt=""
                         class="mr-1"
                       />
@@ -336,7 +337,7 @@
             "
           >
             <img
-              src="../../assets/images/icons/visibility.svg"
+              src="../../assets/visibility.svg"
               alt=""
               class="mr-1"
             />
@@ -347,7 +348,7 @@
 
           <div class="flex items-end mb-6 cursor-pointer">
             <img
-              src="../../assets/images/icons/upload.svg"
+              src="../../assets/upload.svg"
               alt=""
               class="mr-1"
             />
@@ -456,6 +457,7 @@
 
 <script>
 // import excelParser from "../excel-parser";
+import moment from 'moment'
 import exportFromJSON from "export-from-json";
 import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 
@@ -499,7 +501,8 @@ export default {
     SelectOption,
     ToggleColumn,
     AddRowData,
-    exportFromJSON
+    exportFromJSON,
+    moment
   },
   data: function () {
     return {
@@ -617,7 +620,27 @@ export default {
   },
   methods: {
 
+   downloadFile() {
+      // const nombreArchivo = 'formato.xlsx';
+      // const rutaArchivo = require('@/assets/' + nombreArchivo);
+      // this.$refs.descarga.href = rutaArchivo;
+      // this.$refs.descarga.download = nombreArchivo;
+      // this.$refs.descarga.click();
 
+      const filePath = import.meta.env.VITE_WEB_FIN_BASE_URL+'/formato.xlsx';
+      const link = document.createElement('a');
+      link.href = filePath;
+      link.download = 'plantilla_data_masiva';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+   },
+
+
+
+  //  downloadFile() {
+  //     window.location.href = '/ruta/al/archivo.pdf';
+  //  },
    exportDataFromJSON:function (data, newFileName, fileExportType) {
     if (!data) return;
     try {
@@ -628,85 +651,86 @@ export default {
       throw new Error("Parsing failed!");
     }
     },
-    exportData: function (payload) {
+    updisOpen: function (saveisOpen) {
 
-    let table = document.getElementById("tbldownload");
-    let elements  = table.querySelectorAll('tbody > tr');
+        // let saveisOpen  = {}
 
-    /* Declaring array variable */
-    let rows =[];
+        if (Object.keys(saveisOpen).length == 0 ){
 
-    elements.forEach(element => {
-      let row = {}
-      let elements2 = element.querySelectorAll('td.downExcel:not(.hidden)');
-      // console.log(elements2)
-      elements2.forEach(element0 => {
-            let data = element0.querySelectorAll('input,select')[0];
-            try{
-                // console.log(element.classList.contains('hidden'))
-              if(data.tagName == 'SELECT'){
-                row[data.name] =  data.options[data.selectedIndex].text
-                // row.push(data.options[data.selectedIndex].text)
+            /* Actualimos  todos los frentes a true para poder descargar sus restricciones */
+            this.restrictions.forEach(element => {
+            saveisOpen[element.codFrente] = element.isOpen
+            element.isOpen = true
 
-              }
+            });
 
-              if (data.tagName == 'INPUT'){
-                // row.push(data.value)
-                row[data.name] =  data.value
-              }
+        }else{
 
-            }catch(e){
-              row.push(element0.innerText)
-            }
-            // if ( typeof data.tagName !== 'undefined') {
-            //   console.log(data.tagName)
-            // }
-            // console.log(element0.tagName)
+            /* Actualimos  todos los frentes a cuando estaban antes  */
+            this.restrictions.forEach(element => {
+                element.isOpen = saveisOpen[element.codFrente]
+            });
+
+
+        }
+      return saveisOpen
+    },
+    exportData: async function (payload) {
+
+
+      let saveisOpen  = {}
+      let rows        = [];
+      saveisOpen      = await this.updisOpen(saveisOpen)
+      let table       = document.querySelectorAll("table.tbldownload");
+
+
+      table.forEach(tableData => {
+
+        let elements  = tableData.querySelectorAll('tbody > tr');
+        elements.forEach(element => {
+          let row = {}
+
+          let frente = element.querySelectorAll('input[name="frontName"]')[0].value;
+          let fase   = element.querySelectorAll('input[name="phaseName"]')[0].value;
+          row['Frente'] = frente
+          row['Fase']   = fase
+
+          let tdData = element.querySelectorAll('td.downExcel:not(.hidden)');
+          tdData.forEach(element0 => {
+                let data = element0.querySelectorAll('input,select')[0];
+                try{
+                    // console.log(element.classList.contains('hidden'))
+                  if(data.tagName == 'SELECT'){
+                    row[this.headerCols[data.name]] =  data.options[data.selectedIndex].text
+                    // row.push(data.options[data.selectedIndex].text)
+
+                  }
+
+                  if (data.tagName == 'INPUT'){
+                    // row.push(data.value)
+                    row[this.headerCols[data.name]] =  data.value
+                  }
+
+                }catch(e){
+                  // row.push(element0.innerText)
+                }
+                // if ( typeof data.tagName !== 'undefined') {
+                //   console.log(data.tagName)
+                // }
+                // console.log(element0.tagName)
+
+          });
+
+          rows.push(row)
+        });
+
 
       });
 
-      rows.push(row)
-    });
-    // console.log(this.hideCols)
-    // console.log(rows)
-    this.exportDataFromJSON(rows, null, null);
-    //   //iterate through rows of table
-    // for(var i=0,row; row = table.rows[i];i++){
-    //     //rows would be accessed using the "row" variable assigned in the for loop
-    //     //Get each cell value/column from the row
-    //     let column1 = row.cells[0].innerText;
-    //     let column2 = row.cells[1].innerText;
-    //     let column3 = row.cells[2].innerText;
-    //     let column4 = row.cells[3].innerText;
-    //     let column5 = row.cells[4].innerText;
+      let name_file = this.nameProyecto+'_'+moment(new Date()).format('DDMMYYYY')
+      this.exportDataFromJSON(rows, name_file, null);
+      await this.updisOpen(saveisOpen)
 
-    // /* add a new records in the array */
-    //     rows.push(
-    //         [
-    //             column1,
-    //             column2,
-    //             column3,
-    //             column4,
-    //             column5
-    //         ]
-    //     );
-
-    //     }
-        // let csvContent = "data:text/csv;charset=utf-8,";
-        //  /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-        // rows.forEach(function(rowArray){
-        //     let row = rowArray.join(";");
-        //     csvContent += row + "\r\n";
-        // });
-
-        // /* create a hidden <a> DOM node and set its download attribute */
-        // var encodedUri = encodeURI(csvContent);
-        // var link = document.createElement("a");
-        // link.setAttribute("href", encodedUri);
-        // link.setAttribute("download", "Stock_Price_Report.csv");
-        // document.body.appendChild(link);
-        //  /* download the data file named "Stock_Price_Report.csv" */
-        // link.click();
 },
 
     setColumnsStatus: function (payload) {
@@ -723,15 +747,7 @@ export default {
         }
       });
 
-      // console.log(payload.hideCols)
-      // this.listhideCols = payload.hideCols
-      // this.$store.commit({
-      //   type: 'setHideCols',
-      //   frontId: this.frontId,
-      //   phaseId: this.phaseId,
-      //   hideCols: payload.hideCols
-      // });
-      // this.closeModal();
+
     },
     handleClick: function (id) {
       id === "personalize" && (this.personalizeOpen = !this.personalizeOpen);

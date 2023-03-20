@@ -10,7 +10,7 @@
         @click="nextStatus"
       >
         <img
-          src="../../assets/images/icons/computer.svg"
+          src="../../assets/computer.svg"
           class="mb-8 sm:mb-6"
           alt=""
         />

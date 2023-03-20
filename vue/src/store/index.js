@@ -86,7 +86,7 @@ const store = createStore({
     ],
     user: {
       data: {},
-      name:"",
+      name:  sessionStorage.getItem('Name'),
       token: sessionStorage.getItem("TOKEN"),
     },
     projects: [],
@@ -164,6 +164,18 @@ const store = createStore({
       const row = state.restriction_rows_real.find((row) => row.codProyecto === id);
       if (typeof row === "undefined") return false;
       return row.codEstado;
+    },
+    statusProject: (state) => (id) => {
+      console.log(">>>> rentrando")
+      console.log(state.projects)
+      console.log(id)
+      const row = state.projects.find((row) => row.codProyecto === id);
+      if (typeof row === "undefined") { return false; }
+      else{
+        console.log(">>>> entrmaos aqui ::"+String(row.codEstado))
+        return row.codEstado;
+      }
+
     },
     tableData: (state) => (payload) => {
       const row = state.whiteproject_rows.find((row) => row.id === payload.id);
@@ -376,8 +388,13 @@ const store = createStore({
       projectData.id = sessionStorage.getItem('Id');
       return axiosClient.post('/create_project', projectData)
       .then(res => {
-        this.state.codProyecto = res.data.codPro
-        return res.data
+
+          commit('setProject', res.data)
+          res.data.forEach (pro => {
+            commit('copyProjectFromDB', pro)
+          });
+      //   this.state.codProyecto = res.data.codPro
+      //   return res.data
       })
     },
     register_notification({commit, state}, payload) {
@@ -392,8 +409,13 @@ const store = createStore({
       newprojectData.id = sessionStorage.getItem('Id');
       return axiosClient.post('/edit_project', newprojectData)
       .then(res => {
-        console.log(res.data)
-        return res.data
+
+          // this.state.restriction_rows = []
+          commit('setProject', res.data)
+          res.data.forEach (pro => {
+            commit('copyProjectFromDB', pro)
+          });
+        // return res.data
       })
     },
     get_buscar({commit}, buscar ) {
@@ -451,11 +473,14 @@ const store = createStore({
       const id = {
         id: sessionStorage.getItem('Id')
       }
-      this.state.restriction_rows = []
+      // this.state.restriction_rows = []
       return axiosClient.post('/get_project', id)
       .then(res => {
-        commit('setProject', res.data)
-          this.state.projects.forEach (pro => {
+
+          // console.log(">>>>> llegamos hasta aqui")
+          // console.log(res)
+          commit('setProject', res.data)
+          res.data.forEach (pro => {
             commit('copyProjectFromDB', pro)
           })
       })
@@ -514,8 +539,8 @@ const store = createStore({
       return axiosClient.post('/update_restriction_member', updateRes);
     },
     update_restriction_state({commit}, dataUpdate) {
-      console.log(">>>> verificamos")
-      console.log(dataUpdate)
+      // console.log(">>>> verificamos")
+      // console.log(dataUpdate)
       const updateRes = {
         codProyecto : dataUpdate.codProyecto,
         state       : dataUpdate.state,
@@ -523,6 +548,17 @@ const store = createStore({
 
       return axiosClient.post('/update_restriction_state', updateRes);
     },
+    update_project_state({commit}, dataUpdate) {
+      // console.log(">>>> verificamos")
+      console.log(dataUpdate)
+      const updateRes = {
+        codProyecto : dataUpdate.codProyecto,
+        state       : dataUpdate.state,
+      }
+
+      return axiosClient.post('/update_project_state', updateRes);
+    },
+
     add_front({commit}, frontdata) {
       const nowdate = new Date();
       const month = nowdate.getMonth()/1+1;
@@ -751,6 +787,10 @@ const store = createStore({
     },
     toggleEstado(state, payload) {
       state.restriction_rows_real.find((row) => row.codProyecto === payload.id).codEstado = payload.estado
+    },
+    toggleEstadoProject(state, payload) {
+
+      state.project_rows.find((row) => row.projectId === payload.id).codEstado = payload.estado
     },
     addUser(state, payload) {
       state.restriction_rows
@@ -1055,7 +1095,8 @@ const store = createStore({
       sessionStorage.setItem('TOKEN', token);
     },
     setProject: (state, project) => {
-      state.projects = project;
+      state.project_rows      = [];
+      state.projects          = project;
     },
     setRestrictionReal: (state, restrictions) => {
       state.restriction_rows_real = restrictions;
@@ -1104,10 +1145,10 @@ const store = createStore({
       // console.log(state.infoPerson.data_save)
       // state.infoPerson.push(infoperson);
     },
-    copyRestriction(state) {
-      console.log(state.restriction_rows)
-      state.project_rows = state.restriction_rows;
-    },
+    // copyRestriction(state) {
+    //   console.log(state.restriction_rows)
+    //   state.project_rows = state.restriction_rows;
+    // },
     notify: (state, {message, type}) => {
       state.notification.show = true;
       state.notification.type = type;
@@ -1139,6 +1180,8 @@ const store = createStore({
         projectId: projectData.codProyecto,
         data: projectData.desTipoProyecto === 'Abierto' ? true:false,
         projectName: projectData.desNombreProyecto,
+        isInvitado : projectData.isInvitado,
+        codEstado  : projectData.codEstado,
         restriction: {
           delayed: 60,
           notDelayed: 40,
@@ -1151,7 +1194,8 @@ const store = createStore({
       //tempProject.equipments = struser.substr(0, struser.length-1).split(', ');
       if(struser){
         tempProject.users = struser.substr(0, struser.length-1).split(', ');
-        state.restriction_rows.push(tempProject)
+        state.project_rows.push(tempProject)
+        // state.project_rows = state.restriction_rows;
       }
     },
     setCurrentReport(state, ReportData) {

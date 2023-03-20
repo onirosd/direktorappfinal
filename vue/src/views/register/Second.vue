@@ -10,8 +10,8 @@
           <img
             :src="
               require(toggleStatus === false
-                ? '../../assets/images/icons/toggle.svg'
-                : '../../assets/images/icons/toggle-on.svg')
+                ? '../../assets/toggle.svg'
+                : '../../assets/toggle-on.svg')
             "
             class="cursor-pointer"
             alt=""
@@ -27,14 +27,14 @@
       >
         <span class="text-sm leading-6 mb-1 mt-2">GRATIS</span>
         <div class="flex mb-6">
-          <img src="../../assets/images/icons/free.svg" class="mr-2" alt="" />
+          <img src="../../assets/free.svg" class="mr-2" alt="" />
           <span class="flex items-end text-[#616E8E]">Mensual</span>
         </div>
         <hr class="bg-[#D0D9F1] h-[1px] mb-8" />
         <div class="flex flex-col mb-4">
           <div class="flex mb-1">
             <img
-              src="../../assets/images/icons/tick.svg"
+              src="../../assets/tick.svg"
               class="-mt-[18%] sm:mt-0 mr-2"
               alt=""
             />
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="flex">
-            <img src="../../assets/images/icons/tick.svg" class="mr-2" alt="" />
+            <img src="../../assets/tick.svg" class="mr-2" alt="" />
             <span class="text-sm leading-6">30 días de prueba</span>
           </div>
         </div>
@@ -60,14 +60,14 @@
       >
         <span class="text-sm leading-6 mb-1 mt-2">BÁSICO</span>
         <div class="flex mb-6">
-          <img src="../../assets/images/icons/basic.svg" class="mr-2" alt="" />
+          <img src="../../assets/basic.svg" class="mr-2" alt="" />
           <span class="flex items-end text-[#616E8E]">Mensual</span>
         </div>
         <hr class="bg-[#D0D9F1] h-[1px] mb-8" />
         <div class="flex flex-col mb-4">
           <div class="flex mb-1">
             <img
-              src="../../assets/images/icons/tick.svg"
+              src="../../assets/tick.svg"
               class="-mt-[18%] sm:mt-0 mr-2"
               alt=""
             />
@@ -77,7 +77,7 @@
             </div>
           </div>
           <div class="flex">
-            <img src="../../assets/images/icons/tick.svg" class="mr-2" alt="" />
+            <img src="../../assets/tick.svg" class="mr-2" alt="" />
             <span class="text-sm leading-6">30 días de prueba</span>
           </div>
         </div>
@@ -92,7 +92,7 @@
         <span class="text-sm leading-6 mb-1 mt-2">AVANZADO</span>
         <div class="flex mb-6">
           <img
-            src="../../assets/images/icons/advanced.svg"
+            src="../../assets/advanced.svg"
             class="mr-2"
             alt=""
           />
@@ -102,7 +102,7 @@
         <div class="flex flex-col mb-4">
           <div class="flex mb-1">
             <img
-              src="../../assets/images/icons/tick.svg"
+              src="../../assets/tick.svg"
               class="-mt-[18%] sm:mt-0 mr-2"
               alt=""
             />
@@ -112,7 +112,7 @@
             </div>
           </div>
           <div class="flex">
-            <img src="../../assets/images/icons/tick.svg" class="mr-2" alt="" />
+            <img src="../../assets/tick.svg" class="mr-2" alt="" />
             <span class="text-sm leading-6">30 días de prueba</span>
           </div>
         </div>
@@ -142,7 +142,7 @@ export default {
         attr: "plan",
         value: param,
       });
-      this.$router.push("/register/third");
+      this.$router.push("/registro/third");
     },
     toggle: function () {
       this.toggleStatus = !this.toggleStatus;

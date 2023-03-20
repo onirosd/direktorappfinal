@@ -16,7 +16,7 @@
       </div>
       <div class="flex cursor-pointer mb-8" @click="addRow">
           <img
-            src="../assets/images/icons/tooltip-person-add-active.svg"
+            src="../assets/tooltip-person-add-active.svg"
             class="mr-2"
             alt=""
           />
@@ -36,7 +36,7 @@
         Reset
       </button>
       </div>
-      
+
   </Modal>
 </template>
 
@@ -48,16 +48,16 @@ import store from "../store";
 export default {
   name: "add-front-component",
   components: {
-    Modal,  
+    Modal,
   },
   props: {
     restriction: Array,
   },
   data: function () {
-    return { 
+    return {
       frontName: '',
       isOpen: false,
-      items:[], 
+      items:[],
     };
   },
   methods: {
@@ -68,19 +68,19 @@ export default {
       this.items.push({value:""})
     },
     getRestrictionPerson: function () {
-      const options = []; 
-      this.restriction.map((row) => { 
+      const options = [];
+      this.restriction.map((row) => {
         const temp = {};
-        temp["value"] = row.desTipoRestricciones; 
+        temp["value"] = row.desTipoRestricciones;
         options.push(temp);
-      }); 
-      this.items = options;  
+      });
+      this.items = options;
       return options
     },
     Reset: function(){
       $emit('closeModal');
     }
-  }, 
+  },
   mounted: function () {
     this.getRestrictionPerson();
   }

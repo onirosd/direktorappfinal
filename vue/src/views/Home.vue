@@ -58,7 +58,7 @@ export default {
         if(res.data.estado == true){
 
           this.closeModal();
-          this.handleRedirect('create_project')
+          this.handleRedirect('proyectos')
           //  this.infoProyectos = res.data.datos
         }
 

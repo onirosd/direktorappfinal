@@ -17,6 +17,8 @@ import Graphic from "../views/execution/Graphic.vue";
 import Person from "../views/person/Person.vue";
 import Person_edit from "../views/person/Person_edit.vue";
 import store from "../store";
+
+var path_general = import.meta.env.VITE_WEB_FIN_BASE_URL;
 var routes = [
 
   {
@@ -33,46 +35,49 @@ var routes = [
         meta: { layout: 'login', sidebarOpen: false },
       },
       {
-        path: "/register",
-        name: "Register",
+        path: "/registro",
+        name: "registro",
         component: Register,
-        meta: { layout: 'register', sidebarOpen: false },
+        meta: { layout: 'registro', sidebarOpen: false },
       },
     ],
   },
   {
     path: "/",
-    redirect: "/Home",
+    redirect: "/home",
     component: DefaultLayout,
     meta: { requiresAuth: true },
     children: [
       {
-        path: "/Home",
+        path: "/home",
         name: "Home",
         component: Home,
         meta: { layout: 'home', sidebarOpen: true },
       },
       {
-        path: "/create_project",
+        path: "/proyectos",
         name: "Create_Project",
         component: Project,
         meta: { layout: 'home' , sidebarOpen: true},
       },
       {
-        path: "/restrictions_analysis",
+        path: "/restricciones",
         name: "restrictions_analysis",
         component: Restrictions,
         meta: { layout: 'home' , sidebarOpen: true},
+        // children:[
+
+        // ]
       },
-      {
-        path: "/white_project",
-        name: "white_project",
-        component: WhiteProject,
-        meta: { layout: 'home' , sidebarOpen: true},
-      },
+      // {
+      //   path: "/white_project",
+      //   name: "white_project",
+      //   component: WhiteProject,
+      //   meta: { layout: 'home' , sidebarOpen: true},
+      // },
 
       {
-        path: "/addRestrictions",
+        path: "/restricciones_agregar",
         name: "add_restrictions",
         component: AddRestrictions,
         meta: { layout: 'home' , sidebarOpen: false},

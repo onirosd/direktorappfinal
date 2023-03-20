@@ -27,11 +27,10 @@ class RestrictionController extends Controller
             select
             ar.*,
             pp.desNombreProyecto as desnombreproyecto,
-            'propietario' as tipousuario
+            0 as isInvitado
             from anares_analisisrestricciones  ar
             inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
             where
-            ar.codProyecto  = 1 and
             pp.id  =  ?
 
             union all
@@ -39,13 +38,12 @@ class RestrictionController extends Controller
             select
             ar.*,
             pp.desNombreProyecto as desnombreproyecto,
-            'invitado' as tipousuario
+            1 as isInvitado
             from anares_analisisrestricciones  ar
             inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
             inner join proy_integrantes pi2 on ar.codProyecto  = pi2.codProyecto
             inner join ana_integrantes ai on pi2.codProyIntegrante  = ai.codProyIntegrante
             where
-            ar.codProyecto  = 1 and
             pi2.codEstadoInvitacion  = 1 and
             pi2.idIntegrante  = ?
 
@@ -74,6 +72,7 @@ class RestrictionController extends Controller
                 'indNoRetrasados'  => $eachdata['indNoRetrasados'],
                 'indRetrasados'    => $eachdata['indRetrasados'],
                 'codAnaRes'        => $eachdata['codAnaRes'],
+                'isInvitado'        => $eachdata['isInvitado'],
                 'integrantes'      => [],
                 'integrantesProy'  => []
             ];

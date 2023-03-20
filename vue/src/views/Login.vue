@@ -1,3 +1,86 @@
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
+<style>
+.multiselect__placeholder {
+  display: inline-block !important;
+  margin-bottom: 0px !important;
+  padding-top: 0px !important;
+}
+
+/* .multiselect.invalid .multiselect__tags {
+  border: 1px solid #f86c6b !important;
+} */
+
+.multiselect__element {
+  /* background: #428bca !important; */
+  font-family: inherit !important;
+font-weight: normal !important;
+color: none !important;
+/* font-size: 11px !important; */
+line-height: normal! important;
+}
+
+.multiselect__option--highlight {
+  background: #428bca !important;
+  font-family: inherit !important;
+font-weight: normal !important;
+color: none !important;
+/* font-size: 11px !important; */
+line-height: normal! important;
+}
+
+.multiselect__option--highlight:after {
+  background: #428bca !important;
+}
+
+.multiselect__tags {
+  /* padding: 5px !important;
+  min-height: 10px;
+} */
+font-family: inherit !important;
+font-weight: normal !important;
+color: none !important;
+/* font-size: 11px !important; */
+line-height: normal! important;
+}
+/* .multiselect__single{
+  font-family: inherit !important;
+} */
+.multiselect__placeholder{
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.multiselect__tag {
+  background: #f0f0f0 !important;
+  border: 1px solid rgba(60, 60, 60, 0.26) !important;
+  /* color: black !important; */
+  margin-bottom: 0px !important;
+  margin-right: 5px !important;
+}
+
+/* .multiselect__tag-icon:after {
+  color: rgba(60, 60, 60, 0.5) !important;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #f0f0f0 !important;
+}
+
+.multiselect__tag-icon:focus:after,
+.multiselect__tag-icon:hover:after {
+  color: red !important;
+} */
+
+/* .multiselect-single{
+  font-family: inherit;
+} */
+/* .multiselect__tag{
+
+} */
+</style>
+
 <template>
   <div class="flex flex-col w-[450px] sm:w-full text-base">
     <span class="text-center sm:text-left text-[28px] leading-5 mb-8 sm:mb-8"> Iniciar Sesión</span>
@@ -5,7 +88,7 @@
       O
       {{ " " }}
       <router-link
-        :to="{ name: 'Register' }"
+        :to="{ name: 'registro' }"
         class="font-medium text-indigo-600 hover:text-indigo-500"
       >
         Registrate
@@ -66,6 +149,29 @@
         />
       </div>
     </div>
+<!--
+    <VueMultiselect
+            v-model="value"
+            :options="options"
+            track-by="name"
+            label="name"
+            :custom-label="nameFormatter"
+            ::multiple="false"
+            @search-change="obtenemosevento"
+            placeholder="Seleccionar"
+
+
+
+            >
+
+      <template #noResult>
+        Lo siento no tenemos resultados.
+        <div @click="eventoparaagregar">  Quieres agregar una empresa +</div>
+     </template>
+
+    </VueMultiselect> -->
+
+    <nav>{{value}}</nav>
 
     <!-- <div class="flex items-center justify-between">
       <div class="flex items-center">
@@ -154,6 +260,7 @@
 //  import draggable from "vuedraggable";
 //  import Vue from 'vue';
 //  import { LockClosedIcon } from "@vue-hero-icons/solid"
+//  import VueMultiselect from 'vue-multiselect'
  import Alert from "../components/core/Alert.vue";
  import TButtonLoading from "../components/core/TButtonLoading.vue";
  import { ref } from "vue";
@@ -165,27 +272,41 @@
     // LockClosedIcon,
     Alert,
     TButtonLoading,
+    // VueMultiselect,
     ref
    },
    data() {
      return {
-       loading : false,
+
+      //  options  :  [{id:1 , name: 'veremo'},{id:2, name:" no tenemos "}],
+      //  value    :  null,
+       loading  :  false,
        errorMsg : "",
        user : {
           email: "",
           password: "",
        },
-       list: [
-         { id: 1, name: "Abby", sport: "basket" },
-         { id: 2, name: "Brooke", sport: "foot" },
-         { id: 3, name: "Courtenay", sport: "volley" },
-         { id: 4, name: "David", sport: "rugby" }
-       ],
+      //  options: [
+      //    { id: 1, name: "Abby", sport: "basket" },
+      //    { id: 2, name: "Brooke", sport: "foot" },
+      //    { id: 3, name: "Courtenay", sport: "volley" },
+      //    { id: 4, name: "David", sport: "rugby" }
+      //  ],
        dragging: false
      };
    },
    methods:{
-
+    // siactualizamos()
+    // {},
+    // eventoparaagregar(){
+    //   this.options.push({id:5, name:"Diego lo hizo", sport:"asasasa"})
+    // },
+    // obtenemosevento(){
+    //   console.log(">>>>> obtenemos evento de cambio"+this.value)
+    // },
+    // nameFormatter({id, name}){
+    //   return `${name}`;
+    // },
     login(ev) {
             ev.preventDefault();
 
@@ -214,4 +335,3 @@
    }
  };
  </script>
-

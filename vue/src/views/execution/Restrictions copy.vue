@@ -56,7 +56,7 @@
               >Estado: </span
             >
             <img
-              src="../../assets/images/icons/edit.svg"
+              src="../../assets/edit.svg"
               @click="openModal({ param: 'editStatus', id: row.codProyecto })"
               alt=""
             />
@@ -82,7 +82,7 @@
           <div class="flex mb-2 justify-between">
             <div class="flex" @click="selectUserFunc(row.id); openModal({ param: 'selectusers', id: row.desProyIntegrante, index: index })">
               <img
-                src="../../assets/images/icons/tooltip-person-add-active.svg"
+                src="../../assets/tooltip-person-add-active.svg"
                 class="mr-1"
                 alt=""
               />
@@ -90,7 +90,7 @@
             </div>
             <!-- <div class="flex" @click="openModal({ param: 'edit', id: row.id })">
               <img
-                src="../../assets/images/icons/tooltip-edit-active.svg"
+                src="../../assets/tooltip-edit-active.svg"
                 class="mr-1"
                 alt=""
               />
@@ -101,7 +101,7 @@
               @click="openModal({ param: 'delete', id: row.id })"
             >
               <img
-                src="../../assets/images/icons/tooltip-delete-active.svg"
+                src="../../assets/tooltip-delete-active.svg"
                 class="mr-1"
                 alt=""
               />

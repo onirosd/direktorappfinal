@@ -9,7 +9,7 @@
       <span class="flex self-end cursor-pointer" @click="increateHint">
         <span class="text-sm leading-4 text-orange mr-1">{{ next }}</span>
         <img
-          src="../assets/images/icons/hint-arrow-rigth.svg"
+          src="../assets/hint-arrow-rigth.svg"
           v-if="icon"
           alt=""
         />

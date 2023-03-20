@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\conf_colacorreos;
 use App\Jobs\SendEmails;
 use Config;
-use HelperMail; // Important
+use Helper; // Important
 use DB;
 
 class ProjectController extends Controller
@@ -99,7 +99,7 @@ class ProjectController extends Controller
 
         $codPro = Project::insertGetId([
             'desNombreProyecto' => $request['projectName'],
-            'codEstado' => 1,
+            'codEstado' => 0,
             'desEmpresa' => $request['business'],
             'numPlazo' => intval($request['term']),
             'id' => $request['id'] | 0,
@@ -107,7 +107,7 @@ class ProjectController extends Controller
             'codTipoProyecto' => intval($request['projectType']),
             'codUbigeo' => intval($request['district']),
             'dayFechaInicio' => $request['startDate'],
-            'numMontoReferencial' => (float) $request['referenceAmount'],
+            'numMontoReferencial' => $request['referenceAmount'],
             'numAreaTechada' => intval($request['area']),
             'numAreaConstruida' => intval($request['builtArea']),
             'desPais' => $request['country'],
@@ -148,8 +148,7 @@ class ProjectController extends Controller
                 $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
 
-                HelperMail::enviarEmail($datos_enviar, 'invitacion', "Correo de Invitación", $request['id'] ,$userEmail);
-
+                Helper::enviarEmail($datos_enviar, 'invitacion', "Correo de Invitación", $request['id'] ,$userEmail);
 
                 // $conf_colacorreos                    = new conf_colacorreos;
                 // $conf_colacorreos->desMensaje        = view('emails.invitation',$datos_enviar)->render();
@@ -227,7 +226,8 @@ class ProjectController extends Controller
             'codTipoDiaProgramacion'    => $request['programmingDayTypeCode']
         ]);
 
-        return ["codPro" => $codPro,"mail" => $mail,"message" => $mail ? "Emails were sent successfully" : ''];
+        // return ["codPro" => $codPro,"mail" => $mail,"message" => $mail ? "Emails were sent successfully" : ''];
+        return $this->get_project($request);
     }
 
     public function sendMails($id){
@@ -259,7 +259,7 @@ class ProjectController extends Controller
         // ->get();
         $query = "
 
-            select pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo
+            select pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado
             from proy_proyecto pp
             inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
             inner join conf_ubigeo cu on pp.codUbigeo  = cu.codUbigeo
@@ -267,7 +267,7 @@ class ProjectController extends Controller
 
             union all
 
-            select pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo
+            select pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo , 1 as isInvitado
             from proy_proyecto pp
             inner join proy_integrantes pi2  on pp.codProyecto = pi2.codProyecto
             inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
@@ -287,14 +287,14 @@ class ProjectController extends Controller
 
         $update = Project::where('codProyecto', $request['projectId'])->update([
             'desNombreProyecto' => $request['projectName'],
-            'codEstado' => 1,
+            'codEstado' => 0,
             'desEmpresa' => $request['business'],
             'numPlazo' => intval($request['term']),
             'numAreaTechado' => intval($request['coveredArea']),
             'codTipoProyecto' => intval($request['projectType']),
             'codUbigeo' => intval($request['district']),
             'dayFechaInicio' => $request['startDate'],
-            'numMontoReferencial' => intval($request['referenceAmount']),
+            'numMontoReferencial' => $request['referenceAmount'],
             'numAreaTechada' => intval($request['area']),
             'numAreaConstruida' => intval($request['builtArea']),
             'desPais' => $request['country'],
@@ -304,7 +304,9 @@ class ProjectController extends Controller
             'codMoneda' => $request['codMoneda']
         ]);
 
-        ProjectUser::where('codProyecto', $request['projectId'])->delete();
+        // ProjectUser::where('codProyecto', $request['projectId'])->delete();
+        // print_r($request['userInvData']);
+        // return ;
         foreach($request['userInvData'] as $user) {
 
             $userEmail = $user['userEmail'];
@@ -312,21 +314,74 @@ class ProjectController extends Controller
             $userArea  = $user['userArea'];
             $userId    = isset($user['id']) ? $user['id'] : -999;
 
-            if(ltrim(rtrim($userEmail)) != '' &&  ltrim(rtrim($userRole)) != '' && ltrim(rtrim($userRole)) != '')
-            {
+            /* Este es un usuario que ya fue agregado y tiene un ID , aqui no se actualiza el estado de la invitacion */
+            if ($user['codProyIntegrante'] > 0){
 
-                $usercreate = ProjectUser::create([
-                    'codProyecto'         => $request['projectId'],
-                    'id'                  => $request['id'],
-                    'codEstadoInvitacion' => 1,
-                    'codRolIntegrante'    => intval($userRole),
-                    'dayFechaInvitacion'  => $request['date'],
-                    'codArea'             => intval($userArea),
-                    'desCorreo'           => strval($userEmail),
-                    'idIntegrante'        => $userId
+                ProjectUser::where('codProyecto', $request['projectId'])
+                ->where('codProyIntegrante', $user['codProyIntegrante'])
+                ->update([
+                    'codArea'          => $user['userArea'],
+                    'codRolIntegrante' => $user['userRole'],
+
                 ]);
 
+            }else{
+
+                /* Significa que es un usuario que tiene un ID osea esta en el sistema  , se le va a invitar*/
+                if ($userId  > 0){
+
+
+                    $usercreate = ProjectUser::create([
+                        'codProyecto'         => $request['projectId'],
+                        'id'                  => $request['id'],
+                        'codEstadoInvitacion' => 0,
+                        'codRolIntegrante'    => intval($userRole),
+                        'dayFechaInvitacion'  => $request['date'],
+                        'codArea'             => intval($userArea),
+                        'desCorreo'           => strval($userEmail),
+                        'idIntegrante'        => $userId
+                    ]);
+
+                }else{
+                /* Esto hace referencia que el correo no tiene usuario en el sistema*/
+
+                    $usercreate = ProjectUser::create([
+                        'codProyecto'         => $request['projectId'],
+                        'id'                  => $request['id'],
+                        'codEstadoInvitacion' => 0,
+                        'codRolIntegrante'    => intval($userRole),
+                        'dayFechaInvitacion'  => $request['date'],
+                        'codArea'             => intval($userArea),
+                        'desCorreo'           => strval($userEmail),
+                        'idIntegrante'        => $userId
+                    ]);
+
+                    /* Se le envia un correo de invitacion */
+
+                    $datos_enviar = array();
+                    $datos_enviar['des_correo']        = $userEmail;
+                    $datos_enviar['des_proyecto']      = $request['projectName'];
+                    $datos_enviar['des_link_register'] = Config::get('global.URL_REGISTRO');
+                    $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
+
+                    Helper::enviarEmail($datos_enviar, 'invitacion', "Correo de Invitación", $request['id'] ,$userEmail);
+
+
+
+                }
             }
+
+            // if(ltrim(rtrim($userEmail)) != '' &&  ltrim(rtrim($userRole)) != '' && ltrim(rtrim($userRole)) != '')
+            // {
+
+
+
+
+
+
+            // }
+
+
         }
 
         $codUtilReportes = ProjectReport::select('codUtilReportes')->groupBy('codUtilReportes')->where('codProyecto', $request['projectId'])->get();
@@ -390,7 +445,12 @@ class ProjectController extends Controller
                 }
             }
         }
-        return $request['projectId'];
+
+        // $enviar        = array();
+        // $enviar['id']  = $request['id'];
+        // $get_projects  = $this->get_project($request);
+
+        return $this->get_project($request);
     }
 
     public function get_projectreport (Request $request) {
@@ -511,6 +571,32 @@ class ProjectController extends Controller
         return Notification_User4::where('codNotificacionUsuario', $created)->first();
     }
 
+
     /* ************************** DESARROLLADOR  POR EL PROGRAMADOR  ******************************* */
 
+    public function update_state(Request $request) {
+        //$restrictionid = Restriction::where('codProyecto', $request['codProyecto'])->get('codAnaRes');
+        $enviar =  array();
+        $enviar["mensaje"] = "";
+        $enviar["estado"]  = false;
+
+        try {
+
+            $resultado1 = Project::where('codProyecto',(int)$request['codProyecto'])->update([
+                'codEstado' => $request['state']
+            ]);
+
+            $resultado2 = Restriction::where('codProyecto',(int)$request['codProyecto'])->update([
+                'codEstado' => $request['state']
+            ]);
+
+            $enviar["estado"]  = true;
+
+        } catch (\Throwable $th) {
+            $enviar["mensaje"] = "Tenemos errores y no se puede actualizar";
+        }
+
+     return $enviar;
+
+    }
 }

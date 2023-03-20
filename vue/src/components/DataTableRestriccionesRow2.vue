@@ -1,32 +1,68 @@
 <template>
 
         <tr style="cursor: grab" @click="valida">
+          <input type="hidden" name="frontName" :value="frontName">
+          <input type="hidden" name="phaseName" :value="phaseName">
+
           <td class="absolute left-0 mt-2">
             <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
               v-click-outside="hide">
-              <img src="../assets/images/icons/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
+              <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
             </button>
             <TableTooltip v-if="isOpen" @tooltip="openModal" :ResizeActually="ResizeActually" />
           </td>
-          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('exercise') > -1}"> <input name="Actividad" :disabled="!statusRestriction"  @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad})" v-model="restriction_data.desActividad" type="text" class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded " :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> </td>
-          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restriction') > -1}"> <input name="Restriccion" :disabled="!statusRestriction"  @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})" v-model="restriction_data.desRestriccion" type="text" class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> </td>
-          <!-- <td>ass</td>
-          <td></td>
-          <td>11</td>
-          <td>asas</td>
-          <td></td>
-          <td>11</td>
-           -->
+          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('exercise') > -1}">
+            <input
+                  name="exercise"
+                  v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
+                  @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad})"
+                  v-model="restriction_data.desActividad"
+                  type="text"
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+            />
+            <input
+                  v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
+                  :disabled="true"
+                  v-model="restriction_data.desActividad"
+                  name="exercise"
+                  type="text"
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
 
+            />
+          </td>
+          <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restriction') > -1}">
+            <input
+                  name="restriction"
+                  v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
+                  @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})"
+                  v-model="restriction_data.desRestriccion"
+                  type="text"
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+            />
+
+            <input
+                  v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
+                  :disabled="true"
+                  v-model="restriction_data.desRestriccion"
+                  name="restriction"
+                  type="text"
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+
+            />
+          </td>
 
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restrictionType') > -1}">
             <select
-            name="Tipo"
-            v-if="statusRestriction"
+            name="restrictionType"
+            v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
             v-model="restriction_data.codTipoRestriccion"
             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded  selectPer"
             :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
-            @change="verificarCambio({name:'codTipoRestriccion', value: restriction_data.codTipoRestriccion})"
+            @change="verificarCambio({name:'codTipoRestriccion', value: restriction_data.codTipoRestriccion, change: $event });"
           >
 
           <option
@@ -35,7 +71,14 @@
           </option>
 
           </select>
-          <input name="Tipo" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.desTipoRestriccion" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+          <input
+                 v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
+                 name="restrictionType"
+                 :disabled="true"
+                 :value="restriction_data.desTipoRestriccion"
+                 type="text"
+                 class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                 :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
 
           </td>
@@ -43,17 +86,29 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_required') > -1}">
 
             <input
-                name="diaRequerido"
-                v-if="statusRestriction"
-                :disabled="!statusRestriction"
-                @change="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"
-                v-model="restriction_data.dayFechaRequerida"
-                type="date"
-                class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
-                :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+            v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
+             name="date_required"
+
+             @change="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"
+             v-model="restriction_data.dayFechaRequerida"
+             type="date"
+             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
+             :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
             />
 
-            <input name="diaRequerido" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaRequerida" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+            <input
+             v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
+             name="date_required"
+             :disabled="true"
+
+             :value="restriction_data.dayFechaRequerida"
+             type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+             :class="{
+                          'bg-gray-100': !statusRestriction ,
+                          'text-gray-700': !statusRestriction,
+
+                      }"
+            />
 
 
             <!-- <v-date-picker v-if="statusRestriction" @click="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"  ref="datepicker"  v-model="restriction_data.dayFechaRequerida" mode="date" is24hr: false class="flex relative  cursor-pointer cursor-pointer"  >
@@ -89,24 +144,32 @@
               <input  :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada2" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> -->
 
               <input
-                name="diaconciliado"
-                v-if="statusRestriction"
-                :disabled="!statusRestriction"
-                @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
-                v-model="restriction_data.dayFechaConciliada"
-                type="date"
-                class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
-                :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+                    v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
+                    name="date_conciliad"
+                    @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
+                    v-model="restriction_data.dayFechaConciliada"
+                    type="date"
+                    class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
+                    :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
               />
 
-              <input name="diaconciliado" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+              <input
+                    v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
+                    name="date_conciliad"
+                    :disabled="true"
+                    :value="restriction_data.dayFechaConciliada"
+                    type="text"
+                    class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                    :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+              />
 
 
           </td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible') > -1}">
-            <select name="responsable"  v-if="statusRestriction && getOptionResponsables().length > 0"
-
+            <select
+            v-if="(statusRestriction && getOptionResponsables().length > 0) && restriction_data.codEstadoActividad < 3"
+            name="responsible"
             v-model="restriction_data.idUsuarioResponsable"
             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
             :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
@@ -119,14 +182,23 @@
             </option>
 
           </select>
-          <input name="responsable" :disabled="(!statusRestriction || getOptionResponsables().length == 0)" v-if="!statusRestriction || getOptionResponsables().length == 0" :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')" :value="restriction_data.desUsuarioResponsable" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+          <input
+              name="responsible"
+              v-if="(!statusRestriction || getOptionResponsables().length == 0) || restriction_data.codEstadoActividad == 3"
+              :disabled="true"
+              :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')"
+              :value="restriction_data.desUsuarioResponsable"
+              type="text"
+              class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+              :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
 
           </td>
-          <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="arearesponsable" type="text" :value="restriction_data.desAreaResponsable" readonly class="px-2 text-xs h-8 mt-2"/></td>
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-xs h-8  rounded"/></td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
-              <select v-if="statusRestriction"
-              name="estado"
+              <select
+              v-if="statusRestriction"
+              name="condition"
               v-model="restriction_data.codEstadoActividad"
               class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
               :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
@@ -139,12 +211,20 @@
               </option>
 
             </select>
-          <input name="estado" :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.desEstadoActividad" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
+          <input
+                v-if="!statusRestriction"
+                name="condition"
+                :disabled="true"
+                :value="restriction_data.desEstadoActividad"
+                type="text"
+                class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+          />
 
           </td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('applicant') > -1}">
-            <input name="solicitante" type="text" value="" readonly class="px-2 text-xs h-8 mt-2"/>
+            <input name="applicant" type="text" value="" readonly class="w-full border px-2 text-xs h-8  rounded"/>
           </td>
         </tr>
 
@@ -171,6 +251,10 @@ export default {
     listindex:Array,
     listIds:Array,
     validarUpd:Boolean,
+
+    frontName:String,
+    phaseName:String,
+
 
     ResizeActually:Number
   },
@@ -343,21 +427,35 @@ export default {
       this.$emit('updateRow', {frontIdx: this.listindex[0] , phaseIdx:this.listindex[1]});
 
     },
+    changeType(e) {
+        var codTipoRestriccion = e.target.value;
+        var desTipoRestriccion = e.target.options[e.target.options.selectedIndex].text;
+        this.restriction_data.desTipoRestriccion = desTipoRestriccion;
+    },
     verificarCambio(data) {
 
-      console.log(">>>> deta de props")
-      console.log(this.restriction_data['desActividad'])
+
+      // console.log(data)
+      // console.log(">>>> deta de props")
+      // console.log(this.restriction_data['desActividad'])
 
 
-      console.log(">>>> deta de rows llenados")
-      console.log(this.restriction_row['desActividad'])
+      // console.log(">>>> deta de rows llenados")
+      // console.log(this.restriction_row['desActividad'])
 
-
-      // return ;
 
 
       if (this.statusRestriction == false){
         return;
+      }
+
+      // return ;
+      if(data.change != undefined){
+
+        var codTipoRestriccion = data.change.target.value;
+        var desTipoRestriccion = data.change.target.options[data.change.target.options.selectedIndex].text;
+        this.restriction_data.desTipoRestriccion = desTipoRestriccion;
+
       }
 
       var self                        = this;
@@ -469,7 +567,7 @@ export default {
   -moz-appearance: none;
   appearance: none;
 
-  background: transparent url("../assets/images/icons/ic_arrow-down.svg") no-repeat right ;
+  background: transparent url("../assets/ic_arrow-down.svg") no-repeat right ;
   /* background-position-x: 244px; */
 }
 

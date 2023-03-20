@@ -10,9 +10,9 @@
     </td>
     <td>
       <span class="flex items-center">
-        <span class="mr-2">{{ row.codEstado == 0 ? `Abierto` : `Cerrado` }}</span>
+        <span class="mr-2" :class="{'status_open': row.codEstado == 0 , 'status_closed': row.codEstado > 0    }">{{ row.codEstado == 0 ? `Abierto` : `Cerrado` }}</span>
         <!-- <span class="mr-2">abierto</span> -->
-        <img src="../assets/images/icons/edit.svg" alt="" class="cursor-pointer" @click="openModal({param: 'editStatus', id: row.codProyecto})" />
+        <img src="../assets/edit.svg" alt="" class="cursor-pointer" @click="openModal({param: 'editStatus', id: row.codProyecto})" />
       </span>
     </td>
     <td>{{ row.desnombreproyecto }}</td>
@@ -36,12 +36,13 @@
     </td>
     <td>
       <button
+        v-if="row.isInvitado == 0 && row.codEstado == 0"
         class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center"
         @click="$emit('selectUserFunc', {codProyecto:row.codProyecto, index:index}); openModal({param: 'selectusers'})"
         v-click-outside="hide"
       >
         <img
-          src="../assets/images/icons/tooltip-person-add-active.svg"
+          src="../assets/tooltip-person-add-active.svg"
           :class="{ 'content-pointsActive': row.isTooltip }"
           alt=""
         />
@@ -49,6 +50,7 @@
     </td>
   </tr>
 </template>
+
 
 <script>
 import { emit } from "process";
@@ -99,3 +101,23 @@ export default {
 
 };
 </script>
+<style>
+
+.status_open{
+
+background-color: #2f6fe3;
+color: #fff;
+padding: 5px;
+border-radius: 1em;
+
+}
+
+.status_closed{
+
+background-color: #bf2323;
+color: #fff;
+padding: 5px;
+border-radius: 1em;
+
+}
+</style>

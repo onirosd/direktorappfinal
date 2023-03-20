@@ -14,7 +14,7 @@
       />
       <span class="flex mt-4 w-full" :class="{'hidden': !status}">
         <img
-          src="../assets/images/icons/tooltip-person-add-active.svg"
+          src="../assets/tooltip-person-add-active.svg"
           class="mr-2"
           alt=""
         />

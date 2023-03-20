@@ -107,7 +107,7 @@ export default {
   -moz-appearance: none;
   appearance: none;
 
-  background: transparent url("../assets/images/icons/ic_arrow-down.svg") no-repeat right ;
+  background: transparent url("../assets/ic_arrow-down.svg") no-repeat right ;
   /* background-position-x: 244px; */
 }
 

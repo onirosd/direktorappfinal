@@ -1,7 +1,7 @@
 <template>
     <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-16 sm:h-14 bg-main pl-8 z-10">
         <img
-            src="../../assets/images/logo.png"
+            src="../../assets/logo.png"
             class="sm:content-phoneLogo cursor-pointer"
             title="Volver a la pagina de Inicio."
             @click="handleRedirect('Home')"
@@ -21,14 +21,14 @@
 
         <div class="h-full flex items-center bg-main hover:bg-[#001E4A] ... cursor-pointer" @click="updateisOpen">
             <div class="flex items-center px-8 sm:px-3 ">
-                <span class="text-base font-medium text-white sm:hidden">Hola, {{username}} </span>
-                <!-- <img src="../../assets/images/icons/bell.svg" class="mx-4 sm:mx-6 sm:content-phoneBell" alt="" /> -->
+                <span class="text-base font-medium text-white sm:hidden">Hola, {{nombre}} </span>
+                <!-- <img src="../../assets/bell.svg" class="mx-4 sm:mx-6 sm:content-phoneBell" alt="" /> -->
                 <!-- <img
-                  src="../../assets/images/user.png"
+                  src="../../assets/user.png"
                   class="w-8 h-8 rounded-full sm:mr-6"
                   alt=""
                 /> -->
-                <img src="../../assets/images/icons/phone-search.svg" class="hidden sm:block" alt="">
+                <img src="../../assets/phone-search.svg" class="hidden sm:block" alt="">
             </div>
 
             <TableTooltipPerson :type="'person'" v-if="isOpenUser" @selectPersonInfo="selectPersonInfo"/>
@@ -37,12 +37,12 @@
             <!--<TableTooltipPerson :type="'bell'" @checkNotification="checkNotification"
                                 :messages="ms"/>
             <button class="w-16 sm:w-14 h-full flex items-center justify-center bg-[#001E4A]">
-                <img src="../../assets/images/icons/bell.svg" alt="" class="sm:hidden" @click.stop="clickBell"/>
+                <img src="../../assets/bell.svg" alt="" class="sm:hidden" @click.stop="clickBell"/>
                 <span style="color: white" @click.stop="clickBell">{{messages.length}}</span>
 
-                <img src="../../assets/images/icons/phone-menu.svg" alt="" class="hidden sm:block" v-if="!menu"
+                <img src="../../assets/phone-menu.svg" alt="" class="hidden sm:block" v-if="!menu"
                      @click="toggleMenu"/>
-                <img src="../../assets/images/icons/close.svg" alt="" class="hidden sm:block" v-if="menu"
+                <img src="../../assets/close.svg" alt="" class="hidden sm:block" v-if="menu"
                      @click="toggleMenu"/>
             </button>-->
 
@@ -142,6 +142,9 @@
             },
             menu: function () {
                 return this.$store.state.menu;
+            },
+            nombre: function () {
+                return this.$store.state.user.name;
             }
         },
 

@@ -4,7 +4,7 @@
           <td class="absolute left-0 mt-2">
             <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
               v-click-outside="hide">
-              <img src="../assets/images/icons/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
+              <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
             </button>
             <TableTooltip v-if="isOpen" @tooltip="openModal" />
           </td>
@@ -426,7 +426,7 @@ export default {
   -moz-appearance: none;
   appearance: none;
 
-  background: transparent url("../assets/images/icons/ic_arrow-down.svg") no-repeat right ;
+  background: transparent url("../assets/ic_arrow-down.svg") no-repeat right ;
   /* background-position-x: 244px; */
 }
 

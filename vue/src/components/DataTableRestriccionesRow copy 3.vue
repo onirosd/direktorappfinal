@@ -3,15 +3,15 @@
     <td class="absolute left-0 mt-2">
       <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
         v-click-outside="hide">
-        <img src="../assets/images/icons/points.svg" :class="{ 'content-pointsActive': restriction_row.isTooltip }" alt="" />
+        <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_row.isTooltip }" alt="" />
       </button>
       <TableTooltip v-if="isOpen" @tooltip="openModal" />
     </td>
     <!-- <td>
       <div class="flex border border-[#8A9CC9] rounded h-8 justify-center w-24">
-        <img width="16" src="../assets/images/icons/down-arrow-icon.svg" alt="">
+        <img width="16" src="../assets/down-arrow-icon.svg" alt="">
         <span class="px-1 text-sm leading-7"></span>
-        <img width="16" src="../assets/images/icons/up-arrow-icon.svg" alt="">
+        <img width="16" src="../assets/up-arrow-icon.svg" alt="">
       </div>
     </td> -->
     <!-- :class="[isupdate == true ? needupdate : notneedupdate]" -->
@@ -21,7 +21,7 @@
       <div v-if="statusRestriction" class="flex relative  cursor-pointer cursor-pointer ">
         <input type="hidden" v-model="restriction_row.codTipoRestriccion">
         <input  v-model="restriction_row.desTipoRestriccion" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8 rounded "  placeholder="Elegir Tipo Restricción" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" />
-        <img @click="handleClick('option')" src="../assets/images/icons/ic_arrow-down.svg"
+        <img @click="handleClick('option')" src="../assets/ic_arrow-down.svg"
           class="absolute top-1/2 -translate-y-1/2 right-2" alt=""
           :class="{ 'rotate-180': isoptions, 'rotate-0': !isoptions }">
         <SelectOption @selected="selOpt" :options="getOption()" :name = "'codTipoRestriccion'" v-if="isoptions" />
@@ -68,7 +68,7 @@
       <div v-if="statusRestriction" class="flex relative  cursor-pointer cursor-pointer">
         <input type="hidden" v-model="restriction_row.idUsuarioResponsable">
         <input v-model="restriction_row.desUsuarioResponsable" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8 rounded "  placeholder="Responsable" />
-        <img @click="handleClickResp('option')" src="../assets/images/icons/ic_arrow-down.svg"
+        <img @click="handleClickResp('option')" src="../assets/ic_arrow-down.svg"
           class="absolute top-1/2 -translate-y-1/2 right-2" alt=""
           :class="{ 'rotate-180': isoptionsResp, 'rotate-0': !isoptionsResp }">
         <SelectOption @selected="selOptResponsable" :options="getOptionResponsables()" :name = "'idUsuarioResponsable'" v-if="isoptionsResp" />
@@ -81,7 +81,7 @@
       <div v-if="statusRestriction"  class="flex relative  cursor-pointer cursor-pointer">
         <input type="hidden" v-model="restriction_row.codEstadoActividad">
         <input v-model="restriction_row.desEstadoActividad" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded "  placeholder="Estado" />
-        <img @click="handleClickEst('option')" src="../assets/images/icons/ic_arrow-down.svg"
+        <img @click="handleClickEst('option')" src="../assets/ic_arrow-down.svg"
           class="absolute top-1/2 -translate-y-1/2 right-2" alt=""
           :class="{ 'rotate-180': isoptionsEst, 'rotate-0': !isoptionsEst }">
         <SelectOption @selected="selOptEstado" :options="getOptionEstados()" :name = "'codEstadoActividad'" v-if="isoptionsEst" />

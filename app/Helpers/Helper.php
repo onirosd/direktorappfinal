@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Helpers;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 use App\Models\conf_colacorreos;
+use App\Jobs\SendEmails;
 use Config;
+use DB;
 
-class HelperMail{
+class Helper{
 
-    public function enviarEmail($datos_enviar, $tipo_plantilla, $motivo, $codUsuarioRegistro ,$correoEnvio)
+    public static function enviarEmail($datos_enviar, $tipo_plantilla, $motivo, $codUsuarioRegistro ,$correoEnvio)
     {
 
         $plantilla  = "";
@@ -25,6 +29,10 @@ class HelperMail{
         $conf_colacorreos->desCorreoEnvio     = $correoEnvio;
         if($conf_colacorreos->save()) $mail   = true;
 
+    }
+
+    public static function provamos (){
+        echo ">>> eentrando";
     }
 
 }

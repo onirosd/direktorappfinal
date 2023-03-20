@@ -56,7 +56,7 @@
               >Estado: </span
             >
             <img
-              src="../../assets/images/icons/edit.svg"
+              src="../../assets/edit.svg"
               @click="openModal({ param: 'editStatus', id: row.codProyecto })"
               alt=""
             />
@@ -90,7 +90,7 @@
           <div class="flex mb-2 justify-between">
             <div class="flex" @click="selectUserFunc({codProyecto:row.codProyecto, index:index}); openModal({ param: 'selectusers'})">
               <img
-                src="../../assets/images/icons/tooltip-person-add-active.svg"
+                src="../../assets/tooltip-person-add-active.svg"
                 class="mr-1"
                 alt=""
               />
@@ -140,6 +140,8 @@
     <EditStatus
       v-if="modalName === 'editStatus'"
       :estadoActual="estadoRestriccion"
+      :header="'Cambiar Estado de Analisis de restricciones'"
+      :paragraphs="''"
       @closeModal="closeModal"
       @editStatusSave="editStatusSave"
     />
@@ -205,10 +207,10 @@ export default {
       confirmPagraphs: [],
       confirmButtons: [],
       headerCols: {
-        analysis: "Análisis de restricciones",
-        data: "Datos",
-        project_name: "Nombre del proyecto",
-        restriction: "Restricciones",
+        analysis: "Restricciones",
+        data: "Estado",
+        project_name: "Proyecto",
+        restriction: "Indicadores",
         equipment: "Equipo",
         action: "Acciones",
       },
@@ -375,11 +377,8 @@ export default {
   mounted: async function(){
 
     await store.dispatch('get_infoPerson');
-    await store.dispatch('get_restrictions').then((response) => {
+    await store.dispatch('get_restrictions').then( (response) => {
 
-      if ( this.$store.state.restriction_rows_real.length == 0){
-           this.handleRedirect('/create_project')
-      }
 
     });
 

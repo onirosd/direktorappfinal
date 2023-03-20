@@ -37,7 +37,7 @@
                                         @change="addPerfilPhoto"
                                     />
       <img
-        src="../../assets/images/icons/tooltip-edit.svg"
+        src="../../assets/tooltip-edit.svg"
         alt=""
         class="ml-6 mr-3 group-hover:content-editActive"
       />

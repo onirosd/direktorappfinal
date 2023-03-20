@@ -4,7 +4,7 @@
       Publicidad
     </span>
     <img
-      src="../../assets/images/icons/ic_arrow-down.svg"
+      src="../../assets/ic_arrow-down.svg"
       alt=""
       @click="handleClick()"
       class="absolute flex transition top-1/2 right-3 -translate-y-1/2 cursor-pointer"

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Validation\Rules\Password;
+use App\Models\ProjectUser;
 
 /**
  * Class AuthController
@@ -30,7 +31,7 @@ class AuthController extends Controller
             'celular'  => 'required|numeric',
             'nombreempresa' => 'required|string',
             'email' => 'required|email|string|unique:users,email',
-            'cargo' => 'required|numeric',
+            // 'cargo' => 'required|numeric',
             'password' => [
                 'required',
                 'confirmed',
@@ -43,29 +44,52 @@ class AuthController extends Controller
             'celular.required'  => ' Campo celular requerido ! ',
             'nombreempresa.required'  => ' Campo empresa requerido ! ',
             'email.required'  => ' Campo email con errores! ',
-            'cargo.required'  => ' Campo cargo con errores! ',
+            'email.unique'  => ' Este Correo ya existe en el sistema ! ',
+            // 'cargo.required'  => ' Campo cargo con errores! ',
+            // 'cargo.numeric'  => 'El campo solo acepta valores numericos ! ',
             'password.required'  => ' Campo cargo con errores! ',
         ]
 
     );
 
-        /** @var \App\Models\User $user */
+    // $validar_email  = Auth::where('email', trim($data['email']))->count();
+    // if ($validar_email > 0) {
+    //     return response([
+    //         'error' => 'Este correo ya esta registrado en el sistema !  '
+    //     ], 422);
+    // }
+
+    try {
+
         $user = User::create([
             'name' => $data['name'],
             'lastname' => $data['lastname'],
             'celular'  => $data['celular'],
             'nombreempresa'  => $data['nombreempresa'],
             'email' => $data['email'],
-            'codCargo' => $data['cargo'],
+            'codCargo' => 3,
             'password' => bcrypt($data['password'])
         ]);
 
         $token = $user->createToken('main')->plainTextToken;
+        $id    = $user['id'];
+        ProjectUser::where('desCorreo', $data['email'])->update(['idIntegrante' =>  $id]);
+
 
         return response([
             'user' => $user,
             'token' => $token
         ]);
+
+    } catch (Throwable $e) {
+        // $enviar["mensaje"]  = $e;
+        return response([
+            'error' => ' Tenemos errores  ::'.$e
+        ], 422);
+
+    }
+
+
     }
 
     public function login(Request $request)

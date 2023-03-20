@@ -13,7 +13,7 @@
             placeholder="Selecciona un frente"
           />
           <img
-            src="../assets/images/icons/ic_arrow-down.svg"
+            src="../assets/ic_arrow-down.svg"
             class="absolute top-1/2 -translate-y-1/2 right-6 sm:right-4 transition cursor-pointer"
             alt=""
             :class="{ 'rotate-180': isOpen, 'rotate-0': !isOpen }"

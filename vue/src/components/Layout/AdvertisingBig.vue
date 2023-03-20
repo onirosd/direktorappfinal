@@ -1,7 +1,7 @@
 <template>
   <div class="relative mb-6" v-if="isOpen">
     <img
-      src="../../assets/images/icons/close.svg"
+      src="../../assets/close.svg"
       class="absolute top-3 sm:top-2 right-3 sm:right-2 cursor-pointer"
       alt=""
       @click="handleClose"

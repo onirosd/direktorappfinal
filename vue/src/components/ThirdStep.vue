@@ -36,7 +36,7 @@
                 *Opción válida para
                 <span class="font-semibold text-[#002B6B]">PREMIUM</span>
               </span>
-              <img src="../assets/images/icons/premium.svg" alt="" />
+              <img src="../assets/premium.svg" alt="" />
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@
         </span>
         <div class="flex cursor-pointer mt-8 mb-8" @click="addReport">
           <img
-            src="../assets/images/icons/tooltip-person-add-active.svg"
+            src="../assets/tooltip-person-add-active.svg"
             class="mr-2"
             alt=""
           />
@@ -212,7 +212,7 @@
                 *Opción válida para
                 <span class="font-semibold text-[#002B6B]">PREMIUM</span>
               </span>
-              <img src="../assets/images/icons/premium.svg" alt="" />
+              <img src="../assets/premium.svg" alt="" />
             </div>
           </div>
         </div>
@@ -337,7 +337,7 @@
         </span>
         <div class="flex cursor-pointer mt-8 mb-8" @click="addReport">
           <img
-            src="../assets/images/icons/tooltip-person-add-active.svg"
+            src="../assets/tooltip-person-add-active.svg"
             class="mr-2"
             alt=""
           />

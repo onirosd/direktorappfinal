@@ -10,7 +10,7 @@
       />
 
       <img
-        src="../assets/images/icons/ic_arrow-down.svg"
+        src="../assets/ic_arrow-down.svg"
         @click="handleClick()"
         :class="status === true ? 'rotate-180' : ''"
         alt=""

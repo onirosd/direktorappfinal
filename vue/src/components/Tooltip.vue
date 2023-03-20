@@ -7,7 +7,7 @@
       @click="handleClick('add')"
     >
       <img
-        src="../assets/images/icons/tooltip-person-add.svg"
+        src="../assets/tooltip-person-add.svg"
         alt=""
         class="ml-6 mr-3 group-hover:content-addActive"
       />
@@ -20,7 +20,7 @@
       @click="handleClick('edit')"
     >
       <img
-        src="../assets/images/icons/tooltip-edit.svg"
+        src="../assets/tooltip-edit.svg"
         alt=""
         class="ml-6 mr-3 group-hover:content-editActive"
       />
@@ -33,7 +33,7 @@
       @click="handleClick('delete')"
     >
       <img
-        src="../assets/images/icons/tooltip-delete.svg"
+        src="../assets/tooltip-delete.svg"
         alt=""
         class="ml-6 mr-3 group-hover:content-deleteActive"
       />

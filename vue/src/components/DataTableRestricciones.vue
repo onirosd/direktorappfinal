@@ -2,7 +2,7 @@
   <div>
 
   <!-- <nav @click="validamosArray"> click aqui para ver </nav> -->
-  <table class="w-full" id="tbldownload">
+  <table class="w-full tbldownload">
     <thead class="bg-[#DCE4F9]">
       <tr :class="{ 'h-14': tableType === 'scroll' }">
         <th
@@ -11,14 +11,14 @@
         >
           <img
             v-if="ResizeActually > 1000"
-            src="../assets/images/icons/full-screen.svg"
+            src="../assets/full-screen.svg"
             class="cursor-pointer"
             @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions})"
             alt=""
           />
           <img
             v-if="ResizeActually < 1000 || restrictions.length == 0 "
-            src="../assets/images/icons/add-row3.svg"
+            src="../assets/add-row3.svg"
             class="cursor-pointer w-[32px] ml-[4px]"
             @click="$emit('addRowData', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName})"
             alt=""
@@ -60,6 +60,8 @@
             :listIds  = "[frontId, phaseId]"
             :ResizeActually = "ResizeActually"
             :validarUpd = "mvalidarUpd"
+            :frontName = "frontName"
+            :phaseName = "phaseName"
 
             @openModal = "openModal"
             @updateRow = "updateRow"

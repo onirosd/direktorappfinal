@@ -10,7 +10,7 @@
       >
         {{ option.name }}
         <img
-          src="../assets/images/icons/ic_arrow-down.svg"
+          src="../assets/ic_arrow-down.svg"
           class="absolute top-1/2 -translate-y-1/2 right-4"
           alt=""
           v-if="selType === 'tree'"
@@ -30,7 +30,7 @@
                 >
                     {{option.name}}
                     <img
-                            src="../assets/images/icons/ic_arrow-down.svg"
+                            src="../assets/ic_arrow-down.svg"
                             class="absolute top-1/2 -translate-y-1/2 right-4"
                             alt=""
                             :class="{
@@ -61,7 +61,7 @@
                 >
                     {{option.name}}
                     <img
-                            src="../assets/images/icons/ic_arrow-down.svg"
+                            src="../assets/ic_arrow-down.svg"
                             class="absolute top-1/2 -translate-y-1/2 right-4"
                             alt=""
                             :class="{
@@ -77,7 +77,7 @@
                 >
                   Limpiar Filtro
                   <img
-                            src="../assets/images/icons/cleaning.svg"
+                            src="../assets/cleaning.svg"
                             class="absolute top-1/2 -translate-y-1/2 right-4"
                             alt=""
                   />

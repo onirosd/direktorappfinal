@@ -1,5 +1,6 @@
 <template>
  <br><br>
+ <!-- <div @click="valimosver"> validamos</div> -->
     <!-- <div v-if="projectLength == 0 " class="h-full flex justify-center ">
       <div
         v-if="isLoading == false"
@@ -22,7 +23,7 @@
 
         >
           <img
-            src="../../assets/images/icons/computer.svg"
+            src="../../assets/computer.svg"
             class="mb-8 sm:mb-6"
             alt=""
           />
@@ -78,11 +79,11 @@
           class="flex flex-col items-center w-[480px] sm:w-full mt-24 sm:mt-4 h-[312px] sm:h-[292px] p-16 sm:p-10 justify-center shadow-tooltip rounded-2xl bg-white cursor-pointer"
           :class="{ 'z-30': true }"
           @click="createNewProject"
-          v-if="isLoading == true && projectLength == 0"
+          v-if="isLoading == true && projectLength == 0 && status === 4 "
 
         >
             <img
-              src="../../assets/images/icons/computer.svg"
+              src="../../assets/computer.svg"
               class="mb-8 sm:mb-6"
               alt=""
             />
@@ -168,12 +169,22 @@
             @closeModal="closeModal"
             v-model="viewprojectData"
           />
+          <EditStatus
+            v-if="modalName === 'editStatus'"
+            :estadoActual="estadoProjects"
+            :header="'Cambiar Estado del proyecto'"
+            :paragraphs="''"
+            :subtitulo="subtituloModEstado"
+            @closeModal="closeModal"
+            @editStatusSave="editStatusSave"
+          />
         </div>
       </div>
     </div>
 </template>
 
 <script>
+import EditStatus from "../../components/EditStatus.vue";
 import Hint from "../../components/Hint.vue";
 import Confirm from "../../components/Confirm.vue";
 import Success from "../../components/Success.vue";
@@ -218,6 +229,7 @@ export default {
     SecondStep,
     ThirdStep,
     ViewProject,
+    EditStatus,
   },
   setup() {
     const emitter = inject("emitter");
@@ -228,19 +240,30 @@ export default {
       onRegisterNotification,
     };
   },
+  created() {
+    this.subtituloModEstado = `
+
+    <span class="text-sm leading-6 text-activeText font-medium sm:mb-4 ">* Si cierras el proyecto , analisis de restriccion tambien sera cerrado. </span> <br>
+    <span class="text-sm leading-6 text-activeText font-medium sm:mb-4 ">* No se podra modificar el proyecto y solo se podras navegar en vista de lectura. </span>
+
+
+    `;
+  },
   data: function () {
     return {
+      subtituloModEstado: null,
       notify: false,
       notifyMsg: 'This is test message',
       pageloadflag: false,
       viewprojectData: {},
       modalName: "",
+      rowId: '',
       footerFlag: true,
       status: 0,
       headerCols: {
-        project_name: "Nombre del proyecto",
-        data: "Datos",
-        type: "Tipo ",
+        project_name: "Proyecto",
+        data: "Estado",
+        type: "Tipo",
         equipment: "Equipo",
         action: "Acciones",
       },
@@ -269,7 +292,17 @@ export default {
     };
   },
   methods: {
+
+    valimosver() {
+
+      console.log(this.estadoProjects)
+    },
+    handleRedirect(path) {
+      this.$router.push(path);
+    },
+
     cleanInputs: function () {
+
       this.$refs.step1.projectName = "";
       this.$refs.step1.business = "";
       this.$refs.step1.term = "";
@@ -293,10 +326,48 @@ export default {
       this.$refs.step1.searchTextUbigeo = "";
       // this.$refs.step1.placeholder="Seleccionar Ubicación";
     },
+    editStatusSave: function(payload) {
+
+
+        let data  ={
+          codProyecto : this.rowId,
+          state       : payload.nuevoestado
+        }
+
+        console.log(">>>> antes de llegar")
+        console.log(payload)
+        console.log(data)
+
+        store.dispatch('update_project_state', data).then(res => {
+          console.log(">>>> imporesion de lo que devuelve")
+          console.log(res)
+          if(res.data.estado == true){
+
+            this.$store.commit({
+              type  : 'toggleEstadoProject',
+              id    : data.codProyecto,
+              estado: data.state
+            });
+
+            this.successHeader = "¡Estado actualizado con éxito!";
+            this.openModal('success');
+
+          }else{
+            console.log("Tenemos errores al guardar")
+          }
+
+        });
+
+
+
+    },
     openModal: function (param) {
+      console.log(">>> param ")
+      console.log(param)
+      console.log(this.estadoProjects)
       if (typeof param !== "string") {
         this.rowId = param.id;
-        param = param.param;
+        param      = param.param;
       }
       this.modalName = param;
     },
@@ -304,21 +375,21 @@ export default {
       if (this.modalName === "") this.$store.commit("increaseHint");
       else this.modalName = "";
     },
-    confirmStatus: function (payload) {
-      if (!payload.param) {
-        this.$store.commit("copyRestriction");
-        this.successHeader = "¡Proyecto agregado con éxito!";
-        this.openModal("success");
+    // confirmStatus: function (payload) {
+    //   if (!payload.param) {
+    //     this.$store.commit("copyRestriction");
+    //     this.successHeader = "¡Proyecto agregado con éxito!";
+    //     this.openModal("success");
 
-        store.dispatch("get_project");
-        this.$store.commit("copyRestriction");
-        this.status = 4;
-        this.$store.state.createStatus = true;
-      } else {
-        this.closeModal();
-      }
-    },
-    nextStatus: function () {
+    //     store.dispatch("get_project");
+    //     this.$store.commit("copyRestriction");
+    //     this.status = 4;
+    //     this.$store.state.createStatus = true;
+    //   } else {
+    //     this.closeModal();
+    //   }
+    // },
+    nextStatus: async function () {
       // console.log(this.status)
       if (this.createstatus == true) {
         this.status++;
@@ -326,21 +397,27 @@ export default {
         this.$store.state.reportstate = false;
         switch (this.status) {
           case 2:
-            if (
-              (this.$refs.step1.projectName === "" ||
-                this.$refs.step1.business === "" ||
-                this.$refs.step1.projectType === "" ||
-                this.$refs.step1.district === "",
-              this.$refs.step1.country === "" ||
-                this.$refs.step1.address === "")
-            ) {
-              alert("please insert correct data and fill all fields.");
+
+            if (this.$refs.step1.dataVerificamos() > 0) {
+              // alert("please insert correct data and fill all fields.");
               this.status = 1;
+
             }
             break;
           case 3:
-            this.$store.state.projectUsers = this.$refs.step2.users;
-            break;
+            if (!this.$refs.step2.validarMiembros() || this.$refs.step2.validarCampos() > 0){
+
+               this.status = 2;
+               break;
+
+            }else{
+
+              this.$store.state.projectUsers = this.$refs.step2.users;
+              break;
+
+            }
+
+
           case 4:
             const nowdate = new Date();
             const month = nowdate.getMonth() / 1 + 1;
@@ -381,49 +458,52 @@ export default {
               /* code for programming day type */
               programmingDayTypeCode: this.$refs.step3.programmingDayTypeCode,
             };
+
             projectData.userInvData.forEach((user) => {
               projectData.usersum += user.userEmail + ", ";
             });
-            console.log(projectData);
-            store.dispatch("create_project", projectData).then(async res => {
-              if(res.mail){
-                await axiosClient.get(`/sendMails/${sessionStorage.getItem('Id')}`).then(respo => {
-                  if(respo.data.success){
-                    this.notify=true
-                    this.notifyMsg=respo.data.message
-                    setTimeout(function(){
-                      this.notify=false
-                    }, 3000)
-                  }
-                })
-              }
-            }).catch((error) => {
-              console.log(error);
-            });
-            let payload = { date: savedate };
-            store.dispatch("register_notification", payload).then((res) => {
-              let message = this.notificationTypes.find(
-                (m) => m.codNotificacion === res.codNotificacion
-              );
-              message.codNotificacionUsuario = res.codNotificacionUsuario;
-              this.onRegisterNotification(message);
+
+
+            this.pageloadflag = false
+             await store.dispatch("create_project", projectData).then( async res => {
+
+              this.pageloadflag = true
+
             });
 
-            this.cleanInputs();
-            this.$store.state.currentprojectreport = [];
-            store.dispatch("get_project");
-            this.$store.commit("copyRestriction");
-            break;
+            await this.cleanInputs();
+
+
         }
+
       } else {
         this.status++;
         this.$store.state.reportstate = true;
         switch (this.status) {
-          case 1:
-            break;
+          case 2:
+            console.log(">>>> entrandso aqui")
+            if (this.$refs.step1.dataVerificamos() > 0) {
+              // alert("please insert correct data and fill all fields.");
+              this.status = 1;
+
+            }
+          break;
+
           case 3:
-            this.$store.state.projectUsers = this.$refs.step2.users;
-            break;
+
+            if (!this.$refs.step2.validarMiembros() || this.$refs.step2.validarCampos() > 0){
+
+              this.status = 1;
+              break;
+
+            }else{
+
+              this.$store.state.projectUsers = this.$refs.step2.users;
+              break;
+
+            }
+
+
           case 4:
             const nowdate = new Date();
             const month = nowdate.getMonth() / 1 + 1;
@@ -468,17 +548,23 @@ export default {
             newprojectData.userInvData.forEach((user) => {
               newprojectData.usersum += user.userEmail + ", ";
             });
-            console.log(newprojectData);
-            store.dispatch("edit_project", newprojectData);
 
-            this.cleanInputs();
 
-            store.dispatch("get_project");
-            this.$store.commit("copyRestriction");
+            this.pageloadflag = false
+            await store.dispatch("edit_project", newprojectData).then( async res => {
 
-            break;
+              // store.dispatch("get_project");
+              // await this.cleanInputs();
+              // await this.$store.commit("copyRestriction");
+              this.pageloadflag = true
+
+            });
+
+            await this.cleanInputs();
+
         }
       }
+
     },
     editProject: function (payload) {
       /* El edit ocurre luego de que se hayan cargado las tablas de utilitarios*/
@@ -538,14 +624,14 @@ export default {
             this.$refs.step1.projectName = pro.desNombreProyecto;
             this.$refs.step1.business = pro.desEmpresa;
             this.$refs.step1.searchText = pro.nombreEmpresa;
-            this.$refs.step1.term = pro.numPlazo;
-            this.$refs.step1.coveredArea = pro.numAreaTechado;
+            this.$refs.step1.term = String(pro.numPlazo);
+            this.$refs.step1.coveredArea = String(pro.numAreaTechado);
             this.$refs.step1.projectType = pro.codTipoProyecto;
             // this.$refs.step1.district=pro.codUbigeo;
             this.$refs.step1.startDate = dayFechainicio;
-            this.$refs.step1.referenceAmount = pro.numMontoReferencial;
-            this.$refs.step1.area = pro.numAreaTechada;
-            this.$refs.step1.builtArea = pro.numAreaConstruida;
+            this.$refs.step1.referenceAmount = String(pro.numMontoReferencial);
+            this.$refs.step1.area = String(pro.numAreaTechada);
+            this.$refs.step1.builtArea = String(pro.numAreaConstruida);
             this.$refs.step1.country = pro.desPais;
             this.$refs.step1.address = pro.desDireccion;
             this.$refs.step1.ubigeo = pro.codUbigeo;
@@ -564,6 +650,7 @@ export default {
           /* Llenamos la lista de correos */
           prousers.forEach((user) => {
             const temp = {
+              codProyIntegrante : user.codProyIntegrante,
               userEmail: user.desCorreo,
               userRole: user.codRolIntegrante,
               userArea: user.codArea,
@@ -594,8 +681,9 @@ export default {
           }
         });
       });
+      // this.cleanInputs();
 
-      this.cleanInputs();
+
     },
     viewProject: function (payload) {
       const project = this.$store.state.projects[payload - 1];
@@ -670,6 +758,9 @@ export default {
     projectRows: function () {
       return this.$store.state.project_rows;
     },
+    estadoProjects: function() {
+       return this.$store.getters.statusProject(this.rowId);
+    },
     // loadPage: function(){
 
     //    return this.pageloadflag
@@ -684,17 +775,27 @@ export default {
 
   mounted: async function () {
     await store.dispatch("get_infoPerson");
-    await store.dispatch("get_project");
-    await this.$store.commit("copyRestriction");
-    this.status = 4;
-    if (this.$store.state.createStatus === true) {
-      await store.dispatch("get_project");
-      await this.$store.commit("copyRestriction");
-      this.status = 4;
-      // this.pageloadflag = "Se termino de cargar la pagina"
-    }
+    await store.dispatch("get_project").then((response) => {
+      console.log(">>> Entramos al iniciar")
+      console.log(this.$store.state.project_rows)
 
+    });
+
+    // console.log(">>> al iniciar")
+    // console.log(this.$store.state.project_rows)
+    // state.project_rows
+    // await this.$store.commit("copyRestriction");
+    this.status       = 4;
     this.pageloadflag = true;
+
+    // if (this.$store.state.createStatus === true) {
+    //   await store.dispatch("get_project");
+    //   // await this.$store.commit("copyRestriction");
+    //   this.status = 4;
+    //   // this.pageloadflag = "Se termino de cargar la pagina"
+    // }
+
+
 
     // /* Get programming day type list */
     // await store.dispatch("get_programmingdaytypes").then((response) => {
@@ -717,4 +818,5 @@ export default {
     border-radius: 5px;
     z-index: 9
   }
+
 </style>

@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div v-else-if="layout === 'register'">
+    <div v-else-if="layout === 'registro'">
       <RegisterBar />
       <div
         class="flex pt-36 sm:pt-40 sm:pt-10 sm:pb-12 sm:px-8 sm:bg-[#F6F8FE] justify-center"

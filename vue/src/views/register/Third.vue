@@ -6,14 +6,14 @@
         <div class="flex">
           <input type="radio" name="payType" v-model="payType" value="card" class="w-6 mr-2 accent-orange" />
           <span class="text-xl sm:text-base mr-2 sm:mr-0">Tarjeta de crédito o débito</span>
-          <img src="../../assets/images/icons/mark.svg" class="sm:hidden" alt="">
+          <img src="../../assets/mark.svg" class="sm:hidden" alt="">
         </div>
         <span class="text-xl sm:hidden">S/30.00</span>
       </div>
       <div class="flex-col hidden sm:flex">
         <span class="text-sm leading-6">PLAN BÁSICO</span>
         <div class="flex mb-6">
-          <img src="../../assets/images/icons/basic.svg" class="mr-2" alt="">
+          <img src="../../assets/basic.svg" class="mr-2" alt="">
           <span class="text-[#616E8E] flex items-end">Mensual</span>
         </div>
       </div>
@@ -29,12 +29,12 @@
         <div class="flex flex-col">
           <span class="text-sm leading-6 sm:hidden">PLAN BÁSICO</span>
           <div class="flex mb-3 sm:hidden">
-            <img src="../../assets/images/icons/basic.svg" class="mr-1" alt="">
+            <img src="../../assets/basic.svg" class="mr-1" alt="">
             <span class="text-[#616E8E] flex items-end">Mensual</span>
           </div>
-          <img src="../../assets/images/icons/mark.svg" class="hidden self-start sm:flex mb-3" alt="">
+          <img src="../../assets/mark.svg" class="hidden self-start sm:flex mb-3" alt="">
           <div class="flex mb-2 sm:mb-3">
-            <img src="../../assets/images/icons/lock.svg" class="mb-2" alt="">
+            <img src="../../assets/lock.svg" class="mb-2" alt="">
             <span class="">Pago 100% Seguro</span>
           </div>
           <span class="font-medium text-xs leading-5 pb-2 sm:pb-0">Este sitio cumple con los estándares de seguridad de la industria de medio de pago PCI-DSS para proteger su información personal y la de su tarjeta.</span>
@@ -72,7 +72,7 @@ export default {
   name: 'third-register-view',
   methods: {
     pay: function() {
-      this.$router.push('/register/success')
+      this.$router.push('/registro/success')
     }
   },
   computed: {
