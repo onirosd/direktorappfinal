@@ -1,19 +1,20 @@
-APP_NAME="APPDIREKTOR"
+APP_NAME="DIREKTOR"
 APP_ENV=prod
-APP_KEY=base64:VbInhgEh8A7NlOHOVAZ/LcBaj29s9LcnJ9JnpgOpwoY=
+APP_KEY=base64:TqNDL3uDy/aQHFlsK+YZtqJ+YjN4BDgnDg0rbM3yYNA=
 APP_DEBUG=false
-APP_URL=https://appdirektor.azurewebsites.net/apidirektor
+APP_URL=https://api.direktor.com.pe
+CLIENT_SIDE_URL=https://direktor.com.pe
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug
 
 DB_CONNECTION=mysql
-DB_HOST=dbdirektor.mariadb.database.azure.com
+DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=appdb23
-DB_USERNAME=admin1@dbdirektor
-DB_PASSWORD=Fakesoliman$1
+DB_DATABASE=u278888007_direktor1
+DB_USERNAME=u278888007_direktor1
+DB_PASSWORD=Fakesoliman1
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
@@ -29,13 +30,14 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 MAIL_MAILER=smtp
-MAIL_HOST=mailhog
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=null
-MAIL_FROM_NAME="${APP_NAME}"
+MAIL_HOST=smtp.hostinger.com
+MAIL_PORT=465
+MAIL_USERNAME=administrador@direktor.com.pe
+MAIL_PASSWORD=Fakesoliman$1
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS=administrador@direktor.com.pe
+MAIL_NAME_APP = "Direktor"
+MAIL_FROM_NAME="${MAIL_NAME_APP}"
 
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
