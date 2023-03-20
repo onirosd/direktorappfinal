@@ -14,7 +14,7 @@ class Conf_Tipodiaprogramacion extends Model
         'desTipoDiaProgramacion',
         'desNombreCorto'
     ];
-    protected $table = "Conf_Tipodiaprogramacion";
+    protected $table = "conf_tipodiaprogramacion";
 
     public $timestamps = false;
 

@@ -13,7 +13,7 @@ class Proy_RolIntegrante extends Model
         'codRolIntegrante',
         'desRolIntegrante'
     ];
-    protected $table = "Proy_RolIntegrante";
+    protected $table = "proy_rolintegrante";
 
     public $timestamps = false;
 

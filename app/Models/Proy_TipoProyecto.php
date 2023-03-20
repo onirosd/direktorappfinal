@@ -13,7 +13,7 @@ class Proy_TipoProyecto extends Model
         'codTipoProyecto',
         'desTipoProyecto'
     ];
-    protected $table = "Proy_TipoProyecto";
+    protected $table = "proy_tipoproyecto";
 
     public $timestamps = false;
 

@@ -13,7 +13,7 @@ class Proy_AreaIntegrante extends Model
         'codArea',
         'desArea'
     ];
-    protected $table = "Proy_AreaIntegrante";
+    protected $table = "proy_areaintegrante";
 
     public $timestamps = false;
 

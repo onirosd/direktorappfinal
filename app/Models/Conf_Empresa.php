@@ -14,7 +14,7 @@ class Conf_Empresa extends Model
         'des_Empresa',
         'num_Ruc'
     ];
-    protected $table      = "Conf_maestro_empresas";
+    protected $table      = "conf_maestro_empresas";
     protected $primaryKey = 'cod_Empresa';
     public $timestamps    = false;
 

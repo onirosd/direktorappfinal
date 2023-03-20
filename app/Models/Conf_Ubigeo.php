@@ -13,7 +13,7 @@ class Conf_Ubigeo extends Model
         'codUbigeo',
         'desUbigeo'
     ];
-    protected $table = "Conf_Ubigeo";
+    protected $table = "conf_ubigeo";
 
     public $timestamps = false;
 

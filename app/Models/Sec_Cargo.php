@@ -13,7 +13,7 @@ class Sec_Cargo extends Model
         'codCargo',
         'nameCargo'
     ];
-    protected $table = "Sec_Cargo";
+    protected $table = "sec_cargo";
 
     public $timestamps = false;
 

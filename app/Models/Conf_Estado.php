@@ -14,7 +14,7 @@ class Conf_Estado extends Model
         'desEstado',
         'desModulo'
     ];
-    protected $table      = "conf_Estado";
+    protected $table      = "conf_estado";
     // protected $primaryKey = 'codEstado';
     public $timestamps    = false;
 

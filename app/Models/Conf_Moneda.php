@@ -14,7 +14,7 @@ class Conf_Moneda extends Model
         'desMoneda',
         'desSimbolo'
     ];
-    protected $table = "Conf_Moneda";
+    protected $table = "conf_moneda";
 
     public $timestamps = false;
 
