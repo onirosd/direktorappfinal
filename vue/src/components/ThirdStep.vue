@@ -126,7 +126,8 @@
                     :options="[
                       { value: 1, name: 'Diario' },
                       { value: 2, name: 'Interdiario' },
-                      { value: 3, name: 'Quincenal' },
+                      { value: 3, name: 'Semanal' },
+                      { value: 4, name: 'Quincenal' }
                     ]"
                   />
                 </div>
