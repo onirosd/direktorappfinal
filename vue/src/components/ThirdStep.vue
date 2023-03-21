@@ -156,7 +156,8 @@
                   :options="[
                     { value: 1, name: 'Diario' },
                     { value: 2, name: 'Interdiario' },
-                    { value: 3, name: 'Quincenal' },
+                    { value: 3, name: 'Semanal' },
+                    { value: 4, name: 'Quincenal' }
                   ]"
                   :textState="report.massiveStatus"
                 />
@@ -294,7 +295,8 @@
                     :options="[
                       { value: 1, name: 'Diario' },
                       { value: 2, name: 'Interdiario' },
-                      { value: 3, name: 'Quincenal' },
+                      { value: 3, name: 'Semanal' },
+                      { value: 4, name: 'Quincenal' }
                     ]"
                   />
                 </div>
@@ -322,7 +324,8 @@
                   :options="[
                     { value: 1, name: 'Diario' },
                     { value: 2, name: 'Interdiario' },
-                    { value: 3, name: 'Quincenal' },
+                    { value: 3, name: 'Semanal' },
+                    { value: 4, name: 'Quincenal' }
                   ]"
                 />
               </div>
@@ -373,7 +376,7 @@ export default {
       reports: this.$store.state.currentprojectreport,
       TypeFrequency: "",
       reporttext: ["Reporte de análisis de restricciones", "Reporte de avance gráfico"],
-      frequencytext: ["Diairo", "Interdiairo", "Quincenal"],
+      frequencytext: ["Diairo", "Interdiairo", "Semanal", "Quincenal"],
 
       /* lista tipos dia programacion - programming day type list */
       programmingDayTypes: [],
