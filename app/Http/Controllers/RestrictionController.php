@@ -399,6 +399,33 @@ class RestrictionController extends Controller
     }
 
     public function get_data_restricciones(Request $request) {
+
+        $query_integrantes = "
+
+        select
+        ai.*,
+        case
+        when isnull(u.name)
+        then pi2.desCorreo
+        else concat(u.name,' ',u.lastname)
+        end as desProyIntegrante,
+        pi2.codArea
+        from ana_integrantes ai
+        inner join proy_integrantes pi2
+        left  join users u on pi2.desCorreo  = u.email
+        on
+        ai.codProyIntegrante  = pi2 .codProyIntegrante and
+        ai.codProyecto        = pi2.codProyecto
+        where ai.codProyecto = ?
+
+        ";
+        $valores      = array($request['id']);
+        $integrantesAnaRes = DB::select($query_integrantes, $valores);
+        $integrantesAnaRes = array_map(function ($value) {
+            return (array)$value;
+        }, $integrantesAnaRes);
+
+
         $frontdata   = RestrictionFront::where('codProyecto', $request['id'])->get();
         $restriction = Restriction::where('codProyecto', $request['id'])->get();
 
@@ -423,6 +450,7 @@ class RestrictionController extends Controller
                     'listaRestricciones' => [],
                     'hideCols' => [],
                 ];
+
                 $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable", "proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad")
                 ->leftjoin('anares_tiporestricciones', 'anares_actividad.codTipoRestriccion', '=', 'anares_tiporestricciones.codTipoRestricciones')
                 ->leftJoin('proy_integrantes', function($join){
@@ -440,7 +468,16 @@ class RestrictionController extends Controller
                 ->where('anares_actividad.codAnaResFrente','=', $eachdata['codAnaResFrente'])
                 ->orderBy('anares_actividad.numOrden', 'ASC')
                 ->get();
+
                     foreach($Activedata as $data) {
+                        $des_usuarioResponsable = $data['desUsuarioResponsable'];
+                        foreach ($integrantesAnaRes as $integrante) {
+                            if ($integrante['codProyIntegrante'] == $data['idUsuarioResponsable']){
+                                $des_usuarioResponsable  = $integrante['desProyIntegrante'];
+                                break;
+                            }
+                        }
+
                         $restricciones = [
                             'codAnaResActividad' => $data['codAnaResActividad'],
                             'desActividad'       => $data['desActividad'],
@@ -450,7 +487,7 @@ class RestrictionController extends Controller
                             'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaRequerida'])),  //$data['dayFechaRequerida'] == null ? '' : $data['dayFechaRequerida'],
                             'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaConciliada'])),  //$data['dayFechaConciliada'] == null ? '' : $data['dayFechaConciliada'],
                             'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
-                            'desUsuarioResponsable' => $data['desUsuarioResponsable'],
+                            'desUsuarioResponsable' => $des_usuarioResponsable ,
                             'codEstadoActividad' => $data['codEstadoActividad'],
                             'desEstadoActividad' => $data['desEstadoActividad'],
                             'desAreaResponsable' => $data['desArea'],
@@ -469,13 +506,15 @@ class RestrictionController extends Controller
 
         $tipoRestricciones = Ana_TipoRestricciones::All();
         $areaIntegrante    = Proy_AreaIntegrante::all();
-        $integrantesAnaRes = RestrictionMember::select("ana_integrantes.*", "proy_integrantes.desCorreo as desProyIntegrante", "proy_integrantes.codArea")
-        ->leftJoin('proy_integrantes', function($join){
-            $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
-            $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
 
-         })
-         ->where('ana_integrantes.codProyecto', $request['id'])->get();
+        // $integrantesAnaRes = RestrictionMember::select("ana_integrantes.*", "proy_integrantes.desCorreo as desProyIntegrante", "proy_integrantes.codArea")
+        // ->leftJoin('proy_integrantes', function($join){
+        //     $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
+        //     $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
+
+        //  })
+        //  ->where('ana_integrantes.codProyecto', $request['id'])->get();
+
         $datos_estado = Conf_Estado::where('desModulo', 'ANARES')->get();
 
         $enviar['estadoRestriccion'] = $restriction[0]['codEstado'] == 0 ? true : false;
