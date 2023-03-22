@@ -329,7 +329,7 @@
                   ]"
                 />
               </div>
-              <!-- report massive status is true, then display -- end -->
+              <!-- report massive status is true, then dilay -- end -->
             </div>
           </div>
         </div>

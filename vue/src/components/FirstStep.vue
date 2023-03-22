@@ -116,7 +116,7 @@
         <div class="flex">
           <input
             type="text"
-            placeholder="Área techada"
+            placeholder="Área del Terreno"
             v-model="coveredArea"
             @keypress="onlyNumber"
             @focus="limpiarErrores()"
@@ -288,7 +288,7 @@
           <div class="flex h-[52px]">
               <input
                   type="text"
-                  placeholder="Área construída"
+                  placeholder="Área techada"
                   v-model="builtArea"
                   @keypress="onlyNumber"
                   @focus="limpiarErrores()"
@@ -542,7 +542,7 @@ export default {
       }
 
       if (this.coveredArea.trim() == '') {
-        this.errors.coveredArea = 'Ingresa valores correctos en el campo Area Techada';
+        this.errors.coveredArea = 'Ingresa valores correctos en el campo Area del Terreno';
         cant_error++;
       }
 
@@ -574,7 +574,7 @@ export default {
 
 
       if (this.builtArea == '') {
-        this.errors.builtArea = 'Ingrese el area construida';
+        this.errors.builtArea = 'Ingrese el area Techada';
         cant_error++;
       }
 
