@@ -106,7 +106,9 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials, $remember)) {
             return response([
-                'error' => 'Ingrese las credenciales correctas! '
+                'error'   => 'Ingrese las credenciales correctas! ',
+                'message' => 'Ingrese las credenciales correctas! ',
+
             ], 422);
         }
         $user = Auth::user();
@@ -114,7 +116,9 @@ class AuthController extends Controller
 
         return response([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'success' => true,
+            'expiresAt' => 86400000
         ]);
     }
 

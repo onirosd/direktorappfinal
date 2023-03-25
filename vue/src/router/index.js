@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import Login2 from "../views/Login2.vue";
 import Register from "../views/Register.vue";
 // import Prueba2 from "../views/Prueba2.vue";
 import Project from "../views/start/Project.vue";
@@ -11,15 +12,22 @@ import AuthLayout from "../components/core/AuthLayout.vue";
 import DefaultLayout from "../components/core/DefaultLayout.vue";
 // import PageLayout from "../components/Ant_PageComponent.vue";
 import Restrictions from "../views/execution/Restrictions.vue";
-import WhiteProject from "../views/execution/WhiteProject.vue";
+// import WhiteProject from "../views/execution/WhiteProject.vue";
 import AddRestrictions from "../views/execution/AddRestrictions.vue";
 import Graphic from "../views/execution/Graphic.vue";
 import Person from "../views/person/Person.vue";
 import Person_edit from "../views/person/Person_edit.vue";
 import store from "../store";
 
-var path_general = import.meta.env.VITE_WEB_FIN_BASE_URL;
+var path_general = import.meta.env.VITE_WEB_BASE_URL;
 var routes = [
+
+  {
+    path: "/login2",
+    name: "Login2",
+    component: Login2,
+    meta: { layout: 'login2', sidebarOpen: false },
+  },
 
   {
     path: "/auth",
@@ -122,6 +130,7 @@ var routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  base: import.meta.env.VITE_WEB_BASE_URL,
 });
 
 router.beforeEach((to, from, next) => {
