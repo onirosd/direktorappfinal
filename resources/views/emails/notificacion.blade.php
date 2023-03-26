@@ -117,16 +117,16 @@ a[x-apple-data-detectors] {
 
                             <tr style="height:50px">
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">{{$value->Frente}}</td>
-                              {{-- <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">{{$value['Fase']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['Actividad']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['Restriccion']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['Tipo_Restriccion']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['dayFechaRequerida']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['dayFechaConciliada']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['Usuario_Responsable']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['Area_Responsable']}}</td>
-                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value['Usuario_Solicitante']}}</td>
-                           --}}
+                              <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">{{$value->Fase}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->Actividad}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->Restriccion}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->Tipo_Restriccion}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->dayFechaRequerida}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->dayFechaConciliada}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->Usuario_Responsable}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->Area_Responsable}}</td>
+                              <td style="text-align: center; font-family: manrope, arial, sans-serif; font-size: 12px;">{{$value->Usuario_Solicitante}}</td>
+
                         </tr>
 
                             <?php } ?>

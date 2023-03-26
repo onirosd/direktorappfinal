@@ -360,8 +360,6 @@ class RestrictionController extends Controller
                 $datos_enviar['des_link']          = Config::get('global.URL');
                 $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
-                // print_r($datos_enviar);
-
 
              Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
             }
