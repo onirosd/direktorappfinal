@@ -101,7 +101,7 @@ a[x-apple-data-detectors] {
                             <tr style="background-color: #0062ae; height:50px; color: #fff;">
 
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Frente</td>
-                              {{-- <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Fase</td>
+                              <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Fase</td>
 
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Actividad</td>
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Restricción</td>
@@ -111,7 +111,7 @@ a[x-apple-data-detectors] {
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Responsable</td>
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Area Responsable</td>
                               <td style="font-family: manrope, arial, sans-serif; text-align: center; font-size: 14px;">Solicitante</td>
-                           --}}
+
                             </tr>
                             <?php  foreach ($actividades as $key => $value) { ?>
 
