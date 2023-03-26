@@ -23,9 +23,9 @@ class Helper{
 
 
         $conf_colacorreos                     = new conf_colacorreos;
-        $conf_colacorreos->desMensaje         = 'datos enviar';//view($plantilla , $datos_enviar)->render();
+        $conf_colacorreos->desMensaje         = view($plantilla , $datos_enviar)->render();
         $conf_colacorreos->dayFechaRegistro   = date('Y-m-d H:i:s');
-        $conf_colacorreos->desMotivo          = 'Motimo de muestra 001';
+        $conf_colacorreos->desMotivo          = $motivo;
         // "dayFechaEnvio" => date('Y-m-d H:i:s'),
         $conf_colacorreos->codUsuarioRegistro = $codUsuarioRegistro;
         $conf_colacorreos->desCorreoEnvio     = $correoEnvio;
