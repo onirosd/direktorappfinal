@@ -492,6 +492,7 @@ class RestrictionController extends Controller
                             'desEstadoActividad' => $data['desEstadoActividad'],
                             'desAreaResponsable' => $data['desArea'],
                             'numOrden'           => $data['numOrden'],
+                            'flgNoti'            => $data['flgNoti'],
                             'isEnabled'          => false,
                             'isupdate'           => false
                             // 'applicant' => "Lizeth Marzano",

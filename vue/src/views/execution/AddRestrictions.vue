@@ -150,7 +150,8 @@
               'text-[#8A9CC9]': isDisabled,
             }"
           >
-            Enviar Correos
+            Enviar Correos ({{countNotNoti}})
+
           </span>
         </button>
       </div>
@@ -1407,6 +1408,23 @@ export default {
     // rowsCant: function(){
     //   return this.$store.state.whiteproject_rows.length
     // },
+    countNotNoti: function (){
+      let res      = this.$store.state.whiteproject_rows;
+      let contador = 0;
+
+      res.forEach(obj => {
+        obj.listaFase.forEach(fase => {
+          fase.listaRestricciones.forEach(restriccion => {
+            if (restriccion.flgnoti === 0) {
+              contador++;
+            }
+          });
+        });
+      });
+
+      return contador;
+
+    },
     rows: function () {
       let res = this.$store.state.whiteproject_rows;
       this.restrictions = res;
