@@ -1415,7 +1415,9 @@ export default {
       res.forEach(obj => {
         obj.listaFase.forEach(fase => {
           fase.listaRestricciones.forEach(restriccion => {
-            if (restriccion.flgnoti === 0) {
+            console.log(">>>>>>>")
+            console.log(restriccion)
+            if (restriccion.flgNoti === 0) {
               contador++;
             }
           });
