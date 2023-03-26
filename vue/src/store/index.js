@@ -661,6 +661,16 @@ const store = createStore({
 
       })
     },
+
+    push_enviar_notificaciones({commit}){
+      const anaresdata = { id: sessionStorage.getItem('constraintid') }
+      // const anaresdata = 107;
+      return axiosClient.post('push_enviar_notificaciones', anaresdata)
+        .then(res => {
+        //   console.log(res.data);
+        // commit('setAnaResDataMembers', res.data)
+      })
+    },
     get_restriccionesMember({commit}){
       const anaresdata = { id: sessionStorage.getItem('constraintid') }
       // const anaresdata = 107;

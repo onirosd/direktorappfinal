@@ -11,7 +11,7 @@
       <button
         class="h-14 sm:w-full rounded bg-orange text-base leading-4 text-white mb-4"
         :class="{ 'w-48': buttons[1].length > 11, 'px-8': buttons[1].length < 12 }"
-        @click="$emit('confirmStatus', {param: false})"
+        @click="$emit('closeModal', {param: false})"
       >
         {{ buttons[1] }}
       </button>

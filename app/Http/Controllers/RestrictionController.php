@@ -17,6 +17,8 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use Illuminate\Http\Request;
 use DB;
+use Config;
+use Helper; // Important
 
 class RestrictionController extends Controller
 {
@@ -295,6 +297,89 @@ class RestrictionController extends Controller
 
     //     return $enviar;
     // }
+    public function push_enviar_notificaciones (Request $request){
+
+        $enviar             = array();
+        $enviar["flag"]     = 0;
+        $enviar["mensaje"]  = "";
+        $codProyecto        = $request['id'];
+        $query_actividades  = "
+
+
+        select
+        af.desAnaResFrente as Frente ,
+        af2.desAnaResFase as Fase,
+        aa.desActividad as Actividad ,
+        aa.desRestriccion as Restriccion,
+        IFNULL(at2.desTipoRestricciones ,'sin elegir') as Tipo_Restriccion,
+        IFNULL(concat(u.name,' '+u.lastname) , pi2.desCorreo) as Usuario_Responsable,
+        pa.desArea as Area_Responsable,
+        ce.desEstado as Estado_Actividad,
+        concat(u2.name,' ',u2.lastname) as Usuario_Solicitante,
+        aa.dayFechaRequerida,
+        aa.dayFechaConciliada,
+        aa.numOrden
+        from
+        anares_actividad aa
+        inner join anares_frente af on aa.codAnaResFrente  = af.codAnaResFrente
+        inner join anares_fase af2 on aa.codAnaResFase  = af2.codAnaResFase
+        left join anares_tiporestricciones at2 on aa.codTipoRestriccion  = at2.codTipoRestricciones
+        left join proy_integrantes pi2 on aa.idUsuarioResponsable = pi2.codProyIntegrante
+        left join users u on pi2.idIntegrante  = u.id
+        left join proy_areaintegrante pa on pi2.codArea  = pa.codArea
+        left join conf_estado ce on aa.codEstadoActividad  = ce.codEstado and ce.desModulo = 'ANARES'
+        left join users u2 on aa.codUsuarioSolicitante  = u2.id
+        where aa.flgNoti = 0 and aa.codProyecto = ?
+        order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
+
+
+        ";
+
+        // try {
+
+
+            $valores      = array($codProyecto);
+            $actividades  = DB::select($query_actividades, $valores);
+            $integrantes  = RestrictionMember::select("proy_integrantes.desCorreo as correo", "proy_proyecto.desNombreProyecto as proyecto", "proy_integrantes.idIntegrante as idIntegrante")
+            ->Join('proy_proyecto', 'proy_proyecto.codProyecto','=','ana_integrantes.codProyecto')
+            ->leftJoin('proy_integrantes', function($join){
+                $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
+                $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
+
+            })
+            ->where('ana_integrantes.codProyecto', $codProyecto)
+            ->where('proy_integrantes.codEstadoInvitacion', 1)
+            ->get();
+
+            foreach ($integrantes as $key => $value) {
+
+                $datos_enviar = array();
+                $datos_enviar['actividades']       = $actividades;
+                $datos_enviar['des_correo']        = $value['correo'];
+                $datos_enviar['des_proyecto']      = $value['proyecto'];
+                $datos_enviar['des_link']          = Config::get('global.URL');
+                $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
+
+                // print_r($datos_enviar);
+
+
+             Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
+            }
+
+            $enviar["flag"]                   =  1;
+            $enviar["mensaje"]                = "Registros Actualizados !";
+
+
+
+        // } catch (\Throwable $e) {
+        //     $enviar["mensaje"]                = $e;
+        // }
+
+
+        return $enviar;
+
+
+    }
 
     public function upd_restricciones (Request $request){
 
@@ -328,6 +413,7 @@ class RestrictionController extends Controller
                             'codEstadoActividad'     => $value['codEstadoActividad'],
                             'dayFechaRequerida'      => ($fecha == 'null' || $fecha == '') ? null : $fecha,
                             'dayFechaConciliada'     => ($fechac == 'null' || $fechac == '') ? null : $fechac,
+                            'flgNoti'                => 0
                             // 'numOrden'               => $value['numOrden']
                         ]);
 
@@ -349,7 +435,8 @@ class RestrictionController extends Controller
                             'codAnaResFase' => $value['codAnaResFase'],
                             'codAnaResFrente' => $value['codAnaResFrente'],
                             'codUsuarioSolicitante' => $request['userId'],
-                            'numOrden'              => $value['idrestriccion'] + 0.01
+                            'numOrden'              => $value['idrestriccion'] + 0.01,
+                            'flgNoti'               => 0
                         ]);
                         $tiporesultado = "ins";
 

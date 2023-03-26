@@ -17,13 +17,15 @@ class Helper{
         if($tipo_plantilla == 'invitacion'){
 
             $plantilla =  'emails.invitation';
+        }elseif ($tipo_plantilla == 'alerta') {
+            $plantilla =  'emails.notificacion';
         }
 
 
         $conf_colacorreos                     = new conf_colacorreos;
-        $conf_colacorreos->desMensaje         = view($plantilla , $datos_enviar)->render();
+        $conf_colacorreos->desMensaje         = 'datos enviar';//view($plantilla , $datos_enviar)->render();
         $conf_colacorreos->dayFechaRegistro   = date('Y-m-d H:i:s');
-        $conf_colacorreos->desMotivo          = $motivo;
+        $conf_colacorreos->desMotivo          = 'Motimo de muestra 001';
         // "dayFechaEnvio" => date('Y-m-d H:i:s'),
         $conf_colacorreos->codUsuarioRegistro = $codUsuarioRegistro;
         $conf_colacorreos->desCorreoEnvio     = $correoEnvio;

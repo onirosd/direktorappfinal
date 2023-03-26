@@ -136,6 +136,7 @@
           />
         </button>
         <button
+          @click="openModal({ param: 'enviarNoti' })"
           class="w-[110px] sm:w-full h-8 px-4 flex justify-between items-center border-2 rounded"
           :disabled="isDisabled"
           :class="{
@@ -444,15 +445,15 @@
     v-if="modalName === 'uploadExcel'"
     @closeModal="closeModal"
     />
-    <!-- <Confirm
-      :confirmHeader="'Eliminar usuario'"
-      :header="''"
-      :paragraphs="[]"
-      :buttons="['Sí, eliminar', 'No, mantener']"
-      v-if="modalName === 'duplicateRow'"
+    <Confirm
+      :confirmHeader="''"
+      :header="'Enviar Notificaciones'"
+      :paragraphs="['Se enviaran '+countNotNoti+' notificaciones correspondientes a cambios o nuevas inserciones.'] "
+      :buttons="['Sí, Enviar', 'No, Cancelar']"
+      v-if="modalName === 'enviarNoti' && countNotNoti > '0'"
       @closeModal="closeModal"
-      @confirmStatus="duplicateRow"
-    /> -->
+      @confirmStatus="enviarNotificaciones"
+    />
   </div>
 </template>
 
@@ -472,7 +473,7 @@ import ToggleColumn from "../../components/ToggleColumn.vue";
 import AddRow from "../../components/AddRow.vue";
 import DeleteRow from "../../components/DeleteRow.vue";
 import UploadExcel from "../../components/UploadExcel.vue";
-// import Confirm from "../../components/Confirm.vue";
+import Confirm from "../../components/Confirm.vue";
 // import DownloadReport from "../../components/DownloadReport.vue";
 import SelectOption from "../../components/SelectOption.vue";
 import DeleteFront from "../../components/DeleteFront.vue";
@@ -494,7 +495,7 @@ export default {
     DeleteRow,
     DeleteFront,
     UploadExcel,
-    // Confirm,
+    Confirm,
     // ScrollTableRow,
     // RestrictionPerson,
 
@@ -507,6 +508,7 @@ export default {
   },
   data: function () {
     return {
+      // mensajeNotificaciones: 'Se enviaran '+this.countNotNoti+' Notificaciones',
       sizeActually: 0,
 
       FilterActiveFlag: false,
@@ -788,7 +790,18 @@ export default {
             typeof param.exercise !== "undefined" ? param.exercise : "";
 
           param = param.param;
-          this.modalName = param;
+          if ((param == 'enviarNoti')){
+
+            this.modalName = this.countNotNoti > '0' ?  param : '';
+
+          }else{
+
+            this.modalName = param
+
+          }
+
+
+
         } else {
           this.duplicateRow(param);
         }
@@ -802,8 +815,25 @@ export default {
 
       }
 
+      console.log(">>>>> mira mira")
+
       this.modalName = "";
       this.personalizeOpen = false;
+    },
+
+    enviarNotificaciones: function (payload) {
+
+      let point = this;
+      store.dispatch("push_enviar_notificaciones", payload).then((response) => {
+
+         console.log(response)
+        // point.closeModal();
+        // point.setTimeifUpd(600, " Notificaciones enviadas con exito !. ");
+
+      });
+
+
+
     },
 
     deleteFront: function (payload) {
@@ -984,6 +1014,13 @@ export default {
                 ]["listaRestricciones"][enviar[i].idrestriccion][
                   "desActividad"
                 ] = enviar[i]["desActividad"];
+
+                this.restrictions[enviar[i].idfrente]["listaFase"][
+                  enviar[i].idfase
+                ]["listaRestricciones"][enviar[i].idrestriccion][
+                  "flgNoti"
+                ] = 0;
+
                 this.restrictions[enviar[i].idfrente]["listaFase"][
                   enviar[i].idfase
                 ]["listaRestricciones"][enviar[i].idrestriccion][
@@ -1424,7 +1461,7 @@ export default {
         });
       });
 
-      return contador;
+      return contador.toString();
 
     },
     rows: function () {

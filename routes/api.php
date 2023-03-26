@@ -94,3 +94,4 @@ Route::post('/update_projects_without_approve', [ProjectController::class, 'upda
 
 
 Route::post('/get_search_person', [AuthController::class, 'get_search_person']);
+Route::post('/push_enviar_notificaciones', [RestrictionController::class, 'push_enviar_notificaciones']);
