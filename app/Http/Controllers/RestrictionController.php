@@ -369,8 +369,8 @@ class RestrictionController extends Controller
             /* Actualizamos el estado de la notificacion */
             $arr_ids = array();
             foreach ($actividades as $key0 => $value0) {
-                $arr_ids[] = $value0['codAnaResActividad'];
-                $resultado = PhaseActividad::where('codAnaResActividad',(int)$value0['codAnaResActividad'])->update([
+                $arr_ids[] = $value0->codAnaResActividad;
+                $resultado = PhaseActividad::where('codAnaResActividad',(int)$value0->codAnaResActividad)->update([
 
                     'flgNoti' => 1,
 
