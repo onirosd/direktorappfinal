@@ -26,28 +26,36 @@ class RestrictionController extends Controller
         $data = array();
         $query_restriction = "
 
-            select
-            ar.*,
-            pp.desNombreProyecto as desnombreproyecto,
-            0 as isInvitado
-            from anares_analisisrestricciones  ar
-            inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
-            where
-            pp.id  =  ?
+        select
+        ad.codProyecto , ad.codEstado , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
+        ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , max(ad.isInvitado) as isInvitado
 
-            union all
+        from (
+        select
+        ar.*,
+        pp.desNombreProyecto as desnombreproyecto,
+        0 as isInvitado
+        from anares_analisisrestricciones  ar
+        inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
+        where
+        pp.id  =  ?
 
-            select
-            ar.*,
-            pp.desNombreProyecto as desnombreproyecto,
-            1 as isInvitado
-            from anares_analisisrestricciones  ar
-            inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
-            inner join proy_integrantes pi2 on ar.codProyecto  = pi2.codProyecto
-            inner join ana_integrantes ai on pi2.codProyIntegrante  = ai.codProyIntegrante
-            where
-            pi2.codEstadoInvitacion  = 1 and
-            pi2.idIntegrante  = ?
+        union all
+
+        select
+        ar.*,
+        pp.desNombreProyecto as desnombreproyecto,
+        1 as isInvitado
+        from anares_analisisrestricciones  ar
+        inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
+        inner join proy_integrantes pi2 on ar.codProyecto  = pi2.codProyecto
+        inner join ana_integrantes ai on pi2.codProyIntegrante  = ai.codProyIntegrante
+        where
+        pi2.codEstadoInvitacion  = 1 and
+        pi2.idIntegrante  = ?
+        ) ad
+        group BY ad.codProyecto , ad.codEstado , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
+        ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto
 
 
         ";

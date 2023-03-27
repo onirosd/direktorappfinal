@@ -259,7 +259,14 @@ class ProjectController extends Controller
         // ->get();
         $query = "
 
-            select pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado
+            select
+            ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
+            ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
+            ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
+            ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , max(ad.isInvitado) as isInvitado
+
+            from (
+            select  pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado
             from proy_proyecto pp
             inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
             inner join conf_ubigeo cu on pp.codUbigeo  = cu.codUbigeo
@@ -273,6 +280,13 @@ class ProjectController extends Controller
             inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
             inner join conf_ubigeo cu on pp.codUbigeo  = cu.codUbigeo
             where pi2.idIntegrante   = ? and pi2.codEstadoInvitacion  = ?
+            ) ad
+            group by
+            ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
+            ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
+            ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
+            ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo
+
 
         ";
 
