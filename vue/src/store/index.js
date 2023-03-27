@@ -1031,6 +1031,22 @@ const store = createStore({
       if (ind !== '')
         rows.splice(ind, 1);
     },
+    updNotificaciones(state, payload) {
+
+      state.whiteproject_rows.forEach(obj => {
+        obj.listaFase.forEach(fase => {
+          fase.listaRestricciones.forEach(restriccion => {
+            // console.log(">>>>>>>")
+            // console.log(restriccion)
+            if (restriccion.flgNoti === 0) {
+              // contador++;
+              restriccion.flgNoti = 1;
+            }
+          });
+        });
+      });
+
+    },
     duplicateScrollTableRow(state, payload) {
       console.log("<>>> entramos ")
       console.log(payload)
@@ -1241,7 +1257,7 @@ const store = createStore({
     // },
     setNotification(state, ResData) {
       state.notifications = ResData;
-  }
+    }
 
   },
   modules: {},

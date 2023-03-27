@@ -825,10 +825,26 @@ export default {
 
       let point = this;
       store.dispatch("push_enviar_notificaciones", payload).then((response) => {
+        let mensaje = "";
+        if (response.data.flag == 1) {
 
-         console.log(response)
-        // point.closeModal();
-        // point.setTimeifUpd(600, " Notificaciones enviadas con exito !. ");
+          point.$store.commit({
+            type: "updNotificaciones",
+            ...payload,
+          });
+
+          console.log(response.data.idsupd);
+          mensaje = "Se enviaron las notificaciones !! ";
+
+        }else{
+
+          mensaje = "Tenemos errores al eliminar";
+
+
+        }
+
+         point.setTimeifUpd(600, mensaje);
+         point.closeModal();
 
       });
 

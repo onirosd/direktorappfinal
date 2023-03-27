@@ -307,6 +307,7 @@ class RestrictionController extends Controller
 
 
         select
+        aa.codAnaResActividad,
         af.desAnaResFrente as Frente ,
         af2.desAnaResFase as Fase,
         aa.desActividad as Actividad ,
@@ -335,7 +336,7 @@ class RestrictionController extends Controller
 
         ";
 
-        // try {
+        try {
 
 
             $valores      = array($codProyecto);
@@ -351,6 +352,8 @@ class RestrictionController extends Controller
             ->where('proy_integrantes.codEstadoInvitacion', 1)
             ->get();
 
+            /* Enviamos los correos de notificación */
+
             foreach ($integrantes as $key => $value) {
 
                 $datos_enviar = array();
@@ -360,18 +363,33 @@ class RestrictionController extends Controller
                 $datos_enviar['des_link']          = Config::get('global.URL');
                 $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
+                Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
+            }
 
-             Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
+            /* Actualizamos el estado de la notificacion */
+            $arr_ids = array();
+            foreach ($actividades as $key0 => $value0) {
+                $arr_ids[] = $value0['codAnaResActividad'];
+                $resultado = PhaseActividad::where('codAnaResActividad',(int)$value0['codAnaResActividad'])->update([
+
+                    'flgNoti' => 1,
+
+                ]);
+
+
             }
 
             $enviar["flag"]                   =  1;
             $enviar["mensaje"]                = "Registros Actualizados !";
+            $enviar["idsupd"]                 = $arr_ids;
 
 
 
-        // } catch (\Throwable $e) {
-        //     $enviar["mensaje"]                = $e;
-        // }
+
+
+        } catch (\Throwable $e) {
+            $enviar["mensaje"]                = $e;
+        }
 
 
         return $enviar;
