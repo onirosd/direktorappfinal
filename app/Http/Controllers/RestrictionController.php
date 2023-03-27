@@ -336,7 +336,7 @@ class RestrictionController extends Controller
 
         ";
 
-        try {
+        // try {
 
 
             $valores      = array($codProyecto);
@@ -387,9 +387,9 @@ class RestrictionController extends Controller
 
 
 
-        } catch (\Throwable $e) {
-            $enviar["mensaje"]                = $e;
-        }
+        // } catch (\Throwable $e) {
+        //     $enviar["mensaje"]                = $e;
+        // }
 
 
         return $enviar;
