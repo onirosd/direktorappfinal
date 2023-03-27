@@ -826,6 +826,8 @@ export default {
       let point = this;
       store.dispatch("push_enviar_notificaciones", payload).then((response) => {
         let mensaje = "";
+        // let data = [];
+
         if (response.data.flag == 1) {
 
           point.$store.commit({
@@ -833,7 +835,8 @@ export default {
             ...payload,
           });
 
-          console.log(response.data.idsupd);
+
+          console.log(response.data);
           mensaje = "Se enviaron las notificaciones !! ";
 
         }else{
