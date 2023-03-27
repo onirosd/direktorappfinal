@@ -26,8 +26,9 @@ class RestrictionController extends Controller
         $data = array();
         $query_restriction = "
 
+
         select
-        ad.codProyecto , ad.codEstado , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
+        ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
         ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , max(ad.isInvitado) as isInvitado
 
         from (
@@ -54,8 +55,9 @@ class RestrictionController extends Controller
         pi2.codEstadoInvitacion  = 1 and
         pi2.idIntegrante  = ?
         ) ad
-        group BY ad.codProyecto , ad.codEstado , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
+        group BY ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
         ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto
+
 
 
         ";
