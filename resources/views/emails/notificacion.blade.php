@@ -67,9 +67,16 @@ a[x-apple-data-detectors] {
                     <tr>
                       <td align="left" valign="top" style="padding:0;Margin:0;">
 
-                        <a href="{{$des_link}}">
-                          <img src="{{$des_direktor_icon}}" alt="Confirm email" style="width: 200px; display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;border-radius:0px" title="Confirm email">
-                        </a>
+                        <td align="left" class="esd-block-image" style="font-size: 0px;">
+                          <a target="_blank" href="{{$des_link}}">
+                            <img src="{{$des_direktor_icon}}" alt="Confirm email" style="display: block;" title="Confirm email" width="150">
+                          </a>
+                          <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#2D3142;font-size:16px ;margin-left:30px;cursor: pointer;"><a target="_blank" href="{{$des_link}}"  style="text-decoration: none;">Ir a Direktor </a></p>
+                        </td>
+
+                        <!-- <a href="{{$des_link}}">
+                          <img src="https://direktor.com.pe/assets/isotipoD.png" alt="Confirm email" style="width: 200px; display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;border-radius:0px" title="Confirm email">
+                        </a> -->
                       </td>
                         <td align="left" style="padding:20px;Margin:0;width:520px">
 
@@ -190,4 +197,3 @@ a[x-apple-data-detectors] {
   </div>
  </body>
 </html>
-

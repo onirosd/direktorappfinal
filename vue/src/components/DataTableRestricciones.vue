@@ -9,15 +9,26 @@
           v-if="tableType === 'scroll'"
           class="px-4 py-3 rounded-tl-[7px] w-24 absolute left-0 bg-[#DCE4F9] h-14 flex"
         >
+        <span>
+
+        </span>
+
           <img
-            v-if="ResizeActually > 1000"
-            src="../assets/full-screen.svg"
+            v-if="!mfullScreen"
+            src="../assets/maximizar-icon.svg"
             class="cursor-pointer"
             @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions})"
             alt=""
           />
           <img
-            v-if="ResizeActually < 1000 || restrictions.length == 0 "
+            v-if="mfullScreen"
+            src="../assets/minimizar-icon.svg"
+            class="cursor-pointer"
+            @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions})"
+            alt=""
+          />
+          <img
+            v-if="ResizeActually < 800 || restrictions.length == 0 "
             src="../assets/add-row3.svg"
             class="cursor-pointer w-[32px] ml-[4px]"
             @click="$emit('addRowData', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName})"
@@ -91,6 +102,7 @@ export default {
     DataTableRestriccionesRow2
   },
   props: {
+    fullScreen:Number,
     tableType: String,
     cols: Object,
     restrictions: Array,
@@ -105,11 +117,17 @@ export default {
     idxFront:Number,
     idxPhase:Number,
 
-    validarUpd:Boolean,
-    ResizeActually:Number,
+    validarUpd: Boolean,
+    ResizeActually: Number,
+
     // rowsCant:Number
   },
   computed:{
+
+      mfullScreen(){
+        console.log("verificamos el estado :: "+this.fullScreen)
+        return this.fullScreen
+      },
       mhideCols: function() {
         return this.hideCols
       },

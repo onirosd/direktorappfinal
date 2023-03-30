@@ -13,6 +13,7 @@
   <div v-if="isLoading">
     <Breadcrumb
       :paths="['Inicio', 'Análisis de restricciones', nameProyecto]"
+      :urls ="['home', 'restricciones']"
       :settingFlag="true"
     />
     <div
@@ -291,6 +292,7 @@
                     :style="{ 'min-height': `${heigthDiv}px` }"
                   >
                     <DataTableRestricciones
+                      :fullScreen = "fullScreen"
                       :tableType="'scroll'"
                       :cols="headerCols"
                       :restrictions="fase.listaRestricciones"
@@ -367,6 +369,7 @@
             :style="{ 'min-height': `${heigthDiv}px` }"
           >
             <DataTableRestricciones
+              :fullScreen="fullScreen"
               :tableType="'scroll'"
               :cols="headerCols"
               :restrictions="restrictionsu"
@@ -638,12 +641,6 @@ export default {
       document.body.appendChild(link);
       link.click();
    },
-
-
-
-  //  downloadFile() {
-  //     window.location.href = '/ruta/al/archivo.pdf';
-  //  },
    exportDataFromJSON:function (data, newFileName, fileExportType) {
     if (!data) return;
     try {

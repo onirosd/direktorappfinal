@@ -4,8 +4,9 @@
       <li
         v-for="(path, i) in paths"
         :key="i"
-        class="last:text-[#616E8E] flex"
+        class="last:text-[#616E8E] flex cursor-pointer"
         :class="{'sm:hidden': i <= paths.length - 3}"
+        @click="handleRedirect(urls[i])"
       >
         <img
           v-if="i !== 0"
@@ -30,6 +31,13 @@ export default {
   props: {
     paths: Array,
     settingFlag: Boolean,
+    urls:Array
   },
+  methods: {
+    handleRedirect(path) {
+      console.log(path+"redirigiendoooo")
+      this.$router.push(path);
+    },
+  }
 };
 </script>

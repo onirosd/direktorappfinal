@@ -57,6 +57,7 @@
         <ProjectBar :step="status" />
         <Breadcrumb
           :paths="['Inicio', 'Crear Proyecto']"
+          :urls ="['home']"
           :settingFlag="false"
           :class="status === 4 ? 'hidden' : 'm-1'"
         />
@@ -93,7 +94,11 @@
         </div>
 
         <div class="flex flex-col" :class="status === 4 ? '' : 'hidden'" v-if="isLoading == true && projectLength > 0">
-          <Breadcrumb :paths="['Inicio', 'Tus Proyectos']" :settingFlag="false" />
+          <Breadcrumb
+             :paths="['Inicio', 'Tus Proyectos']"
+             :urls ="['home']"
+             :settingFlag="false"
+          />
           <Indicator
             :header="'Tus proyectos'"
             :paragraph="'Acá podrás visualizar tus proyectos creados y los datos más importantes. Podrás editarlo.'"

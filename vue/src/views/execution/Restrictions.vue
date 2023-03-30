@@ -15,7 +15,11 @@
 
   </div>
   <div v-if="isLoading">
-    <Breadcrumb :paths="['Inicio', 'Análisis de restricciones']" :settingFlag="true" />
+    <Breadcrumb
+      :paths="['Inicio', 'Análisis de restricciones']"
+      :urls ="['home']"
+      :settingFlag="true"
+    />
     <Indicator
       :header="'Análisis de restricciones'"
       :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno'"
