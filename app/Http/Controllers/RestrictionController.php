@@ -14,7 +14,8 @@ use App\Models\Proy_AreaIntegrante;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use DB;
@@ -544,7 +545,9 @@ class RestrictionController extends Controller
 
         $frontdata   = RestrictionFront::where('codProyecto', $request['id'])->get();
         $restriction = Restriction::where('codProyecto', $request['id'])->get();
-        $usuario     = Auth::select('users.name','users.lastname')->where('id',$coduser)->get();
+        $usuario     = $project = User::select('users.name','users.lastname')->where('id', $coduser)->get();
+
+        //Auth::select('users.name','users.lastname')->where('id',$coduser)->get();
 
         $enviar      = array();
         $anaresdata  = [];
