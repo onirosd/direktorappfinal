@@ -17,14 +17,14 @@
             v-if="!mfullScreen"
             src="../assets/maximizar-icon.svg"
             class="cursor-pointer"
-            @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions})"
+            @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions, idxFront:idxFront, idxPhase:idxPhase })"
             alt=""
           />
           <img
             v-if="mfullScreen"
             src="../assets/minimizar-icon.svg"
             class="cursor-pointer"
-            @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions})"
+            @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions, idxFront:idxFront, idxPhase:idxPhase})"
             alt=""
           />
           <img

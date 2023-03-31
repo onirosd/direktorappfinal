@@ -350,7 +350,29 @@
             >
           </div>
 
-          <div class="flex items-end mb-6 cursor-pointer">
+          <transition name="fade1">
+                    <div
+                      key="3"
+                      v-if="!showifUpd"
+                      class="flex items-end mb-6 cursor-pointer"
+                    ></div>
+          </transition>
+          <transition name="fade1">
+                    <div
+                      key="1"
+                      v-if="showifUpd"
+                      class="flex items-end mb-6 cursor-pointer text-xs text-[#002B6B]"
+                    >
+                      <img
+                        src="../../assets/upload.svg"
+                        alt=""
+                        class="mr-1"
+                      />
+                      {{ showifUpdMsg }}
+                    </div>
+            </transition>
+
+          <!-- <div class="flex items-end mb-6 cursor-pointer">
             <img
               src="../../assets/upload.svg"
               alt=""
@@ -358,7 +380,7 @@
             />
 
             <span class="text-xs text-[#002B6B]"> Registros Actualizados</span>
-          </div>
+          </div> -->
         </div>
         <div
           id="filterSection"
@@ -378,19 +400,21 @@
               :phaseId="phaseId"
               :frontName="frontName"
               :phaseName="phaseName"
+              :ResizeActually="sizeActually"
               class="table-fixed"
               @fullScreen="toggleFullScreen"
               @addRowModal="addRowModal"
               :statusRestriction="statusRestriction"
               :statusDraggable="statusDraggable"
-              :idxFront="index1"
-              :idxPhase="index2"
+              :idxFront="idxFront_pivot"
+              :idxPhase="idxPhase_pivot"
               :validarUpd="validarUpd"
               @updateRow="updateRow"
               @RegistrarCambioRow="RegistrarCambioRow"
               @movimientoRow="movimientoRow"
               @updalidarUpd="updalidarUpd"
               @openModal="openModal"
+              @addRowData="addRowData"
             >
               <!-- <template #default="{ tr, id }">
                         <DataTableRestriccionesRow :statusRestriction="statusRestriction"  :listindex="[index1,index2,id]" :restriction_data="tr" :isupdate="tr.isupdate" :frontId="frontId" :phaseId="phaseId" :hideCols="hideCols" @openModal="openModal" @updateRow = "updateRow" @RegistrarCambioRow = "RegistrarCambioRow"   />
@@ -622,6 +646,8 @@ export default {
       ],
       treeOptions: [],
       treeIndex: 0,
+      idxFront_pivot:0,
+      idxPhase_pivot:0
     };
   },
   methods: {
@@ -774,6 +800,11 @@ export default {
       this.phaseName = payload.phaseName;
       this.restrictionsu = payload.restrictions;
       this.fullScreen = !this.fullScreen;
+      this.idxFront_pivot = payload.idxFront;
+      this.idxPhase_pivot = payload.idxPhase;
+
+      console.log(">>>>>> verificamos que restrictions")
+      console.log(payload.restrictions)
     },
     openModal: function (param) {
       // console.log(param)
@@ -1153,6 +1184,10 @@ export default {
     },
 
     RegistrarCambioRow: function (data) {
+
+      console.log(">>> llegamos a este punto en registrarCmabio")
+      // console.log("idfrente :"+data.idfrente+" || idfase :"+data.idfase+" || codActividad : "+datafinal["codAnaResActividad"]+" || isupdate : "+datafinal["isupdate"])
+      console.log(data)
       let idfrente = data.idfrente;
       let idfase = data.idfase;
       let idrestriccion = 0; //data.idrestriccion
@@ -1189,6 +1224,7 @@ export default {
           }
         });
 
+        console.log(">>> llegamos a este punto en registrarCmabio2")
         this.restrictionsUpd.splice(llave, unid);
 
         let dr = datafinal["dayFechaRequerida"];
@@ -1204,6 +1240,8 @@ export default {
           this.restrictions[idfrente]["listaFase"][idfase][
             "listaRestricciones"
           ][idrestriccion]["codAnaResActividad"];
+
+        console.log(">>> llegamos a este punto en registrarCmabio 3")
         let row = {
           idfrente: idfrente,
           idfase: idfase,
