@@ -256,7 +256,8 @@ export default {
     phaseName:String,
 
 
-    ResizeActually:Number
+    ResizeActually:Number,
+    solicitanteActual:String
   },
   data: function () {
     return {

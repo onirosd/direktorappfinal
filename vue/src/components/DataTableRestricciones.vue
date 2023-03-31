@@ -73,7 +73,7 @@
             :validarUpd = "mvalidarUpd"
             :frontName = "frontName"
             :phaseName = "phaseName"
-
+            :solicitanteActual = "msolicitanteActual"
             @openModal = "openModal"
             @updateRow = "updateRow"
             @RegistrarCambioRow = "RegistrarCambioRow"
@@ -119,11 +119,15 @@ export default {
 
     validarUpd: Boolean,
     ResizeActually: Number,
+    solicitanteActual:String
 
     // rowsCant:Number
   },
   computed:{
 
+      msolicitanteActual(){
+        return this.solicitanteActual
+      },
       mfullScreen(){
         console.log("verificamos el estado :: "+this.fullScreen)
         return this.fullScreen

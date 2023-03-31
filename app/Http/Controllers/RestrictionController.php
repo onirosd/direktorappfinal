@@ -14,6 +14,7 @@ use App\Models\Proy_AreaIntegrante;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use DB;
@@ -532,15 +533,18 @@ class RestrictionController extends Controller
         where ai.codProyecto = ?
 
         ";
+        $coduser      = $request['codsuser'];
         $valores      = array($request['id']);
         $integrantesAnaRes = DB::select($query_integrantes, $valores);
         $integrantesAnaRes = array_map(function ($value) {
             return (array)$value;
         }, $integrantesAnaRes);
 
+        $usuarios    =
 
         $frontdata   = RestrictionFront::where('codProyecto', $request['id'])->get();
         $restriction = Restriction::where('codProyecto', $request['id'])->get();
+        $usuario     = Auth::select('users.name','users.lastname')->where('id',$coduser)->get();
 
         $enviar      = array();
         $anaresdata  = [];
@@ -642,6 +646,7 @@ class RestrictionController extends Controller
         $enviar['tipoRestricciones'] = $tipoRestricciones;
         $enviar['restricciones']     = $anaresdata;
         $enviar['columnasOcultas']   = $restriction[0]['desColOcultas'];
+        $enviar['solicitanteActual'] = $usuario[0]['name']." ".$usuario[0]['lastname'];
 
 
 

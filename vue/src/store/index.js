@@ -98,6 +98,7 @@ const store = createStore({
     whiteproject_rows:[],
     anaDataMembers:[],
     anaEstado:[],
+    solicitanteActual:'',
     estadoRestriccion:false,
     createStatus: false,
     cargos:[],
@@ -641,7 +642,8 @@ const store = createStore({
       })
     },
     get_datos_restricciones({commit}){
-      const anaresdata = { id: sessionStorage.getItem('constraintid') }
+      // let id = sessionStorage.getItem('Id');
+      const anaresdata = { id: sessionStorage.getItem('constraintid') , codsuser: sessionStorage.getItem('Id') }
       // const anaresdata = 107;
       return axiosClient.post('get_data_restricciones', anaresdata)
         .then(res => {
@@ -653,6 +655,8 @@ const store = createStore({
         commit('setAnaResDataMembers', res.data.integrantesAnaReS)
         commit('setEstado', res.data.estados)
         commit('setEstadoRestriccion', res.data.estadoRestriccion)
+        commit('setSolicitanteActual', res.data.solicitanteActual)
+
         if (!(res.data.columnasOcultas == null || res.data.columnasOcultas == '')){
 
           commit('setColOcultas', res.data.columnasOcultas)
@@ -1236,6 +1240,9 @@ const store = createStore({
     },
     setEstado(state, ResData) {
       state.anaEstado = ResData
+    },
+    setSolicitanteActual(state, ResData){
+      state.solicitanteActual = ResData;
     },
     setEstadoRestriccion(state, ResData){
       state.estadoRestriccion = ResData

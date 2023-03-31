@@ -292,6 +292,7 @@
                     :style="{ 'min-height': `${heigthDiv}px` }"
                   >
                     <DataTableRestricciones
+                      :solicitanteActual = "solicitanteActual"
                       :fullScreen = "fullScreen"
                       :tableType="'scroll'"
                       :cols="headerCols"
@@ -391,6 +392,7 @@
             :style="{ 'min-height': `${heigthDiv}px` }"
           >
             <DataTableRestricciones
+              :solicitanteActual = "solicitanteActual"
               :fullScreen="fullScreen"
               :tableType="'scroll'"
               :cols="headerCols"
@@ -1126,6 +1128,12 @@ export default {
                   "isEnabled"
                 ] = false;
 
+                this.restrictions[enviar[i].idfrente]["listaFase"][
+                  enviar[i].idfase
+                ]["listaRestricciones"][enviar[i].idrestriccion][
+                  "desUsuarioSolicitante"
+                ] = this.solicitanteActual;
+
                 if (response.data.inserciones.length > 0) {
                   let codAntiguo = 0;
                   let codNuevo = 0;
@@ -1517,6 +1525,9 @@ export default {
 
       return contador.toString();
 
+    },
+    solicitanteActual: function(){
+      return this.$store.state.solicitanteActual;
     },
     rows: function () {
       let res = this.$store.state.whiteproject_rows;
