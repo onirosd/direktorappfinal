@@ -28,9 +28,25 @@ class RestrictionController extends Controller
         $data = array();
         $query_restriction = "
 
+        select fin.*,
+        (
+            select count(1) from anares_actividad aa
+            where
+            (aa.codEstadoActividad  < 3 and aa.dayFechaRequerida < DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
 
+            and aa.codProyecto  = fin.codProyecto
+         ) as indRetrasados,
+         (
+            select count(1) from anares_actividad aa
+            where
+            (aa.codEstadoActividad  < 3 and aa.dayFechaRequerida > DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
+
+            and aa.codProyecto  = fin.codProyecto
+         ) as indNoRetrasados
+
+        from (
         select
-        ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
+        ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion,
         ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , max(ad.isInvitado) as isInvitado
 
         from (
@@ -59,7 +75,7 @@ class RestrictionController extends Controller
         ) ad
         group BY ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
         ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto
-
+        ) fin
 
 
         ";

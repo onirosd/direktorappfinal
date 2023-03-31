@@ -233,9 +233,11 @@
                 <span
                   class="ml-[100px] sm:ml-8 text-base leading-7 text-activeText"
                 >
-                  <!-- No retrasadas: {{ item.notDelayed }}
-                  <span class="sm:hidden">/</span> Retrasadas:
-                  {{ item.delayed }} -->
+
+
+                  No retrasadas: {{get_noretrasados(fase.listaRestricciones)}}
+                  <span class="sm:hidden">/</span> <span style="color:#d50505">Retrasadas:
+                    {{get_retrasados(fase.listaRestricciones)}}</span>
                 </span>
               </div>
 
@@ -653,6 +655,35 @@ export default {
     };
   },
   methods: {
+
+   get_retrasados(datos){
+    let conteo            = 0
+    try {
+
+      const hoy             = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
+      // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
+      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'}) < hoy).length;
+
+    } catch (error) {
+
+    }
+
+    return conteo;
+   },
+   get_noretrasados(datos){
+    let conteo            = 0
+    try {
+
+      const hoy             = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
+      // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
+      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
+
+    } catch (error) {
+
+    }
+
+    return conteo;
+   },
 
    downloadFile() {
       // const nombreArchivo = 'formato.xlsx';
@@ -1438,8 +1469,7 @@ export default {
               ...fase,
               listaRestricciones: fase.listaRestricciones.filter(
                 (restriction) =>
-                  restriction.codEstadoActividad !==
-                    state.anaEstado.find(
+                  restriction.codEstadoActividad !== this.$store.state.anaEstado.find(
                       (estado) => estado.desEstado === "Completado"
                     ).codEstado &&
                   new Date(restriction.dayFechaRequerida) < new Date()
