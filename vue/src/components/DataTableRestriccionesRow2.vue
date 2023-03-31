@@ -417,7 +417,7 @@ export default {
 
         this.restriction_row.desAreaResponsable     = this.restriction_data.desAreaResponsable
         this.restriction_row.numOrden               = this.restriction_data.numOrden
-        this.restriction_row.desSolicitante         = this.restriction_data.desUsuarioSolicitante.toString()
+        this.restriction_row.desSolicitante         = this.restriction_data.desUsuarioSolicitante
 
         this.restriction_row.isupdate               = this.restriction_data.isupdate
 
