@@ -224,7 +224,7 @@
           </td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('applicant') > -1}">
-            <input name="applicant" type="text" value="" readonly class="w-full border px-2 text-xs h-8  rounded"/>
+            <input name="applicant" type="text" :value="restriction_data.desUsuarioSolicitante" readonly class="w-full border px-2 text-xs h-8  rounded"/>
           </td>
         </tr>
 
@@ -416,7 +416,7 @@ export default {
 
         this.restriction_row.desAreaResponsable     = this.restriction_data.desAreaResponsable
         this.restriction_row.numOrden               = this.restriction_data.numOrden
-        this.restriction_row.desSolicitante         = this.restriction_data.desUsuarioSolicitante
+        this.restriction_row.desSolicitante         = this.restriction_data.desUsuarioSolicitante.toString()
 
         this.restriction_row.isupdate               = this.restriction_data.isupdate
 
