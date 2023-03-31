@@ -564,7 +564,7 @@ class RestrictionController extends Controller
                     'hideCols' => [],
                 ];
 
-                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable", "proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name+' '+users.lastname as desUsuarioSolicitante")
+                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable", "proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname")
                 ->leftjoin('anares_tiporestricciones', 'anares_actividad.codTipoRestriccion', '=', 'anares_tiporestricciones.codTipoRestricciones')
                 ->leftJoin('proy_integrantes', function($join){
                     $join->on('proy_integrantes.codProyIntegrante', '=', 'anares_actividad.idUsuarioResponsable');
@@ -604,7 +604,7 @@ class RestrictionController extends Controller
                             'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaConciliada'])),  //$data['dayFechaConciliada'] == null ? '' : $data['dayFechaConciliada'],
                             'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
                             'desUsuarioResponsable' => $des_usuarioResponsable ,
-                            'desUsuarioSolicitante' => $data['desUsuarioSolicitante'],
+                            'desUsuarioSolicitante' => $data['name']." ".$data["lastname"],
                             'codEstadoActividad' => $data['codEstadoActividad'],
                             'desEstadoActividad' => $data['desEstadoActividad'],
                             'desAreaResponsable' => $data['desArea'],
