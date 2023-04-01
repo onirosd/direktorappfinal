@@ -85,7 +85,7 @@
       </button> -->
 
       <div class="mt-5 text-xs border-b border-[#002D74] py-4 text-[#002D74]">
-        <a href="#">Olvidaste tu contraseña ?</a>
+        <a class="cursor-pointer" @click="handleRedirect('recuperar')">Olvidaste tu contraseña ?</a>
       </div>
 
       <div class="mt-3 text-xs flex justify-between items-center text-[#002D74]">
@@ -146,6 +146,11 @@
      };
    },
    methods:{
+    handleRedirect(url){
+
+      this.$router.push({ name: url});
+
+    },
     togglePasswordVisibility() {
       this.isVisible = !this.isVisible;
       this.inputType = this.isVisible ? 'text' : 'password';

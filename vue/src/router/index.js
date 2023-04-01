@@ -43,13 +43,13 @@ var routes = [
     children: [
       {
         path: "/cambiarcreden",
-        name: "Cambiar",
+        name: "cambiarcreden",
         component: PasswordRecover,
         meta: { layout: 'login', sidebarOpen: false },
       },
       {
         path: "/login",
-        name: "Login",
+        name: "login",
         component: Login2,
         meta: { layout: 'login', sidebarOpen: false },
       },
@@ -62,7 +62,7 @@ var routes = [
       {
 
         path: "/recuperar",
-        name: "registro",
+        name: "recuperar",
         component: PasswordForgotten,
         meta: { layout: 'login', sidebarOpen: false },
 
@@ -156,7 +156,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.state.user.token) {
-    next({ name: "Login" });
+    next({ name: "login" });
   } else if (store.state.user.token && to.meta.isGuest) {
     next({ name: "Home" });
   } else {

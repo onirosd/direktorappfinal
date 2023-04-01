@@ -140,7 +140,7 @@
                  this.loading = false;
                  //router.getRoutes()
                  this.$router.push({
-                  name: 'Home'
+                  name: 'login'
                  });
 
                }).catch((err) => {

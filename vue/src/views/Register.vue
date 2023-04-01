@@ -235,7 +235,7 @@ import TInput from "../components/core/TInput.vue";
 import Alert from "../components/core/Alert.vue";
 import NewCompany from '../components/NewCompany.vue'
 export default {
-   name: "Login",
+   name: "Register",
    components: {
     // LockClosedIcon,
     Alert,

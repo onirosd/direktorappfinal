@@ -190,25 +190,7 @@
        this.isVisible = !this.isVisible;
        this.inputType = this.isVisible ? 'text' : 'password';
      },
-     login(ev) {
-             ev.preventDefault();
 
-             this.loading = true;
-             store
-               .dispatch("login", this.user)
-               .then(res => {
-                 this.loading = false;
-                 //router.getRoutes()
-                 this.$router.push({
-                  name: 'Home'
-                 });
-
-               }).catch((err) => {
-                 console.log(err);
-                 this.loading = false;
-                 this.errorMsg = err.response.data.error;
-               });
-     },
 
      submitResetPassword(ev) {
       ev.preventDefault();
@@ -229,7 +211,7 @@
               .dispatch("recoverPassword", enviar)
               .then(res => {
                 console.log(">>>> traemos los resultado ")
-                console.log(res)
+                console.log(res.data.estado)
                 this.loading = false;
 
                 if (res.data.estado){
