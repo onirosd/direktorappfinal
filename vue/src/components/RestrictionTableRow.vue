@@ -19,7 +19,11 @@
     <td>
       <p class="flex flex-col">
         <span>No retrasadas: {{ row.indNoRetrasados }}</span>
-        <span>Retrasadas: {{ row.indRetrasados }}</span>
+        <span v-if="row.indRetrasados == 0">Retrasadas: {{ row.indRetrasados }}</span>
+        <span v-if="row.indRetrasados > 0" style="color: red; font-weight: bold;">Retrasadas: {{ row.indRetrasados }}
+          <img src="../assets/alert.svg" alt="Alert icon" class="inline-block w-4 h-4 ml-2 text-red-500">
+        </span>
+
       </p>
     </td>
     <td>

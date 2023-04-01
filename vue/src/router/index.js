@@ -22,12 +22,12 @@ import store from "../store";
 var path_general = import.meta.env.VITE_WEB_BASE_URL;
 var routes = [
 
-  {
-    path: "/login2",
-    name: "Login2",
-    component: Login2,
-    meta: { layout: 'login2', sidebarOpen: false },
-  },
+  // {
+  //   path: "/login2",
+  //   name: "Login2",
+  //   component: Login2,
+  //   meta: { layout: 'login2', sidebarOpen: false },
+  // },
 
   {
     path: "/auth",
@@ -39,7 +39,7 @@ var routes = [
       {
         path: "/login",
         name: "Login",
-        component: Login,
+        component: Login2,
         meta: { layout: 'login', sidebarOpen: false },
       },
       {
