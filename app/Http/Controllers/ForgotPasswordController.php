@@ -38,7 +38,7 @@ class ForgotPasswordController extends Controller
         //   $datos_enviar['actividades']       = $actividades;
           $datos_enviar['des_correo']        = $request->email;
           $datos_enviar['des_proyecto']      = 'Testeamos';
-          $datos_enviar['token       ']      = $token;
+          $datos_enviar['token']             = $token;
           $datos_enviar['des_link']          = Config::get('global.URL');
           $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
