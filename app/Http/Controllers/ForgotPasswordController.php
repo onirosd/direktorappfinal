@@ -42,7 +42,7 @@ class ForgotPasswordController extends Controller
               'token' => $token,
               'created_at' => Carbon::now()
             ]);
-         print(">>> llegamos has aqiui");
+        //  print(">>> llegamos has aqiui");
 
         //   Mail::send('emails.forgetPassword', ['token' => $token], function($message) use($request){
         //       $message->to($request->email);
