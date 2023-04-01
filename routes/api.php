@@ -3,12 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RestrictionController;
-use App\Http\Controllers\PasswordResetController;
+
 use App\Http\Controllers\UtilsController;
 use App\Http\Controllers\ConfController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +35,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+Route::post('/forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm']);
 
+// Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+
+// Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+// Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
 
 // Route::get('/survey-by-slug/{survey:slug}', [\App\Http\Controllers\SurveyController::class, 'showForGuest']);
 // Route::post('/survey/{survey}/answer', [\App\Http\Controllers\SurveyController::class, 'storeAnswer']);
