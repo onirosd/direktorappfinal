@@ -8,12 +8,14 @@ use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Mail;
 use Illuminate\Support\Str;
 use Hash;
 use DB;
 use Config;
 use Helper; // Important
+
 
 class ForgotPasswordController extends Controller
 {

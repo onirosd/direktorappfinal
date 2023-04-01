@@ -73,8 +73,8 @@
 				 </label>
          <div class="relative">
           <input class="p-2 rounded-xl border w-full"
-            id="password"
-            name="password"
+            id="passwordconfir"
+            name="passwordconfir"
             :type="inputType"
             autocomplete=""
             required=""
@@ -274,7 +274,8 @@
         console.log(">>>>> validamos que retorna de backend")
         console.log(res)
           if (res.data.estado){
-            this.user.token      = token
+            this.user.token      = token;
+            this.user.email      = email;
             this.visibility      = true;
           }
 
