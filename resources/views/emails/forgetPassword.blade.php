@@ -1,4 +1,4 @@
 <h1>Forget Password Email</h1>
 
-You can reset password from bellow link:
-<a href="{{$token}}">Reset Password</a>
+Tu puedes cambiar de contraseña con este link:
+<a href="{{$des_link}}/?token={{$token}}">Cambia tu contraseña</a>

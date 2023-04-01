@@ -385,6 +385,15 @@ const store = createStore({
           return data;
         })
     },
+    recoverPasswordSolicitude({commit}, user) {
+      return axiosClient.post('/recuperar_credenciales_solicitud', user)
+    },
+    recoverPasswordValidate({commit}, user) {
+      return axiosClient.post('/recuperar_credenciales_validar', user)
+    },
+    recoverPassword({commit}, user) {
+      return axiosClient.post('/recuperar_credenciales', user)
+    },
     create_project({commit}, projectData) {
       projectData.id = sessionStorage.getItem('Id');
       return axiosClient.post('/create_project', projectData)

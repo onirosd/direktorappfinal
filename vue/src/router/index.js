@@ -17,6 +17,11 @@ import AddRestrictions from "../views/execution/AddRestrictions.vue";
 import Graphic from "../views/execution/Graphic.vue";
 import Person from "../views/person/Person.vue";
 import Person_edit from "../views/person/Person_edit.vue";
+
+import PasswordForgotten from "../views/PasswordForgotten.vue";
+
+import PasswordRecover from "../views/PasswordRecover.vue";
+
 import store from "../store";
 
 var path_general = import.meta.env.VITE_WEB_BASE_URL;
@@ -37,6 +42,12 @@ var routes = [
     meta: {isGuest: true},
     children: [
       {
+        path: "/cambiarcreden",
+        name: "Cambiar",
+        component: PasswordRecover,
+        meta: { layout: 'login', sidebarOpen: false },
+      },
+      {
         path: "/login",
         name: "Login",
         component: Login2,
@@ -48,6 +59,16 @@ var routes = [
         component: Register,
         meta: { layout: 'registro', sidebarOpen: false },
       },
+      {
+
+        path: "/recuperar",
+        name: "registro",
+        component: PasswordForgotten,
+        meta: { layout: 'login', sidebarOpen: false },
+
+      },
+
+
     ],
   },
   {

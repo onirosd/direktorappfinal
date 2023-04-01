@@ -22,6 +22,13 @@ class ForgotPasswordController extends Controller
 
       public function submitForgetPasswordForm(Request $request)
       {
+
+
+          $enviar =  array();
+          $enviar["mensaje"] = "";
+          $enviar["estado"]  = false;
+
+
           $request->validate([
               'email' => 'required|email|exists:users',
           ]);
@@ -39,10 +46,12 @@ class ForgotPasswordController extends Controller
           $datos_enviar['des_correo']        = $request->email;
           $datos_enviar['des_proyecto']      = 'Testeamos';
           $datos_enviar['token']             = $token;
-          $datos_enviar['des_link']          = Config::get('global.URL');
+          $datos_enviar['des_link']          = Config::get('global.URL_CHANGE_CREDEN');
           $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
-        Helper::enviarEmail($datos_enviar, 'recuperar', "Correo de Recuperacion de contraseña ", 0 ,$request->email);
+          Helper::enviarEmail($datos_enviar, 'recuperar', "Correo de Recuperacion de contraseña ", 0 ,$request->email);
+
+          $enviar["estado"]  = true;
 
         //     return "salimos con exito";
         //  print(">>> llegamos has aqiui");
@@ -52,7 +61,7 @@ class ForgotPasswordController extends Controller
         //       $message->subject('Reset Password');
         //   });
 
-          return "terminamos enviando";
+          return $enviar;
 
         //   return back()->with('message', 'We have e-mailed your password reset link!');
       }
