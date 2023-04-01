@@ -15,10 +15,11 @@ class Helper{
 
         $plantilla  = "";
         if($tipo_plantilla == 'invitacion'){
-
             $plantilla =  'emails.invitation';
         }elseif ($tipo_plantilla == 'alerta') {
             $plantilla =  'emails.notificacion';
+        }elseif ($tipo_plantilla == 'recuperar') {
+            $plantilla =  'emails.forgetPassword';
         }
 
 
