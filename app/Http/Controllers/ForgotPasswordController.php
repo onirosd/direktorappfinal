@@ -114,7 +114,7 @@ class ForgotPasswordController extends Controller
           $datos_enviar['des_link']          = Config::get('global.URL_CHANGE_CREDEN');
           $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
-          Helper::enviarEmail($datos_enviar, 'recuperar', "Correo de Recuperacion de contraseña ", 0 ,$request->email);
+          Helper::enviarEmail($datos_enviar, 'recuperar', "Correo de Recuperacion de contraseña :  ".$request->email, 0 ,$request->email);
 
           $enviar["estado"]  = true;
 
