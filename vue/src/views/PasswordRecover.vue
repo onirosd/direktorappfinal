@@ -1,7 +1,7 @@
 <template>
   <section class="bg-gray-50 min-h-screen flex items-center justify-center">
    <!-- login container -->
-   <div class="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
+   <div v-if="visibility" class="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
      <!-- form -->
      <div class="md:w-1/2 px-2 md:px-4">
        <h2 class="font-bold text-2xl text-[#002D74]"> Cambiar Contraseña </h2>
@@ -98,6 +98,8 @@
          Cambiar Contraseña
        </TButtonLoading>
 
+       <input type="hidden" v-model="user.token" />
+
          <!-- <button class="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">Login</button> -->
        </form>
 
@@ -138,6 +140,8 @@
        <img class="rounded-2xl" src="../assets/success-register2.png">
      </div>
    </div>
+
+
  </section>
  </template>
 
@@ -167,6 +171,7 @@
     },
     data() {
       return {
+        visibility: false,
         inputType: 'password',
         isVisible: false,
         loading  : false,
@@ -175,6 +180,7 @@
            email: "",
            password: "",
            password_confirmation:"",
+           token:""
         },
         dragging: false
       };
@@ -213,20 +219,27 @@
       }
 
       let enviar =  {
-          email: this.email,
-          password: this.password,
-          password_confirmation: this.password_confirmation,
-          // token: this.token,
+          email: this.user.email,
+          password: this.user.password,
+          password_confirmation: this.user.password_confirmation,
+          token: this.user.token,
         }
 
       store
               .dispatch("recoverPassword", enviar)
               .then(res => {
+                console.log(">>>> traemos los resultado ")
+                console.log(res)
                 this.loading = false;
-                //router.getRoutes()
-                this.$router.push({
-                 name: 'login'
-                });
+
+                if (res.data.estado){
+
+                  this.$router.push({
+                     name: 'login'
+                  });
+
+                }
+
 
               }).catch((err) => {
                 console.log(err);
@@ -254,10 +267,16 @@
       // Validamos que tenemos una clave valida para hacer cambio de contraseña
       const params = new URLSearchParams(this.$route.query);
       let token    = params.get("token") || "";
-      let enviar       = {token: token}
+      let email    = params.get("email") || "";
+      let enviar   = {token: token, email: email};
 
       await store.dispatch("recoverPasswordValidate", enviar).then(res => {
-          console.log(enviar)
+        console.log(">>>>> validamos que retorna de backend")
+        console.log(res)
+          if (res.data.estado){
+            this.user.token      = token
+            this.visibility      = true;
+          }
 
       });
 

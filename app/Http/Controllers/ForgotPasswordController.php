@@ -19,6 +19,69 @@ class ForgotPasswordController extends Controller
 {
 
 
+    public function submitResetPasswordForm(Request $request)
+      {
+
+        $enviar            = array();
+        $enviar["mensaje"] = "";
+        $enviar['estado']  = false;
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email|exists:users',
+                'password' => 'required|string|min:6|confirmed',
+                'password_confirmation' => 'required'
+            ]);
+
+            $updatePassword = DB::table('password_resets')
+            ->where([
+              'email' => $request->email,
+              'token' => $request->token
+            ])
+            ->first();
+
+            $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+            DB::table('password_resets')->where(['email'=> $request->email])->delete();
+            $enviar['mensaje'] = 'La contraseña se actualizo con exito!';
+
+            if(!$updatePassword){
+                $enviar['mensaje'] = 'Token Invalido !';
+                return $enviar;
+            }
+
+        } catch (ValidationException $exception) {
+
+            $enviar['mensaje'] = $exception->errors();
+        }
+
+        return $enviar;
+
+      }
+
+
+      public function validateTokenPassword(Request $request)
+      {
+        $enviar            = array();
+        $enviar["mensaje"] = "";
+        $enviar['estado']  = false;
+        try {
+            $updatePassword    = DB::table('password_resets')
+                              ->where([
+                                'email' => $request->email,
+                                'token' => $request->token
+                              ])
+                              ->first();
+            if($updatePassword){
+                $enviar['estado'] = true;
+            }
+
+        } catch (\Throwable $e) {
+            $enviar["mensaje"] = $e;
+        }
+
+        return $enviar;
+      }
 
       public function submitForgetPasswordForm(Request $request)
       {

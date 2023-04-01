@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/recuperar_credenciales_solicitud', [ForgotPasswordController::class, 'submitForgetPasswordForm']);
+Route::post('/recuperar_credenciales_validar', [ForgotPasswordController::class, 'validateTokenPassword']);
+Route::post('/recuperar_credenciales', [ForgotPasswordController::class, 'submitResetPasswordForm']);
 
 // Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
 // Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
