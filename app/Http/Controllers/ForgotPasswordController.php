@@ -12,6 +12,7 @@ use Mail;
 use Illuminate\Support\Str;
 use Hash;
 use DB;
+use Config;
 use Helper; // Important
 
 class ForgotPasswordController extends Controller
