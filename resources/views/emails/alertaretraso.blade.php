@@ -81,7 +81,7 @@ a[x-apple-data-detectors] {
                         <td align="left" style="padding:20px;Margin:0;width:520px">
 
                           <h3 style="Margin:0;line-height:34px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:28px;font-style:normal;font-weight:bold;color:#2D3142">
-                            Tenemos Actividad con retraso !! {{$des_proyecto}}<br>
+                            Tenemos Actividades con retrasos en el proyecto {{$des_proyecto}}<br>
 
                           </h3>
 
@@ -101,7 +101,7 @@ a[x-apple-data-detectors] {
                             Hola,&nbsp;{{$des_correo}}</h3>
 
                             <p style=" Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#2D3142;font-size:16px">
-                            Se han hecho modificacion en el analisis de restricciones del proyecto en mención , favor de revisar el detalle de las actualizaciones.
+                            el proyecto tiene estas actividades con retraso , si es su responsable actualizar el estado , caso contrario estar atento a las actualizaciones.
                             </p>
                             <br>
                             <table border="0" bordercolor="#cccccc" align="center" class="es-table">
