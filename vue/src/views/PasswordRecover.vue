@@ -124,7 +124,7 @@
        </div>
 
        <div class="mt-3 text-xs flex justify-between items-center text-[#002D74]">
-         <p>Estas registrado en Direktor ? </p>
+        <p> Quieres registrarte en Direktor ? </p>
          <!-- <button class="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300">Registrar</button> -->
          <router-link
          :to="{ name: 'registro' }"

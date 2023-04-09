@@ -662,7 +662,7 @@ export default {
 
       const hoy             = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
       // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'}) < hoy).length;
+      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada).toLocaleString("es-PE",{ hourCycle: 'h24'}) < hoy).length;
 
     } catch (error) {
 
@@ -676,7 +676,7 @@ export default {
 
       const hoy             = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
       // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
+      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada).toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
 
     } catch (error) {
 

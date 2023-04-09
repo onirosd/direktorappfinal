@@ -31,14 +31,14 @@ class RestrictionController extends Controller
         (
             select count(1) from anares_actividad aa
             where
-            (aa.codEstadoActividad  < 3 and aa.dayFechaRequerida < DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
+            (aa.codEstadoActividad  < 3 and aa.dayFechaConciliada < DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
 
             and aa.codProyecto  = fin.codProyecto
          ) as indRetrasados,
          (
             select count(1) from anares_actividad aa
             where
-            (aa.codEstadoActividad  < 3 and aa.dayFechaRequerida > DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
+            (aa.codEstadoActividad  < 3 and aa.dayFechaConciliada > DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
 
             and aa.codProyecto  = fin.codProyecto
          ) as indNoRetrasados
