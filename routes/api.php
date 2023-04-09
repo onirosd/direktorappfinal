@@ -110,4 +110,4 @@ Route::post('/get_search_person', [AuthController::class, 'get_search_person']);
 Route::post('/push_enviar_notificaciones', [RestrictionController::class, 'push_enviar_notificaciones']);
 
 
-Route::post('/cmd_enviar_notificacionDiaria', [RestrictionController::class, 'cron_enviar_notificacionDiaria']);
+Route::get('/cmd_enviar_notificacionDiaria', [RestrictionController::class, 'cron_enviar_notificacionDiaria']);
