@@ -660,9 +660,10 @@ export default {
     let conteo            = 0
     try {
 
-      const hoy             = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
+      const hoy     = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
+      console.log(">>>> verificamos la fecha de hoy"+hoy)
       // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada).toLocaleString("es-PE",{ hourCycle: 'h24'}) < hoy).length;
+      conteo        = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) < hoy).length;
 
     } catch (error) {
 
@@ -674,9 +675,9 @@ export default {
     let conteo            = 0
     try {
 
-      const hoy             = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
+      const hoy    = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
       // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada).toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
+      conteo       = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
 
     } catch (error) {
 

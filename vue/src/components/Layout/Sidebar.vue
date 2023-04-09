@@ -168,7 +168,7 @@ export default {
     logout: function (param) {
       store.dispatch("logout").then(() => {
         this.$router.push({
-          name: "Login",
+          name: "login",
         });
       });
     },

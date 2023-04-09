@@ -233,7 +233,7 @@ export default {
     logout: function (param) {
       store.dispatch("logout").then(() => {
         router.push({
-          name: "Login",
+          name: "login",
         });
       });
     },
