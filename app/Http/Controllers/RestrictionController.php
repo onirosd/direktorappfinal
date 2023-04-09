@@ -344,7 +344,7 @@ class RestrictionController extends Controller
 
         ";
 
-        $proyectos  = DB::select($query_actividades);
+        $proyectos  = DB::select($query_proyectos_retrasados);
         $proyectos = array_map(function ($value) {
             return (array)$value;
         }, $proyectos);
