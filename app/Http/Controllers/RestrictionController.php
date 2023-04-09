@@ -324,6 +324,96 @@ class RestrictionController extends Controller
 
     //     return $enviar;
     // }
+
+    public function cron_enviar_notificacionDiaria(){
+        $query_proyectos_retrasados = "
+
+
+            select pp.codProyecto
+            from  proy_proyecto pp
+            where
+            pp.codEstado   = 0 and
+            pp.codProyecto = 1 and
+            (
+                        select count(1) from anares_actividad aa
+                        where
+                        (aa.codEstadoActividad  < 3 and aa.dayFechaConciliada < DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
+
+                        and aa.codProyecto  = pp.codProyecto
+            ) > 0
+
+        ";
+
+        $proyectos  = DB::select($query_actividades);
+        $proyectos = array_map(function ($value) {
+            return (array)$value;
+        }, $proyectos);
+
+        foreach($proyectos as $proy) {
+            $codProyecto       = $proy['codProyecto'];
+            $query_actividades = "
+
+                select
+                aa.codAnaResActividad,
+                af.desAnaResFrente as Frente ,
+                af2.desAnaResFase as Fase,
+                aa.desActividad as Actividad ,
+                aa.desRestriccion as Restriccion,
+                IFNULL(at2.desTipoRestricciones ,'sin elegir') as Tipo_Restriccion,
+                IFNULL(concat(u.name,' '+u.lastname) , pi2.desCorreo) as Usuario_Responsable,
+                pa.desArea as Area_Responsable,
+                ce.desEstado as Estado_Actividad,
+                concat(u2.name,' ',u2.lastname) as Usuario_Solicitante,
+                aa.dayFechaRequerida,
+                aa.dayFechaConciliada,
+                aa.numOrden
+                from
+                anares_actividad aa
+                inner join anares_frente af on aa.codAnaResFrente  = af.codAnaResFrente
+                inner join anares_fase af2 on aa.codAnaResFase  = af2.codAnaResFase
+                left join anares_tiporestricciones at2 on aa.codTipoRestriccion  = at2.codTipoRestricciones
+                left join proy_integrantes pi2 on aa.idUsuarioResponsable = pi2.codProyIntegrante
+                left join users u on pi2.idIntegrante  = u.id
+                left join proy_areaintegrante pa on pi2.codArea  = pa.codArea
+                left join conf_estado ce on aa.codEstadoActividad  = ce.codEstado and ce.desModulo = 'ANARES'
+                left join users u2 on aa.codUsuarioSolicitante  = u2.id
+                where aa.codProyecto = ? and
+                (aa.codEstadoActividad  < 3 and aa.dayFechaConciliada < DATE_FORMAT(CONVERT_TZ(NOW(), '+00:00', '-05:00'), '%Y-%m-%d 00:00:00'))
+                order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
+
+            ";
+
+            $valores        = array($codProyecto);
+            $actividades    = DB::select($query_actividades, $valores);
+
+
+            $integrantes  = RestrictionMember::select("proy_integrantes.desCorreo as correo", "proy_proyecto.desNombreProyecto as proyecto", "proy_integrantes.idIntegrante as idIntegrante")
+            ->Join('proy_proyecto', 'proy_proyecto.codProyecto','=','ana_integrantes.codProyecto')
+            ->leftJoin('proy_integrantes', function($join){
+                $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
+                $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
+
+            })
+            ->where('ana_integrantes.codProyecto', $codProyecto)
+            ->where('proy_integrantes.codEstadoInvitacion', 1)
+            ->get();
+
+            foreach ($integrantes as $key => $value) {
+
+                $datos_enviar = array();
+                $datos_enviar['actividades']       = $actividades;
+                $datos_enviar['des_correo']        = $value['correo'];
+                $datos_enviar['des_proyecto']      = $value['proyecto'];
+                $datos_enviar['des_link']          = Config::get('global.URL');
+                $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
+
+                Helper::enviarEmail($datos_enviar, 'retrasos', "Actividades con Retrasos en el proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
+            }
+
+        }
+
+
+    }
     public function push_enviar_notificaciones (Request $request){
 
         $enviar             = array();

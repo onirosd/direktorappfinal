@@ -660,10 +660,20 @@ export default {
     let conteo            = 0
     try {
 
-      const hoy     = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
-      console.log(">>>> verificamos la fecha de hoy"+hoy)
+      const hoy     = new Date();
+      // console.log(">>>> verificamos la fecha de hoy"+hoy)
+      // datos.forEach(item => {
+      //   if ( item.codEstadoActividad < "3"  && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy){
+      //     console.log(">> entramos registros")
+      //     console.log(new Date(item.dayFechaConciliada+ "T00:00:00-05:00"))
+      //     console.log(item.codEstadoActividad)
+      //     console.log(hoy)
+      //     conteo++;
+      //   }
+
+      // });
       // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo        = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) < hoy).length;
+       conteo        = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy).length;
 
     } catch (error) {
 
