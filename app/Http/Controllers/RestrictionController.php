@@ -333,7 +333,6 @@ class RestrictionController extends Controller
             from  proy_proyecto pp
             where
             pp.codEstado   = 0 and
-            pp.codProyecto = 1 and
             (
                         select count(1) from anares_actividad aa
                         where
