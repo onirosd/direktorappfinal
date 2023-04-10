@@ -12,6 +12,7 @@
     "@tailwindcss/forms": "^0.4.0",
     "@vue-hero-icons/solid": "^1.7.2",
     "axios": "^0.24.0",
+    "crypto-js": "^4.1.1",
     "eventemitter3": "^5.0.0",
     "export-from-json": "^1.7.2",
     "file-saver": "^2.0.5",

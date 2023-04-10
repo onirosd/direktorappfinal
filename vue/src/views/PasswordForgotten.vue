@@ -8,28 +8,7 @@
        <p class="text-xs mt-4 text-[#002D74]">Para recuperar tu contraseña ingresa el correo con el que te registraste y si es correcto espera el correo en tu buzon de entrada. </p>
 
        <form  class="flex flex-col gap-4" @submit="login">
-         <Alert v-if="errorMsg">
-           {{ errorMsg }}
-           <span
-             @click="errorMsg = ''"
-             class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]"
-           >
-             <svg
-               xmlns="http://www.w3.org/2000/svg"
-               class="h-6 w-6"
-               fill="none"
-               viewBox="0 0 24 24"
-               stroke="currentColor"
-             >
-               <path
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 stroke-width="2"
-                 d="M6 18L18 6M6 6l12 12"
-               />
-             </svg>
-           </span>
-         </Alert>
+
          <input type="hidden" name="remember" value="true" />
          <input class="p-2 mt-8 rounded-xl border"
            id="email-address"
@@ -51,8 +30,11 @@
          Enviar Solicitud
        </TButtonLoading>
 
+
          <!-- <button class="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300">Login</button> -->
        </form>
+       <br>
+
 
        <!-- <div class="mt-6 grid grid-cols-3 items-center text-gray-400">
          <hr class="border-gray-400">
@@ -109,6 +91,7 @@
   import TButtonLoading from "../components/core/TButtonLoading.vue";
   import { ref } from "vue";
   import store from "../store";
+  import { encrypt } from '../cryptoUtil';
 
   export default {
     name: "PasswordOlvidado",
@@ -122,7 +105,7 @@
     data() {
       return {
         loading  : false,
-        errorMsg : "",
+        errorMsg : "Error al ingresar el password",
         user : {
            email: ""
         },
@@ -144,8 +127,16 @@
                .then(res => {
                  this.loading = false;
                  //router.getRoutes()
+
+                 const data = {
+                  msg: 'Se envio correo de recuperación de contraseña.',
+                 };
+
+                 const datosEncriptados = encrypt(JSON.stringify(data));
+
                  this.$router.push({
-                  name: 'login'
+                  name: 'login',
+                  query: { msg: datosEncriptados }
                  });
 
                }).catch((err) => {

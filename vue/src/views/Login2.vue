@@ -30,6 +30,34 @@
             </svg>
           </span>
         </Alert>
+
+        <transition name="fade" >
+          <div v-if="successMsg" class="flex items-center justify-between py-3 px-5 text-white rounded-xl text-sm bg-green-500" >
+          <div class="text-center">{{ successMsg }}</div>
+
+           <span
+             @click="successMsg = ''"
+             class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]"
+           >
+             <svg
+               xmlns="http://www.w3.org/2000/svg"
+               class="h-6 w-6"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor"
+               @click="successMsg = ''"
+             >
+               <path
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 stroke-width="2"
+                 d="M6 18L18 6M6 6l12 12"
+               />
+             </svg>
+           </span>
+           </div>
+        </transition>
+
         <input type="hidden" name="remember" value="true" />
         <input class="p-2 mt-8 rounded-xl border"
           id="email-address"
@@ -121,6 +149,7 @@
  import Alert from "../components/core/Alert.vue";
  import TButtonLoading from "../components/core/TButtonLoading.vue";
  import { ref } from "vue";
+ import { encrypt, decrypt } from '../cryptoUtil';
  import store from "../store";
 
  export default {
@@ -138,6 +167,7 @@
        isVisible: false,
        loading  : false,
        errorMsg : "",
+       successMsg:"",
        user : {
           email: "",
           password: "",
@@ -178,10 +208,40 @@
    },
    computed: {
 
+   },
+   mounted: async function () {
+
+    const params   = new URLSearchParams(this.$route.query);
+    let mensaje    = params.get("msg") || "";
+
+    if(this.$route.query.msg != undefined){
+      let  datosDesencriptados = decrypt(this.$route.query.msg);
+      let  data = JSON.parse(datosDesencriptados);
+
+      this.successMsg = data.msg;
+      setTimeout(() => {
+        this.successMsg = '';
+
+      }, 3000);
+
+    }
+
    }
+
   }
 
 </script>
 <style>
-  /* Estilos personalizados aquí */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
 </style>

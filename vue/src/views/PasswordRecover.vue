@@ -159,6 +159,7 @@
   import TButtonLoading from "../components/core/TButtonLoading.vue";
   import { ref } from "vue";
   import store from "../store";
+  import { encrypt } from '../cryptoUtil';
 
   export default {
     name: "PasswordRecuperar",
@@ -212,12 +213,24 @@
               .then(res => {
                 console.log(">>>> traemos los resultado ")
                 console.log(res.data.estado)
+                console.log(res)
                 this.loading = false;
 
-                if (res.data.estado){
+                if (res.data.estado == true){
+
+                  console.log(">>> entrando despues de recu")
+
+                  const data = {
+                    msg: 'Se envio correo de recuperación de contraseña!',
+                  };
+
+                  const datosEncriptados = encrypt(JSON.stringify(data));
+
+                  console.log(datosEncriptados)
 
                   this.$router.push({
-                     name: 'login'
+                    name: 'login',
+                    query: { msg: datosEncriptados }
                   });
 
                 }
@@ -229,19 +242,7 @@
                 this.errorMsg = err.response.data.error;
               });
 
-      // try {
-      //   // const response = await axios.post("/api/reset-password", {
-      //   //   email: this.email,
-      //   //   password: this.password,
-      //   //   password_confirmation: this.password_confirmation,
-      //   //   token: this.token,
-      //   // });
-      //   // alert("Contraseña actualizada correctamente. Por favor, inicia sesión.");
-      //   // this.$router.push("/login");
-      // } catch (error) {
-      //   // console.error(error);
-      //   // alert("Error al restablecer la contraseña. Por favor, inténtalo de nuevo.");
-      // }
+
     },
 
     },
