@@ -48,6 +48,7 @@ class AuthController extends Controller
             // 'cargo.required'  => ' Campo cargo con errores! ',
             // 'cargo.numeric'  => 'El campo solo acepta valores numericos ! ',
             'password.required'  => ' Campo cargo con errores! ',
+            'password.confirmed'  => ' La contraseña de confirmacion no coincide ! ',
         ]
 
     );

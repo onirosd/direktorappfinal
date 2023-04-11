@@ -221,7 +221,7 @@
                   console.log(">>> entrando despues de recu")
 
                   const data = {
-                    msg: 'Se envio correo de recuperación de contraseña!',
+                    msg: 'contraseña actualizada !',
                   };
 
                   const datosEncriptados = encrypt(JSON.stringify(data));

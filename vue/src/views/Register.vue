@@ -81,30 +81,31 @@ line-height: normal! important;
       <input type="hidden" name="remember" value="true" />
 
         <TInput
+          :id="'name'"
           name="name"
           v-model="user.name"
           :errors="errors"
+          class="h-[62px]"
           placeholder="Ingresa tu nombre"
-
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+          ></TInput>
 
           <TInput
+          :id="'lastname'"
           name="lastname"
           v-model="user.lastname"
           :errors="errors"
-          placeholder="Ingresa tu apellido"
-
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+          class="h-[62px]"
+          placeholder="Ingresa tu apellido"></TInput>
 
           <TInput
+          :id="'celular'"
           type="text"
           @keypress="onlyNumber"
           name="celular"
           v-model="user.celular"
           :errors="errors"
           placeholder="Numero de Celular"
-
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+          class="h-[62px]"></TInput>
 
 
           <!-- <TInput
@@ -157,12 +158,14 @@ line-height: normal! important;
     <!-- <nav>{{user}}</nav> -->
 
         <TInput
+          :id="'email'"
           type="email"
           name="email"
           v-model="user.email"
           :errors="errors"
+          @input="tecla_apretada('email')"
           placeholder="Correo empresarial"
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+          class="h-[62px]"></TInput>
 
 
 
@@ -183,20 +186,24 @@ line-height: normal! important;
           </select> -->
 
         <TInput
+          :id="'password'"
           type="password"
           name="password"
           v-model="user.password"
           :errors="errors"
           placeholder="Contraseña"
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+
+          class="h-[62px]"></TInput>
 
         <TInput
+          :id="'password_confirmation'"
           type="password"
           name="password_confirmation"
           v-model="user.password_confirmation"
           :errors="errors"
           placeholder="Confirmación contraseña"
-          class="h-[52px] border border-[#8A9CC9] rounded px-4 mb-4"></TInput>
+
+          class="h-[62px]"></TInput>
 
 
 
@@ -234,6 +241,8 @@ import TButtonLoading from "../components/core/TButtonLoading.vue";
 import TInput from "../components/core/TInput.vue";
 import Alert from "../components/core/Alert.vue";
 import NewCompany from '../components/NewCompany.vue'
+import { encrypt } from '../cryptoUtil';
+
 export default {
    name: "Register",
    components: {
@@ -272,6 +281,14 @@ export default {
      };
    },
    methods:{
+
+    tecla_apretada: function(name){
+         console.log(this.errors[name] + ">>> entrrando")
+        if (this.errors[name] != undefined){
+            delete this.errors[name];
+        }
+
+      },
       closeModal: function () {
         // this.searchText = ""
         // this.business   = ""
@@ -384,10 +401,19 @@ export default {
         store
           .dispatch("register", this.user)
           .then(() => {
+
+
+            const data = {
+                  msg: 'Usuario Registrado Correctamente !',
+            };
+
+            const datosEncriptados = encrypt(JSON.stringify(data));
             this.loading = false;
             this.$router.push({
-              name: "Login",
+                  name: 'login',
+                  query: { msg: datosEncriptados }
             });
+
           })
           .catch((error) => {
             this.loading = false;
