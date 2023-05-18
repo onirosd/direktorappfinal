@@ -29,6 +29,7 @@
       <DataTable
         :tableType="'common'"
         :cols="headerCols"
+        :colsref="headerColsRefs"
         :rows="rows"
         class="sm:hidden"
       >
@@ -210,6 +211,14 @@ export default {
       confirmAskingHeader: "",
       confirmPagraphs: [],
       confirmButtons: [],
+      headerColsRefs: {
+        analysis: "Ingresar al administrador de restricciones",
+        data: "Indica el estado actual del proyecto",
+        project_name: "Nombre del proyecto",
+        restriction: "Indicadores relevantes de las restricciones del proyecto",
+        equipment: "Indica el equipo asignado para el Analisis de restricciones",
+        action: "Acciones habilitadas para el usuario",
+      },
       headerCols: {
         analysis: "Restricciones",
         data: "Estado",

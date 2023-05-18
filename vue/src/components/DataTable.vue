@@ -29,6 +29,7 @@
               tableType === 'scroll',
             'first:rounded-tl-[7px]': tableType !== 'scroll',
           }"
+          :title="colsref[key]"
         >
           {{ col }}
         </th>
@@ -52,6 +53,7 @@ export default {
   props: {
     tableType: String,
     cols: Object,
+    colsref: Object,
     rows: Array,
     hideCols: Array,
     frontId: Number,

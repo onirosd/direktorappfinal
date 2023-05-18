@@ -24,7 +24,7 @@
         >Restricciones</span
       >
       <div class="flex sm:flex-col h-[52px] sm:h-auto">
-        <div class="relative mr-4 sm:mr-0 sm:mb-4">
+        <!-- <div class="relative mr-4 sm:mr-0 sm:mb-4">
           <input
             type="text"
             name="personalize"
@@ -42,7 +42,7 @@
             }"
             @click="handleClick('personalize')"
           />
-        </div>
+        </div> -->
         <div class="relative">
           <input
             type="text"
@@ -1480,10 +1480,10 @@ export default {
               ...fase,
               listaRestricciones: fase.listaRestricciones.filter(
                 (restriction) =>
-                  restriction.codEstadoActividad !== this.$store.state.anaEstado.find(
-                      (estado) => estado.desEstado === "Completado"
+                  restriction.codEstadoActividad != this.$store.state.anaEstado.find(
+                      (estado) => estado.desEstado == "Completado"
                     ).codEstado &&
-                  new Date(restriction.dayFechaRequerida) < new Date()
+                  new Date(restriction.dayFechaConciliada) < new Date()
               ),
             };
           }),

@@ -4,6 +4,7 @@
       <button
         class="border-2 border-orange rounded h-8 text-orange text-xs px-4"
         @click="ConstraintAnalysis(row.codProyecto)"
+        ref="Boton para ingresar al administrador de restricciones"
       >
         Ingresar
       </button>
