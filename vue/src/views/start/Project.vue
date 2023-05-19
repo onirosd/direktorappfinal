@@ -109,6 +109,7 @@
             <DataTable
               :tableType="'common'"
               :cols="headerCols"
+              :colsref= "headerColsRef"
               :rows="projectRows"
               class="sm:hidden"
             >
@@ -265,6 +266,15 @@ export default {
       rowId: '',
       footerFlag: true,
       status: 0,
+      headerColsRef: {
+
+        project_name: "Nombre del proyecto",
+        data: "Estado actual del proyecyo",
+        type: "Tippo de proyecto",
+        equipment: "Personas partes del equipo",
+        action: " Acciones que se pueden realizar.",
+
+      },
       headerCols: {
         project_name: "Proyecto",
         data: "Estado",
