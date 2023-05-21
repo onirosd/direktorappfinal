@@ -144,11 +144,11 @@ class ReportController extends Controller
             ->mergeCells('K3:O3');
 
         $sheet->setCellValue('A4', 'CODIGO DEL PROYECTO')
-            ->getStyle('A4:F4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->mergeCells('A4:F4');
         $sheet->setCellValue('G4', 'Area : ')
             ->getStyle('G4:K4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('L4', 'Ubicacion : ')
-            ->getStyle('L4:O4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->mergeCells('L4:O4');
 
         $sheet->setCellValue('A5', '')
             ->mergeCells('A5:F5');
@@ -176,14 +176,14 @@ class ReportController extends Controller
         $sheet->setCellValue('G8', 'Semana: ')
             ->getStyle('G8:G8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('H8', 'Numero Total de nuevas restricciones: ')
-            ->getStyle('H8:O8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->mergeCells('H8:O8');
 
         $sheet->setCellValue('A9', date('d/m/Y'))
             ->getStyle('A9:F9')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('G9', '')
             ->mergeCells('G9:G9');
         $sheet->setCellValue('H9', '% de nuevas retricciones identificadas x semana: ')
-            ->getStyle('H9:O9')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->mergeCells('H9:O9');
 
         $sheet->setCellValue('A10', 'SEMANA')
             ->getStyle('A10:A10')->applyFromArray($styleTitle);
