@@ -276,7 +276,7 @@ class ReportController extends Controller
         // Aplicar los estilos a todas las celdas
         $sheet->getStyle($sheet->calculateWorksheetDimension())->applyFromArray($styleDefault);
         // Configurar las celdas de la fila 10
-        $sheet->getRowDimension(10)->setRowHeight(20);
+        $sheet->getRowDimension(10)->setRowHeight(50);
         $sheet->getStyle('A10:O10')->getAlignment()->setWrapText(true);
         // Crear el archivo Excel
         $writer = new Xlsx($spreadsheet);
