@@ -64,6 +64,8 @@ class ReportController extends Controller
             'font' => [
                 'bold' => true,
                 'color' => ['rgb' => 'FFFFFF'],
+                'name' => 'Calibri',
+                'size' => 10,
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
