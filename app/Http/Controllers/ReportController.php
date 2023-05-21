@@ -266,7 +266,7 @@ class ReportController extends Controller
         }
 
         // Calcular la mitad del tamaño actual
-        $mitadTamanio = $sheet->getDefaultRowDimension()->getRowHeight() / 2;
+        $mitadTamanio = $sheet->getDefaultRowDimension()->getRowHeight() / 4;
 
         // Ajustar la altura de cada fila
         foreach ($sheet->getRowDimensions() as $rowDimension) {
