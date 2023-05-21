@@ -172,7 +172,7 @@ class ReportController extends Controller
             ->mergeCells('H7:O7');
 
         $sheet->setCellValue('A8', 'Fecha :')
-            ->getStyle('A8:F8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->getStyle('A8:F8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->mergeCells('A8:F8');
         $sheet->setCellValue('G8', 'Semana: ')
             ->getStyle('G8:G8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('H8', 'Numero Total de nuevas restricciones: ')
