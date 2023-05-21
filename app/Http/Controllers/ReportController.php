@@ -60,6 +60,13 @@ class ReportController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
                 // Establecer los estilos
+        $styleDefault = [
+            'font' => [
+                'name' => 'Calibri',
+                'size' => 10,
+            ],
+        ];
+                // Establecer los estilos
         $styleTitle = [
             'font' => [
                 'bold' => true,
@@ -257,6 +264,9 @@ class ReportController extends Controller
         foreach (range('A', 'O') as $columna) {
             $sheet->getColumnDimension($columna)->setAutoSize(true);
         }
+
+        // Aplicar los estilos a todas las celdas
+        $sheet->getStyle($sheet->calculateWorksheetDimension())->applyFromArray($styleDefault);
 
         // Crear el archivo Excel
         $writer = new Xlsx($spreadsheet);
