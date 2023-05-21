@@ -126,27 +126,27 @@ class ReportController extends Controller
             ->mergeCells('A1:E1')
             ->setCellValue('F1', 'REGISTRO')
             ->mergeCells('F1:K1')
-            ->setCellValue('K1', 'Revision')
-            ->mergeCells('K1:O1');
+            ->setCellValue('L1', 'Revision')
+            ->mergeCells('L1:O1');
 
         $sheet->setCellValue('A2', '')
             ->mergeCells('A2:E2')
             ->setCellValue('F2', 'GESTION DE PROYECTOS')
             ->mergeCells('F2:K2')
-            ->setCellValue('K2', '')
-            ->mergeCells('K2:O2');
+            ->setCellValue('L2', '')
+            ->mergeCells('L2:O2');
 
         $sheet->setCellValue('A3', '')
             ->mergeCells('A3:E3')
             ->setCellValue('F3', 'ANALISIS DE RESTRICCIONES')
             ->mergeCells('F3:K3')
-            ->setCellValue('K3', 'Pagina 1')
-            ->mergeCells('K3:O3');
+            ->setCellValue('L3', 'Pagina 1')
+            ->mergeCells('L3:O3');
 
         $sheet->setCellValue('A4', 'CODIGO DEL PROYECTO')
             ->mergeCells('A4:F4');
         $sheet->setCellValue('G4', 'Area : ')
-            ->getStyle('G4:K4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->mergeCells('G4:K4');
         $sheet->setCellValue('L4', 'Ubicacion : ')
             ->mergeCells('L4:O4');
 
@@ -156,6 +156,7 @@ class ReportController extends Controller
             ->mergeCells('G5:K5');
         $sheet->setCellValue('L5', '')
             ->mergeCells('L5:O5');
+
 
         $sheet->setCellValue('A6', $qproyecto['nproyecto'])
             ->mergeCells('A6:F6');
