@@ -59,7 +59,6 @@ class ReportController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // Establecer los estilos
         $styleTitle = [
             'font' => [
                 'bold' => true,
@@ -74,7 +73,7 @@ class ReportController extends Controller
             ],
             'borders' => [
                 'outline' => [
-                    'borderStyle' => Border::BORDER_MEDIUM,
+                    'borderStyle' => Border::BORDER_THIN,
                     'color' => ['rgb' => '000000'],
                 ],
             ],
@@ -86,7 +85,7 @@ class ReportController extends Controller
                     'borderStyle' => Border::BORDER_NONE,
                 ],
                 'outline' => [
-                    'borderStyle' => Border::BORDER_MEDIUM,
+                    'borderStyle' => Border::BORDER_THIN,
                     'color' => ['rgb' => '000000'],
                 ],
             ],
@@ -217,8 +216,12 @@ class ReportController extends Controller
         $sheet->setCellValue('O10', 'OBSERVACION')
             ->getStyle('O10:O10')->applyFromArray($styleTitle);
 
+        // // Configurar los bordes
+        // $sheet->getStyle('A4:O5')->applyFromArray($styleVerticalBorders);
+        // $sheet->getStyle('A10:O10')->applyFromArray($styleTitle);
+
         // Configurar los bordes
-        $sheet->getStyle('A4:O5')->applyFromArray($styleVerticalBorders);
+        $sheet->getStyle('A1:O9')->applyFromArray($styleVerticalBorders);
         $sheet->getStyle('A10:O10')->applyFromArray($styleTitle);
 
         // Configurar los valores de las celdas de acuerdo a $qregistros
