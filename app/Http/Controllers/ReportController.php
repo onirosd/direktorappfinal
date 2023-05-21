@@ -59,6 +59,7 @@ class ReportController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+                // Establecer los estilos
         $styleTitle = [
             'font' => [
                 'bold' => true,
@@ -72,6 +73,10 @@ class ReportController extends Controller
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
             ],
             'borders' => [
+                'inside' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
                 'outline' => [
                     'borderStyle' => Border::BORDER_THIN,
                     'color' => ['rgb' => '000000'],
@@ -82,7 +87,8 @@ class ReportController extends Controller
         $styleVerticalBorders = [
             'borders' => [
                 'inside' => [
-                    'borderStyle' => Border::BORDER_NONE,
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
                 ],
                 'outline' => [
                     'borderStyle' => Border::BORDER_THIN,
