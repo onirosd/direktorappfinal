@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class ReportController extends Controller
+class ReporteController extends Controller
 {
     public function generarReporte()
     {
@@ -23,7 +23,7 @@ class ReportController extends Controller
                 'nsubfrente' => 'Subfrente 1',
                 'nresponsableasignacion' => 'Responsable 1',
                 'ndescripcionactividad' => 'Descripción actividad 1',
-                'ndescripcionrestriccion' => 'Descripcion restriccion 1',
+                'ndescripcionrestriccion' => 'Descripción restricción 1',
                 'nfechaidentificacion' => 'Fecha identificación 1',
                 'nfecharequerida' => 'Fecha requerida 1',
                 'nresponsablelevantamiento' => 'Responsable levantamiento 1',
@@ -56,26 +56,17 @@ class ReportController extends Controller
         $hoja->setCellValue('A8', 'Fecha:');
         $hoja->setCellValue('B8', 'Semana:');
         $hoja->setCellValue('C8', 'NUMERO TOTAL DE NUEVAS RESTRICCIONES:');
+        $hoja->setCellValue('G8', '% DE NUEVAS RESTRICCIONES IDENTIFICADAS POR SEMANA:');
         $hoja->setCellValue('A9', date('d/m/Y'));
-        $hoja->setCellValue('C9', '% DE NUEVAS RESTRICCIONES IDENTIFICADAS POR SEMANA:');
-        $hoja->setCellValue('A11', 'SEMANA');
-        $hoja->setCellValue('B11', 'TIPO');
-        $hoja->setCellValue('C11', 'FRENTE');
-        $hoja->setCellValue('D11', 'SUBFRENTE');
-        $hoja->setCellValue('E11', 'RESPONSABLE DE ASIGNACION');
-        $hoja->setCellValue('F11', 'DESCRIPCION DE LA ACTIVIDAD');
-        $hoja->setCellValue('G11', 'DESCRIPCION DE LA RESTRICCION');
-        $hoja->setCellValue('H11', 'FECHA DE IDENTIFICACION');
-        $hoja->setCellValue('I11', 'FECHA REQUERIDA');
-        $hoja->setCellValue('J11', 'RESPONSABLE DE LEVANTAMIENTO');
-        $hoja->setCellValue('K11', 'FECHA REAL DE FIN LEVANTAMIENTO');
-        $hoja->setCellValue('L11', 'ETAPA');
-        $hoja->setCellValue('M11', 'ESTADO');
-        $hoja->setCellValue('N11', 'DELTA EN DIAS');
-        $hoja->setCellValue('O11', 'OBSERVACION');
+        $hoja->setCellValue('C9', 'Valor total');
+        $hoja->setCellValue('G9', 'Valor por semana');
+
+        // Fusionar celdas para ajustar las columnas
+        $hoja->mergeCells('A8:F8');
+        $hoja->mergeCells('G8:G9');
 
         // Llenar los registros en la hoja de cálculo
-        $fila = 12;
+        $fila = 11;
         foreach ($qregistros as $registro) {
             $hoja->setCellValue('A' . $fila, $registro['nsemana']);
             $hoja->setCellValue('B' . $fila, $registro['ntipo']);
@@ -96,10 +87,9 @@ class ReportController extends Controller
         }
 
         // Establecer los estilos de la hoja de cálculo
-        $hoja->getStyle('A1:O11')->getFont()->setBold(true);
-        $hoja->getStyle('A11:O11')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0000FF');
-        $hoja->getStyle('A4:O4')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $hoja->getStyle('A5:D5')->getBorders()->getVertical()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $hoja->getStyle('A1:O9')->getFont()->setBold(true);
+        $hoja->getStyle('A11:O11')->getFont()->getColor()->setRGB('FFFFFF');
+        $hoja->getStyle('A11:O11')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('0000FF');
 
         // Crear el objeto Writer y guardar el archivo
         $writer = new Xlsx($spreadsheet);
