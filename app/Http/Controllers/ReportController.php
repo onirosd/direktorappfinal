@@ -175,12 +175,12 @@ class ReportController extends Controller
         $sheet->setCellValue('A8', 'Fecha :')
             ->mergeCells('A8:F8');
         $sheet->setCellValue('G8', 'Semana: ')
-            ->getStyle('G8:G8');
+            ->getStyle('G8:G8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('H8', 'Numero Total de nuevas restricciones: ')
             ->mergeCells('H8:O8');
 
         $sheet->setCellValue('A9', date('d/m/Y'))
-            ->mergeCells('A9:F9');
+            ->getStyle('A9:F9')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->setCellValue('G9', '')
             ->mergeCells('G9:G9');
         $sheet->setCellValue('H9', '% de nuevas retricciones identificadas x semana: ')
