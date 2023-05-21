@@ -1,6 +1,6 @@
 <template>
 
-        <tr style="cursor: grab" @click="valida">
+        <tr style="cursor: grab" @click="valida" ref="tableRow">
           <input type="hidden" name="frontName" :value="frontName">
           <input type="hidden" name="phaseName" :value="phaseName">
 
@@ -12,47 +12,61 @@
             <TableTooltip v-if="isOpen" @tooltip="openModal" :ResizeActually="ResizeActually" />
           </td>
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('exercise') > -1}">
-            <input
+            <textarea
+                  ref="exercise"
                   name="exercise"
                   v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
-                  @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad})"
+                  @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad});"
                   v-model="restriction_data.desActividad"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
-            />
-            <input
+                  :style="{ height: autoSize1 + 'px' }"
+                  @input="updateHeight1"
+
+
+
+            >
+            </textarea>
+            <textarea
                   v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
                   :disabled="true"
                   v-model="restriction_data.desActividad"
                   name="exercise"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+                  :style="{ height: autoSize1 + 'px' }"
 
-            />
+            >
+            </textarea>
           </td>
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restriction') > -1}">
-            <input
+            <textarea
                   name="restriction"
                   v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
                   @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})"
                   v-model="restriction_data.desRestriccion"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
-            />
+                  :style="{height: autoSize2 + 'px'}"
+                  @input="updateHeight2"
+            >
+            </textarea>
 
-            <input
+            <textarea
                   v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
                   :disabled="true"
                   v-model="restriction_data.desRestriccion"
                   name="restriction"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded "
+                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
+                  :style="{height: autoSize2 + 'px'}"
 
-            />
+            >
+          </textarea>
           </td>
 
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restrictionType') > -1}">
@@ -275,19 +289,23 @@ export default {
       isOpenEst: false,
       isoptionsEst: false,
 
+      autoSize1: 30,
+      autoSize2: 30,
+
     }
   },
   methods:{
-    valida(){
-      // console.log(">>>>>>> validamos data")
-      // console.log(this.restriction_data)
+
+    updateHeight1(event) {
+      try {
+        this.autoSize1 = Math.max(this.$refs.exercise.scrollHeight, 30);
+      } catch (error) {
+      }
     },
-    // handleClickEst: function (index) {
-    //   if (index === 'option') {
-    //     this.isoptionsEst = !this.isoptionsEst;
-    //   } else
-    //     this.isOpenEst = !this.isOpenEst;
-    // },
+
+    updateHeights() {
+      this.updateHeight1();
+    },
 
     handleClickResp: function (index) {
       if (index === 'option') {
@@ -552,13 +570,36 @@ export default {
 
   },
   mounted: function () {
+
+    this.$nextTick(() => {
+      this.updateHeights();
+      this.resizeObserver = new ResizeObserver(this.updateHeights);
+      this.resizeObserver.observe(this.$refs.tableRow);
+    });
+
     this.getOption();
     this.loadRow();
-  }
+
+  },
+  beforeDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+
+  },
+  updated() {
+    this.$nextTick(this.updateHeights);
+  },
 
 }
 </script>
 <style>
+
+.resizable-textarea {
+  min-height: 20px;
+  resize: none;
+  overflow: hidden;
+}
 
 .selectPer {
   text-indent: 1px;

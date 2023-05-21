@@ -1,5 +1,9 @@
 ## INSTRUCTIONS
 
+### php
+
+habilitar el GD en el php.ini
+
 ### install libraries.
 
 

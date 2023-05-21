@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForgotPasswordController;
 
+use App\Http\Controllers\ReportController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -111,3 +113,6 @@ Route::post('/push_enviar_notificaciones', [RestrictionController::class, 'push_
 
 
 Route::get('/cmd_enviar_notificacionDiaria', [RestrictionController::class, 'cron_enviar_notificacionDiaria']);
+
+
+Route::get('/generar-reporte', [ReportController::class, 'generarReporte']);
