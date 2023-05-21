@@ -23,6 +23,7 @@ class ReportController extends Controller
                 'nsubfrente' => 'Subfrente 1',
                 'nresponsableasignacion' => 'Responsable 1',
                 'ndescripcionactividad' => 'Descripción actividad 1',
+                'ndescripcionrestriccion' => 'Descripcion restriccion 1',
                 'nfechaidentificacion' => 'Fecha identificación 1',
                 'nfecharequerida' => 'Fecha requerida 1',
                 'nresponsablelevantamiento' => 'Responsable levantamiento 1',
