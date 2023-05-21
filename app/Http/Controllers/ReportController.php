@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class ReporteController extends Controller
+class ReportController extends Controller
 {
     public function generarReporte()
     {
