@@ -180,7 +180,7 @@ class ReportController extends Controller
             ->mergeCells('H8:O8');
 
         $sheet->setCellValue('A9', date('d/m/Y'))
-            ->getStyle('A9:F9')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            ->mergeCells('A9:F9');
         $sheet->setCellValue('G9', '')
             ->mergeCells('G9:G9');
         $sheet->setCellValue('H9', '% de nuevas retricciones identificadas x semana: ')
