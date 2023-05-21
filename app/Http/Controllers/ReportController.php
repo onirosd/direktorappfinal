@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class ReportController extends Controller
+class ReporteController extends Controller
 {
     public function generarReporte()
     {
@@ -24,146 +27,231 @@ class ReportController extends Controller
                 'nresponsableasignacion' => 'Responsable 1',
                 'ndescripcionactividad' => 'Descripción actividad 1',
                 'ndescripcionrestriccion' => 'Descripción restricción 1',
-                'nfechaidentificacion' => 'Fecha identificación 1',
+                'nfechaidentificacion' => 'Fecha 1',
                 'nfecharequerida' => 'Fecha requerida 1',
                 'nresponsablelevantamiento' => 'Responsable levantamiento 1',
-                'nfecharealfinlevantamiento' => 'Fecha fin levantamiento 1',
+                'nfecharealfinlevantamiento' => 'Fecha real fin levantamiento 1',
                 'netapa' => 'Etapa 1',
                 'nestado' => 'Estado 1',
-                'ndeltadias' => 'Delta en días 1',
+                'ndeltadias' => 'Delta días 1',
                 'nobservacion' => 'Observación 1',
             ],
-            // Agregar más registros si es necesario
+            [
+                'nsemana' => 'Semana 2',
+                'ntipo' => 'Tipo 2',
+                'nfrente' => 'Frente 2',
+                'nsubfrente' => 'Subfrente 2',
+                'nresponsableasignacion' => 'Responsable 2',
+                'ndescripcionactividad' => 'Descripción actividad 2',
+                'ndescripcionrestriccion' => 'Descripción restricción 2',
+                'nfechaidentificacion' => 'Fecha 2',
+                'nfecharequerida' => 'Fecha requerida 2',
+                'nresponsablelevantamiento' => 'Responsable levantamiento 2',
+                'nfecharealfinlevantamiento' => 'Fecha real fin levantamiento 2',
+                'netapa' => 'Etapa 2',
+                'nestado' => 'Estado 2',
+                'ndeltadias' => 'Delta días 2',
+                'nobservacion' => 'Observación 2',
+            ],
         ];
 
-        // Crear un nuevo objeto Spreadsheet
+        // Crear el objeto Spreadsheet
         $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-        // Crear una hoja de cálculo activa
-        $hoja = $spreadsheet->getActiveSheet();
+        // Establecer los estilos
+        $styleTitle = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '0000FF'],
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => Border::BORDER_MEDIUM,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ];
 
-        // Establecer los valores en la hoja de cálculo
-        $hoja->setCellValue('A1', '');
-        $hoja->setCellValue('F1', 'REGISTRO');
-        $hoja->setCellValue('K1', 'Revision');
-        $hoja->setCellValue('F2', 'GESTION DE PROYECTOS');
-        $hoja->setCellValue('F3', 'ANALISIS DE RESTRICCIONES');
-        $hoja->setCellValue('K3', 'Pagina 1');
-        $hoja->setCellValue('A4', 'CODIGO DEL PROYECTO');
-        $hoja->setCellValue('G4', 'Area:');
-        $hoja->setCellValue('L4', 'Ubicacion:');
-        $hoja->setCellValue('A6', $qproyecto['nproyecto']);
-        $hoja->setCellValue('G6', 'Cliente:');
-        $hoja->setCellValue('A8', 'Fecha:');
-        $hoja->setCellValue('G8', 'Semana:');
-        $hoja->setCellValue('H8', 'Numero Total de nuevas restricciones:');
-        $hoja->setCellValue('A9', date('d/m/Y'));
-        $hoja->setCellValue('H9', '% de nuevas retricciones identificadas x semana:');
+        $styleVerticalBorders = [
+            'borders' => [
+                'inside' => [
+                    'borderStyle' => Border::BORDER_NONE,
+                ],
+                'outline' => [
+                    'borderStyle' => Border::BORDER_MEDIUM,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ];
 
-        // Fusionar celdas para ajustar las columnas
-        $hoja->mergeCells('A1:E3');
-        $hoja->mergeCells('F1:K1');
-        $hoja->mergeCells('K1:O1');
-        $hoja->mergeCells('F2:K2');
-        $hoja->mergeCells('K2:O2');
-        $hoja->mergeCells('F3:K3');
-        $hoja->mergeCells('K3:O3');
-        $hoja->mergeCells('A4:F4');
-        $hoja->mergeCells('G4:K4');
-        $hoja->mergeCells('L4:O4');
-        $hoja->mergeCells('A6:F6');
-        $hoja->mergeCells('G6:G7');
-        $hoja->mergeCells('H6:O7');
-        $hoja->mergeCells('A8:F8');
-        $hoja->mergeCells('G8:G9');
-        $hoja->mergeCells('H8:O9');
+        // Configurar las columnas
+        $sheet->getColumnDimension('A')->setWidth(10);
+        $sheet->getColumnDimension('B')->setWidth(10);
+        $sheet->getColumnDimension('C')->setWidth(10);
+        $sheet->getColumnDimension('D')->setWidth(10);
+        $sheet->getColumnDimension('E')->setWidth(10);
+        $sheet->getColumnDimension('F')->setWidth(10);
+        $sheet->getColumnDimension('G')->setWidth(10);
+        $sheet->getColumnDimension('H')->setWidth(10);
+        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('J')->setWidth(10);
+        $sheet->getColumnDimension('K')->setWidth(10);
+        $sheet->getColumnDimension('L')->setWidth(10);
+        $sheet->getColumnDimension('M')->setWidth(10);
+        $sheet->getColumnDimension('N')->setWidth(10);
+        $sheet->getColumnDimension('O')->setWidth(10);
 
-        // Establecer estilos para las celdas
-        $hoja->getStyle('A1:O9')->getFont()->setBold(true);
-        $hoja->getStyle('A1:O9')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-        $hoja->getStyle('A1:O9')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $hoja->getStyle('A1:E3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('F1:O3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER_CONTINUOUS);
-        $hoja->getStyle('A4:F4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('G4:K4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('L4:O4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('A6:F7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('G6:G7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('A8:F9')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('G8:G9')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $hoja->getStyle('H8:O9')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        // Configurar las filas
+        $sheet->getRowDimension(1)->setRowHeight(20);
+        $sheet->getRowDimension(2)->setRowHeight(20);
+        $sheet->getRowDimension(3)->setRowHeight(20);
+        $sheet->getRowDimension(4)->setRowHeight(20);
+        $sheet->getRowDimension(5)->setRowHeight(20);
+        $sheet->getRowDimension(6)->setRowHeight(20);
+        $sheet->getRowDimension(7)->setRowHeight(20);
+        $sheet->getRowDimension(8)->setRowHeight(20);
+        $sheet->getRowDimension(9)->setRowHeight(20);
+        $sheet->getRowDimension(10)->setRowHeight(20);
 
-        // Llenar los encabezados de la décima fila
-        $hoja->setCellValue('A10', 'SEMANA');
-        $hoja->setCellValue('B10', 'TIPO');
-        $hoja->setCellValue('C10', 'FRENTE');
-        $hoja->setCellValue('D10', 'SUBFRENTE');
-        $hoja->setCellValue('E10', 'RESPONSABLE DE ASIGNACION');
-        $hoja->setCellValue('F10', 'DESCRIPCION DE LA ACTIVIDAD');
-        $hoja->setCellValue('G10', 'DESCRIPCION DE LA RESTRICCION');
-        $hoja->setCellValue('H10', 'FECHA DE IDENTIFICACION');
-        $hoja->setCellValue('I10', 'FECHA REQUERIDA');
-        $hoja->setCellValue('J10', 'RESPONSABLE DE LEVANTAMIENTO');
-        $hoja->setCellValue('K10', 'FECHA REAL DE FIN LEVANTAMIENTO');
-        $hoja->setCellValue('L10', 'ETAPA');
-        $hoja->setCellValue('M10', 'ESTADO');
-        $hoja->setCellValue('N10', 'DELTA EN DIAS');
-        $hoja->setCellValue('O10', 'OBSERVACION');
+        // Configurar el contenido de las celdas
+        $sheet->setCellValue('A1', '')
+            ->mergeCells('A1:E1')
+            ->setCellValue('F1', 'REGISTRO')
+            ->mergeCells('F1:K1')
+            ->setCellValue('K1', 'Revision')
+            ->mergeCells('K1:O1');
 
-        // Establecer estilo para la décima fila
-        $hoja->getStyle('A10:O10')->getFont()->setBold(true);
-        $hoja->getStyle('A10:O10')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('0000FF');
-        $hoja->getStyle('A10:O10')->getFont()->getColor()->setRGB('FFFFFF');
+        $sheet->setCellValue('A2', '')
+            ->mergeCells('A2:E2')
+            ->setCellValue('F2', 'GESTION DE PROYECTOS')
+            ->mergeCells('F2:K2')
+            ->setCellValue('K2', '')
+            ->mergeCells('K2:O2');
 
-        // Llenar los registros en las filas siguientes
+        $sheet->setCellValue('A3', '')
+            ->mergeCells('A3:E3')
+            ->setCellValue('F3', 'ANALISIS DE RESTRICCIONES')
+            ->mergeCells('F3:K3')
+            ->setCellValue('K3', 'Pagina 1')
+            ->mergeCells('K3:O3');
+
+        $sheet->setCellValue('A4', 'CODIGO DEL PROYECTO')
+            ->getStyle('A4:F4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('G4', 'Area : ')
+            ->getStyle('G4:K4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('L4', 'Ubicacion : ')
+            ->getStyle('L4:O4')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+        $sheet->setCellValue('A5', '')
+            ->mergeCells('A5:F5');
+        $sheet->setCellValue('G5', '')
+            ->mergeCells('G5:K5');
+        $sheet->setCellValue('L5', '')
+            ->mergeCells('L5:O5');
+
+        $sheet->setCellValue('A6', $qproyecto['nproyecto'])
+            ->mergeCells('A6:F6');
+        $sheet->setCellValue('G6', 'Cliente : ')
+            ->mergeCells('G6:G6');
+        $sheet->setCellValue('H6', '')
+            ->mergeCells('H6:O6');
+
+        $sheet->setCellValue('A7', '')
+            ->mergeCells('A7:F7');
+        $sheet->setCellValue('G7', '')
+            ->mergeCells('G7:G7');
+        $sheet->setCellValue('H7', '')
+            ->mergeCells('H7:O7');
+
+        $sheet->setCellValue('A8', 'Fecha :')
+            ->getStyle('A8:F8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('G8', 'Semana: ')
+            ->getStyle('G8:G8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('H8', 'Numero Total de nuevas restricciones: ')
+            ->getStyle('H8:O8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+        $sheet->setCellValue('A9', date('d/m/Y'))
+            ->getStyle('A9:F9')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        $sheet->setCellValue('G9', '')
+            ->mergeCells('G9:G9');
+        $sheet->setCellValue('H9', '% de nuevas retricciones identificadas x semana: ')
+            ->getStyle('H9:O9')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
+        $sheet->setCellValue('A10', 'SEMANA')
+            ->getStyle('A10:A10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('B10', 'TIPO')
+            ->getStyle('B10:B10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('C10', 'FRENTE')
+            ->getStyle('C10:C10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('D10', 'SUBFRENTE')
+            ->getStyle('D10:D10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('E10', 'RESPONSABLE DE ASIGNACION')
+            ->getStyle('E10:E10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('F10', 'DESCRIPCION DE LA ACTIVIDAD')
+            ->getStyle('F10:F10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('G10', 'DESCRIPCION DE LA RESTRICCION')
+            ->getStyle('G10:G10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('H10', 'FECHA DE IDENTIFICACION')
+            ->getStyle('H10:H10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('I10', 'FECHA REQUERIDA')
+            ->getStyle('I10:I10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('J10', 'RESPONSABLE DE LEVANTAMIENTO')
+            ->getStyle('J10:J10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('K10', 'FECHA REAL DE FIN LEVANTAMIENTO')
+            ->getStyle('K10:K10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('L10', 'ETAPA')
+            ->getStyle('L10:L10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('M10', 'ESTADO')
+            ->getStyle('M10:M10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('N10', 'DELTA EN DIAS')
+            ->getStyle('N10:N10')->applyFromArray($styleTitle);
+        $sheet->setCellValue('O10', 'OBSERVACION')
+            ->getStyle('O10:O10')->applyFromArray($styleTitle);
+
+        // Configurar los bordes
+        $sheet->getStyle('A4:O5')->applyFromArray($styleVerticalBorders);
+        $sheet->getStyle('A10:O10')->applyFromArray($styleTitle);
+
+        // Configurar los valores de las celdas de acuerdo a $qregistros
         $fila = 11;
         foreach ($qregistros as $registro) {
-            $hoja->setCellValue('A' . $fila, $registro['nsemana']);
-            $hoja->setCellValue('B' . $fila, $registro['ntipo']);
-            $hoja->setCellValue('C' . $fila, $registro['nfrente']);
-            $hoja->setCellValue('D' . $fila, $registro['nsubfrente']);
-            $hoja->setCellValue('E' . $fila, $registro['nresponsableasignacion']);
-            $hoja->setCellValue('F' . $fila, $registro['ndescripcionactividad']);
-            $hoja->setCellValue('G' . $fila, $registro['ndescripcionrestriccion']);
-            $hoja->setCellValue('H' . $fila, $registro['nfechaidentificacion']);
-            $hoja->setCellValue('I' . $fila, $registro['nfecharequerida']);
-            $hoja->setCellValue('J' . $fila, $registro['nresponsablelevantamiento']);
-            $hoja->setCellValue('K' . $fila, $registro['nfecharealfinlevantamiento']);
-            $hoja->setCellValue('L' . $fila, $registro['netapa']);
-            $hoja->setCellValue('M' . $fila, $registro['nestado']);
-            $hoja->setCellValue('N' . $fila, $registro['ndeltadias']);
-            $hoja->setCellValue('O' . $fila, $registro['nobservacion']);
+            $sheet->setCellValue('A' . $fila, $registro['nsemana']);
+            $sheet->setCellValue('B' . $fila, $registro['ntipo']);
+            $sheet->setCellValue('C' . $fila, $registro['nfrente']);
+            $sheet->setCellValue('D' . $fila, $registro['nsubfrente']);
+            $sheet->setCellValue('E' . $fila, $registro['nresponsableasignacion']);
+            $sheet->setCellValue('F' . $fila, $registro['ndescripcionactividad']);
+            $sheet->setCellValue('G' . $fila, $registro['ndescripcionrestriccion']);
+            $sheet->setCellValue('H' . $fila, $registro['nfechaidentificacion']);
+            $sheet->setCellValue('I' . $fila, $registro['nfecharequerida']);
+            $sheet->setCellValue('J' . $fila, $registro['nresponsablelevantamiento']);
+            $sheet->setCellValue('K' . $fila, $registro['nfecharealfinlevantamiento']);
+            $sheet->setCellValue('L' . $fila, $registro['netapa']);
+            $sheet->setCellValue('M' . $fila, $registro['nestado']);
+            $sheet->setCellValue('N' . $fila, $registro['ndeltadias']);
+            $sheet->setCellValue('O' . $fila, $registro['nobservacion']);
             $fila++;
         }
 
-        // Establecer el ancho de las columnas
-        $hoja->getColumnDimension('A')->setWidth(15);
-        $hoja->getColumnDimension('B')->setWidth(15);
-        $hoja->getColumnDimension('C')->setWidth(15);
-        $hoja->getColumnDimension('D')->setWidth(15);
-        $hoja->getColumnDimension('E')->setWidth(25);
-        $hoja->getColumnDimension('F')->setWidth(40);
-        $hoja->getColumnDimension('G')->setWidth(40);
-        $hoja->getColumnDimension('H')->setWidth(20);
-        $hoja->getColumnDimension('I')->setWidth(20);
-        $hoja->getColumnDimension('J')->setWidth(30);
-        $hoja->getColumnDimension('K')->setWidth(30);
-        $hoja->getColumnDimension('L')->setWidth(15);
-        $hoja->getColumnDimension('M')->setWidth(15);
-        $hoja->getColumnDimension('N')->setWidth(15);
-        $hoja->getColumnDimension('O')->setWidth(40);
+        // Configurar la autoajuste de ancho de columnas
+        foreach (range('A', 'O') as $columna) {
+            $sheet->getColumnDimension($columna)->setAutoSize(true);
+        }
 
-        // Establecer los estilos de la hoja de cálculo
-        $hoja->getStyle('A1:O9')->getFont()->setBold(true);
-        $hoja->getStyle('A1:O9')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-        $hoja->getStyle('A1:O9')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        // Crear el objeto Writer y guardar el archivo
+        // Crear el archivo Excel
         $writer = new Xlsx($spreadsheet);
-        $filename = 'reporte.xlsx';
-        $writer->save($filename);
+        $nombreArchivo = 'reporte.xlsx';
+        $writer->save($nombreArchivo);
 
         // Descargar el archivo
-        return response()->download($filename)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 }
