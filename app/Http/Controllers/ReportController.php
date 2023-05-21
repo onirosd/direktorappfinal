@@ -265,6 +265,14 @@ class ReportController extends Controller
             $sheet->getColumnDimension($columna)->setAutoSize(true);
         }
 
+        // Calcular la mitad del tamaño actual
+        $mitadTamanio = $sheet->getDefaultRowDimension()->getRowHeight() / 2;
+
+        // Ajustar la altura de cada fila
+        foreach ($sheet->getRowDimensions() as $rowDimension) {
+            $rowDimension->setRowHeight($mitadTamanio);
+        }
+
         // Aplicar los estilos a todas las celdas
         $sheet->getStyle($sheet->calculateWorksheetDimension())->applyFromArray($styleDefault);
 
