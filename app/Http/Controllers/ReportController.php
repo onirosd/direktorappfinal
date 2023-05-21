@@ -260,10 +260,10 @@ class ReportController extends Controller
             $fila++;
         }
 
-        // Configurar la autoajuste de ancho de columnas
-        foreach (range('A', 'O') as $columna) {
-            $sheet->getColumnDimension($columna)->setAutoSize(true);
-        }
+        // // Configurar la autoajuste de ancho de columnas
+        // foreach (range('A', 'O') as $columna) {
+        //     $sheet->getColumnDimension($columna)->setAutoSize(true);
+        // }
 
         // Calcular la mitad del tamaño actual
         $mitadTamanio = $sheet->getDefaultRowDimension()->getRowHeight() / 4;
