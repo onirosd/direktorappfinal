@@ -676,18 +676,26 @@ const store = createStore({
     },
     report_restrictions_for_project({commit}){
       const data = { id: sessionStorage.getItem('constraintid') }
+      // let params = { from: this.from, to: this.to };
+      let paramString = new URLSearchParams(data);
+      const url_reporte = import.meta.env.VITE_API_BASE_URL+`/generar_reporte?${paramString.toString()}`;
+      window.open(url_reporte);
 
-      const params = new URLSearchParams();
-      params.append('data', JSON.stringify(data));
+      // const params = new URLSearchParams();
+      // params.append('data', JSON.stringify(data));
       // // const anaresdata = 107;
       // return axiosClient.post('generar_reporte', data);
 
-      axiosClient.post('generar_reporte', params, {
-        responseType: 'blob',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded' // Ajusta el tipo de contenido según tus necesidades
-        }
-      });
+      // axiosClient.post('generar_reporte', params, {
+      //   responseType: 'blob',
+      //   headers: {
+      //     'Content-Type': 'application/x-www-form-urlencoded' // Ajusta el tipo de contenido según tus necesidades
+      //   }
+      // }).then(res => {
+
+      //   window.open('/generate');
+
+      // });
 
     },
 

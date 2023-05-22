@@ -9,7 +9,6 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use DB;
-use Symfony\Component\HttpFoundation\Response;
 
 class ReportController extends Controller
 {
@@ -18,10 +17,10 @@ class ReportController extends Controller
         // $data = $request->validate([
         //     'id' => 'required|string'
         // ]);
-        $data = json_decode($_POST['data'], true);
-        $id_restriction = $data['id'];
+        // $data = json_decode($_POST['data'], true);
+        // $id = $data['id'];
         // $json = json_encode($request);
-        // $id_restriction = $json['id'];
+        $id_restriction = $request->input('id');
         // print_r($request);
         // echo "nadaa";
 
@@ -332,41 +331,7 @@ class ReportController extends Controller
         $nombreArchivo = $qproyecto[0]['nproyecto'].'.xlsx';
         $writer->save($nombreArchivo);
 
-        // // Descargar el archivo
-        // $response = new Response();
-        // $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        // $response->headers->set('Content-Disposition', 'attachment;filename="'.$qproyecto[0]['nproyecto'].'.xlsx"');
-        // $response->setContent(file_get_contents($nombreArchivo));
-        // $response->deleteFileAfterSend(true);
-
-        // // Descargar el archivo
-        // $response = new Response();
-        // $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        // $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'"');
-        // $response->setContent(file_get_contents($nombreArchivo));
-
-        //     // Descargar el archivo
-        // $response = new Response();
-        // $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        // $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'.xlsx"');
-        // $response->setContent(file($nombreArchivo));
-        // // Eliminar el archivo después de enviarlo
-        // unlink($nombreArchivo);
-
         // Descargar el archivo
-
-    // Crear el archivo Excel
-
-    // Descargar el archivo
-        // $response = new Response();
-        $headers = [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ];
-
-        return response()->file($nombreArchivo, $headers)->deleteFileAfterSend(true);
-
-        // return $response;
-
-
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 }
