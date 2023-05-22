@@ -39,7 +39,7 @@ class ReportController extends Controller
         '' as nfechaidentificacion,
         aa.dayFechaRequerida as nfecharequerida,
         concat(u2.name,' ',u2.lastname) as nresponsablelevantamiento,
-        aa.dayFechaConciliada as nfecharealevantamiento,
+        aa.dayFechaConciliada as nfecharealfinlevantamiento,
         pa.desArea as netapa,
         ce.desEstado as nestado,
         0 as ndeltadias,
