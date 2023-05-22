@@ -175,7 +175,7 @@
       <div class="flex sm:flex-wrap" v-if="!isDisabled">
         <a
         class="flex items-center mr-4 cursor-pointer sm:mb-2"
-        @click="downloadReporte"
+        @click="downloadFile"
 
         >
           <span class="text-xs text-[#002B6B] mr-1">Descargar plantilla</span>
@@ -190,7 +190,7 @@
         </div>
         <div
           class="flex items-center cursor-pointer sm:mb-2"
-          @click="exportData"
+          @click="downloadReporte"
         >
           <span class="text-xs text-[#002B6B] mr-1">Descargar reporte</span>
           <img src="../../assets/download.svg" alt="" />
