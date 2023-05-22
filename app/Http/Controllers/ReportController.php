@@ -276,8 +276,19 @@ class ReportController extends Controller
         // Aplicar los estilos a todas las celdas
         $sheet->getStyle($sheet->calculateWorksheetDimension())->applyFromArray($styleDefault);
         // Configurar las celdas de la fila 10
-        $sheet->getRowDimension(10)->setRowHeight(50);
+        $sheet->getRowDimension(10)->setRowHeight(60);
         $sheet->getStyle('A10:O10')->getAlignment()->setWrapText(true);
+
+
+        // Calcular la mitad del tamaño actual
+        $mitadTamanio = $sheet->getDefaultRowDimension()->getRowHeight() / 4;
+
+        // Ajustar la altura de cada fila
+        foreach ($sheet->getRowDimensions() as $rowDimension) {
+            $rowDimension->setRowHeight($mitadTamanio);
+        }
+
+
         // Crear el archivo Excel
         $writer = new Xlsx($spreadsheet);
         $nombreArchivo = 'reporte.xlsx';
