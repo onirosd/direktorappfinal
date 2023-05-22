@@ -332,7 +332,12 @@ class ReportController extends Controller
         $writer->save($nombreArchivo);
 
         // Descargar el archivo
-        return response()->download($nombreArchivo, 'reporte.xlsx')->deleteFileAfterSend(true)
-        ->header('Content-Disposition', 'attachment; filename="'.$qproyecto[0]['nproyecto'].'.xlsx"');
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', 'attachment;filename="'.$qproyecto[0]['nproyecto'].'.xlsx"');
+        $response->setContent(file_get_contents($nombreArchivo));
+        $response->deleteFileAfterSend(true);
+
+        return $response;
     }
 }
