@@ -36,7 +36,7 @@ class ReportController extends Controller
         IFNULL(concat(u.name,' '+u.lastname) , pi2.desCorreo) as nresponsableasignacion,
         aa.desActividad as ndescripcionactividad ,
         aa.desRestriccion as ndescripcionrestriccion,
-        '' as nfechaIdentificacion,
+        '' as nfechaidentificacion,
         aa.dayFechaRequerida as nfecharequerida,
         concat(u2.name,' ',u2.lastname) as nresponsablelevantamiento,
         aa.dayFechaConciliada as nfecharealevantamiento,
