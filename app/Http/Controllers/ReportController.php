@@ -328,7 +328,7 @@ class ReportController extends Controller
 
         // Crear el archivo Excel
         $writer = new Xlsx($spreadsheet);
-        $nombreArchivo = $qproyecto[0]['nproyecto'].'.xlsx';
+        $nombreArchivo = "reporte_" . $qproyecto[0]['nproyecto'] . '_' . date('Ymd') . '.xlsx';
         $writer->save($nombreArchivo);
 
         // Descargar el archivo
