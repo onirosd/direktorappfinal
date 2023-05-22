@@ -280,7 +280,8 @@ class ReportController extends Controller
         $sheet->getColumnDimension('H')->setWidth(15);
 
         $sheet->getColumnDimension('J')->setWidth(15);
-        $sheet->getColumnDimension('K')->setWidth(15);
+        $sheet->getColumnDimension('K')->setWidth(18);
+        $sheet->getColumnDimension('O')->setWidth(16);
 
         $sheet->getStyle('A10:O10')->getAlignment()->setWrapText(true);
 
