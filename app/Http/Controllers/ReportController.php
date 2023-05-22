@@ -332,6 +332,7 @@ class ReportController extends Controller
         $writer->save($nombreArchivo);
 
         // Descargar el archivo
-        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo, 'reporte.xlsx')->deleteFileAfterSend(true)
+        ->header('Content-Disposition', 'attachment; filename="'.$qproyecto[0]['nproyecto'].'.xlsx"');
     }
 }
