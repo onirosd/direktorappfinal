@@ -15,11 +15,10 @@ class ReportController extends Controller
     public function generarReporte(Request $request)
     {
         $data = $request->validate([
-            'id' => 'required|numeric'
+            'id' => 'required|string'
         ]);
 
         $id_restriction = $request['id'];
-
         $query_proyectos = "
 
         select
