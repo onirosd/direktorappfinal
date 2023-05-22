@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReportController extends Controller
 {
