@@ -272,10 +272,10 @@ class ReportController extends Controller
         $sheet->getStyle('A10:O10')->getAlignment()->setWrapText(true);
 
         // Establecer la altura predeterminada para la fila E
-        $sheet->getRowDimension(5)->setRowHeight(90);
-        $sheet->getRowDimension(6)->setRowHeight(90);
-        $sheet->getRowDimension(7)->setRowHeight(90);
-        $sheet->getRowDimension(8)->setRowHeight(90);
+        $sheet->getColumnDimension('E')->setWidth(90);
+        $sheet->getColumnDimension('F')->setWidth(90);
+        $sheet->getColumnDimension('G')->setWidth(90);
+        $sheet->getColumnDimension('H')->setWidth(90);
 
         // Calcular la mitad del tamaño actual
         $mitadTamanio = $sheet->getDefaultRowDimension()->getRowHeight() / 4;
