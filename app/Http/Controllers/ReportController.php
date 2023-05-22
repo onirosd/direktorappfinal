@@ -76,7 +76,7 @@ class ReportController extends Controller
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '#002d74'],
+                'startColor' => ['rgb' => '0000FF'],
             ],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -292,6 +292,8 @@ class ReportController extends Controller
         foreach ($sheet->getRowDimensions() as $rowDimension) {
             $rowDimension->setRowHeight($mitadTamanio);
         }
+
+        $sheet->getStyle('A10:O10')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('002d74');
 
 
         // Crear el archivo Excel
