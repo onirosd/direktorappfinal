@@ -26,7 +26,7 @@ class ReportController extends Controller
             pp.desNombreProyecto as nproyecto
             from proy_proyecto pp
             inner join anares_analisisrestricciones aa  on pp.codProyecto  = aa.codProyecto
-        where aa.codAnaRes = ?
+        where pp.codProyecto = ?
 
         ";
 
@@ -63,7 +63,7 @@ class ReportController extends Controller
         left join proy_areaintegrante pa on pi2.codArea  = pa.codArea
         left join conf_estado ce on aa.codEstadoActividad  = ce.codEstado and ce.desModulo = 'ANARES'
         left join users u2 on aa.codUsuarioSolicitante  = u2.id
-        where aa.codAnaRes = ?
+        where aa.codProyecto = ?
         order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
 
 
