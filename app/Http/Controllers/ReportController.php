@@ -339,12 +339,17 @@ class ReportController extends Controller
         // $response->setContent(file_get_contents($nombreArchivo));
         // $response->deleteFileAfterSend(true);
 
-        // Descargar el archivo
+        // // Descargar el archivo
+        // $response = new Response();
+        // $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'"');
+        // $response->setContent(file_get_contents($nombreArchivo));
+
+            // Descargar el archivo
         $response = new Response();
         $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'"');
-        $response->setContent(file_get_contents($nombreArchivo));
-
+        $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'.xlsx"');
+        $response->setContent(file($nombreArchivo));
         // Eliminar el archivo después de enviarlo
         unlink($nombreArchivo);
 
