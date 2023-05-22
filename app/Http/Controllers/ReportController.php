@@ -358,19 +358,14 @@ class ReportController extends Controller
     // Crear el archivo Excel
 
     // Descargar el archivo
-        $response = new Response();
-        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $response->headers->set('Content-Disposition', 'attachment; filename="reporte.xlsx"');
+        // $response = new Response();
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ];
 
-        ob_clean();
-        flush();
-        readfile($nombreArchivo);
+        return response()->file($nombreArchivo, $headers)->deleteFileAfterSend(true);
 
-        // Eliminar el archivo después de enviarlo
-        unlink($nombreArchivo);
-
-
-        return $response;
+        // return $response;
 
 
     }
