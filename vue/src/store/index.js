@@ -676,10 +676,13 @@ const store = createStore({
     },
     report_restrictions_for_project({commit}){
       const data = { id: sessionStorage.getItem('constraintid') }
+
+      const params = new URLSearchParams();
+      params.append('data', JSON.stringify(data));
       // // const anaresdata = 107;
       // return axiosClient.post('generar_reporte', data);
 
-      axiosClient.post('generar_reporte', data, {
+      axiosClient.post('generar_reporte', params, {
         responseType: 'blob',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded' // Ajusta el tipo de contenido según tus necesidades

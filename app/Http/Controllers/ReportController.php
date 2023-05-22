@@ -17,9 +17,10 @@ class ReportController extends Controller
         // $data = $request->validate([
         //     'id' => 'required|string'
         // ]);
-
-        $json = json_encode($request);
-        $id_restriction = $json['id'];
+        $data = json_decode($_POST['data'], true);
+        $id_restriction = $data['id'];
+        // $json = json_encode($request);
+        // $id_restriction = $json['id'];
         // print_r($request);
         // echo "nadaa";
 
