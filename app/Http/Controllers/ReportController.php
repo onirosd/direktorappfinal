@@ -142,6 +142,7 @@ class ReportController extends Controller
             ->mergeCells('F1:K1')
             ->setCellValue('L1', 'Revision')
             ->mergeCells('L1:O1');
+        $sheet->getStyle('F1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $sheet->setCellValue('A2', '')
             ->mergeCells('A2:E2')
