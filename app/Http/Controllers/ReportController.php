@@ -194,7 +194,7 @@ class ReportController extends Controller
             ->mergeCells('L5:O5');
 
 
-        $sheet->setCellValue('A6', $qproyecto['nproyecto'])
+        $sheet->setCellValue('A6', $qproyecto[0]['nproyecto'])
             ->mergeCells('A6:F6');
         $sheet->setCellValue('G6', 'Cliente : ')
             ->mergeCells('G6:G6');
