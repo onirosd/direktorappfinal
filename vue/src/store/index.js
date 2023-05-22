@@ -674,6 +674,12 @@ const store = createStore({
 
       })
     },
+    report_restrictions_for_project({commit}){
+      const data = { id: sessionStorage.getItem('constraintid') }
+      // const anaresdata = 107;
+      return axiosClient.post('generar_reporte', data);
+
+    },
 
     push_enviar_notificaciones({commit}){
       const anaresdata = { id: sessionStorage.getItem('constraintid') }

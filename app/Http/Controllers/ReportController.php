@@ -12,15 +12,21 @@ use DB;
 
 class ReportController extends Controller
 {
-    public function generarReporte()
+    public function generarReporte(Request $request)
     {
+        $data = $request->validate([
+            'id' => 'required|numeric'
+        ]);
+
+        $id_restriction = $request['id'];
 
         $query_proyectos = "
 
         select
             pp.desNombreProyecto as nproyecto
             from proy_proyecto pp
-        where pp.codProyecto = 4
+            inner join anares_analisisrestricciones aa  on pp.codProyecto  = aa.codProyecto
+        where pp.codAnaRes = ?
 
         ";
 
@@ -57,18 +63,19 @@ class ReportController extends Controller
         left join proy_areaintegrante pa on pi2.codArea  = pa.codArea
         left join conf_estado ce on aa.codEstadoActividad  = ce.codEstado and ce.desModulo = 'ANARES'
         left join users u2 on aa.codUsuarioSolicitante  = u2.id
-        where aa.codProyecto = 4
+        where aa.codAnaRes = ?
         order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
 
 
         ";
-
-        $qregistros  = DB::select($query_restricciones);
+        $v1 = array($id_restriction);
+        $qregistros  = DB::select($query_restricciones, $v1);
         $qregistros = array_map(function ($value) {
             return (array)$value;
         }, $qregistros);
 
-        $qproyecto  = DB::select($query_proyectos);
+        $v2 = array($id_restriction);
+        $qproyecto  = DB::select($query_proyectos, $v2);
         $qproyecto = array_map(function ($value) {
             return (array)$value;
         }, $qproyecto);
@@ -317,7 +324,7 @@ class ReportController extends Controller
 
         // Crear el archivo Excel
         $writer = new Xlsx($spreadsheet);
-        $nombreArchivo = 'reporte.xlsx';
+        $nombreArchivo = $qproyecto[0]['nproyecto'].'.xlsx';
         $writer->save($nombreArchivo);
 
         // Descargar el archivo

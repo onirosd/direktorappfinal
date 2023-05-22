@@ -175,7 +175,7 @@
       <div class="flex sm:flex-wrap" v-if="!isDisabled">
         <a
         class="flex items-center mr-4 cursor-pointer sm:mb-2"
-        @click="downloadFile"
+        @click="downloadReporte"
 
         >
           <span class="text-xs text-[#002B6B] mr-1">Descargar plantilla</span>
@@ -695,7 +695,16 @@ export default {
 
     return conteo;
    },
+   downloadReporte(){
 
+    let point = this;
+    // payload = {}
+    store.dispatch("report_restrictions_for_project").then((response) => {
+
+    });
+
+
+   },
    downloadFile() {
       // const nombreArchivo = 'formato.xlsx';
       // const rutaArchivo = require('@/assets/' + nombreArchivo);
