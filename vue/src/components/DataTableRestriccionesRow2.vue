@@ -37,6 +37,7 @@
                   class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
                   :style="{ height: autoSize1 + 'px' }"
+                  @input="updateHeight1"
 
             >
             </textarea>
@@ -64,6 +65,7 @@
                   class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }"
                   :style="{height: autoSize2 + 'px'}"
+                  @input="updateHeight2"
 
             >
           </textarea>
