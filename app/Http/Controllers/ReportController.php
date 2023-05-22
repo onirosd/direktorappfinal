@@ -18,9 +18,10 @@ class ReportController extends Controller
         //     'id' => 'required|string'
         // ]);
 
-        $id_restriction = $request['id'];
-        print_r($request);
-        echo "nadaa";
+        $json = json_encode($request);
+        $id_restriction = $json['id'];
+        // print_r($request);
+        // echo "nadaa";
 
         $query_proyectos = "
 
