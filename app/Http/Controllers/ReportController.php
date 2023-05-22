@@ -345,13 +345,28 @@ class ReportController extends Controller
         // $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'"');
         // $response->setContent(file_get_contents($nombreArchivo));
 
-            // Descargar el archivo
+        //     // Descargar el archivo
+        // $response = new Response();
+        // $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'.xlsx"');
+        // $response->setContent(file($nombreArchivo));
+        // // Eliminar el archivo después de enviarlo
+        // unlink($nombreArchivo);
+
+        // Descargar el archivo
         $response = new Response();
         $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'.xlsx"');
-        $response->setContent(file($nombreArchivo));
+        $response->headers->set('Content-Disposition', 'attachment;filename="reporte.xlsx"');
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'reporte.xlsx');
+        $response->setContentLength(filesize($nombreArchivo));
+
+        ob_clean();
+        flush();
+        readfile($nombreArchivo);
+
         // Eliminar el archivo después de enviarlo
         unlink($nombreArchivo);
+
 
         return $response;
 
