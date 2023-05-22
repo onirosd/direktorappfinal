@@ -26,7 +26,7 @@ class ReportController extends Controller
             pp.desNombreProyecto as nproyecto
             from proy_proyecto pp
             inner join anares_analisisrestricciones aa  on pp.codProyecto  = aa.codProyecto
-        where pp.codAnaRes = ?
+        where aa.codAnaRes = ?
 
         ";
 
