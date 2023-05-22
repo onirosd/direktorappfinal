@@ -76,7 +76,7 @@ class ReportController extends Controller
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '0000FF'],
+                'startColor' => ['rgb' => '#002d74'],
             ],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
