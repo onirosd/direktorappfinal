@@ -354,16 +354,19 @@ class ReportController extends Controller
         // unlink($nombreArchivo);
 
         // Descargar el archivo
+
+    // Crear el archivo Excel
+
+    // Descargar el archivo
         $response = new Response();
         $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         $response->headers->set('Content-Disposition', 'attachment; filename="reporte.xlsx"');
-        $response->setContentLength(filesize($nombreArchivo));
 
         ob_clean();
         flush();
         readfile($nombreArchivo);
 
-        // Eliminar el archivo después de enviarloDCVC
+        // Eliminar el archivo después de enviarlo
         unlink($nombreArchivo);
 
 
