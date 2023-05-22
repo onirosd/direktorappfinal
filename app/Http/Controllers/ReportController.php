@@ -8,52 +8,72 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use Illuminate\Http\Request;
+use DB;
 
 class ReportController extends Controller
 {
     public function generarReporte()
     {
-        // Simulación de los datos de las consultas
-        $qproyecto = [
-            'nproyecto' => 'Proyecto de ejemplo',
-        ];
 
-        $qregistros = [
-            [
-                'nsemana' => 'Semana 1',
-                'ntipo' => 'Tipo 1',
-                'nfrente' => 'Frente 1',
-                'nsubfrente' => 'Subfrente 1',
-                'nresponsableasignacion' => 'Responsable 1',
-                'ndescripcionactividad' => 'Descripción actividad 1',
-                'ndescripcionrestriccion' => 'Descripción restricción 1',
-                'nfechaidentificacion' => 'Fecha 1',
-                'nfecharequerida' => 'Fecha requerida 1',
-                'nresponsablelevantamiento' => 'Responsable levantamiento 1',
-                'nfecharealfinlevantamiento' => 'Fecha real fin levantamiento 1',
-                'netapa' => 'Etapa 1',
-                'nestado' => 'Estado 1',
-                'ndeltadias' => 'Delta días 1',
-                'nobservacion' => 'Observación 1',
-            ],
-            [
-                'nsemana' => 'Semana 2',
-                'ntipo' => 'Tipo 2',
-                'nfrente' => 'Frente 2',
-                'nsubfrente' => 'Subfrente 2',
-                'nresponsableasignacion' => 'Responsable 2',
-                'ndescripcionactividad' => 'Descripción actividad 2',
-                'ndescripcionrestriccion' => 'Descripción restricción 2',
-                'nfechaidentificacion' => 'Fecha 2',
-                'nfecharequerida' => 'Fecha requerida 2',
-                'nresponsablelevantamiento' => 'Responsable levantamiento 2',
-                'nfecharealfinlevantamiento' => 'Fecha real fin levantamiento 2',
-                'netapa' => 'Etapa 2',
-                'nestado' => 'Estado 2',
-                'ndeltadias' => 'Delta días 2',
-                'nobservacion' => 'Observación 2',
-            ],
-        ];
+        $query_proyectos = "
+
+        select
+            pp.desNombreProyecto as nproyecto
+            from proy_proyecto pp
+        where pp.codProyecto = 4
+
+        ";
+
+        $query_restricciones = "
+
+
+        select
+        aa.codAnaResActividad,
+        WEEK(aa.dayFechaRequerida) AS nsemana,
+        IFNULL(at2.desTipoRestricciones ,'sin elegir') as ntipo,
+        af.desAnaResFrente as nfrente ,
+        af2.desAnaResFase as nsubfrente,
+        IFNULL(concat(u.name,' '+u.lastname) , pi2.desCorreo) as nresponsableasignacion,
+        aa.desActividad as ndescripcionactividad ,
+        aa.desRestriccion as ndescripcionrestriccion,
+        '' as nfechaIdentificacion,
+        aa.dayFechaRequerida as nfecharequerida,
+        concat(u2.name,' ',u2.lastname) as nresponsablelevantamiento,
+        aa.dayFechaConciliada as nfecharealevantamiento,
+        pa.desArea as netapa,
+        ce.desEstado as nestado,
+        0 as ndeltadias,
+        '' as nobservacion,
+        concat(u2.name,' ',u2.lastname) as Usuario_Solicitante,
+        aa.dayFechaRequerida,
+        aa.numOrden
+        from
+        anares_actividad aa
+        inner join anares_frente af on aa.codAnaResFrente  = af.codAnaResFrente
+        inner join anares_fase af2 on aa.codAnaResFase  = af2.codAnaResFase
+        left join anares_tiporestricciones at2 on aa.codTipoRestriccion  = at2.codTipoRestricciones
+        left join proy_integrantes pi2 on aa.idUsuarioResponsable = pi2.codProyIntegrante
+        left join users u on pi2.idIntegrante  = u.id
+        left join proy_areaintegrante pa on pi2.codArea  = pa.codArea
+        left join conf_estado ce on aa.codEstadoActividad  = ce.codEstado and ce.desModulo = 'ANARES'
+        left join users u2 on aa.codUsuarioSolicitante  = u2.id
+        where aa.codProyecto = 4
+        order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
+
+
+        ";
+
+        $qregistros  = DB::select($query_restricciones);
+        $qregistros = array_map(function ($value) {
+            return (array)$value;
+        }, $qregistros);
+
+        $qproyecto  = DB::select($query_proyectos);
+        $qproyecto = array_map(function ($value) {
+            return (array)$value;
+        }, $qproyecto);
+
 
         // Crear el objeto Spreadsheet
         $spreadsheet = new Spreadsheet();
