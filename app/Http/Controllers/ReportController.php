@@ -19,6 +19,8 @@ class ReportController extends Controller
         // ]);
 
         $id_restriction = $request['id'];
+        print_r($id_restriction);
+
         $query_proyectos = "
 
         select
