@@ -150,6 +150,7 @@ class ReportController extends Controller
             ->mergeCells('F2:K2')
             ->setCellValue('L2', '')
             ->mergeCells('L2:O2');
+        $sheet->getStyle('F2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $sheet->setCellValue('A3', '')
             ->mergeCells('A3:E3')
@@ -157,6 +158,7 @@ class ReportController extends Controller
             ->mergeCells('F3:K3')
             ->setCellValue('L3', 'Pagina 1')
             ->mergeCells('L3:O3');
+        $sheet->getStyle('F3')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         $sheet->setCellValue('A4', 'CODIGO DEL PROYECTO')
             ->mergeCells('A4:F4');
