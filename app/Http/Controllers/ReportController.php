@@ -20,6 +20,7 @@ class ReportController extends Controller
 
         $id_restriction = $request['id'];
         print_r($request);
+        echo "nadaa";
 
         $query_proyectos = "
 
