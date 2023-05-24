@@ -32,6 +32,7 @@
                   v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
                   :disabled="true"
                   v-model="restriction_data.desActividad"
+                  ref="exercise"
                   name="exercise"
                   type="text"
                   class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
@@ -44,6 +45,7 @@
           </td>
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restriction') > -1}">
             <textarea
+                  ref="restriction"
                   name="restriction"
                   v-if="statusRestriction && restriction_data.codEstadoActividad < 3"
                   @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})"
@@ -60,6 +62,7 @@
                   v-if="!statusRestriction || restriction_data.codEstadoActividad == 3"
                   :disabled="true"
                   v-model="restriction_data.desRestriccion"
+                  ref="restriction"
                   name="restriction"
                   type="text"
                   class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
@@ -305,8 +308,16 @@ export default {
       }
     },
 
+    updateHeight2(event) {
+      try {
+        this.autoSize2 = Math.max(this.$refs.restriction.scrollHeight, 30);
+      } catch (error) {
+      }
+    },
+
     updateHeights() {
       this.updateHeight1();
+      this.updateHeight2();
     },
 
     handleClickResp: function (index) {

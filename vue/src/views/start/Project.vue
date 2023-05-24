@@ -168,8 +168,8 @@
               </SquareBox>
             </div>
           </div>
-          <AdvertisingBig :width="928" :height="100" />
-          <Advertising />
+          <!-- <AdvertisingBig :width="928" :height="100" />
+          <Advertising /> -->
           <ViewProject
             v-if="modalName === 'viewproject'"
             @closeModal="closeModal"

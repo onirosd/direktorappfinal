@@ -107,8 +107,8 @@
       </div>
 
     </div>
-    <AdvertisingBig :width="928" :height="100" />
-    <Advertising />
+    <!-- <AdvertisingBig :width="928" :height="100" />
+    <Advertising /> -->
     <AddPerson
       v-if="modalName === 'add'"
       @closeModal="closeModal"

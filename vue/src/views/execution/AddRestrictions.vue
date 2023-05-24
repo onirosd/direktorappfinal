@@ -21,7 +21,7 @@
       @click="revision"
     >
       <span class="items-start text-2xl text-activeText sm:mb-4"
-        >Restricciones</span
+        >Restricciones del proyecto : {{nameProyecto}}</span
       >
       <div class="flex sm:flex-col h-[52px] sm:h-auto">
         <!-- <div class="relative mr-4 sm:mr-0 sm:mb-4">
