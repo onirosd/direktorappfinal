@@ -595,6 +595,7 @@ export default {
         restrictionType: "Tipo",
         date_required: "Fecha requerida",
         date_conciliad: "Fecha conciliada",
+        date_identity: "Fecha Identificación",
         responsible: "Responsable",
         responsible_area: "Área responsable",
         condition: "Estado",
@@ -1182,7 +1183,7 @@ export default {
                   enviar[i].idfase
                 ]["listaRestricciones"][enviar[i].idrestriccion][
                   "isEnabled"
-                ] = false;
+                ] = true;
 
                 this.restrictions[enviar[i].idfrente]["listaFase"][
                   enviar[i].idfase

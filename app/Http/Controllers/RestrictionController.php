@@ -737,6 +737,7 @@ class RestrictionController extends Controller
                             'desTipoRestriccion' => $data['desTipoRestriccion'],
                             'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaRequerida'])),  //$data['dayFechaRequerida'] == null ? '' : $data['dayFechaRequerida'],
                             'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaConciliada'])),  //$data['dayFechaConciliada'] == null ? '' : $data['dayFechaConciliada'],
+                            'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaCreacion'])),
                             'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
                             'desUsuarioResponsable' => $des_usuarioResponsable ,
                             'desUsuarioSolicitante' => $data['name']." ".$data["lastname"],

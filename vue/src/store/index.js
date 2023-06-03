@@ -919,6 +919,7 @@ const store = createStore({
             codTipoRestriccion: "",
             dayFechaConciliada: "",
             dayFechaRequerida: "",
+            dayFechaIdentificacion: "",
             desActividad: "",
             desAreaResponsable:"",
             desEstadoActividad:1,
@@ -926,7 +927,7 @@ const store = createStore({
             desTipoRestriccion:"",
             desUsuarioResponsable:"",
             idUsuarioResponsable:"",
-            isEnabled:false,
+            isEnabled:true,
             isupdate:false,
             numOrden:0
           }
@@ -976,6 +977,7 @@ const store = createStore({
                 codTipoRestriccion: "",
                 dayFechaConciliada: "",
                 dayFechaRequerida: "",
+                dayFechaIdentificacion: "",
                 desActividad: "",
                 desAreaResponsable:"",
                 desEstadoActividad:1,
@@ -983,7 +985,7 @@ const store = createStore({
                 desTipoRestriccion:"",
                 desUsuarioResponsable:"",
                 idUsuarioResponsable:"",
-                isEnabled:false,
+                isEnabled:true,
                 isupdate:false,
                 numOrden:0
               }
@@ -1082,6 +1084,7 @@ const store = createStore({
             codTipoRestriccion: rows[i]['codTipoRestriccion'],
             dayFechaConciliada: rows[i]['dayFechaConciliada'],
             dayFechaRequerida:  rows[i]['dayFechaRequerida'],
+            dayFechaIdentificacion:  rows[i]['dayFechaRequerida'],
             desActividad: rows[i]['desActividad'],
             desAreaResponsable: rows[i]['desAreaResponsable'],
             desEstadoActividad: rows[i]['desEstadoActividad'],
@@ -1090,7 +1093,7 @@ const store = createStore({
             desUsuarioResponsable: rows[i]['desUsuarioResponsable'],
             idUsuarioResponsable: rows[i]['idUsuarioResponsable'],
             numOrden : 0,
-            isEnabled:false,
+            isEnabled:true,
             isupdate:false
           }
 

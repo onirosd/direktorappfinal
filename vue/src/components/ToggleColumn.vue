@@ -56,6 +56,23 @@
             </span>
           </label>
         </div>
+
+        <div class="flex mb-4">
+          <input
+            type="checkbox"
+            name="date_identity"
+            id="date_identity"
+            value="date_identity"
+            v-model="checkedCols"
+            class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+          />
+          <label for="date_identity">
+            <span class="font-medium text-sm leading-6">
+              Fecha Identificación
+            </span>
+          </label>
+        </div>
+
         <div class="flex mb-4">
           <input
             type="checkbox"
