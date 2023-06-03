@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use DB;
 use Config;
 use Helper; // Important
+use Carbon\Carbon;
 
 class RestrictionController extends Controller
 {
@@ -545,7 +546,8 @@ class RestrictionController extends Controller
                             'codEstadoActividad'     => $value['codEstadoActividad'],
                             'dayFechaRequerida'      => ($fecha == 'null' || $fecha == '') ? null : $fecha,
                             'dayFechaConciliada'     => ($fechac == 'null' || $fechac == '') ? null : $fechac,
-                            'flgNoti'                => 0
+                            'flgNoti'                => 0,
+                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now() : null
                             // 'numOrden'               => $value['numOrden']
                         ]);
 
@@ -568,7 +570,8 @@ class RestrictionController extends Controller
                             'codAnaResFrente' => $value['codAnaResFrente'],
                             'codUsuarioSolicitante' => $request['userId'],
                             'numOrden'              => $value['idrestriccion'] + 0.01,
-                            'flgNoti'               => 0
+                            'flgNoti'               => 0,
+                            'dayFechaCreacion'      => Carbon::now()
                         ]);
                         $tiporesultado = "ins";
 
@@ -675,11 +678,14 @@ class RestrictionController extends Controller
                     'hideCols' => [],
                 ];
 
-                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable", "proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname")
+                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable","proy_integrantes.idIntegrante", "proy_integrantes.codRolIntegrante","proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname", "proy_proyecto.id as codCreador")
                 ->leftjoin('anares_tiporestricciones', 'anares_actividad.codTipoRestriccion', '=', 'anares_tiporestricciones.codTipoRestricciones')
                 ->leftJoin('proy_integrantes', function($join){
                     $join->on('proy_integrantes.codProyIntegrante', '=', 'anares_actividad.idUsuarioResponsable');
                     $join->on('proy_integrantes.codProyecto', '=', 'anares_actividad.codProyecto');
+                 })
+                 ->leftJoin('proy_proyecto', function($join){
+                    $join->on('anares_actividad.codProyecto', '=', 'proy_proyecto.codProyecto');
                  })
                  ->leftJoin('proy_areaintegrante', function($join){
                     $join->on('proy_integrantes.codArea', '=', 'proy_areaintegrante.codArea');
@@ -705,6 +711,24 @@ class RestrictionController extends Controller
                             }
                         }
 
+                        $habilitado = false;
+
+                        // Verificamos si esta habilitado el acceso a la modificacion.
+
+                        if ( $data['codCreador'] == $coduser ){
+
+                            $habilitado = true;
+
+                        }elseif ($data['codRolIntegrante'] == 2  && $data['idIntegrante']  == $coduser ) {
+
+                            $habilitado = true;
+                        }else{
+
+                            $habilitado = false;
+                        }
+
+                        // $data['idIntegrante']
+
                         $restricciones = [
                             'codAnaResActividad' => $data['codAnaResActividad'],
                             'desActividad'       => $data['desActividad'],
@@ -721,7 +745,7 @@ class RestrictionController extends Controller
                             'desAreaResponsable' => $data['desArea'],
                             'numOrden'           => $data['numOrden'],
                             'flgNoti'            => $data['flgNoti'],
-                            'isEnabled'          => false,
+                            'isEnabled'          =>  $habilitado,
                             'isupdate'           => false
                             // 'applicant' => "Lizeth Marzano",
                         ];
