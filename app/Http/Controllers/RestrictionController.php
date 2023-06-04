@@ -547,7 +547,7 @@ class RestrictionController extends Controller
                             'dayFechaRequerida'      => ($fecha == 'null' || $fecha == '') ? null : $fecha,
                             'dayFechaConciliada'     => ($fechac == 'null' || $fechac == '') ? null : $fechac,
                             'flgNoti'                => 0,
-                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now('America/Lima') : null
+                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now() : null
                             // 'numOrden'               => $value['numOrden']
                         ]);
 
@@ -556,7 +556,7 @@ class RestrictionController extends Controller
                     }else{
 
                         $codAnaRes = Restriction::where('codProyecto', $request['projectId'])->get('codAnaRes');
-                        $resultado = PhaseActividad::create([
+                        $idactividad = PhaseActividad::insertGetId([
                             'codTipoRestriccion' => $value['codTipoRestriccion'],
                             'desActividad'       => (string)$value['desActividad'],
                             'desRestriccion'     => (string)$value['desRestriccion'],
@@ -571,13 +571,16 @@ class RestrictionController extends Controller
                             'codUsuarioSolicitante' => $request['userId'],
                             'numOrden'              => $value['idrestriccion'] + 0.01,
                             'flgNoti'               => 0,
-                            'dayFechaCreacion'      => Carbon::now('America/Lima')
+                            'dayFechaCreacion'      => Carbon::now()
                         ]);
+
                         $tiporesultado = "ins";
+
+                        $resultado = PhaseActividad::find($idactividad);
 
                         $datos                    = array();
                         $datos['idPivote']        = $value['codAnaResActividad'];
-                        $datos["idReal"]          = $resultado->codAnaResActividad;
+                        $datos["idReal"]          = $idactividad;
                         $enviar["inserciones"][]  = $datos;
 
                     }
