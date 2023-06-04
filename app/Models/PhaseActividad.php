@@ -15,6 +15,9 @@ class PhaseActividad extends Model
         'desRestriccion',
         'codTipoRestriccion',
         'dayFechaRequerida',
+        'dayFechaCreacion',
+        'dayFechaConciliada',
+        'dayFechaLevantamiento',
         'idUsuarioResponsable',
         'desAreaResponsable',
         'codEstadoActividad',
@@ -29,4 +32,5 @@ class PhaseActividad extends Model
     protected $table = 'anares_actividad';
     protected $primaryKey = 'codAnaResActividad';
     public $timestamps = false;
+    //sadsdsd
 }
