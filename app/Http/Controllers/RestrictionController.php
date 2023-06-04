@@ -556,7 +556,7 @@ class RestrictionController extends Controller
                     }else{
 
                         $codAnaRes = Restriction::where('codProyecto', $request['projectId'])->get('codAnaRes');
-                        $resultado = PhaseActividad::insertGetId([
+                        $resultado = PhaseActividad::create([
                             'codTipoRestriccion' => $value['codTipoRestriccion'],
                             'desActividad'       => (string)$value['desActividad'],
                             'desRestriccion'     => (string)$value['desRestriccion'],
@@ -577,7 +577,7 @@ class RestrictionController extends Controller
 
                         $datos                    = array();
                         $datos['idPivote']        = $value['codAnaResActividad'];
-                        $datos["idReal"]          = $resultado;
+                        $datos["idReal"]          = $resultado->codAnaResActividad;
                         $enviar["inserciones"][]  = $datos;
 
                     }
