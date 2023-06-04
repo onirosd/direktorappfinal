@@ -1085,9 +1085,11 @@ export default {
       this.$store.dispatch("update_restricciones", enviar).then((response) => {
         if (response.data.flag == 1) {
           if (response.data.inserciones.length > 0) {
-            let codNuevo = response.data.inserciones[0]["idReal"];
+            let codNuevo            = response.data.inserciones[0]["idReal"];
+            let fechaIdentificacion = response.data.inserciones[0]["fechaIdentificacion"];
 
-            data.row["codAnaResActividad"] = codNuevo;
+            data.row["codAnaResActividad"]  = codNuevo;
+            data.row["fechaIdentificacion"] = fechaIdentificacion;
 
             point.$store.commit({
               type: "saveRowfromForm",
@@ -1211,6 +1213,7 @@ export default {
 
                       codNuevo            = response.data.inserciones[index1]["idReal"];
                       fechaIdentificacion = response.data.inserciones[index1]["fechaIdentificacion"];
+
                       console.log(">>>>>>> nuevo registro >>  "+fechaIdentificacion)
                       this.restrictions[enviar[i].idfrente]["listaFase"][
                         enviar[i].idfase
