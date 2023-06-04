@@ -1211,7 +1211,7 @@ export default {
 
                       codNuevo            = response.data.inserciones[index1]["idReal"];
                       fechaIdentificacion = response.data.inserciones[index1]["fechaIdentificacion"];
-
+                      console.log(">>>>>>> nuevo registro >>  "+fechaIdentificacion)
                       this.restrictions[enviar[i].idfrente]["listaFase"][
                         enviar[i].idfase
                       ]["listaRestricciones"][enviar[i].idrestriccion][
