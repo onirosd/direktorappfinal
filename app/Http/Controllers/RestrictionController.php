@@ -577,11 +577,12 @@ class RestrictionController extends Controller
                         $tiporesultado = "ins";
 
                         // $resultado = PhaseActividad::find($idactividad);
-                        $resultado = PhaseActividad::where('codAnaResActividad', $idactividad)->get()->toArray();
+                        $fechaCreacion = PhaseActividad::where('codAnaResActividad', $idactividad)->value('dayFechaCreacion');
 
                         $datos                    = array();
                         $datos['idPivote']        = $value['codAnaResActividad'];
                         $datos["idReal"]          = $idactividad;
+                        $datos["fechaIdentificacion"] = date("Y-m-d", strtotime($fechaCreacion));
                         $enviar["inserciones"][]  = $datos;
 
                     }

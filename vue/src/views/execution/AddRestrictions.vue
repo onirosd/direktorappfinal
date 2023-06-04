@@ -1208,12 +1208,22 @@ export default {
                         "codAnaResActividad"
                       ]
                     ) {
-                      codNuevo = response.data.inserciones[index1]["idReal"];
+
+                      codNuevo            = response.data.inserciones[index1]["idReal"];
+                      fechaIdentificacion = response.data.inserciones[index1]["fechaIdentificacion"];
+
                       this.restrictions[enviar[i].idfrente]["listaFase"][
                         enviar[i].idfase
                       ]["listaRestricciones"][enviar[i].idrestriccion][
                         "codAnaResActividad"
                       ] = codNuevo;
+
+                      this.restrictions[enviar[i].idfrente]["listaFase"][
+                        enviar[i].idfase
+                      ]["listaRestricciones"][enviar[i].idrestriccion][
+                        "dayFechaIdentificacion"
+                      ] = fechaIdentificacion;
+
                       break;
                     }
                   }
