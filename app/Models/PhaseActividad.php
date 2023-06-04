@@ -32,5 +32,5 @@ class PhaseActividad extends Model
     protected $table = 'anares_actividad';
     protected $primaryKey = 'codAnaResActividad';
     public $timestamps = false;
-    //sadsdsd
+    //sadsdsd vermos que
 }
