@@ -187,7 +187,7 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_identity') > -1}">
 
             <input
-                    v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3"
+
                     name="date_identity"
                     :disabled="true"
                     :value="restriction_data.dayFechaIdentificacion"

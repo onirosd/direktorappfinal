@@ -587,6 +587,7 @@ class RestrictionController extends Controller
 
             $enviar["flag"]                   =  1;
             $enviar["mensaje"]                = "Registros Actualizados !";
+            $enviar["datos"]                  = $resultado;
 
 
         } catch (Throwable $e) {
