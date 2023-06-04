@@ -547,7 +547,7 @@ class RestrictionController extends Controller
                             'dayFechaRequerida'      => ($fecha == 'null' || $fecha == '') ? null : $fecha,
                             'dayFechaConciliada'     => ($fechac == 'null' || $fechac == '') ? null : $fechac,
                             'flgNoti'                => 0,
-                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now() : null
+                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now('America/Lima') : null
                             // 'numOrden'               => $value['numOrden']
                         ]);
 
@@ -571,7 +571,7 @@ class RestrictionController extends Controller
                             'codUsuarioSolicitante' => $request['userId'],
                             'numOrden'              => $value['idrestriccion'] + 0.01,
                             'flgNoti'               => 0,
-                            'dayFechaCreacion'      => Carbon::now()
+                            'dayFechaCreacion'      => Carbon::now('America/Lima')
                         ]);
                         $tiporesultado = "ins";
 
