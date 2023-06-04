@@ -577,7 +577,7 @@ class RestrictionController extends Controller
                         $tiporesultado = "ins";
 
                         // $resultado = PhaseActividad::find($idactividad);
-                        $resultado = "veremos que hacemos aqui";
+                        $resultado = PhaseActividad::where('codAnaResActividad', $idactividad)->value('dayFechaCreacion');
 
                         $datos                    = array();
                         $datos['idPivote']        = $value['codAnaResActividad'];
