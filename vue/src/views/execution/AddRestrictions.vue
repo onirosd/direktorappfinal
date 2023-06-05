@@ -1232,7 +1232,7 @@ export default {
                       ] = codNuevo;
 
                       // this.restrictions[enviar[i].idfrente]["listaFase"][
-                      //   enviar[i].idfase
+                      //   enviar[i].idfase d s
                       // ]["listaRestricciones"][enviar[i].idrestriccion][
                       //   "dayFechaIdentificacion"
                       // ] = fechaIdentificacion;
