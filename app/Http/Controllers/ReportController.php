@@ -27,9 +27,11 @@ class ReportController extends Controller
         $query_proyectos = "
 
         select
-            pp.desNombreProyecto as nproyecto
+            pp.desNombreProyecto as nproyecto,
+            bb.des_Empresa
             from proy_proyecto pp
             inner join anares_analisisrestricciones aa  on pp.codProyecto  = aa.codProyecto
+            left join conf_maestro_empresas bb on cast(pp.desEmpresa as int) = bb.cod_Empresa
         where pp.codProyecto = ?
 
         ";
@@ -260,7 +262,7 @@ class ReportController extends Controller
             ->mergeCells('A6:F6');
         $sheet->setCellValue('G6', 'Cliente : ')
             ->mergeCells('G6:G6');
-        $sheet->setCellValue('H6', '')
+        $sheet->setCellValue('H6', $qproyecto[0]['des_Empresa'])
             ->mergeCells('H6:O6');
 
         $sheet->setCellValue('A7', '')
