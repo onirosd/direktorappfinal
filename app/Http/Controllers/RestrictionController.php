@@ -729,7 +729,7 @@ class RestrictionController extends Controller
 
                         // Verificamos si esta habilitado el acceso a la modificacion.
 
-                        if ( $data['codCreador'] == $coduser  || $data['codRolIntegrante'] == 3){
+                        if ( $data['codCreador'] == $coduser  || $rolUsuario == 3){
 
                             $habilitado = true;
 

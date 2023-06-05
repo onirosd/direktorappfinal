@@ -63,7 +63,7 @@
       >
       <template #item="{ element , index}">
             <DataTableRestriccionesRow2
-            :rolProyecto = "rolProyecto"
+            :rolProyecto = "mrolProyecto"
             :restriction_data      = "element"
             :index="index"
             :hideCols = "mhideCols"
@@ -128,6 +128,9 @@ export default {
   },
   computed:{
 
+      mrolProyecto(){
+        return this.rolProyecto
+      },
       msolicitanteActual(){
         return this.solicitanteActual
       },
