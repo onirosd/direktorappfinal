@@ -1106,7 +1106,7 @@ export default {
       });
     },
     updateRow: function (data) {
-      // console.log(">>>> llegue a updateRow dd")
+
       // return;
       let frontIdx = data.frontIdx;
       let phaseIdx = data.phaseIdx;
@@ -1116,6 +1116,10 @@ export default {
           .dispatch("update_restricciones", enviar)
           .then((response) => {
             if (response.data.flag == 1) {
+              console.log(">>>> llegue a updateRow dd")
+              console.log(response.data)
+              console.log("cuantos_ registros tenemos "+enviar.length.toString())
+
               for (let i = 0; i < enviar.length; i++) {
                 this.restrictions[enviar[i].idfrente]["listaFase"][
                   enviar[i].idfase
@@ -1197,6 +1201,9 @@ export default {
                   let codAntiguo = 0;
                   let codNuevo = 0;
 
+                  console.log(">>>>>> cuantos registros insertados tenemos ")
+                  console.log(response.data.inserciones.length)
+
                   for (
                     let index1 = 0;
                     index1 < response.data.inserciones.length;
@@ -1215,7 +1222,7 @@ export default {
                       console.log(response.data.inserciones[index1]);
 
                       codNuevo            = response.data.inserciones[index1]["idReal"];
-                      // fechaIdentificacion = response.data.inserciones[index1]["fechaIdentificacion"];
+                      console.log(response.data.inserciones[index1]["fechaIdentificacion"]);
 
 
                       this.restrictions[enviar[i].idfrente]["listaFase"][
@@ -1586,8 +1593,8 @@ export default {
       res.forEach(obj => {
         obj.listaFase.forEach(fase => {
           fase.listaRestricciones.forEach(restriccion => {
-            console.log(">>>>>>>")
-            console.log(restriccion)
+            // console.log(">>>>>>>")
+            // console.log(restriccion)
             if (restriccion.flgNoti === 0) {
               contador++;
             }
