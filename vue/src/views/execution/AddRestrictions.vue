@@ -208,9 +208,21 @@
           >
             <span class="text-xl text-activeText">
               {{ frente.desFrente }}
+
+
+                  <div class="bar">
+                      <div class="filled"
+                          :class="countActivities(frente.codFrente).colorClass"
+                          :style="{ width: countActivities(frente.codFrente).percentage + '%' }">
+                          {{ countActivities(frente.codFrente).percentage }}%
+                      </div>
+                  </div>
+
+
+<!--
               <div class="bar" :class="countActivities(frente.codFrente).colorClass" style="width: countActivities(frente.codFrente).percentage + '%'">
                {{ countActivities(frente.codFrente).percentage }}%
-              </div>
+              </div> -->
 
 
               </span>
@@ -1739,6 +1751,13 @@ export default {
 }
 
 .bar {
+    width: 200px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Un color de fondo para la parte no llena de la barra */
+}
+
+.bar .filled {
     height: 20px;
     border-radius: 10px;
     text-align: center;
@@ -1757,4 +1776,5 @@ export default {
 .red {
     background-color: #cc0000;
 }
+
 </style>
