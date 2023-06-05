@@ -1231,11 +1231,12 @@ export default {
                         "codAnaResActividad"
                       ] = codNuevo;
 
-                      // this.restrictions[enviar[i].idfrente]["listaFase"][
-                      //   enviar[i].idfase d s
-                      // ]["listaRestricciones"][enviar[i].idrestriccion][
-                      //   "dayFechaIdentificacion"
-                      // ] = fechaIdentificacion;
+                      this.restrictions[enviar[i].idfrente]["listaFase"][
+                        enviar[i].idfase
+                      ]["listaRestricciones"][enviar[i].idrestriccion][
+                        "dayFechaIdentificacion"
+                      ] = response.data.inserciones[index1]["fechaIdentificacion"];
+
 
                       break;
                     }
