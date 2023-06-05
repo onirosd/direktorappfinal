@@ -870,11 +870,13 @@ class RestrictionController extends Controller
             // $consulta2 = $consulta2->codAnaResActividad;
             $consulta        = PhaseActividad::find($request['codAnaResActividad'])->replicate();
             $arrayconsulta   = $consulta->toArray();
-            $arrayconsulta['numOrden'] =  $arrayconsulta['numOrden'] + 0.001;
+            $arrayconsulta['numOrden']         =  $arrayconsulta['numOrden'] + 0.001;
+            $arrayconsulta['dayFechaCreacion'] =  Carbon::now();
             $newCreatedModel = PhaseActividad::create($arrayconsulta);
             // $newID      = $consulta->id;
 
-            $resultado['resultado'] =  $newCreatedModel['codAnaResActividad'];
+            $resultado['resultado']              =  $newCreatedModel['codAnaResActividad'];
+            $resultado['dayFechaIdentificacion'] =  $newCreatedModel['dayFechaCreacion'];
             $resultado['flag']      =  1;
 
         } catch (\Throwable $th) {

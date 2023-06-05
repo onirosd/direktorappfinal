@@ -1033,13 +1033,15 @@ export default {
       store.dispatch("dup_Restrictions", restriccionId).then((response) => {
         if (response.data.flag == 1) {
           this.setTimeifUpd(600, " Registro duplicado con exito ");
-          let codAnaResActividad = response.data.resultado;
+          let codAnaResActividad     = response.data.resultado;
+          let dayFechaIdentificacion = response.data.dayFechaIdentificacion;
 
           point.$store.commit({
             type: "duplicateScrollTableRow",
             frontId: frenteId,
             phaseId: faseId,
             activity: restriccionId,
+            didentificacion : dayFechaIdentificacion,
             codAna: codAnaResActividad,
             ...payload,
           });

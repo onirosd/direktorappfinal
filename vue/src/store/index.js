@@ -1084,7 +1084,7 @@ const store = createStore({
             codTipoRestriccion: rows[i]['codTipoRestriccion'],
             dayFechaConciliada: rows[i]['dayFechaConciliada'],
             dayFechaRequerida:  rows[i]['dayFechaRequerida'],
-            dayFechaIdentificacion:  rows[i]['dayFechaRequerida'],
+            dayFechaIdentificacion:  payload.didentificacion,
             desActividad: rows[i]['desActividad'],
             desAreaResponsable: rows[i]['desAreaResponsable'],
             desEstadoActividad: rows[i]['desEstadoActividad'],
