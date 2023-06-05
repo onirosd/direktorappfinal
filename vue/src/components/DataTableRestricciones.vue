@@ -63,6 +63,7 @@
       >
       <template #item="{ element , index}">
             <DataTableRestriccionesRow2
+            :rolProyecto = "rolProyecto"
             :restriction_data      = "element"
             :index="index"
             :hideCols = "mhideCols"
@@ -102,8 +103,10 @@ export default {
     DataTableRestriccionesRow2
   },
   props: {
+    rolProyecto:Number,
     fullScreen:Number,
     tableType: String,
+
     cols: Object,
     restrictions: Array,
     hideCols: Array,

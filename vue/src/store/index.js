@@ -99,6 +99,7 @@ const store = createStore({
     anaDataMembers:[],
     anaEstado:[],
     solicitanteActual:'',
+    rolProyecto:0,
     estadoRestriccion:false,
     createStatus: false,
     cargos:[],
@@ -665,6 +666,7 @@ const store = createStore({
         commit('setEstado', res.data.estados)
         commit('setEstadoRestriccion', res.data.estadoRestriccion)
         commit('setSolicitanteActual', res.data.solicitanteActual)
+        commit('setRolProyecto', res.data.rolUsuario)
 
         if (!(res.data.columnasOcultas == null || res.data.columnasOcultas == '')){
 
@@ -1264,6 +1266,9 @@ const store = createStore({
     },
     setSolicitanteActual(state, ResData){
       state.solicitanteActual = ResData;
+    },
+    setRolProyecto(state, ResData){
+      state.rolProyecto = ResData;
     },
     setEstadoRestriccion(state, ResData){
       state.estadoRestriccion = ResData

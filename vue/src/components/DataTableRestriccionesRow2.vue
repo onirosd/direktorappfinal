@@ -4,13 +4,17 @@
           <input type="hidden" name="frontName" :value="frontName">
           <input type="hidden" name="phaseName" :value="phaseName">
 
-          <td class="absolute left-0 mt-2">
+          <td v-if="rolProyecto == 3" class="absolute left-0 mt-2">
             <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
               v-click-outside="hide">
               <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
             </button>
             <TableTooltip v-if="isOpen" @tooltip="openModal" :ResizeActually="ResizeActually" />
           </td>
+          <td v-else class="absolute left-0 mt-2">
+
+          </td>
+
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('exercise') > -1}">
             <textarea
                   ref="exercise"
@@ -276,6 +280,7 @@ export default {
     SelectOption
   },
   props: {
+    rolProyecto:Number,
     statusRestriction:Boolean,
     restriction_data: Object,
     index:Number,

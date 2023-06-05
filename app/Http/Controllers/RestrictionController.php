@@ -637,7 +637,9 @@ class RestrictionController extends Controller
         then pi2.desCorreo
         else concat(u.name,' ',u.lastname)
         end as desProyIntegrante,
-        pi2.codArea
+        pi2.codArea,
+        pi2.idIntegrante,
+        pi2.codRolIntegrante
         from ana_integrantes ai
         inner join proy_integrantes pi2
         left  join users u on pi2.desCorreo  = u.email
@@ -647,6 +649,7 @@ class RestrictionController extends Controller
         where ai.codProyecto = ?
 
         ";
+        $rolUsuario   = 0;
         $coduser      = $request['codsuser'];
         $valores      = array($request['id']);
         $integrantesAnaRes = DB::select($query_integrantes, $valores);
@@ -654,7 +657,12 @@ class RestrictionController extends Controller
             return (array)$value;
         }, $integrantesAnaRes);
 
-        $usuarios    =
+        foreach ($integrantesAnaRes as $integrante) {
+            if ($integrante['idIntegrante'] == $coduser){
+                $rolUsuario = $integrante['codRolIntegrante'];
+                break;
+            }
+        }
 
         $frontdata   = RestrictionFront::where('codProyecto', $request['id'])->get();
         $restriction = Restriction::where('codProyecto', $request['id'])->get();
@@ -721,13 +729,14 @@ class RestrictionController extends Controller
 
                         // Verificamos si esta habilitado el acceso a la modificacion.
 
-                        if ( $data['codCreador'] == $coduser ){
+                        if ( $data['codCreador'] == $coduser  || $data['codRolIntegrante'] == 3){
 
                             $habilitado = true;
 
                         }elseif ($data['codRolIntegrante'] == 2  && $data['idIntegrante']  == $coduser ) {
 
                             $habilitado = true;
+
                         }else{
 
                             $habilitado = false;
@@ -785,6 +794,7 @@ class RestrictionController extends Controller
         $enviar['restricciones']     = $anaresdata;
         $enviar['columnasOcultas']   = $restriction[0]['desColOcultas'];
         $enviar['solicitanteActual'] = $usuario[0]['name']." ".$usuario[0]['lastname'];
+        $enviar['rolUsuario']        = $rolUsuario;
 
 
 
@@ -872,6 +882,7 @@ class RestrictionController extends Controller
             $arrayconsulta   = $consulta->toArray();
             $arrayconsulta['numOrden']         =  $arrayconsulta['numOrden'] + 0.001;
             $arrayconsulta['dayFechaCreacion'] =  Carbon::now();
+            $arrayconsulta['dayFechaLevantamiento'] =  Carbon::now();
             $newCreatedModel = PhaseActividad::create($arrayconsulta);
             // $newID      = $consulta->id;
 

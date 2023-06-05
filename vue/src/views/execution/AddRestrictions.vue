@@ -294,6 +294,7 @@
                     :style="{ 'min-height': `${heigthDiv}px` }"
                   >
                     <DataTableRestricciones
+                      :rolProyecto = "rolProyecto"
                       :solicitanteActual = "solicitanteActual"
                       :fullScreen = "fullScreen"
                       :tableType="'scroll'"
@@ -549,6 +550,7 @@ export default {
       showifUpdMsg: "",
       validarUpd: false,
       statusRestriction: true,
+      rolProyecto:0,
       statusDraggable: true,
       pageloadflag: false,
       nameProyecto: "",
@@ -1566,6 +1568,8 @@ export default {
       console.log(">> entro 2");
       await store.dispatch("get_datos_restricciones").then((response) => {
         this.statusRestriction = this.$store.state.estadoRestriccion;
+        this.rolProyecto       = this.$store.state.rolProyecto;
+
         this.$store.state.sidebar = false;
 
         if (this.statusRestriction === false) {
