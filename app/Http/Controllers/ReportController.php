@@ -29,7 +29,7 @@ class ReportController extends Controller
         select
             pp.desNombreProyecto as nproyecto,
             bb.des_Empresa,
-            bb.desDireccion as des_Direccion
+            pp.desDireccion as des_Direccion
             from proy_proyecto pp
             inner join anares_analisisrestricciones aa  on pp.codProyecto  = aa.codProyecto
             left join conf_maestro_empresas bb on cast(pp.desEmpresa as int) = bb.cod_Empresa

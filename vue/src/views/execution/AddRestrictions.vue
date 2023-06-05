@@ -206,7 +206,14 @@
             class="flex justify-between items-cener mb-6 sm:w-full cursor-pointer"
             @click="toggleOpen(frente.desFrente)"
           >
-            <span class="text-xl text-activeText">{{ frente.desFrente }}</span>
+            <span class="text-xl text-activeText">
+              {{ frente.desFrente }}
+              <div class="bar" :class="countActivities(frente.codFrente).colorClass" style="width: countActivities(frente.codFrente).percentage + '%'">
+               {{ countActivities(frente.codFrente).percentage }}%
+              </div>
+
+
+              </span>
             <img
               src="../../assets/ic_arrow-down.svg"
               alt=""
@@ -1543,6 +1550,30 @@ export default {
         };
       });
     },
+    countActivities(codFrente) {
+      let total = 0;
+        let completed = 0;
+
+        // Encuentra el frente correspondiente
+        let frente = this.$store.state.whiteproject_rows.find(f => f.codFrente === codFrente);
+        if (frente) {
+            // Recorre cada fase en el frente
+            frente.listaFase.forEach(fase => {
+                // Añade el número de restricciones en la fase al total
+                total += fase.listaRestricciones.length;
+                // Añade el número de actividades completadas al total de completadas
+                completed += fase.listaRestricciones.filter(res => res.codEstadoActividad === "3").length;
+            });
+        }
+
+        // Calcula y redondea el porcentaje
+        let percentage = Math.round((completed / total) * 100);
+
+        // Determina la clase de color
+        let colorClass = percentage === 100 ? 'green' : (percentage >= 20 ? 'orange' : 'red');
+
+        return {percentage, colorClass};
+    },
     ResizeActually() {
       this.sizeActually = window.innerWidth;
     },
@@ -1705,5 +1736,25 @@ export default {
 .fade-leave-to
 /* .fade-leave-active in <2.1.8 */ {
   opacity: 0;
+}
+
+.bar {
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+}
+
+.green {
+    background-color: #00cc00;
+}
+
+.orange {
+    background-color: #ffcc00;
+}
+
+.red {
+    background-color: #cc0000;
 }
 </style>
