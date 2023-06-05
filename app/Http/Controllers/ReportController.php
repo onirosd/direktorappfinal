@@ -28,7 +28,8 @@ class ReportController extends Controller
 
         select
             pp.desNombreProyecto as nproyecto,
-            bb.des_Empresa
+            bb.des_Empresa,
+            bb.desDireccion as des_Direccion
             from proy_proyecto pp
             inner join anares_analisisrestricciones aa  on pp.codProyecto  = aa.codProyecto
             left join conf_maestro_empresas bb on cast(pp.desEmpresa as int) = bb.cod_Empresa
@@ -254,7 +255,7 @@ class ReportController extends Controller
             ->mergeCells('A5:F5');
         $sheet->setCellValue('G5', '')
             ->mergeCells('G5:K5');
-        $sheet->setCellValue('L5', '')
+        $sheet->setCellValue('L5', $qproyecto[0]['des_Direccion'])
             ->mergeCells('L5:O5');
 
 
