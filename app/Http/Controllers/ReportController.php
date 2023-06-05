@@ -36,25 +36,75 @@ class ReportController extends Controller
 
         $query_restricciones = "
 
-
         select
         aa.codAnaResActividad,
-        WEEK(aa.dayFechaRequerida) AS nsemana,
+        WEEK(aa.dayFechaCreacion) AS nsemana,
         IFNULL(at2.desTipoRestricciones ,'sin elegir') as ntipo,
         af.desAnaResFrente as nfrente ,
         af2.desAnaResFase as nsubfrente,
-        IFNULL(concat(u.name,' '+u.lastname) , pi2.desCorreo) as nresponsableasignacion,
+        concat(u2.name,' ',u2.lastname) as nresponsableasignacion,
+
         aa.desActividad as ndescripcionactividad ,
         aa.desRestriccion as ndescripcionrestriccion,
-        '' as nfechaidentificacion,
-        aa.dayFechaRequerida as nfecharequerida,
+        aa.dayFechaCreacion  as nfechaidentificacion,
+        case when aa.dayFechaConciliada is null then   aa.dayFechaRequerida else aa.dayFechaConciliada end  as nfecharequerida,
         concat(u2.name,' ',u2.lastname) as nresponsablelevantamiento,
-        aa.dayFechaConciliada as nfecharealfinlevantamiento,
-        pa.desArea as netapa,
-        ce.desEstado as nestado,
-        0 as ndeltadias,
+        aa.dayFechaLevantamiento  as nfecharealfinlevantamiento,
+        -- pa.desArea as netapa,
+        -- ce.desEstado as nestado,
+	    CASE
+	        WHEN aa.dayFechaCreacion IS NULL THEN ''
+	        WHEN
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END >= DATE(aa.dayFechaLevantamiento) AND aa.dayFechaLevantamiento IS NOT NULL AND ce.desEstado = 'Completado' THEN 'CULMINADA EN PLAZO'
+	        WHEN
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END < DATE(aa.dayFechaLevantamiento) AND aa.dayFechaLevantamiento IS NOT NULL AND ce.desEstado = 'Completado' THEN 'CULMINADA CON ATRASO'
+	        WHEN
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END >= CURDATE() AND DATE(aa.dayFechaCreacion) <
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END THEN 'PROCESO EN PLAZO'
+	        WHEN
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END < CURDATE() AND DATE(aa.dayFechaCreacion) <
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END THEN 'PROCESO CON ATRASO'
+	        ELSE ''
+	    END AS nestado,
+        ce.desEstado as netapa,
+        -- 0 as ndeltadias,
+        CASE
+	        WHEN
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END > CURDATE() THEN '-'
+	        WHEN
+	            CASE
+	                WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada)
+	                ELSE DATE(aa.dayFechaRequerida)
+	            END <= CURDATE() THEN
+	            CASE
+	                WHEN aa.dayFechaLevantamiento IS NOT NULL THEN DATEDIFF(CASE WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada) ELSE DATE(aa.dayFechaRequerida) END, DATE(aa.dayFechaLevantamiento))
+	                ELSE DATEDIFF(CASE WHEN aa.dayFechaConciliada IS NOT NULL THEN DATE(aa.dayFechaConciliada) ELSE DATE(aa.dayFechaRequerida) END, CURDATE()) * -1
+	            END
+	        ELSE ''
+   		END AS ndeltadias,
         '' as nobservacion,
-        concat(u2.name,' ',u2.lastname) as Usuario_Solicitante,
+        IFNULL(concat(u.name,' '+u.lastname) , pi2.desCorreo) as Usuario_Solicitante,
         aa.dayFechaRequerida,
         aa.numOrden
         from
@@ -69,6 +119,7 @@ class ReportController extends Controller
         left join users u2 on aa.codUsuarioSolicitante  = u2.id
         where aa.codProyecto = ?
         order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
+
 
 
         ";

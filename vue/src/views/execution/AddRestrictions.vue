@@ -700,17 +700,7 @@ export default {
    },
    downloadReporte(){
 
-    // let point = this;
-
-    // axios.post('/generar_reporte', {}, {
-    //   responseType: 'blob',
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded' // Ajusta el tipo de contenido según tus necesidades
-    //   }
-    // });
-    // payload = {}
     store.dispatch("report_restrictions_for_project");
-
 
    },
    downloadFile() {
