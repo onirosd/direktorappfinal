@@ -876,7 +876,7 @@ class RestrictionController extends Controller
             // $newID      = $consulta->id;
 
             $resultado['resultado']              =  $newCreatedModel['codAnaResActividad'];
-            $resultado['dayFechaIdentificacion'] =  $newCreatedModel['dayFechaCreacion'];
+            $resultado['dayFechaIdentificacion'] =  date("Y-m-d", strtotime($newCreatedModel['dayFechaCreacion']));
             $resultado['flag']      =  1;
 
         } catch (\Throwable $th) {
