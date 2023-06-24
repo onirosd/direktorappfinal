@@ -726,16 +726,20 @@ class RestrictionController extends Controller
                         }
 
                         $habilitado = false;
-
+                        $frequerida_enabled  = false;
+                        $fconciliada_enabled = false;
                         // Verificamos si esta habilitado el acceso a la modificacion.
 
                         if ( $data['codCreador'] == $coduser  || $rolUsuario == 3){
 
                             $habilitado = true;
+                            $frequerida_enabled  = true;
+                            $fconciliada_enabled = true;
 
                         }elseif ($data['codRolIntegrante'] == 2  && $data['idIntegrante']  == $coduser ) {
 
                             $habilitado = true;
+
 
                         }else{
 
@@ -762,6 +766,8 @@ class RestrictionController extends Controller
                             'numOrden'           => $data['numOrden'],
                             'flgNoti'            => $data['flgNoti'],
                             'isEnabled'          =>  $habilitado,
+                            'isEnabledFRequerida' => $frequerida_enabled,
+                            'isEnabledFConciliada'=> $fconciliada_enabled,
                             'isupdate'           => false
                             // 'applicant' => "Lizeth Marzano",
                         ];

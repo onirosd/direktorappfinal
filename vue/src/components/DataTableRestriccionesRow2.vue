@@ -109,7 +109,7 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_required') > -1}">
 
             <input
-            v-if="INIstateRestriction && restriction_data.codEstadoActividad < 3"
+            v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3) || (INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFRequerida )"
              name="date_required"
 
              @change="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"
@@ -120,7 +120,7 @@
             />
 
             <input
-             v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3"
+             v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3 || restriction_data.isEnabledFRequerida == false "
              name="date_required"
              :disabled="true"
 
@@ -167,7 +167,7 @@
               <input  :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada2" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> -->
 
               <input
-                    v-if="INIstateRestriction && restriction_data.codEstadoActividad < 3"
+                    v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3) || (INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFConciliada )"
                     name="date_conciliad"
                     @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
                     v-model="restriction_data.dayFechaConciliada"
@@ -177,7 +177,7 @@
               />
 
               <input
-                    v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3"
+                    v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3 || restriction_data.isEnabledFConciliada == false"
                     name="date_conciliad"
                     :disabled="true"
                     :value="restriction_data.dayFechaConciliada"
@@ -247,15 +247,15 @@
               </option>
 
             </select>
-          <input
-                v-if="!INIstateRestriction"
-                name="condition"
-                :disabled="true"
-                :value="restriction_data.desEstadoActividad"
-                type="text"
-                class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
-                :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-          />
+            <input
+                  v-if="!INIstateRestriction"
+                  name="condition"
+                  :disabled="true"
+                  :value="restriction_data.desEstadoActividad"
+                  type="text"
+                  class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                  :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
+            />
 
           </td>
 
@@ -471,6 +471,9 @@ export default {
         this.restriction_row.desSolicitante         = this.restriction_data.desUsuarioSolicitante
 
         this.restriction_row.isupdate               = this.restriction_data.isupdate
+
+        this.restriction_row.isEnabledFRequerida    = this.restriction_data.isEnabledFRequerida
+        this.restriction_row.isEnabledFConciliada   = this.restriction_data.isEnabledFConciliada
 
     },
     updateRow: function (updRow) {

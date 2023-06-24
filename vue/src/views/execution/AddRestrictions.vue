@@ -1761,20 +1761,21 @@ export default {
     height: 20px;
     border-radius: 10px;
     text-align: center;
+    font-size: 0.6em;
     line-height: 20px;
     color: white;
 }
 
 .green {
-    background-color: #00cc00;
+    background-color: #189118;
 }
 
 .orange {
-    background-color: #ffcc00;
+    background-color: #e38b1d;
 }
 
 .red {
-    background-color: #cc0000;
+    background-color: #c71616;
 }
 
 </style>
