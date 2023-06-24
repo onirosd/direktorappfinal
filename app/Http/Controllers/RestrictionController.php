@@ -649,7 +649,7 @@ class RestrictionController extends Controller
         where ai.codProyecto = ?
 
         ";
-        $rolUsuario   = 0;
+        $rolUsuario   = 0; // en estos momentos el rolusuario cero es el creador del proyecto.
         $coduser      = $request['codsuser'];
         $valores      = array($request['id']);
         $integrantesAnaRes = DB::select($query_integrantes, $valores);

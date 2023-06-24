@@ -4,7 +4,7 @@
           <input type="hidden" name="frontName" :value="frontName">
           <input type="hidden" name="phaseName" :value="phaseName">
 
-          <td v-if="rolProyecto == 3" class="absolute left-0 mt-2">
+          <td v-if="rolProyecto == 3 || rolProyecto == 0" class="absolute left-0 mt-2">
             <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
               v-click-outside="hide">
               <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
@@ -109,7 +109,7 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_required') > -1}">
 
             <input
-            v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3) || (INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFRequerida )"
+            v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFRequerida )"
              name="date_required"
 
              @change="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"
@@ -167,7 +167,7 @@
               <input  :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada2" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> -->
 
               <input
-                    v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3) || (INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFConciliada )"
+                    v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFConciliada )"
                     name="date_conciliad"
                     @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
                     v-model="restriction_data.dayFechaConciliada"
