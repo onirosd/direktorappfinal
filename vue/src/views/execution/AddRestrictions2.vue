@@ -603,8 +603,8 @@ export default {
       search: '',
       showOptions: false,
       options: [
-        { name: 'Responsables', visible: false ,subOptions: this.optResponsables, showSubOptions: false },
-        // { name: 'Solicitante', visible: false, subOptions: [], showSubOptions: false },
+        { name: 'Responsables', visible: false ,subOptions: [], showSubOptions: false },
+        { name: 'Solicitantes', visible: false, subOptions: [], showSubOptions: false },
         // { name: 'Vencimiento', visible: false , subOptions: [{id: 1, name: 'con Retraso'}], showSubOptions: false },
         // { name: 'Tipo de Restricción', visible: false ,subOptions: [], showSubOptions: false }
       ],
@@ -1637,8 +1637,6 @@ export default {
         this.rolProyecto       = this.$store.state.rolProyecto;
 
         this.$store.state.sidebar = false;
-        // console.log(">>> actualizamos en el mounted")
-        // this.updateResponsables(this.jsonData)
 
         if (this.statusRestriction === false) {
 
@@ -1757,16 +1755,16 @@ export default {
               )
             ))];
 
-            console.log(">> lista de ids")
-            console.log(uniqueResponsables)
+            // console.log(">> lista de ids")
+            // console.log(uniqueResponsables)
 
             // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
             const responsables = datamembers.filter(integrante => uniqueResponsables.includes(integrante.codProyIntegrante)).map(integrante => {
               return { name: integrante.desProyIntegrante, id: integrante.codProyIntegrante };
             });
 
-            console.log(">>>> llegando a esta parte")
-            console.log(responsables)
+            // console.log(">>>> llegando a esta parte")
+            // console.log(responsables)
 
             // Encuentra el elemento "Reponsable" en options y actualiza su subOptions.
             const responsableOption = this.options.find(option => option.name === 'Responsables');
@@ -1775,7 +1773,38 @@ export default {
             }
           }
     },
+    updateSolicitantes(newVal) {
 
+          let datamembers = this.$store.state.anaDataMembers
+          // console.log(">>>> al inicio")
+          // console.log(datamembers)
+        // Comprueba que las propiedades requeridas existen.
+          if (newVal) {
+            // Encuentra todos los responsables únicos en la lista de restricciones.
+            const uniqueSolicitantes = [...new Set(newVal.flatMap(frente =>
+              frente.listaFase && frente.listaFase.flatMap(fase =>
+                fase.listaRestricciones && fase.listaRestricciones.map(res => res.idUsuarioSolicitante)
+              )
+            ))];
+
+            // console.log(">> lista de ids")
+            // console.log(uniqueResponsables)
+
+            // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
+            const solicitantes = datamembers.filter(integrante => uniqueSolicitantes.includes(integrante.codProyIntegrante)).map(integrante => {
+              return { name: integrante.desProyIntegrante, id: integrante.codProyIntegrante };
+            });
+
+            // console.log(">>>> llegando a esta parte")
+            // console.log(responsables)
+
+            // Encuentra el elemento "Reponsable" en options y actualiza su subOptions.
+            const responsableOption = this.options.find(option => option.name === 'Solicitantes');
+            if (responsableOption) {
+              responsableOption.subOptions = solicitantes;
+            }
+          }
+    },
 
 
 
@@ -1903,6 +1932,7 @@ export default {
 
       if (newVal) {
           this.updateResponsables(newVal);
+          this.updateSolicitantes(newVal);
       }
 
     },

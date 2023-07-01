@@ -130,7 +130,7 @@ class ProjectController extends Controller
                 $usercreate = ProjectUser::create([
                     'codProyecto'         => $codPro,
                     'id'                  => $request['id'],
-                    'codEstadoInvitacion' => 0,
+                    'codEstadoInvitacion' => $request['id'] == $user['id'] ? 1 : 0,
                     'codRolIntegrante'    => intval($userRole),
                     'dayFechaInvitacion'  => $request['date'],
                     'codArea'             => intval($userArea),
@@ -139,7 +139,8 @@ class ProjectController extends Controller
                 ]);
 
             }
-            if(!isset($user['id'])){
+
+            if(!isset($user['id']) ){
 
                 $datos_enviar = array();
                 $datos_enviar['des_correo']        = $userEmail;
