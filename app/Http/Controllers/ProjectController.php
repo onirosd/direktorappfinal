@@ -264,7 +264,7 @@ class ProjectController extends Controller
             ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
             ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
             ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
-            ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , max(ad.isInvitado) as isInvitado
+            ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , min(ad.isInvitado) as isInvitado
 
             from (
             select  pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado
