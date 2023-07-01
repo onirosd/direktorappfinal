@@ -931,6 +931,8 @@ const store = createStore({
             idUsuarioResponsable:"",
             isEnabled:true,
             isupdate:false,
+            isEnabledFRequerida:true,
+            isEnabledFConciliada:true,
             numOrden:0
           }
 
@@ -989,7 +991,9 @@ const store = createStore({
                 idUsuarioResponsable:"",
                 isEnabled:true,
                 isupdate:false,
-                numOrden:0
+                numOrden:0,
+                isEnabledFRequerida:true,
+                isEnabledFConciliada:true,
               }
 
               row.listaRestricciones.push(temp)
@@ -1096,7 +1100,9 @@ const store = createStore({
             idUsuarioResponsable: rows[i]['idUsuarioResponsable'],
             numOrden : 0,
             isEnabled:true,
-            isupdate:false
+            isupdate:false,
+            isEnabledFRequerida:true,
+            isEnabledFConciliada:true,
           }
 
           rows.push(regIns);

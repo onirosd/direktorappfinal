@@ -81,10 +81,10 @@
           <td class = "downExcel" :class="{'hidden': hideCols.indexOf('restrictionType') > -1}">
             <select
             name="restrictionType"
-            v-if="INIstateRestriction && restriction_data.codEstadoActividad < 3"
+            v-if="INItipo && restriction_data.codEstadoActividad < 3"
             v-model="restriction_data.codTipoRestriccion"
             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded  selectPer"
-            :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
+            :class="{'bg-gray-100': !INItipo , 'text-gray-700': !INItipo  }"
             @change="verificarCambio({name:'codTipoRestriccion', value: restriction_data.codTipoRestriccion, change: $event });"
           >
 
@@ -95,13 +95,13 @@
 
           </select>
           <input
-                 v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3"
+                 v-if="!INItipo || restriction_data.codEstadoActividad == 3"
                  name="restrictionType"
                  :disabled="true"
                  :value="restriction_data.desTipoRestriccion"
                  type="text"
                  class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
-                 :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }" />
+                 :class="{'bg-gray-100': !INItipo , 'text-gray-700': !INItipo }" />
 
 
           </td>
@@ -204,11 +204,11 @@
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible') > -1}">
             <select
-            v-if="(INIstateRestriction && getOptionResponsables().length > 0) && restriction_data.codEstadoActividad < 3"
+            v-if="(INIresponsable && getOptionResponsables().length > 0) && restriction_data.codEstadoActividad < 3"
             name="responsible"
             v-model="restriction_data.idUsuarioResponsable"
             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
-            :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
+            :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }"
             @change="verificarCambio({name:'idUsuarioResponsable', value: restriction_data.idUsuarioResponsable})"
             >
 
@@ -220,13 +220,13 @@
           </select>
           <input
               name="responsible"
-              v-if="(!INIstateRestriction || getOptionResponsables().length == 0) || restriction_data.codEstadoActividad == 3"
+              v-if="(!INIresponsable || getOptionResponsables().length == 0) || restriction_data.codEstadoActividad == 3"
               :disabled="true"
               :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')"
               :value="restriction_data.desUsuarioResponsable"
               type="text"
               class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
-              :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }" />
+              :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }" />
 
           </td>
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-xs h-8  rounded"/></td>
@@ -588,7 +588,6 @@ export default {
   },
   watch: {
 
-        // console.log("tenemos un cambio ====> "+this.validarUpd)
     validarUpd(newValor, oldValor) {
       if(newValor == true){
 
@@ -597,11 +596,6 @@ export default {
 
       }
 
-
-      // console.log(newQuestion+" ---- "+oldQuestion)
-      // if (newQuestion.includes('?')) {
-      //   this.getAnswer()
-      // }
     }
 
   },
@@ -628,6 +622,51 @@ export default {
 
   computed: {
 
+    INIresponsable(){
+
+
+      if (this.restriction_data.isEnabled == false){
+
+        return false
+
+      }else{
+
+      if(!(this.rolProyecto == 3 || this.rolProyecto == 0)){
+
+        return false
+
+      }else{
+
+        return  this.statusRestriction
+
+      }
+
+
+      }
+
+    },
+    INItipo(){
+
+      if (this.restriction_data.isEnabled == false){
+
+        return false
+
+      }else{
+
+        if(!(this.rolProyecto == 3 || this.rolProyecto == 0)){
+
+          return false
+
+        }else{
+
+          return  this.statusRestriction
+
+        }
+
+
+      }
+
+    },
     INIstateRestriction(){
 
       if ( this.restriction_data.isEnabled  == false){

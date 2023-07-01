@@ -16,148 +16,122 @@
       :urls ="['home', 'restricciones']"
       :settingFlag="true"
     />
-    <div
-      class="flex sm:flex-col justify-between mb-12 sm:mb-10"
-      @click="revision"
-    >
-      <span class="items-start text-2xl text-activeText sm:mb-4"
-        >Restricciones del proyecto : {{nameProyecto}}</span
-      >
-      <div class="flex sm:flex-col h-[52px] sm:h-auto">
-        <!-- <div class="relative mr-4 sm:mr-0 sm:mb-4">
-          <input
-            type="text"
-            name="personalize"
-            id="personalize"
-            class="h-[52px] px-4 border border-[#8A9CC9] rounded text-base sm:w-full"
-            placeholder="Personalizar"
-          />
-          <img
-            src="../../assets/ic_arrow-down.svg"
-            alt=""
-            class="absolute flex transition top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-            :class="{
-              'rotate-180': personalizeOpen,
-              'rotate-0': !personalizeOpen,
-            }"
-            @click="handleClick('personalize')"
-          />
-        </div> -->
-        <div class="relative">
-          <input
-            type="text"
-            name="filter"
-            id="filter"
-            v-model="filterName"
-            class="h-[52px] px-4 border border-[#8A9CC9] rounded text-base sm:w-full"
-            placeholder="Filtrar"
-          />
-          <img
-            src="../../assets/ic_arrow-down.svg"
-            alt=""
-            class="absolute flex transition top-1/2 right-4 -translate-y-1/2 cursor-pointer"
-            :class="{ 'rotate-180': filterOpen, 'rotate-0': !filterOpen }"
-            @click="handleClick('filter')"
-          />
-          <SelectOption
-            :selType="'tree'"
-            @selected="selFilterOpt"
-            @treeSelected="selTreeOpt"
-            :options="options"
-            v-if="filterOpen"
-            :treeIndex="treeIndex"
-            :treeOptions="treeOptions"
-          />
-        </div>
-      </div>
+
+    <div class="flex flex-col">
+
+
+
+      <div class="flex justify-start">
+
+
+
+<div @click="mverificamos"> hacer clicks para probar</div>
+<div class="flex justify-between space-x-4">
+  <!-- Primer bloque - Indicador principal en Card -->
+  <div class="flex-1 bg-blue-500 text-white rounded-lg p-3 shadow-md">
+    <h2 class="text-lg">Avance de restricciones</h2>
+    <h3 class="text-md">50%</h3>
+    <div class="h-2 bg-white mt-2">
+      <div class="h-full bg-orange-500" style="width: 50%;"></div>
     </div>
-    <div class="flex sm:flex-col mb-12 justify-between">
-      <div class="flex sm:flex-col sm:mb-2" v-if="!fullScreen">
-        <button
-          :disabled="isDisabled"
-          class="w-[120px] sm:w-full h-8 px-3 flex justify-between items-center border-2 border-orange rounded mr-2 sm:mb-2 "
-          @click="openModal({ param: 'addFront' })"
-          :class="{
+  </div>
+
+  <!-- Segundo bloque - 2 indicadores en Barra -->
+  <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+    <div>
+      <span class="mr-2 text-xs">Áreas cubiertas:</span>
+      <div class="h-2 w-full bg-gray-300">
+        <div class="h-full bg-green-500" style="width: 30%;"></div>
+      </div>
+      <span class="ml-2 text-md">30%</span>
+    </div>
+
+    <div>
+      <span class="mr-2 text-xs">Acabados:</span>
+      <div class="h-2 w-full bg-gray-300">
+        <div class="h-full bg-red-500" style="width: 40%;"></div>
+      </div>
+      <span class="ml-2 text-md">40%</span>
+    </div>
+  </div>
+
+  <!-- Tercer bloque - 2 indicadores en Barra -->
+  <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+    <!-- Aquí puedes agregar los dos indicadores adicionales siguiendo el formato anterior -->
+  </div>
+</div>
+
+
+
+
+
+
+</div>
+
+<br>
+
+<div class=" flex  justify-between  sm:flex-col">
+  <!-- Sección izquierda -->
+  <div class=" flex  w-[50%] sm:w-full " v-if="!fullScreen">
+    <button
+        :disabled="isDisabled"
+         class="bg-white w-[17%]  sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+         @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+         @click="openModal({ param: 'addFront' })"
+         :class="{
             'border-orange': !isDisabled,
             'border-[#DCE4F9]': isDisabled,
           }"
-        >
-          <span
-            class="text-xs"
-            :class="{
-              'text-orange': !isDisabled,
-              'text-[#8A9CC9]': isDisabled,
-            }"
-          >
-            Agregar frente
-          </span>
-          <img src="../../assets/btn-plus.svg" alt="" />
-        </button>
-        <button
-          :disabled="isDisabled"
-          class="w-[120px] sm:w-full h-8 px-3 flex justify-between items-center border-2 border-orange rounded mr-2 sm:mb-2"
-          @click="openModal({ param: 'addPhase' })"
-          :class="{
+
+         >
+        <i class="fas fa-plus-circle"></i> Agregar frente
+    </button>
+
+    <button
+      class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+      @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+      :disabled="isDisabled"
+      @click="openModal({ param: 'addPhase' })"
+      :class="{
             'border-orange': !isDisabled,
             'border-[#DCE4F9]': isDisabled,
           }"
-        >
-          <span
-            class="text-xs"
-            :class="{
-              'text-orange': !isDisabled,
-              'text-[#8A9CC9]': isDisabled,
-            }"
-          >
-            Agregar Fase
-          </span>
-          <img src="../../assets/btn-plus.svg" alt="" />
-        </button>
-        <button
-          class="w-[110px] sm:w-full h-8 px-3 flex justify-between items-center border-2 rounded mr-2 sm:mb-2"
-          :disabled="isDisabled"
-          :class="{
+
+      >
+      <i class="fas fa-plus-circle"></i> Agregar fase
+    </button>
+
+    <button
+      class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+      @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+      :disabled="isDisabled"
+      :class="{
             'border-orange': !isDisabled,
             'border-[#DCE4F9]': isDisabled,
           }"
-          @click="openModal({ param: 'deleteFront' })"
-        >
-          <span
-            class="text-xs"
-            :class="{
-              'text-orange': !isDisabled,
-              'text-[#8A9CC9]': isDisabled,
-            }"
-          >
-            Eliminar
-          </span>
-          <img
-            src="../../assets/tooltip-delete-active.svg"
-            alt=""
-          />
-        </button>
-        <button
-          @click="openModal({ param: 'enviarNoti' })"
-          class="w-[110px] sm:w-full h-8 px-4 flex justify-between items-center border-2 rounded"
-          :disabled="disabledItemsEnviarCorreos"
-          :class="{
+      @click="openModal({ param: 'deleteFront' })"
+
+      >
+      <i class="fas fa-trash"></i> Eliminar
+    </button>
+
+    <button
+       class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+       @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+       @click="openModal({ param: 'enviarNoti' })"
+       :disabled="disabledItemsEnviarCorreos"
+       :class="{
             'border-orange': !disabledItemsEnviarCorreos,
             'border-[#DCE4F9]': disabledItemsEnviarCorreos,
           }"
-        >
-          <span
-            class="text-xs"
-            :class="{
-              'text-orange': !disabledItemsEnviarCorreos,
-              'text-[#8A9CC9]': disabledItemsEnviarCorreos,
-            }"
-          >
-            Enviar Correos ({{countNotNoti}})
 
-          </span>
-        </button>
-      </div>
-      <div class="flex sm:mb-2" v-if="fullScreen">
+       >
+      <i class="fas fa-envelope"></i> Enviar Correos
+      <span class="badge absolute top-0 right-0 h-5 w-5 bg-red-500 rounded-full text-white text-center text-xs" >{{countNotNoti}}</span>
+    </button>
+
+  </div>
+  <div class=" flex  w-[50%] sm:w-full" v-if="fullScreen">
         <ul class="text-[#8A9CC9] items-center flex text-xs">
           <li class="flex">
             {{ frontName }}
@@ -171,33 +145,64 @@
             {{ phaseName }}
           </li>
         </ul>
-      </div>
+  </div>
 
-      <div class="flex sm:flex-wrap" v-if="!isDisabled ">
-        <a
-        class="flex items-center mr-4 cursor-pointer sm:mb-2"
-        @click="downloadFile"
-
-        >
-          <span class="text-xs text-[#002B6B] mr-1">Descargar plantilla</span>
-          <img src="../../assets/download.svg" alt="" />
-      </a>
-        <div
-          class="flex items-center mr-4 cursor-pointer sm:mb-2"
-          @click="openModal({ param: 'uploadExcel' })"
-        >
-          <span class="text-xs text-[#002B6B] mr-1">Importar excel</span>
-          <img src="../../assets/upload.svg" alt="" />
-        </div>
-        <div
-          class="flex items-center cursor-pointer sm:mb-2"
-          @click="downloadReporte"
-        >
-          <span class="text-xs text-[#002B6B] mr-1">Descargar reporte</span>
-          <img src="../../assets/download.svg" alt="" />
-        </div>
+  <div class=" flex  w-[50%] sm:w-full  justify-end" >
+    <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
+      <div class="flex-1 flex justify-end text-xs ">
+        <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[42px]" @click="downloadFile">
+          <i class="fas fa-file-download"></i> Descargar Plantilla
+        </button>
+        <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[42px]" @click="openModal({ param: 'uploadExcel' })">
+          <i class="fas fa-file-upload"></i> Subir Plantilla
+        </button>
+        <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[42px]" @click="downloadReporte">
+          <i class="fas fa-file-download"></i> Reporte
+        </button>
       </div>
     </div>
+
+    <div class=" flex flex-col w-[40%] sm:w-full ">
+        <div class="flex-1 relative">
+          <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
+
+          <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[42px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 ">
+
+          <!-- Lista de filtros seleccionados -->
+          <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
+            <span>{{ filter }}</span>
+            <i class="fas fa-times cursor-pointer " @click="removeFilter(index)"></i>
+          </div>
+
+          <transition name="fade">
+
+          <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg" v-if="showOptions" ref="dropdown">
+            <div v-for="(option, index) in visibleOptions" :key="index" class="px-2 py-1 cursor-pointer mb-2 shadow-sm"  @click="optionClicked(option)">
+              <div class="font-normal flex justify-between">
+                <span>{{option.name}}</span>
+                <span v-if="option.subOptions">
+                <i :class="option.showSubOptions ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
+                </span>
+              </div>
+              <div v-if="option.subOptions && option.showSubOptions" class="pl-2">
+              <div v-for="(subOption) in option.subOptions" :key="subOption.id" class="px-2 py-1 cursor-pointer hover:bg-blue-100 font-normal text-xs" @click.stop="selectOption(option, subOption)">
+                {{subOption.name}}
+              </div>
+            </div>
+            </div>
+            <div v-if="!anyResults" class="px-2 py-1 text-xs">No se tienen resultado de la búsqueda.</div>
+          </div>
+
+        </transition>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+
+    </div>
+
 
 
     <div class="flex flex-col">
@@ -536,6 +541,7 @@ import Loading from "vue-loading-overlay";
 import AddRowData from "../../components/AddRowData.vue";
 
 import store from "../../store";
+import '@fortawesome/fontawesome-free/css/all.css'
 export default {
   name: "white-project-component",
   components: {
@@ -591,7 +597,24 @@ export default {
       phaseName: "",
       restrictionsu: [],
       fullScreen: false,
+
+
+
+      search: '',
+      showOptions: false,
       options: [
+        { name: 'Responsables', visible: false ,subOptions: this.optResponsables, showSubOptions: false },
+        // { name: 'Solicitante', visible: false, subOptions: [], showSubOptions: false },
+        // { name: 'Vencimiento', visible: false , subOptions: [{id: 1, name: 'con Retraso'}], showSubOptions: false },
+        // { name: 'Tipo de Restricción', visible: false ,subOptions: [], showSubOptions: false }
+      ],
+      anyResults: false,
+      selectedFilters: [],
+
+
+
+
+      options0: [
         {
           name: "Responsable",
           value: "responsible",
@@ -681,6 +704,12 @@ export default {
     };
   },
   methods: {
+
+    mverificamos(){
+
+      console.log(this.options)
+
+    },
 
    get_retrasados(datos){
     let conteo            = 0
@@ -1608,6 +1637,8 @@ export default {
         this.rolProyecto       = this.$store.state.rolProyecto;
 
         this.$store.state.sidebar = false;
+        // console.log(">>> actualizamos en el mounted")
+        // this.updateResponsables(this.jsonData)
 
         if (this.statusRestriction === false) {
 
@@ -1637,14 +1668,131 @@ export default {
 
       this.pageloadflag = true;
     },
+
+
+
+
+
+    /* TENEMOS FUNCIONES PARA EL FILTRO */
+
+    toggleFilterOptions() {
+        if (this.search.length === 0) {
+            this.showOptions = !this.showOptions;
+            if (this.showOptions) {
+                this.options.forEach(option => option.visible = true);
+                this.anyResults = true; // Asegúrate de que cualquier resultado sea verdadero para evitar mostrar el mensaje de sin resultados
+            }
+        } else {
+            this.filterOptions();
+        }
+    },
+
+    toggleOptions() {
+        this.showOptions = !this.showOptions;
+    },
+    outsideClickListener(event) {
+        const dropdownElem = this.$refs.dropdown;
+        if (dropdownElem && !dropdownElem.contains(event.target) && event.target.className.indexOf('fa-filter') == -1) {
+            this.showOptions = false;
+        }
+    },
+    filterOptions() {
+        this.showOptions = this.search.length > 0 || this.toggleButtonClicked;
+        this.anyResults = false;
+        for (let option of this.options) {
+            option.visible = false;
+            if (option.subOptions) {
+                // Si la opción tiene subopciones, también se deben revisar
+                for (let subOption of option.subOptions) {
+                    if (subOption.name.toLowerCase().includes(this.search.toLowerCase())) {
+                        option.visible = true;
+                        option.showSubOptions = true; // Mostrar automáticamente las subopciones
+                        this.anyResults = true;
+                        break;  // Si encuentra una coincidencia, no necesita buscar más en las subopciones
+                    }
+                }
+            } else {
+                option.visible = option.name.toLowerCase().includes(this.search.toLowerCase());
+                if (option.visible) {
+                    this.anyResults = true;
+                }
+            }
+        }
+    },
+
+    optionClicked(option) {
+        if (option.subOptions) {
+            // Solo altera showSubOptions si no hay búsqueda, de lo contrario deja las subopciones abiertas
+            if (this.search === '') {
+                option.showSubOptions = !option.showSubOptions;
+            }
+        } else {
+            this.selectOption(option);
+        }
+    },
+    selectOption(option, subOption) {
+      const selected = subOption ? subOption.name : option.name;
+      this.selectedFilters = [selected];  // Reemplazamos todos los filtros existentes con el nuevo
+      console.log('Nombre de la opción seleccionada:', selected);
+      console.log('ID de la opción seleccionada:', subOption ? subOption.id : option.id);
+      this.showOptions = false;
+      this.search = '';
+    },
+    removeFilter(index) {
+        this.selectedFilters.splice(index, 1);
+      },
+
+
+    updateResponsables(newVal) {
+
+          let datamembers = this.$store.state.anaDataMembers
+          console.log(">>>> al inicio")
+          console.log(datamembers)
+        // Comprueba que las propiedades requeridas existen.
+          if (newVal) {
+            // Encuentra todos los responsables únicos en la lista de restricciones.
+            const uniqueResponsables = [...new Set(newVal.flatMap(frente =>
+              frente.listaFase && frente.listaFase.flatMap(fase =>
+                fase.listaRestricciones && fase.listaRestricciones.map(res => res.idUsuarioResponsable)
+              )
+            ))];
+
+            console.log(">> lista de ids")
+            console.log(uniqueResponsables)
+
+            // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
+            const responsables = datamembers.filter(integrante => uniqueResponsables.includes(integrante.codProyIntegrante)).map(integrante => {
+              return { name: integrante.desProyIntegrante, id: integrante.codProyIntegrante };
+            });
+
+            console.log(">>>> llegando a esta parte")
+            console.log(responsables)
+
+            // Encuentra el elemento "Reponsable" en options y actualiza su subOptions.
+            const responsableOption = this.options.find(option => option.name === 'Responsables');
+            if (responsableOption) {
+              responsableOption.subOptions = responsables;
+            }
+          }
+    },
+
+
+
+
   },
   computed: {
+
+    jsonData() {
+    return this.$store.state.whiteproject_rows; // Asume que `jsonData` es un estado en tu store Vuex.
+    },
+
+    visibleOptions() {
+        return this.options.filter(option => option.visible);
+    },
     isDisabled: function () {
       return this.disabledItems;
     },
-    // rowsCant: function(){
-    //   return this.$store.state.whiteproject_rows.length
-    // },
+
     countNotNoti: function (){
       let res      = this.$store.state.whiteproject_rows;
       let contador = 0;
@@ -1666,6 +1814,40 @@ export default {
     },
     solicitanteActual: function(){
       return this.$store.state.solicitanteActual;
+    },
+
+    optResponsables(){
+
+      // let res = this.$store.state.whiteproject_rows;
+      // this.restrictions = res;
+      let responsables  = [];
+
+      // Recorremos la lista 'restricciones'.
+      this.$store.state.whiteproject_rows.forEach(restriccion => {
+          restriccion.listaFase.forEach(fase => {
+              fase.listaRestricciones.forEach(restriccion => {
+                  // Si el idUsuarioResponsable aún no está en nuestro array, lo añadimos.
+                  if (!responsables.includes(restriccion.idUsuarioResponsable)) {
+                      responsables.push(restriccion.idUsuarioResponsable);
+                  }
+              });
+          });
+      });
+
+      let opcionesResponsable = [];
+            // Buscamos los idUsuarioResponsable en la lista 'integrantesAnaReS'.
+      this.$store.state.anaDataMembers.forEach(integrante => {
+          if (responsables.includes(integrante.idIntegrante)) {
+              // Añadimos un objeto con el id y el nombre a las opciones de responsable.
+              opcionesResponsable.push({
+                  id: integrante.idIntegrante,
+                  nombre: integrante.desProyIntegrante
+              });
+          }
+      });
+
+    return opcionesResponsable;
+
     },
     rows: function () {
       let res = this.$store.state.whiteproject_rows;
@@ -1713,7 +1895,24 @@ export default {
     //   return this.$store.getters.hideCols({id: this.frontId, phaseId: this.phaseId});
     // }
   },
+
+  watch: {
+  jsonData: {
+    deep: true,  // Observa los cambios profundos en el objeto
+    handler(newVal) {
+
+      if (newVal) {
+          this.updateResponsables(newVal);
+      }
+
+    },
+  },
+},
+
+
   mounted: async function () {
+    document.addEventListener('click', this.outsideClickListener);
+
     await this.callMounted();
     // window.addEventListener('resize', this.ResizeActually);
     // this.ResizeActually()
@@ -1751,6 +1950,9 @@ export default {
   created: function () {},
   beforeMount: function () {
     // this.filterSectionHeight()
+  },
+  beforeDestroy() {
+      document.removeEventListener('click', this.outsideClickListener);
   },
   // updated:function(){
   //   this.filterSectionHeight()
@@ -1796,5 +1998,23 @@ export default {
 .red {
     background-color: #c71616;
 }
+
+.badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  font-size: 10px;
+  min-width: 18px;
+  height: 18px;
+  color: #fff;
+  background-color: #eb5d00;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  box-shadow: 0 0 1px #333;
+}
+
 
 </style>
