@@ -557,9 +557,9 @@ class RestrictionController extends Controller
                         if($value['codEstadoActividad'] == 3){
                             $datos                        = array();
 
-                            $fechaLevantamiento = PhaseActividad::where('codAnaResActividad', $idactividad)->value('dayFechaCreacion');                           
-                            $datos["idReal"]              = $value['codAnaResActividad'];
-                            $datos["fechaLevantamiento"]  = date("Y-m-d", strtotime($fechaLevantamiento));
+                            //$fechaLevantamiento = PhaseActividad::where('codAnaResActividad', (int)$value['codAnaResActividad'])->value('dayFechaCreacion');                           
+                            $datos["idReal"]              = (int)$value['codAnaResActividad'];
+                            $datos["fechaLevantamiento"]  = date("Y-m-d", strtotime(Carbon::now()));
                             $enviar["actualizaciones"][]  = $datos;
     
                         }
