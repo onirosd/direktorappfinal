@@ -346,7 +346,7 @@ class ProjectController extends Controller
                 ->where('codProyIntegrante', $user['codProyIntegrante'])
                 ->update([
                     'codArea'          => $user['userArea'],
-                    'codRolIntegrante' => $user['userRole'],
+                    'codRolIntegrante' => $user['userRole']
                     // 'desCorreo'        => $user['userEmail'],
                 ]);
 
