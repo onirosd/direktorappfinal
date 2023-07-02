@@ -760,7 +760,7 @@ class RestrictionController extends Controller
                             'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
                             'desUsuarioResponsable' => $des_usuarioResponsable ,
                             'desUsuarioSolicitante' => $data['name']." ".$data["lastname"],
-                            'idUsuarioSolicitante' => $data['codUsuarioSolicitante'],
+                            'idUsuarioSolicitante' => (int)$data['codUsuarioSolicitante'],
                             'codEstadoActividad' => $data['codEstadoActividad'],
                             'desEstadoActividad' => $data['desEstadoActividad'],
                             'desAreaResponsable' => $data['desArea'],

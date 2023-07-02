@@ -1744,8 +1744,8 @@ export default {
     updateResponsables(newVal) {
 
           let datamembers = this.$store.state.anaDataMembers
-          console.log(">>>> al inicio")
-          console.log(datamembers)
+          // console.log(">>>> al inicio")
+          // console.log(datamembers)
         // Comprueba que las propiedades requeridas existen.
           if (newVal) {
             // Encuentra todos los responsables únicos en la lista de restricciones.
@@ -1791,8 +1791,8 @@ export default {
             // console.log(uniqueResponsables)
 
             // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
-            const solicitantes = datamembers.filter(integrante => uniqueSolicitantes.includes(integrante.codProyIntegrante)).map(integrante => {
-              return { name: integrante.desProyIntegrante, id: integrante.codProyIntegrante };
+            const solicitantes = datamembers.filter(integrante => uniqueSolicitantes.includes(integrante.idIntegrante)).map(integrante => {
+              return { name: integrante.desProyIntegrante, id: integrante.idIntegrante };
             });
 
             // console.log(">>>> llegando a esta parte")
