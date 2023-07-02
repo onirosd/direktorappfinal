@@ -322,6 +322,16 @@ class ProjectController extends Controller
         // ProjectUser::where('codProyecto', $request['projectId'])->delete();
         // print_r($request['userInvData']);
         // return ;
+        $codProyIntegrantesExist = array();
+        foreach($request['userInvData'] as $user) {
+            $codProyIntegrantesExist[] = $user['codProyIntegrante'];
+
+        }
+
+        ProjectUser::where('codProyecto', $request['projectId'])
+                     ->whereNotIn('codProyIntegrante', $codProyIntegrantesExist)
+                     ->delete();
+
         foreach($request['userInvData'] as $user) {
 
             $userEmail = $user['userEmail'];
@@ -337,14 +347,13 @@ class ProjectController extends Controller
                 ->update([
                     'codArea'          => $user['userArea'],
                     'codRolIntegrante' => $user['userRole'],
-
+                    // 'desCorreo'        => $user['userEmail'],
                 ]);
 
             }else{
 
                 /* Significa que es un usuario que tiene un ID osea esta en el sistema  , se le va a invitar*/
                 if ($userId  > 0){
-
 
                     $usercreate = ProjectUser::create([
                         'codProyecto'         => $request['projectId'],

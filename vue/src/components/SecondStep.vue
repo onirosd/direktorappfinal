@@ -39,7 +39,7 @@
             <input
 
               type="text"
-
+              :disabled="user.flgInsertado"
               :key="index"
               placeholder="Correo electrónico"
               v-model="user.userEmail"
@@ -226,6 +226,8 @@ export default {
         userEmail: "",
         userRole: "",
         userArea: "",
+        flgInsertado: false,
+        isNew:true,
         suggestiondata : []
       };
       // console.log("as")

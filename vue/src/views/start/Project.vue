@@ -670,6 +670,7 @@ export default {
               userRole: user.codRolIntegrante,
               userArea: user.codArea,
               id: user.idIntegrante,
+              flgInsertado: true,
               suggestiondata: [],
             };
             users.push(temp);
