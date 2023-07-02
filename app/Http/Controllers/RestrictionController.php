@@ -520,6 +520,7 @@ class RestrictionController extends Controller
         $enviar = array();
         $enviar["flag"]     = 0;
         $enviar["inserciones"]     = array();
+        $enviar["actualizaciones"]     = array();
         $enviar["mensaje"]  = "";
         // print_r($request);
 

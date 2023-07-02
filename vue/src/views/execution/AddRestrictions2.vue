@@ -1216,7 +1216,7 @@ export default {
                             enviar[i].idfase
                           ]["listaRestricciones"][enviar[i].idrestriccion][
                             "dayFechaLevantamiento"
-                          ] = response.data.inserciones[index1]["fechaLevantamiento"];
+                          ] = response.data.actualizaciones[index1]["fechaLevantamiento"];
 
                           break;
 
