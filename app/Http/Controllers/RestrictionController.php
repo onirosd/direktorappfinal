@@ -47,7 +47,7 @@ class RestrictionController extends Controller
         from (
         select
         ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion,
-        ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , max(ad.isInvitado) as isInvitado
+        ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , min(ad.isInvitado) as isInvitado
 
         from (
         select
