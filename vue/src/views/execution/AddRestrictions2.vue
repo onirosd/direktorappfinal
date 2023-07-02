@@ -18,42 +18,41 @@
     />
 
     <div class="flex flex-col">
+      <div class="flex justify-start"  v-if="!fullScreen">
 
 
 
-      <div class="flex justify-start">
+      <!-- <div @click="mverificamos"> hacer clicks para probar</div> -->
+      <div class="flex justify-between space-x-4">
+        <!-- Primer bloque - Indicador principal en Card -->
+        <div class="flex-1 bg-blue-500 text-white rounded-lg p-3 shadow-md">
+          <h2 class="text-lg">Avance de restricciones</h2>
+          <h3 class="text-md">{{indicadorAvanceGeneral}}%</h3>
+          <div class="h-2 bg-white mt-2">
+            
+            <div class="h-full bg-orange-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
 
+          </div>
+        </div>
 
+        <!-- Segundo bloque - 2 indicadores en Barra -->
+        <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+          <div>
+            <span class="mr-2 text-xs">Áreas cubiertas:</span>
+            <div class="h-2 w-full bg-gray-300">
+              <div class="h-full bg-green-500" style="width: 30%;"></div>
+            </div>
+            <span class="ml-2 text-md">30%</span>
+          </div>
 
-<div @click="mverificamos"> hacer clicks para probar</div>
-<div class="flex justify-between space-x-4">
-  <!-- Primer bloque - Indicador principal en Card -->
-  <div class="flex-1 bg-blue-500 text-white rounded-lg p-3 shadow-md">
-    <h2 class="text-lg">Avance de restricciones</h2>
-    <h3 class="text-md">50%</h3>
-    <div class="h-2 bg-white mt-2">
-      <div class="h-full bg-orange-500" style="width: 50%;"></div>
-    </div>
-  </div>
-
-  <!-- Segundo bloque - 2 indicadores en Barra -->
-  <div class="flex-1 flex flex-col space-y-2 w-[12em]">
-    <div>
-      <span class="mr-2 text-xs">Áreas cubiertas:</span>
-      <div class="h-2 w-full bg-gray-300">
-        <div class="h-full bg-green-500" style="width: 30%;"></div>
-      </div>
-      <span class="ml-2 text-md">30%</span>
-    </div>
-
-    <div>
-      <span class="mr-2 text-xs">Acabados:</span>
-      <div class="h-2 w-full bg-gray-300">
-        <div class="h-full bg-red-500" style="width: 40%;"></div>
-      </div>
-      <span class="ml-2 text-md">40%</span>
-    </div>
-  </div>
+          <div>
+            <span class="mr-2 text-xs">Acabados:</span>
+            <div class="h-2 w-full bg-gray-300">
+              <div class="h-full bg-red-500" style="width: 40%;"></div>
+            </div>
+            <span class="ml-2 text-md">40%</span>
+          </div>
+        </div>
 
   <!-- Tercer bloque - 2 indicadores en Barra -->
   <div class="flex-1 flex flex-col space-y-2 w-[12em]">
@@ -66,138 +65,138 @@
 
 
 
-</div>
-
-<br>
-
-<div class=" flex  justify-between  sm:flex-col">
-  <!-- Sección izquierda -->
-  <div class=" flex  w-[50%] sm:w-full " v-if="!fullScreen">
-    <button
-        :disabled="isDisabled"
-         class="bg-white w-[17%]  sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
-         @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-         @click="openModal({ param: 'addFront' })"
-         :class="{
-            'border-orange': !isDisabled,
-            'border-[#DCE4F9]': isDisabled,
-          }"
-
-         >
-        <i class="fas fa-plus-circle"></i> Agregar frente
-    </button>
-
-    <button
-      class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
-      @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-      :disabled="isDisabled"
-      @click="openModal({ param: 'addPhase' })"
-      :class="{
-            'border-orange': !isDisabled,
-            'border-[#DCE4F9]': isDisabled,
-          }"
-
-      >
-      <i class="fas fa-plus-circle"></i> Agregar fase
-    </button>
-
-    <button
-      class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
-      @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-      :disabled="isDisabled"
-      :class="{
-            'border-orange': !isDisabled,
-            'border-[#DCE4F9]': isDisabled,
-          }"
-      @click="openModal({ param: 'deleteFront' })"
-
-      >
-      <i class="fas fa-trash"></i> Eliminar
-    </button>
-
-    <button
-       class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
-       @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-       @click="openModal({ param: 'enviarNoti' })"
-       :disabled="disabledItemsEnviarCorreos"
-       :class="{
-            'border-orange': !disabledItemsEnviarCorreos,
-            'border-[#DCE4F9]': disabledItemsEnviarCorreos,
-          }"
-
-       >
-      <i class="fas fa-envelope"></i> Enviar Correos
-      <span class="badge absolute top-0 right-0 h-5 w-5 bg-red-500 rounded-full text-white text-center text-xs" >{{countNotNoti}}</span>
-    </button>
-
-  </div>
-  <div class=" flex  w-[50%] sm:w-full" v-if="fullScreen">
-        <ul class="text-[#8A9CC9] items-center flex text-xs">
-          <li class="flex">
-            {{ frontName }}
-          </li>
-          <li class="text-[#616E8E] flex">
-            <img
-              src="../../assets/arrow-right.svg"
-              alt=""
-              class="mx-[5px]"
-            />
-            {{ phaseName }}
-          </li>
-        </ul>
-  </div>
-
-  <div class=" flex  w-[50%] sm:w-full  justify-end" >
-    <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
-      <div class="flex-1 flex justify-end text-xs ">
-        <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[42px]" @click="downloadFile">
-          <i class="fas fa-file-download"></i> Descargar Plantilla
-        </button>
-        <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[42px]" @click="openModal({ param: 'uploadExcel' })">
-          <i class="fas fa-file-upload"></i> Subir Plantilla
-        </button>
-        <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[42px]" @click="downloadReporte">
-          <i class="fas fa-file-download"></i> Reporte
-        </button>
-      </div>
     </div>
 
-    <div class=" flex flex-col w-[40%] sm:w-full ">
-        <div class="flex-1 relative">
-          <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
+      <br>
 
-          <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[42px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 ">
+    <div class=" flex  justify-between  sm:flex-col">
+      <!-- Sección izquierda -->
+      <div class=" flex  w-[50%] sm:w-full " v-if="!fullScreen">
+        <button
+            :disabled="isDisabled"
+            class="bg-white w-[17%]  sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+            @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+            @click="openModal({ param: 'addFront' })"
+            :class="{
+                'border-orange': !isDisabled,
+                'border-[#DCE4F9]': isDisabled,
+              }"
 
-          <!-- Lista de filtros seleccionados -->
-          <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
-            <span>{{ filter }}</span>
-            <i class="fas fa-times cursor-pointer " @click="removeFilter(index)"></i>
-          </div>
+            >
+            <i class="fas fa-plus-circle"></i> Agregar frente
+        </button>
 
-          <transition name="fade">
+        <button
+          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+          :disabled="isDisabled"
+          @click="openModal({ param: 'addPhase' })"
+          :class="{
+                'border-orange': !isDisabled,
+                'border-[#DCE4F9]': isDisabled,
+              }"
 
-          <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg" v-if="showOptions" ref="dropdown">
-            <div v-for="(option, index) in visibleOptions" :key="index" class="px-2 py-1 cursor-pointer mb-2 shadow-sm"  @click="optionClicked(option)">
-              <div class="font-normal flex justify-between">
-                <span>{{option.name}}</span>
-                <span v-if="option.subOptions">
-                <i :class="option.showSubOptions ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
-                </span>
-              </div>
-              <div v-if="option.subOptions && option.showSubOptions" class="pl-2">
-              <div v-for="(subOption) in option.subOptions" :key="subOption.id" class="px-2 py-1 cursor-pointer hover:bg-blue-100 font-normal text-xs" @click.stop="selectOption(option, subOption)">
-                {{subOption.name}}
-              </div>
-            </div>
-            </div>
-            <div v-if="!anyResults" class="px-2 py-1 text-xs">No se tienen resultado de la búsqueda.</div>
-          </div>
+          >
+          <i class="fas fa-plus-circle"></i> Agregar fase
+        </button>
 
-        </transition>
-        </div>
+        <button
+          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+          :disabled="isDisabled"
+          :class="{
+                'border-orange': !isDisabled,
+                'border-[#DCE4F9]': isDisabled,
+              }"
+          @click="openModal({ param: 'deleteFront' })"
+
+          >
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
+
+        <button
+          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+          @click="openModal({ param: 'enviarNoti' })"
+          :disabled="disabledItemsEnviarCorreos"
+          :class="{
+                'border-orange': !disabledItemsEnviarCorreos,
+                'border-[#DCE4F9]': disabledItemsEnviarCorreos,
+              }"
+
+          >
+          <i class="fas fa-envelope"></i> Enviar Correos
+          <span class="badge absolute top-0 right-0 h-5 w-5 bg-red-500 rounded-full text-white text-center text-xs" >{{countNotNoti}}</span>
+        </button>
+
       </div>
-  </div>
-</div>
+      <div class=" flex  w-[50%] sm:w-full" v-if="fullScreen">
+            <ul class="text-[#8A9CC9] items-center flex text-xs">
+              <li class="flex">
+                {{ frontName }}
+              </li>
+              <li class="text-[#616E8E] flex">
+                <img
+                  src="../../assets/arrow-right.svg"
+                  alt=""
+                  class="mx-[5px]"
+                />
+                {{ phaseName }}
+              </li>
+            </ul>
+      </div>
+
+      <div class=" flex  w-[50%] sm:w-full  justify-end" v-if="!fullScreen">
+        <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
+          <div class="flex-1 flex justify-end text-xs ">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[42px]" @click="downloadFile">
+              <i class="fas fa-file-download"></i> Descargar Plantilla
+            </button>
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[42px]" @click="openModal({ param: 'uploadExcel' })">
+              <i class="fas fa-file-upload"></i> Subir Plantilla
+            </button>
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[42px]" @click="downloadReporte">
+              <i class="fas fa-file-download"></i> Reporte
+            </button>
+          </div>
+        </div>
+
+        <div class=" flex flex-col w-[40%] sm:w-full ">
+            <div class="flex-1 relative z-10">
+              <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
+
+              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[42px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 ">
+
+              <!-- Lista de filtros seleccionados -->
+              <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
+                <span>{{ filter }}</span>
+                <i class="fas fa-times cursor-pointer " @click="removeFilter(index)"></i>
+              </div>
+
+              <transition name="fade">
+
+              <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg" v-if="showOptions" ref="dropdown">
+                <div v-for="(option, index) in visibleOptions" :key="index" class="px-2 py-1 cursor-pointer mb-2 shadow-sm"  @click="optionClicked(option)">
+                  <div class="font-normal flex justify-between">
+                    <span>{{option.name}}</span>
+                    <span v-if="option.subOptions">
+                    <i :class="option.showSubOptions ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
+                    </span>
+                  </div>
+                  <div v-if="option.subOptions && option.showSubOptions" class="pl-2">
+                  <div v-for="(subOption) in option.subOptions" :key="subOption.id" class="px-2 py-1 cursor-pointer hover:bg-blue-100 font-normal text-xs" @click.stop="selectOption(option, subOption)">
+                    {{subOption.name}}
+                  </div>
+                </div>
+                </div>
+                <div v-if="!anyResults" class="px-2 py-1 text-xs">No se tienen resultado de la búsqueda.</div>
+              </div>
+
+            </transition>
+            </div>
+          </div>
+      </div>
+    </div>
 
 
 
@@ -605,8 +604,8 @@ export default {
       options: [
         { name: 'Responsables', visible: false ,subOptions: [], showSubOptions: false },
         { name: 'Solicitantes', visible: false, subOptions: [], showSubOptions: false },
-        // { name: 'Vencimiento', visible: false , subOptions: [{id: 1, name: 'con Retraso'}], showSubOptions: false },
-        // { name: 'Tipo de Restricción', visible: false ,subOptions: [], showSubOptions: false }
+        { name: 'Vencimiento', visible: false , subOptions: [], showSubOptions: false },
+        { name: 'Tipo de Restricción', visible: false ,subOptions: [], showSubOptions: false }
       ],
       anyResults: false,
       selectedFilters: [],
@@ -700,14 +699,22 @@ export default {
       treeOptions: [],
       treeIndex: 0,
       idxFront_pivot:0,
-      idxPhase_pivot:0
+      idxPhase_pivot:0,
+
+
+
+      optionFilterIndex:0,
+      optionFilterSelected : null,
+      optionSubFilterSelected : null,
+
+      indAvanceGeneral:0
     };
   },
   methods: {
 
     mverificamos(){
 
-      console.log(this.options)
+      console.log(this.indicadorAvanceGeneral)
 
     },
 
@@ -716,24 +723,11 @@ export default {
     try {
 
       const hoy     = new Date();
-      // console.log(">>>> verificamos la fecha de hoy"+hoy)
-      // datos.forEach(item => {
-      //   if ( item.codEstadoActividad < "3"  && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy){
-      //     console.log(">> entramos registros")
-      //     console.log(new Date(item.dayFechaConciliada+ "T00:00:00-05:00"))
-      //     console.log(item.codEstadoActividad)
-      //     console.log(hoy)
-      //     conteo++;
-      //   }
-
-      // });
-      // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-       conteo        = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy).length;
+       conteo        = datos.filter(item => parseInt(item.codEstadoActividad,10) < 3 && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy).length;
 
     } catch (error) {
 
     }
-
     return conteo;
    },
    get_noretrasados(datos){
@@ -742,7 +736,7 @@ export default {
 
       const hoy    = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
       // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo       = datos.filter(item => item.codEstadoActividad < "3" && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
+      conteo       = datos.filter(item => parseInt(item.codEstadoActividad,10) < 3 && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
 
     } catch (error) {
 
@@ -770,97 +764,6 @@ export default {
       document.body.appendChild(link);
       link.click();
    },
-   exportDataFromJSON:function (data, newFileName, fileExportType) {
-    if (!data) return;
-    try {
-      const fileName = newFileName || "exported-data";
-      const exportType = exportFromJSON.types[fileExportType || "xls"];
-      exportFromJSON({ data, fileName, exportType });
-    } catch (e) {
-      throw new Error("Parsing failed!");
-    }
-    },
-    updisOpen: function (saveisOpen) {
-
-        // let saveisOpen  = {}
-
-        if (Object.keys(saveisOpen).length == 0 ){
-
-            /* Actualimos  todos los frentes a true para poder descargar sus restricciones */
-            this.restrictions.forEach(element => {
-            saveisOpen[element.codFrente] = element.isOpen
-            element.isOpen = true
-
-            });
-
-        }else{
-
-            /* Actualimos  todos los frentes a cuando estaban antes  */
-            this.restrictions.forEach(element => {
-                element.isOpen = saveisOpen[element.codFrente]
-            });
-
-
-        }
-      return saveisOpen
-    },
-    exportData: async function (payload) {
-
-
-      let saveisOpen  = {}
-      let rows        = [];
-      saveisOpen      = await this.updisOpen(saveisOpen)
-      let table       = document.querySelectorAll("table.tbldownload");
-
-
-      table.forEach(tableData => {
-
-        let elements  = tableData.querySelectorAll('tbody > tr');
-        elements.forEach(element => {
-          let row = {}
-
-          let frente = element.querySelectorAll('input[name="frontName"]')[0].value;
-          let fase   = element.querySelectorAll('input[name="phaseName"]')[0].value;
-          row['Frente'] = frente
-          row['Fase']   = fase
-
-          let tdData = element.querySelectorAll('td.downExcel:not(.hidden)');
-          tdData.forEach(element0 => {
-                let data = element0.querySelectorAll('input,select')[0];
-                try{
-                    // console.log(element.classList.contains('hidden'))
-                  if(data.tagName == 'SELECT'){
-                    row[this.headerCols[data.name]] =  data.options[data.selectedIndex].text
-                    // row.push(data.options[data.selectedIndex].text)
-
-                  }
-
-                  if (data.tagName == 'INPUT'){
-                    // row.push(data.value)
-                    row[this.headerCols[data.name]] =  data.value
-                  }
-
-                }catch(e){
-                  // row.push(element0.innerText)
-                }
-                // if ( typeof data.tagName !== 'undefined') {
-                //   console.log(data.tagName)
-                // }
-                // console.log(element0.tagName)
-
-          });
-
-          rows.push(row)
-        });
-
-
-      });
-
-      let name_file = this.nameProyecto+'_'+moment(new Date()).format('DDMMYYYY')
-      this.exportDataFromJSON(rows, name_file, null);
-      await this.updisOpen(saveisOpen)
-
-},
 
     setColumnsStatus: function (payload) {
       let point = this;
@@ -1167,6 +1070,7 @@ export default {
               console.log("cuantos_ registros tenemos "+enviar.length.toString())
 
               for (let i = 0; i < enviar.length; i++) {
+                
                 this.restrictions[enviar[i].idfrente]["listaFase"][
                   enviar[i].idfase
                 ]["listaRestricciones"][enviar[i].idrestriccion][
@@ -1243,12 +1147,12 @@ export default {
                   "desUsuarioSolicitante"
                 ] = this.solicitanteActual;
 
+                /* Siempre se actualiza las nuevas restricciones se tiene que actualizar el codigo real en el registros */
                 if (response.data.inserciones.length > 0) {
                   let codAntiguo = 0;
                   let codNuevo = 0;
 
-                  console.log(">>>>>> cuantos registros insertados tenemos ")
-                  console.log(response.data.inserciones.length)
+                  // >>>>>> cuantos registros insertados tenemos 
 
                   for (
                     let index1 = 0;
@@ -1264,12 +1168,8 @@ export default {
                       ]
                     ) {
 
-                      console.log(">>>>>>> nuevo registro >>>>>>>>");
-                      console.log(response.data.inserciones[index1]);
 
                       codNuevo            = response.data.inserciones[index1]["idReal"];
-                      console.log(response.data.inserciones[index1]["fechaIdentificacion"]);
-
 
                       this.restrictions[enviar[i].idfrente]["listaFase"][
                         enviar[i].idfase
@@ -1288,12 +1188,46 @@ export default {
                     }
                   }
 
-                  this.setTimeifUpd(500, "Se inserto nuevo registro");
-                } else {
-                  this.setTimeifUpd(500, "Se actualizo datos");
-                }
-              }
+                    this.setTimeifUpd(500, "Se inserto nuevo registro");
+                  } else {
+                    this.setTimeifUpd(500, "Se actualizo datos");
+                  }
 
+                    /* Despues ya actualizamos la fecha de levantamiento si es que tuviera*/
+                if (response.data.actualizaciones.length > 0) {
+
+                    for (
+                      let index1 = 0;
+                      index1 < response.data.actualizaciones.length;
+                      index1++
+                    ) 
+                    {
+                      if (
+                        response.data.actualizaciones[index1]["idReal"] ==
+                        this.restrictions[enviar[i].idfrente]["listaFase"][
+                          enviar[i].idfase
+                        ]["listaRestricciones"][enviar[i].idrestriccion][
+                          "codAnaResActividad"
+                        ]
+                      ) {
+
+
+                          this.restrictions[enviar[i].idfrente]["listaFase"][
+                            enviar[i].idfase
+                          ]["listaRestricciones"][enviar[i].idrestriccion][
+                            "dayFechaLevantamiento"
+                          ] = response.data.inserciones[index1]["fechaLevantamiento"];
+
+                          break;
+
+                        }
+
+                    }
+                  }
+
+               }
+           
+              
               this.restrictionsUpd = [];
 
               if (response.data.inserciones.length > 0) {
@@ -1529,7 +1463,7 @@ export default {
               ...fase,
               listaRestricciones: fase.listaRestricciones.filter(
                 (restriction) =>
-                  restriction.idUsuarioResponsable === payload.value
+                  restriction.idUsuarioResponsable === payload.id
               ),
             };
           }),
@@ -1538,7 +1472,7 @@ export default {
     },
     getApplicantRows(payload) {
       // return this.$store.getters.getApplicantRows();
-      let applicantId = sessionStorage.getItem("Id");
+      // let applicantId = sessionStorage.getItem("Id");
       return this.$store.state.whiteproject_rows.map((row) => {
         return {
           ...row,
@@ -1547,7 +1481,7 @@ export default {
               ...fase,
               listaRestricciones: fase.listaRestricciones.filter(
                 (restriction) =>
-                  restriction.codUsuarioSolicitante === applicantId
+                  restriction.idUsuarioSolicitante === payload.id
               ),
             };
           }),
@@ -1555,7 +1489,7 @@ export default {
       });
     },
     getExpirationRows(payload) {
-      console.log(payload);
+      // console.log(payload);
       // return this.$store.getters.getExpirationRows(payload);
       let res = this.$store.state.whiteproject_rows.map((row) => {
         return {
@@ -1565,7 +1499,7 @@ export default {
               ...fase,
               listaRestricciones: fase.listaRestricciones.filter(
                 (restriction) =>
-                  restriction.codEstadoActividad != this.$store.state.anaEstado.find(
+                parseInt(restriction.codEstadoActividad,10) != this.$store.state.anaEstado.find(
                       (estado) => estado.desEstado == "Completado"
                     ).codEstado &&
                   new Date(restriction.dayFechaConciliada) < new Date()
@@ -1588,7 +1522,7 @@ export default {
               ...fase,
               listaRestricciones: fase.listaRestricciones.filter(
                 (restriction) =>
-                  restriction.codTipoRestriccion === payload.value
+                  restriction.codTipoRestriccion === payload.id
               ),
             };
           }),
@@ -1607,7 +1541,7 @@ export default {
                 // Añade el número de restricciones en la fase al total
                 total += fase.listaRestricciones.length;
                 // Añade el número de actividades completadas al total de completadas
-                completed += fase.listaRestricciones.filter(res => res.codEstadoActividad === "3").length;
+                completed += fase.listaRestricciones.filter(res => parseInt(res.codEstadoActividad,10) == 3).length;
             });
         }
 
@@ -1658,13 +1592,24 @@ export default {
 
         }
 
+        /*Al iniciar la ventana cargamos los valores para los tipos de restricciones y de vencimiento,  estos no se modifican es data unica ,
+          es mejor cargarlo una sola vez. */
+
+          this.updateTipoRestricciones();
+          this.updateVencimiento();
+
+
+
 
 
       });
+
+
       console.log(">> entro 3");
       await this.filterSectionHeight();
-
       this.pageloadflag = true;
+
+
     },
 
 
@@ -1731,16 +1676,41 @@ export default {
     selectOption(option, subOption) {
       const selected = subOption ? subOption.name : option.name;
       this.selectedFilters = [selected];  // Reemplazamos todos los filtros existentes con el nuevo
-      console.log('Nombre de la opción seleccionada:', selected);
-      console.log('ID de la opción seleccionada:', subOption ? subOption.id : option.id);
+      // console.log('Nombre de la opción seleccionada:', selected);
+      // console.log('ID de la opción seleccionada:', subOption ? subOption.id : option.id);
       this.showOptions = false;
       this.search = '';
+      this.optionFilterSelected    = selected
+
+      this.optionSubFilterSelected = subOption ? subOption : option
+      this.optionFilterIndex       = subOption.key
     },
     removeFilter(index) {
         this.selectedFilters.splice(index, 1);
-      },
+        this.optionFilterIndex = 0;
+    },
 
 
+    updateVencimiento(){
+
+      const tipoRestriccionesOption = this.options.find(option => option.name === 'Vencimiento');
+        if (tipoRestriccionesOption) {
+          tipoRestriccionesOption.subOptions = [{ name: 'Con Retraso', id: 1 , key: 4 }];
+        }
+      
+
+    },
+    updateTipoRestricciones() {
+      let tiporestricciones = this.$store.state.Restrictionlist_P.map(tipos => {
+              return { name: tipos.desTipoRestricciones, id: tipos.codTipoRestricciones , key: 3 };
+            });
+
+      const tipoRestriccionesOption = this.options.find(option => option.name === 'Tipo de Restricción');
+        if (tipoRestriccionesOption) {
+          tipoRestriccionesOption.subOptions = tiporestricciones;
+        }
+
+    },
     updateResponsables(newVal) {
 
           let datamembers = this.$store.state.anaDataMembers
@@ -1760,7 +1730,7 @@ export default {
 
             // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
             const responsables = datamembers.filter(integrante => uniqueResponsables.includes(integrante.codProyIntegrante)).map(integrante => {
-              return { name: integrante.desProyIntegrante, id: integrante.codProyIntegrante };
+              return { name: integrante.desProyIntegrante, id: integrante.codProyIntegrante , key: 1 };
             });
 
             // console.log(">>>> llegando a esta parte")
@@ -1771,6 +1741,7 @@ export default {
             if (responsableOption) {
               responsableOption.subOptions = responsables;
             }
+
           }
     },
     updateSolicitantes(newVal) {
@@ -1792,7 +1763,7 @@ export default {
 
             // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
             const solicitantes = datamembers.filter(integrante => uniqueSolicitantes.includes(integrante.idIntegrante)).map(integrante => {
-              return { name: integrante.desProyIntegrante, id: integrante.idIntegrante };
+              return { name: integrante.desProyIntegrante, id: integrante.idIntegrante , key: 2 };
             });
 
             // console.log(">>>> llegando a esta parte")
@@ -1806,15 +1777,35 @@ export default {
           }
     },
 
+ 
+
 
 
   },
   computed: {
 
-    jsonData() {
-    return this.$store.state.whiteproject_rows; // Asume que `jsonData` es un estado en tu store Vuex.
-    },
+    indicadorAvanceGeneral: function () {
 
+        // Asume que 'data' es el objeto JSON que obtienes del API REST
+        // console.log("entramos al indicador de avance general ")
+        // console.log(this.$store.state.whiteproject_rows)
+        let listaRestricciones = this.restrictions.flatMap(frente =>
+        frente.listaFase.flatMap(fase => fase.listaRestricciones)
+        );
+
+        let totalRestricciones = listaRestricciones.length;
+
+        let restriccionesTerminadas = listaRestricciones.filter(restriccion =>
+        parseInt(restriccion.codEstadoActividad,10) === 3
+        );
+
+        let totalRestriccionesTerminadas = restriccionesTerminadas.length;
+
+        let porcentajeTerminadas = (totalRestriccionesTerminadas / totalRestricciones) * 100;
+
+        return porcentajeTerminadas;
+
+    },
     visibleOptions() {
         return this.options.filter(option => option.visible);
     },
@@ -1845,63 +1836,30 @@ export default {
       return this.$store.state.solicitanteActual;
     },
 
-    optResponsables(){
-
-      // let res = this.$store.state.whiteproject_rows;
-      // this.restrictions = res;
-      let responsables  = [];
-
-      // Recorremos la lista 'restricciones'.
-      this.$store.state.whiteproject_rows.forEach(restriccion => {
-          restriccion.listaFase.forEach(fase => {
-              fase.listaRestricciones.forEach(restriccion => {
-                  // Si el idUsuarioResponsable aún no está en nuestro array, lo añadimos.
-                  if (!responsables.includes(restriccion.idUsuarioResponsable)) {
-                      responsables.push(restriccion.idUsuarioResponsable);
-                  }
-              });
-          });
-      });
-
-      let opcionesResponsable = [];
-            // Buscamos los idUsuarioResponsable en la lista 'integrantesAnaReS'.
-      this.$store.state.anaDataMembers.forEach(integrante => {
-          if (responsables.includes(integrante.idIntegrante)) {
-              // Añadimos un objeto con el id y el nombre a las opciones de responsable.
-              opcionesResponsable.push({
-                  id: integrante.idIntegrante,
-                  nombre: integrante.desProyIntegrante
-              });
-          }
-      });
-
-    return opcionesResponsable;
-
-    },
     rows: function () {
       let res = this.$store.state.whiteproject_rows;
       this.restrictions = res;
 
-      if (this.FilterActiveFlag == false) {
+      if (this.optionFilterIndex == 0) {
         return this.restrictions;
       } else {
-        switch (this.treeIndex) {
+        switch (this.optionFilterIndex) {
           /* 'Responsable' */
-          case 0:
-            return this.getResponsibleRows(this.FilterActiveData);
+          case 1:
+            return this.getResponsibleRows(this.optionSubFilterSelected );
             break;
           /* 'Solicitante' */
-          case 1:
-            return this.getApplicantRows(this.FilterActiveData);
+          case 2:
+            return this.getApplicantRows(this.optionSubFilterSelected );
             break;
           /* 'Vencimiento' */
-          case 2:
-            return this.getExpirationRows(this.FilterActiveData);
+          case 4:
+            return this.getExpirationRows(this.optionSubFilterSelected);
             break;
           /* 'Tipo de restriccion' */
           case 3:
-            console.log(">>>> entrando a la restriccion");
-            return this.getResTypeRows(this.FilterActiveData);
+            // console.log(">>>> entrando a la restriccion");
+            return this.getResTypeRows(this.optionSubFilterSelected );
 
             break;
           default:
@@ -1926,13 +1884,15 @@ export default {
   },
 
   watch: {
-  jsonData: {
+  restrictions: {
     deep: true,  // Observa los cambios profundos en el objeto
     handler(newVal) {
 
       if (newVal) {
+          console.log(">>>>>> verificamos que tenemos actualizaciones ")
           this.updateResponsables(newVal);
           this.updateSolicitantes(newVal);
+          // this.indicadorAvanceGeneral(newVal);
       }
 
     },
@@ -1944,49 +1904,17 @@ export default {
     document.addEventListener('click', this.outsideClickListener);
 
     await this.callMounted();
-    // window.addEventListener('resize', this.ResizeActually);
-    // this.ResizeActually()
 
-    // await store.dispatch('get_infoPerson');
-    // console.log(">> entro 1")
-    // await store.dispatch('getNameProy').then((response) => {
-    //   this.nameProyecto = response
-    // });
-    // console.log(">> entro 2")
-    // await store.dispatch('get_datos_restricciones').then((response) => {
-
-    //   this.statusRestriction    = this.$store.state.estadoRestriccion;
-    //   this.$store.state.sidebar = false;
-
-    //   if (this.statusRestriction === false){
-    //     this.disabledItems   = true
-    //     this.statusDraggable = true
-    //   }else{
-    //     this.disabledItems   = false
-    //     this.statusDraggable = false
-
-
-    //   }
-
-
-
-    // });
-    // console.log(">> entro 3")
-    // await this.filterSectionHeight()
-
-    // this.pageloadflag = true
   },
 
   created: function () {},
   beforeMount: function () {
-    // this.filterSectionHeight()
+   
   },
   beforeDestroy() {
       document.removeEventListener('click', this.outsideClickListener);
   },
-  // updated:function(){
-  //   this.filterSectionHeight()
-  // }
+
 };
 </script>
 <style>

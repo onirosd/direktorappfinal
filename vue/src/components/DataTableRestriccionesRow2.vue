@@ -212,12 +212,12 @@
             @change="verificarCambio({name:'idUsuarioResponsable', value: restriction_data.idUsuarioResponsable})"
             >
 
-            <option
-            v-for="item in getOptionResponsables()" v-bind:key="item.value" v-bind:value = "item.value">
-              {{ item.name }}
-            </option>
+              <option
+              v-for="item in getOptionResponsables()" v-bind:key="item.value" v-bind:value = "item.value">
+                {{ item.name }}
+              </option>
+            </select>
 
-          </select>
           <input
               name="responsible"
               v-if="(!INIresponsable || getOptionResponsables().length == 0) || restriction_data.codEstadoActividad == 3"
@@ -226,9 +226,11 @@
               :value="restriction_data.desUsuarioResponsable"
               type="text"
               class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
-              :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }" />
+              :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }" 
+          />
 
           </td>
+
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-xs h-8  rounded"/></td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
@@ -363,34 +365,34 @@ export default {
     //   this.verificarCambio(enviar)
 
     // },
-    selOptResponsable: function (payload) {
-      this.isoptionsResp = false;
+    // selOptResponsable: function (payload) {
+    //   this.isoptionsResp = false;
 
-      this.restriction_row.idUsuarioResponsable   = payload.value;
-      this.restriction_row.desUsuarioResponsable  = payload.name;
-      let enviar = {name: payload.name_variable, value: payload.value}
-      let carea  = payload.carea;
+    //   this.restriction_row.idUsuarioResponsable   = payload.value;
+    //   this.restriction_row.desUsuarioResponsable  = payload.name;
+    //   let enviar = {name: payload.name_variable, value: payload.value}
+    //   let carea  = payload.carea;
 
-      this.$store.state.areaintegrante.map((row) => {
-        if(row.codArea == carea){
-          this.restriction_row.desAreaResponsable = row.desArea
-        }
+    //   this.$store.state.areaintegrante.map((row) => {
+    //     if(row.codArea == carea){
+    //       this.restriction_row.desAreaResponsable = row.desArea
+    //     }
 
-      });
+    //   });
 
-      this.verificarCambio(enviar)
+    //   this.verificarCambio(enviar)
 
-    },
-    selOptEstado: function (payload) {
-      // this.isoptionsEst = false;
+    // },
+    // selOptEstado: function (payload) {
+    //   // this.isoptionsEst = false;
 
-      // this.restriction_row.codEstadoActividad   = payload.value;
-      // this.restriction_row.desEstadoActividad   = payload.name;
-      // let enviar = {name: payload.name_variable, value: payload.value}
+    //   // this.restriction_row.codEstadoActividad   = payload.value;
+    //   // this.restriction_row.desEstadoActividad   = payload.name;
+    //   // let enviar = {name: payload.name_variable, value: payload.value}
 
-      // this.verificarCambio(enviar)
+    //   // this.verificarCambio(enviar)
 
-    },
+    // },
     getOption: function () {
       const options = [];
       this.$store.state.Restrictionlist.map((row) => {

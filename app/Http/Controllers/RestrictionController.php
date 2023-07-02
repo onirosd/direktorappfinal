@@ -535,6 +535,9 @@ class RestrictionController extends Controller
                     $fechac    = str_replace("Z", "", $fechac);
                     $resultado = "";
                     $tiporesultado = "";
+                    $fechaLeva     = "";
+
+                    
 
                     if($value['codAnaResActividad'] > 0){
 
@@ -551,6 +554,18 @@ class RestrictionController extends Controller
                             // 'numOrden'               => $value['numOrden']
                         ]);
 
+                        if($value['codEstadoActividad'] == 3){
+                            $datos                        = array();
+
+                            $fechaLevantamiento = PhaseActividad::where('codAnaResActividad', $idactividad)->value('dayFechaCreacion');                           
+                            $datos["idReal"]              = $value['codAnaResActividad'];
+                            $datos["fechaLevantamiento"]  = date("Y-m-d", strtotime($fechaLevantamiento));
+                            $enviar["actualizaciones"][]  = $datos;
+    
+                        }
+
+                    
+                        
                         $tiporesultado = "upd";
 
                     }else{
@@ -757,6 +772,7 @@ class RestrictionController extends Controller
                             'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaRequerida'])),  //$data['dayFechaRequerida'] == null ? '' : $data['dayFechaRequerida'],
                             'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaConciliada'])),  //$data['dayFechaConciliada'] == null ? '' : $data['dayFechaConciliada'],
                             'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaCreacion'])),
+                            'dayFechaLevantamiento'    => $data['dayFechaLevantamiento'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaLevantamiento'])),
                             'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
                             'desUsuarioResponsable' => $des_usuarioResponsable ,
                             'desUsuarioSolicitante' => $data['name']." ".$data["lastname"],
