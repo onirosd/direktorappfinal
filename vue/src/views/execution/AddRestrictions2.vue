@@ -25,7 +25,7 @@
       <!-- <div @click="mverificamos"> hacer clicks para probar</div> -->
       <div class="flex justify-between space-x-4">
         <!-- Primer bloque - Indicador principal en Card -->
-        <div 
+        <div
               class="flex-1 text-white rounded-lg p-3 shadow-md"
               :class="getBgColor"
           >
@@ -1084,7 +1084,7 @@ export default {
               console.log("cuantos_ registros tenemos "+enviar.length.toString())
 
               for (let i = 0; i < enviar.length; i++) {
-                
+
                 this.restrictions[enviar[i].idfrente]["listaFase"][
                   enviar[i].idfase
                 ]["listaRestricciones"][enviar[i].idrestriccion][
@@ -1166,7 +1166,7 @@ export default {
                   let codAntiguo = 0;
                   let codNuevo = 0;
 
-                  // >>>>>> cuantos registros insertados tenemos 
+                  // >>>>>> cuantos registros insertados tenemos
 
                   for (
                     let index1 = 0;
@@ -1214,7 +1214,7 @@ export default {
                       let index1 = 0;
                       index1 < response.data.actualizaciones.length;
                       index1++
-                    ) 
+                    )
                     {
                       if (
                         response.data.actualizaciones[index1]["idReal"] ==
@@ -1240,8 +1240,8 @@ export default {
                   }
 
                }
-           
-              
+
+
               this.restrictionsUpd = [];
 
               if (response.data.inserciones.length > 0) {
@@ -1713,7 +1713,7 @@ export default {
         if (tipoRestriccionesOption) {
           tipoRestriccionesOption.subOptions = [{ name: 'Con Retraso', id: 1 , key: 4 }];
         }
-      
+
 
     },
     updateTipoRestricciones() {
@@ -1793,7 +1793,7 @@ export default {
           }
     },
 
- 
+
 
 
 
@@ -1805,7 +1805,7 @@ export default {
     let totalDias = 0;
     let contador = 0;
 
-    this.rolProyecto 
+    this.rolProyecto
 
     this.restrictions.forEach((restriccion) => {
       restriccion.listaFase.forEach((fase) => {
@@ -1820,7 +1820,7 @@ export default {
           }else{
 
             if (item.dayFechaLevantamiento && item.dayFechaIdentificacion && item.codAreaRestriccion == this.areaUsuario && !(this.rolProyecto == 3 || this.rolProyecto == 0) ) {
-                   
+
               let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
               let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
               let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
@@ -1885,7 +1885,7 @@ export default {
         let totalRestriccionesTerminadas = restriccionesTerminadas.length;
 
         let porcentajeTerminadas = (totalRestriccionesTerminadas / totalRestricciones) * 100;
-
+        porcentajeTerminadas = Math.round(porcentajeTerminadas)
 
         // let colorClass = porcentajeTerminadas === 100 ? 'green' : (porcentajeTerminadas >= 20 ? 'orange' : 'red');
 
@@ -1897,11 +1897,11 @@ export default {
 
     getBgColor() {
             if (this.indicadorAvanceGeneral === 100) {
-                return 'bg-green-500';
+                return 'bg-green';
             } else if (this.indicadorAvanceGeneral >= 20) {
-                return 'bg-orange-500';
+                return 'bg-orange';
             } else {
-                return 'bg-red-500';
+                return 'bg-red';
             }
     },
     visibleOptions() {
@@ -2007,7 +2007,7 @@ export default {
 
   created: function () {},
   beforeMount: function () {
-   
+
   },
   beforeDestroy() {
       document.removeEventListener('click', this.outsideClickListener);
