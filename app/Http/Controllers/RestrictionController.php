@@ -666,6 +666,7 @@ class RestrictionController extends Controller
 
         ";
         $rolUsuario   = 0; // en estos momentos el rolusuario cero es el creador del proyecto.
+        $areaUsuario  = 0;
         $coduser      = $request['codsuser'];
         $valores      = array($request['id']);
         $integrantesAnaRes = DB::select($query_integrantes, $valores);
@@ -675,7 +676,8 @@ class RestrictionController extends Controller
 
         foreach ($integrantesAnaRes as $integrante) {
             if ($integrante['idIntegrante'] == $coduser){
-                $rolUsuario = $integrante['codRolIntegrante'];
+                $rolUsuario  = $integrante['codRolIntegrante'];
+                $areaUsuario = $integrante['codArea'];
                 break;
             }
         }
@@ -708,7 +710,7 @@ class RestrictionController extends Controller
                     'hideCols' => [],
                 ];
 
-                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable","proy_integrantes.idIntegrante", "proy_integrantes.codRolIntegrante","proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname", "proy_proyecto.id as codCreador")
+                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable","proy_integrantes.idIntegrante", "proy_integrantes.codRolIntegrante",  "proy_integrantes.codArea"  ,"proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname", "proy_proyecto.id as codCreador")
                 ->leftjoin('anares_tiporestricciones', 'anares_actividad.codTipoRestriccion', '=', 'anares_tiporestricciones.codTipoRestricciones')
                 ->leftJoin('proy_integrantes', function($join){
                     $join->on('proy_integrantes.codProyIntegrante', '=', 'anares_actividad.idUsuarioResponsable');
@@ -781,6 +783,7 @@ class RestrictionController extends Controller
                             'codEstadoActividad' => $data['codEstadoActividad'],
                             'desEstadoActividad' => $data['desEstadoActividad'],
                             'desAreaResponsable' => $data['desArea'],
+                            'codAreaRestriccion' => $data['codArea'], 
                             'numOrden'           => $data['numOrden'],
                             'flgNoti'            => $data['flgNoti'],
                             'isEnabled'          =>  $habilitado,
@@ -819,6 +822,7 @@ class RestrictionController extends Controller
         $enviar['columnasOcultas']   = $restriction[0]['desColOcultas'];
         $enviar['solicitanteActual'] = $usuario[0]['name']." ".$usuario[0]['lastname'];
         $enviar['rolUsuario']        = $rolUsuario;
+        $enviar['areaUsuario']       = $areaUsuario;
 
 
 

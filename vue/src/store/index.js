@@ -100,6 +100,7 @@ const store = createStore({
     anaEstado:[],
     solicitanteActual:'',
     rolProyecto:0,
+    areaUsuario:0,
     estadoRestriccion:false,
     createStatus: false,
     cargos:[],
@@ -667,6 +668,7 @@ const store = createStore({
         commit('setEstadoRestriccion', res.data.estadoRestriccion)
         commit('setSolicitanteActual', res.data.solicitanteActual)
         commit('setRolProyecto', res.data.rolUsuario)
+        commit('setAreaUsuario', res.data.areaUsuario)
 
         if (!(res.data.columnasOcultas == null || res.data.columnasOcultas == '')){
 
@@ -933,7 +935,13 @@ const store = createStore({
             isupdate:false,
             isEnabledFRequerida:true,
             isEnabledFConciliada:true,
-            numOrden:0
+            numOrden:0,
+
+            dayFechaLevantamiento : "",
+            codAreaRestriccion : payload.codAreaUsuario,
+            desUsuarioSolicitante: "",
+            idUsuarioSolicitante : "",
+
           }
 
           newRows.push(temp)
@@ -994,6 +1002,11 @@ const store = createStore({
                 numOrden:0,
                 isEnabledFRequerida:true,
                 isEnabledFConciliada:true,
+
+                dayFechaLevantamiento : "",
+                codAreaRestriccion : payload.codAreaUsuario,
+                desUsuarioSolicitante: "",
+                idUsuarioSolicitante : "",
               }
 
               row.listaRestricciones.push(temp)
@@ -1103,6 +1116,12 @@ const store = createStore({
             isupdate:false,
             isEnabledFRequerida:true,
             isEnabledFConciliada:true,
+
+            dayFechaLevantamiento : rows[i]['dayFechaLevantamiento'],
+            codAreaRestriccion : payload.codAreaUsuario,
+            desUsuarioSolicitante: rows[i]['desUsuarioSolicitante'],
+            idUsuarioSolicitante : rows[i]['idUsuarioSolicitante'],
+
           }
 
           rows.push(regIns);
@@ -1275,6 +1294,9 @@ const store = createStore({
     },
     setRolProyecto(state, ResData){
       state.rolProyecto = ResData;
+    },
+    setAreaUsuario(state, ResData){
+      state.areaUsuario = ResData;
     },
     setEstadoRestriccion(state, ResData){
       state.estadoRestriccion = ResData

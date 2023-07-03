@@ -354,45 +354,7 @@ export default {
       } else
         this.isOpen = !this.isOpen;
     },
-    // selOpt: function (payload) {
-    //   // console.log(payload)
-    //   // console.log(payload.target.value)
-    //   // this.isoptions = false;
-
-    //   // this.restriction_row.codTipoRestriccion  = payload.value;
-    //   // this.restriction_row.desTipoRestriccion  = payload.name;
-    //   let enviar = {name: 'codTipoRestriccion', value: payload.target.value}
-    //   this.verificarCambio(enviar)
-
-    // },
-    // selOptResponsable: function (payload) {
-    //   this.isoptionsResp = false;
-
-    //   this.restriction_row.idUsuarioResponsable   = payload.value;
-    //   this.restriction_row.desUsuarioResponsable  = payload.name;
-    //   let enviar = {name: payload.name_variable, value: payload.value}
-    //   let carea  = payload.carea;
-
-    //   this.$store.state.areaintegrante.map((row) => {
-    //     if(row.codArea == carea){
-    //       this.restriction_row.desAreaResponsable = row.desArea
-    //     }
-
-    //   });
-
-    //   this.verificarCambio(enviar)
-
-    // },
-    // selOptEstado: function (payload) {
-    //   // this.isoptionsEst = false;
-
-    //   // this.restriction_row.codEstadoActividad   = payload.value;
-    //   // this.restriction_row.desEstadoActividad   = payload.name;
-    //   // let enviar = {name: payload.name_variable, value: payload.value}
-
-    //   // this.verificarCambio(enviar)
-
-    // },
+    
     getOption: function () {
       const options = [];
       this.$store.state.Restrictionlist.map((row) => {
@@ -431,6 +393,8 @@ export default {
     },
     loadRow (){
 
+        console.log(">>> analizamos si actualizo.")
+
         this.restriction_row.codAnaResActividad     = this.restriction_data.codAnaResActividad
         this.restriction_row.desRestriccion         = this.restriction_data.desRestriccion
         this.restriction_row.desActividad           = this.restriction_data.desActividad
@@ -456,6 +420,7 @@ export default {
         }
 
         this.restriction_row.dayFechaIdentificacion = this.restriction_data.dayFechaIdentificacion
+        this.restriction_row.dayFechaLevantamiento  = this.restriction_data.dayFechaLevantamiento
         // this.restriction_row.dayFechaRequerida      = this.restriction_data.dayFechaRequerida.toString().split(' ')[0]
         // this.restriction_row.dayFechaConciliada     = this.restriction_data.dayFechaConciliada.toString().split(' ')[0]
 
@@ -470,12 +435,13 @@ export default {
 
         this.restriction_row.desAreaResponsable     = this.restriction_data.desAreaResponsable
         this.restriction_row.numOrden               = this.restriction_data.numOrden
-        this.restriction_row.desSolicitante         = this.restriction_data.desUsuarioSolicitante
+        this.restriction_row.desUsuarioSolicitante         = this.restriction_data.desUsuarioSolicitante
 
         this.restriction_row.isupdate               = this.restriction_data.isupdate
 
         this.restriction_row.isEnabledFRequerida    = this.restriction_data.isEnabledFRequerida
         this.restriction_row.isEnabledFConciliada   = this.restriction_data.isEnabledFConciliada
+        this.restriction_row.codAreaRestriccion     = this.restriction_data.codAreaRestriccion
 
     },
     updateRow: function (updRow) {
@@ -566,6 +532,7 @@ export default {
 
       this.timetimeinit = setTimeout( () => {
 
+        this.loadRow()
         this.$emit('updalidarUpd', true);
         this.updateRow(updRow);
 
@@ -590,11 +557,39 @@ export default {
   },
   watch: {
 
-    validarUpd(newValor, oldValor) {
-      if(newValor == true){
+    // restriction_data :{
+    // deep: true, 
+    // handler(newVal, oldValor) {
 
-        this.loadRow()
-        this.$emit('updalidarUpd', false);
+    //   console.log(">>>> verificamos los cambios")
+    //   console.log(">> antiguo")
+    //   console.log(oldValor)
+    //   console.log(">> nuevo")
+    //   console.log(newVal)
+
+    // }},
+
+    validarUpd(newValor, oldValor) {
+      // console.log(">>>>>>> validamos que se esten haciendo la escucha del flag de cambios")
+      // console.log(newValor)
+      if(newValor == true){
+        
+        // console.log("###################")
+        // console.log(">> guardado")
+        // console.log(this.restriction_row)
+        // console.log(">> actualizado")
+        // console.log(this.restriction_data)
+
+        // this.loadRow()
+
+        // console.log(">>> despues de la actualizacion")
+
+        // console.log(">> guardado")
+        // console.log(this.restriction_row)
+        // console.log(">> actualizado")
+        // console.log(this.restriction_data)
+        // console.log("###################")
+        // this.$emit('updalidarUpd', false);
 
       }
 

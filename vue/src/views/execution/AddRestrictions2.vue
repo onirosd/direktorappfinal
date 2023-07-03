@@ -25,11 +25,13 @@
       <!-- <div @click="mverificamos"> hacer clicks para probar</div> -->
       <div class="flex justify-between space-x-4">
         <!-- Primer bloque - Indicador principal en Card -->
-        <div class="flex-1 bg-blue-500 text-white rounded-lg p-3 shadow-md">
-          <h2 class="text-lg">Avance de restricciones</h2>
-          <h3 class="text-md">{{indicadorAvanceGeneral}}%</h3>
-          <div class="h-2 bg-white mt-2">
-            
+        <div 
+              class="flex-1 text-white rounded-lg p-3 shadow-md"
+              :class="getBgColor"
+          >
+            <h2 class="text-lg">Avance de restricciones</h2>
+            <h3 class="text-md">{{indicadorAvanceGeneral}}%</h3>
+            <div class="h-2 bg-white mt-2">
             <div class="h-full bg-orange-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
 
           </div>
@@ -38,19 +40,19 @@
         <!-- Segundo bloque - 2 indicadores en Barra -->
         <div class="flex-1 flex flex-col space-y-2 w-[12em]">
           <div>
-            <span class="mr-2 text-xs">Áreas cubiertas:</span>
+            <span class="mr-2 text-xs">Tiempo de Anticipacion:</span>
             <div class="h-2 w-full bg-gray-300">
-              <div class="h-full bg-green-500" style="width: 30%;"></div>
+              <!-- <div class="h-full bg-green-500" style="width: 30%;"></div> -->
             </div>
-            <span class="ml-2 text-md">30%</span>
+            <span class="ml-2 text-md">{{indicadorAnticipacion}} dias Promedio</span>
           </div>
 
           <div>
-            <span class="mr-2 text-xs">Acabados:</span>
+            <span class="mr-2 text-xs">Tiempo de Cumplimiento:</span>
             <div class="h-2 w-full bg-gray-300">
-              <div class="h-full bg-red-500" style="width: 40%;"></div>
+              <!-- <div class="h-full bg-red-500" style="width: 40%;"></div> -->
             </div>
-            <span class="ml-2 text-md">40%</span>
+            <span class="ml-2 text-md">{{indicadorCumplimiento}} dias promedio</span>
           </div>
         </div>
 
@@ -524,7 +526,7 @@ import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 import AddFront from "../../components/AddFront.vue";
 import AddPhase from "../../components/AddPhase.vue";
 import DataTableRestricciones from "../../components/DataTableRestricciones.vue";
-import DataTableRestriccionesRow from "../../components/DataTableRestriccionesRow.vue";
+// import DataTableRestriccionesRow from "../../components/DataTableRestriccionesRow.vue";
 // import RestrictionPerson from "../../components/RestrictionPerson.vue";
 
 import ToggleColumn from "../../components/ToggleColumn.vue";
@@ -549,7 +551,7 @@ export default {
     AddFront,
     AddPhase,
     DataTableRestricciones,
-    DataTableRestriccionesRow,
+    // DataTableRestriccionesRow,
     AddRow,
     DeleteRow,
     DeleteFront,
@@ -578,6 +580,8 @@ export default {
       validarUpd: false,
       statusRestriction: true,
       rolProyecto:0,
+      areaUsuario:0,
+
       statusDraggable: true,
       pageloadflag: false,
       nameProyecto: "",
@@ -713,8 +717,12 @@ export default {
   methods: {
 
     mverificamos(){
+      console.log(">> impresion de la var. restricciones")
+      console.log(this.restrictions)
 
-      console.log(this.indicadorAvanceGeneral)
+      console.log(">> impresion de la var. rows")
+      console.log(this.rows)
+
 
     },
 
@@ -896,6 +904,7 @@ export default {
     },
 
     addFront: function (payload) {
+      payload['codAreaUsuario'] = this.areaUsuario
       let point = this;
       store.dispatch("add_front", payload).then((response) => {
         payload["codFrenteReal"] = response.data.codFrente;
@@ -933,6 +942,9 @@ export default {
       point.closeModal();
     },
     addRow: function (payload) {
+
+      payload['codAreaUsuario'] = this.areaUsuario
+
       this.$store.commit({
         type: "addScrollTableRow",
         frontId: this.frontId,
@@ -975,6 +987,8 @@ export default {
       let frenteId = payload.frontId;
       let faseId = payload.phaseId;
       let restriccionId = payload.exercise;
+
+      payload['codAreaUsuario'] = this.areaUsuario
 
       let point = this;
       store.dispatch("dup_Restrictions", restriccionId).then((response) => {
@@ -1549,7 +1563,7 @@ export default {
         let percentage = Math.round((completed / total) * 100);
 
         // Determina la clase de color
-        let colorClass = percentage === 100 ? 'green' : (percentage >= 20 ? 'orange' : 'red');
+        let colorClass = percentage === 100 ? 'bg-green-500' : (percentage >= 20 ? 'bg-orange-500' : 'bg-red-500');
 
         return {percentage, colorClass};
     },
@@ -1567,8 +1581,10 @@ export default {
       });
       console.log(">> entro 2");
       await store.dispatch("get_datos_restricciones").then((response) => {
+
         this.statusRestriction = this.$store.state.estadoRestriccion;
         this.rolProyecto       = this.$store.state.rolProyecto;
+        this.areaUsuario       = this.$store.state.areaUsuario;
 
         this.$store.state.sidebar = false;
 
@@ -1784,6 +1800,73 @@ export default {
   },
   computed: {
 
+    indicadorCumplimiento: function (){
+
+    let totalDias = 0;
+    let contador = 0;
+
+    this.rolProyecto 
+
+    this.restrictions.forEach((restriccion) => {
+      restriccion.listaFase.forEach((fase) => {
+        fase.listaRestricciones.forEach((item) => {
+
+          if (item.dayFechaLevantamiento && item.dayFechaIdentificacion && (this.rolProyecto == 3 || this.rolProyecto == 0)) {
+            let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
+            let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
+            let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+            totalDias += diferenciaDias;
+            contador++;
+          }else{
+
+            if (item.dayFechaLevantamiento && item.dayFechaIdentificacion && item.codAreaRestriccion == this.areaUsuario && !(this.rolProyecto == 3 || this.rolProyecto == 0) ) {
+                   
+              let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
+              let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
+              let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+              totalDias += diferenciaDias;
+              contador++;
+
+            }
+
+
+          }
+
+
+
+        });
+      });
+    });
+
+    let promedioDias = Math.round(totalDias / contador);
+    return promedioDias;
+
+    },
+
+    indicadorAnticipacion: function (){
+
+      let totalDias = 0;
+      let contador = 0;
+
+      this.restrictions.forEach((restriccion) => {
+        restriccion.listaFase.forEach((fase) => {
+          fase.listaRestricciones.forEach((item) => {
+            if (item.dayFechaLevantamiento && item.dayFechaIdentificacion) {
+              let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
+              let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
+              let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+              totalDias += diferenciaDias;
+              contador++;
+            }
+          });
+        });
+      });
+
+      let promedioDias = Math.round(totalDias / contador);
+      return promedioDias;
+
+
+    },
     indicadorAvanceGeneral: function () {
 
         // Asume que 'data' es el objeto JSON que obtienes del API REST
@@ -1803,8 +1886,23 @@ export default {
 
         let porcentajeTerminadas = (totalRestriccionesTerminadas / totalRestricciones) * 100;
 
+
+        // let colorClass = porcentajeTerminadas === 100 ? 'green' : (porcentajeTerminadas >= 20 ? 'orange' : 'red');
+
         return porcentajeTerminadas;
 
+        // return porcentajeTerminadas;
+
+    },
+
+    getBgColor() {
+            if (this.indicadorAvanceGeneral === 100) {
+                return 'bg-green-500';
+            } else if (this.indicadorAvanceGeneral >= 20) {
+                return 'bg-orange-500';
+            } else {
+                return 'bg-red-500';
+            }
     },
     visibleOptions() {
         return this.options.filter(option => option.visible);
