@@ -15,6 +15,9 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Validation\Rules\Password;
 use App\Models\ProjectUser;
 
+use Helper; // Important
+use DB;
+
 /**
  * Class AuthController
  *
