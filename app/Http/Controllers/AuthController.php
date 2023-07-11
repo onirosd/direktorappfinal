@@ -146,7 +146,7 @@ class AuthController extends Controller
 
 
         $valores = array($request['id'], $request['id'] , 1);
-        $project = DB::select($query, $valores);
+        $project = DB::select($sql, $valores);
 
 
         return response([
