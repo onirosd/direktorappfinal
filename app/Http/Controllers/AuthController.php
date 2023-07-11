@@ -116,7 +116,9 @@ class AuthController extends Controller
             ], 422);
         }
         $user = Auth::user();
+        $userId = $user->id;
         $token = $user->createToken('main')->plainTextToken;
+
 
         $sql = "
 
@@ -145,7 +147,7 @@ class AuthController extends Controller
         ";
 
 
-        $valores = array($request['id'], $request['id'] , 1);
+        $valores = array($userId, $userId , 1);
         $project = DB::select($sql, $valores);
 
 
