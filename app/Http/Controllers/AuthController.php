@@ -115,8 +115,40 @@ class AuthController extends Controller
         $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
 
+        $sql = "
+
+                select
+                ad.desNombreProyecto
+
+                from (
+                select  pp.desNombreProyecto
+                from proy_proyecto pp
+                inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
+                inner join conf_ubigeo cu on pp.codUbigeo  = cu.codUbigeo
+                where pp.id  = ?
+
+                union all
+
+                select pp.desNombreProyecto
+                from proy_proyecto pp
+                inner join proy_integrantes pi2  on pp.codProyecto = pi2.codProyecto
+                inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
+                inner join conf_ubigeo cu on pp.codUbigeo  = cu.codUbigeo
+                where pi2.idIntegrante   = ? and pi2.codEstadoInvitacion  = ?
+                ) ad
+                group by
+                ad.desNombreProyecto
+
+        ";
+
+
+        $valores = array($request['id'], $request['id'] , 1);
+        $project = DB::select($query, $valores);
+
+
         return response([
             'user' => $user,
+            'topics' => $project,
             'token' => $token,
             'success' => true,
             'expiresAt' => 86400000

@@ -116,16 +116,16 @@ var routes = [
       {
         path: "/restricciones_agregar",
         name: "add_restrictions",
-        component: AddRestrictions,
-        meta: { layout: 'home' , sidebarOpen: false},
-      },
-
-      {
-        path: "/restricciones_agregar2",
-        name: "add_restrictions2",
         component: AddRestrictions2,
         meta: { layout: 'home' , sidebarOpen: false},
       },
+
+      // {
+      //   path: "/restricciones_agregar2",
+      //   name: "add_restrictions2",
+      //   component: AddRestrictions2,
+      //   meta: { layout: 'home' , sidebarOpen: false},
+      // },
 
       {
         path: "/graphic_advance",

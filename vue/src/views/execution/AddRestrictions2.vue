@@ -32,7 +32,7 @@
             <h2 class="text-lg">Avance de restricciones</h2>
             <h3 class="text-md">{{indicadorAvanceGeneral}}%</h3>
             <div class="h-2 bg-white mt-2">
-            <div class="h-full bg-orange-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
+            <div class="h-full bg-orange400-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
 
           </div>
         </div>
@@ -42,7 +42,7 @@
           <div>
             <span class="mr-2 text-xs">Tiempo de Anticipacion:</span>
             <div class="h-2 w-full bg-gray-300">
-              <!-- <div class="h-full bg-green-500" style="width: 30%;"></div> -->
+              <!-- <div class="h-full bg-green400-500" style="width: 30%;"></div> -->
             </div>
             <span class="ml-2 text-md">{{indicadorAnticipacion}} dias Promedio</span>
           </div>
@@ -50,7 +50,7 @@
           <div>
             <span class="mr-2 text-xs">Tiempo de Cumplimiento:</span>
             <div class="h-2 w-full bg-gray-300">
-              <!-- <div class="h-full bg-red-500" style="width: 40%;"></div> -->
+              <!-- <div class="h-full bg-red400-500" style="width: 40%;"></div> -->
             </div>
             <span class="ml-2 text-md">{{indicadorCumplimiento}} dias promedio</span>
           </div>
@@ -128,7 +128,7 @@
 
           >
           <i class="fas fa-envelope"></i> Enviar Correos
-          <span class="badge absolute top-0 right-0 h-5 w-5 bg-red-500 rounded-full text-white text-center text-xs" >{{countNotNoti}}</span>
+          <span class="badge absolute top-0 right-0 h-5 w-5 bg-red400-500 rounded-full text-white text-center text-xs" >{{countNotNoti}}</span>
         </button>
 
       </div>
@@ -1563,7 +1563,7 @@ export default {
         let percentage = Math.round((completed / total) * 100);
 
         // Determina la clase de color
-        let colorClass = percentage === 100 ? 'bg-green-500' : (percentage >= 20 ? 'bg-orange-500' : 'bg-red-500');
+        let colorClass = percentage === 100 ? 'bg-green400' : (percentage >= 20 ? 'bg-orange400' : 'bg-red400');
 
         return {percentage, colorClass};
     },
@@ -1897,11 +1897,11 @@ export default {
 
     getBgColor() {
             if (this.indicadorAvanceGeneral === 100) {
-                return 'bg-green';
+                return 'bg-green400';
             } else if (this.indicadorAvanceGeneral >= 20) {
-                return 'bg-orange';
+                return 'bg-orange400';
             } else {
-                return 'bg-red';
+                return 'bg-red400';
             }
     },
     visibleOptions() {

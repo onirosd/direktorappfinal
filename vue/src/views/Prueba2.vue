@@ -6,7 +6,7 @@
 
 <div class=" w-[1000px] mb-4">
 
-  <div class="flex justify-start">
+  <div class="flex justify-start" id="indicadores">
 
 
 

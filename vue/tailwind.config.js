@@ -12,6 +12,9 @@ module.exports = {
       colors: {
         main: "#002B6B",
         orange: "#EB5D00",
+        orange400: "#fb923c",
+        green400: "#4bde81",
+        red400: "#f87171",
         side: "#E5EBFB",
         activeText: "#212530",
         inactiveText: "#616E8E",
