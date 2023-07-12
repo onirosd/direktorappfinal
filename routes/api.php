@@ -130,4 +130,4 @@ Route::get('/generar_reporte', [ReportController::class, 'generarReporte']);
 
 
 
-Route::post('send-notification' , [NotificationController::class, 'callNotification']);
+Route::post('/send_notification' , [NotificationController::class, 'callNotification']);
