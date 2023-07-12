@@ -1,5 +1,14 @@
 <?php
 
+
+
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ForgotPasswordController;
+
+use App\Http\Controllers\ReportController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RestrictionController;
@@ -7,11 +16,8 @@ use App\Http\Controllers\RestrictionController;
 use App\Http\Controllers\UtilsController;
 use App\Http\Controllers\ConfController;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\NotificationController;
 
-use App\Http\Controllers\ReportController;
 
 header("Access-Control-Allow-Origin: https://direktor.com.pe");
 
@@ -120,3 +126,8 @@ Route::post('/push_enviar_notificaciones', [RestrictionController::class, 'push_
 Route::get('/cmd_enviar_notificacionDiaria', [RestrictionController::class, 'cron_enviar_notificacionDiaria']);
 
 Route::get('/generar_reporte', [ReportController::class, 'generarReporte']);
+
+
+
+
+Route::post('send-notification' , [NotificationController::class, 'callNotification']);
