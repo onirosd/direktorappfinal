@@ -12,7 +12,7 @@ class NotificationController extends Controller
 
     public function callNotification(Request $request){
 
-        $to = '/topics/Proyecto002';
+        $to = '/topics/Proyecto001';
         $title = $request->title;
         $description = $request->description;
 
