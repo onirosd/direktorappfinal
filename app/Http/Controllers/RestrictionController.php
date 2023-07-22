@@ -483,6 +483,17 @@ class RestrictionController extends Controller
                 Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
             }
 
+            foreach ($integrantes as $key => $value) {
+
+
+                $proyecto  = str_replace(' ', '', $value['proyecto']);
+                $mensaje   =  "La restriccion ".$value['']." con nombre :".$value['']." y estado actual ".$value[''].", fue actualizada, si requiere mas detalle del cambio consultar la web.";
+
+                Helper::callNotification("ACTUALIZACIONES : Proyecto ".$value['proyecto'], $mensaje, $proyecto);
+
+
+            }
+
             /* Actualizamos el estado de la notificacion */
             $arr_ids = array();
             foreach ($actividades as $key0 => $value0) {
@@ -538,7 +549,7 @@ class RestrictionController extends Controller
                     $tiporesultado = "";
                     $fechaLeva     = "";
 
-                    
+
 
                     if($value['codAnaResActividad'] > 0){
 
@@ -558,15 +569,15 @@ class RestrictionController extends Controller
                         if($value['codEstadoActividad'] == 3){
                             $datos                        = array();
 
-                            //$fechaLevantamiento = PhaseActividad::where('codAnaResActividad', (int)$value['codAnaResActividad'])->value('dayFechaCreacion');                           
+                            //$fechaLevantamiento = PhaseActividad::where('codAnaResActividad', (int)$value['codAnaResActividad'])->value('dayFechaCreacion');
                             $datos["idReal"]              = (int)$value['codAnaResActividad'];
                             $datos["fechaLevantamiento"]  = date("Y-m-d", strtotime(Carbon::now()));
                             $enviar["actualizaciones"][]  = $datos;
-    
+
                         }
 
-                    
-                        
+
+
                         $tiporesultado = "upd";
 
                     }else{
@@ -783,7 +794,7 @@ class RestrictionController extends Controller
                             'codEstadoActividad' => $data['codEstadoActividad'],
                             'desEstadoActividad' => $data['desEstadoActividad'],
                             'desAreaResponsable' => $data['desArea'],
-                            'codAreaRestriccion' => $data['codArea'], 
+                            'codAreaRestriccion' => $data['codArea'],
                             'numOrden'           => $data['numOrden'],
                             'flgNoti'            => $data['flgNoti'],
                             'isEnabled'          =>  $habilitado,

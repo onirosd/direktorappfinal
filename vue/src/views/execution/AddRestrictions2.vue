@@ -505,7 +505,8 @@
     v-if="modalName === 'uploadExcel'"
     @closeModal="closeModal"
     />
-    <Confirm
+    <ConfirmBloq
+      :bloq="bloqConfirmNotification"
       :confirmHeader="''"
       :header="'Enviar Notificaciones'"
       :paragraphs="['Se enviaran '+countNotNoti+' notificaciones correspondientes a cambios o nuevas inserciones.'] "
@@ -533,7 +534,7 @@ import ToggleColumn from "../../components/ToggleColumn.vue";
 import AddRow from "../../components/AddRow.vue";
 import DeleteRow from "../../components/DeleteRow.vue";
 import UploadExcel from "../../components/UploadExcel.vue";
-import Confirm from "../../components/Confirm.vue";
+import ConfirmBloq from "../../components/ConfirmBloq.vue";
 // import DownloadReport from "../../components/DownloadReport.vue";
 import SelectOption from "../../components/SelectOption.vue";
 import DeleteFront from "../../components/DeleteFront.vue";
@@ -556,7 +557,7 @@ export default {
     DeleteRow,
     DeleteFront,
     UploadExcel,
-    Confirm,
+    ConfirmBloq,
     // ScrollTableRow,
     // RestrictionPerson,
 
@@ -569,6 +570,7 @@ export default {
   },
   data: function () {
     return {
+      bloqConfirmNotification:false,
       // mensajeNotificaciones: 'Se enviaran '+this.countNotNoti+' Notificaciones',
       sizeActually: 0,
 
@@ -865,6 +867,7 @@ export default {
 
     enviarNotificaciones: function (payload) {
 
+      this.bloqConfirmNotification = true;
       let point = this;
       store.dispatch("push_enviar_notificaciones", payload).then((response) => {
         let mensaje = "";
@@ -889,7 +892,9 @@ export default {
         }
 
          point.setTimeifUpd(600, mensaje);
+         this.bloqConfirmNotification = false;
          point.closeModal();
+
 
       });
 
