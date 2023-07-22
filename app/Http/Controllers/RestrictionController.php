@@ -487,7 +487,7 @@ class RestrictionController extends Controller
 
 
                 $proyecto  = str_replace(' ', '', $value['proyecto']);
-                $mensaje   =  "La restriccion ".$value['']." con nombre :".$value['']." y estado actual ".$value[''].", fue actualizada, si requiere mas detalle del cambio consultar la web.";
+                $mensaje   =  "La restriccion ".$value['codAnaResActividad']." con nombre :".$value['Actividad']." y estado actual ".$value['Estado_Actividad'].", fue actualizada, si requiere mas detalle del cambio consultar la web.";
 
                 Helper::callNotification("ACTUALIZACIONES : Proyecto ".$value['proyecto'], $mensaje, $proyecto);
 
