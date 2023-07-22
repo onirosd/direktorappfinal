@@ -37,7 +37,7 @@ class Helper{
     }
 
 
-    public function callNotification($titulo , $mensaje, $proyecto){
+    public static function callNotification($titulo , $mensaje, $proyecto){
 
         $to = '/topics/'.$proyecto;
         $title = $titulo;
@@ -48,10 +48,11 @@ class Helper{
     		'body'=> $description
     	);
 
-    	$this->sendNotification($to, $notif);
+    	// $this->sendNotification($to, $notif);
+        self::sendNotification($to, $notif);
     }
 
-    public function sendNotification($to, $notif){
+    public static function sendNotification($to, $notif){
     	$apiKey = "AAAAhrfhpoM:APA91bEuBOW89E612QogeoO9uj7PhALX721aQyFmiRpOhHmH2kZJei1abgio1ZVk13BZUl4V4kXr3PO9FPFyfARTw21364DgtYX_0V-j_5Ztdjb2rcGlhiBVAEYz4NyvrgCbMsOtFCei";
 
     	$ch = curl_init();
