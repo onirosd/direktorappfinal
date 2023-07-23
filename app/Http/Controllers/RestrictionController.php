@@ -424,6 +424,7 @@ class RestrictionController extends Controller
 
 
         select
+        pr.desNombreProyecto as proyecto,
         aa.codAnaResActividad,
         af.desAnaResFrente as Frente ,
         af2.desAnaResFase as Fase,
@@ -439,6 +440,7 @@ class RestrictionController extends Controller
         aa.numOrden
         from
         anares_actividad aa
+        inner join proy_proyecto pr on aa.codProyecto = pr.codProyecto
         inner join anares_frente af on aa.codAnaResFrente  = af.codAnaResFrente
         inner join anares_fase af2 on aa.codAnaResFase  = af2.codAnaResFase
         left join anares_tiporestricciones at2 on aa.codTipoRestriccion  = at2.codTipoRestricciones
