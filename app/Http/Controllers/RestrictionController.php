@@ -488,10 +488,10 @@ class RestrictionController extends Controller
             foreach ($actividades as $key => $value) {
 
 
-                $proyecto  = str_replace(' ', '', $value['proyecto']);
-                $mensaje   =  "La restriccion ".$value['codAnaResActividad']." con nombre :".$value['Actividad']." y estado actual ".$value['Estado_Actividad'].", fue actualizada, si requiere mas detalle del cambio consultar la web.";
+                $proyecto  = str_replace(' ', '', $value->proyecto);
+                $mensaje   =  "La restriccion ".$value->codAnaResActividad." con nombre :".$value->Actividad." y estado actual ".$value->Estado_Actividad.", fue actualizada, si requiere mas detalle del cambio consultar la web.";
 
-                Helper::callNotification("ACTUALIZACIONES : Proyecto ".$value['proyecto'], $mensaje, $proyecto);
+                Helper::callNotification("ACTUALIZACIONES : Proyecto ".$value->proyecto, $mensaje, $proyecto);
 
 
             }
