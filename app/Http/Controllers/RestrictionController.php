@@ -483,7 +483,7 @@ class RestrictionController extends Controller
                 Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
             }
 
-            foreach ($integrantes as $key => $value) {
+            foreach ($actividades as $key => $value) {
 
 
                 $proyecto  = str_replace(' ', '', $value['proyecto']);
