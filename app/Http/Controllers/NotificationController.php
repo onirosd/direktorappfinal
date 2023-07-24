@@ -19,7 +19,7 @@ class NotificationController extends Controller
         $notif = array(
     		'title'=> $title,
     		'body'=> $description,
-            'sound'=>'notification_1'
+            'sound'=>'notification1'
 
     	);
 
