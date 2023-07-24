@@ -19,10 +19,6 @@ class NotificationController extends Controller
         $notif = array(
     		'title'=> $title,
     		'body'=> $description,
-            // 'priority'=>'high',
-            // 'notification_priority'=> 4,
-            // 'default_vibrate_timings'=> true,
-            // 'default_light_settings'=> true,
 
     	);
 
@@ -39,7 +35,19 @@ class NotificationController extends Controller
         $priority =  array("priority"=>"high");
 
         $headers  =  array("headers"=>array("apns-priority"=>"10"));
-    	$fields = json_encode(array('to'=>$to, 'notification'=>$notif , 'android'=>$priority, 'apns'=>$headers ));
+    	$fields = json_encode(array(
+            'to'=>$to,
+            'notification'=>$notif ,
+            'android'=>array(
+              'priority' => 'high'
+            ),
+            'apns' => array(
+                'headers' => array(
+                    'apns-priority' => '10'
+                )
+            )
+        )
+        );
 
     	curl_setopt($ch, CURLOPT_URL, $url);
     	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
