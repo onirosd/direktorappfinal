@@ -19,10 +19,10 @@ class NotificationController extends Controller
         $notif = array(
     		'title'=> $title,
     		'body'=> $description,
-            'priority'=>'high',
-            'notification_priority'=> 4,
-            'default_vibrate_timings'=> true,
-            'default_light_settings'=> true,
+            // 'priority'=>'high',
+            // 'notification_priority'=> 4,
+            // 'default_vibrate_timings'=> true,
+            // 'default_light_settings'=> true,
 
     	);
 
@@ -36,7 +36,10 @@ class NotificationController extends Controller
 
     	$url = "https://fcm.googleapis.com/fcm/send";
 
-    	$fields = json_encode(array('to'=>$to, 'notification'=>$notif));
+        $priority =  array("priority"=>"high");
+
+        $headers  =  array("headers"=>array("apns-priority"=>"10"));
+    	$fields = json_encode(array('to'=>$to, 'notification'=>$notif , 'android'=>$priority, 'apns'=>$headers ));
 
     	curl_setopt($ch, CURLOPT_URL, $url);
     	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
