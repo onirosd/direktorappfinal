@@ -18,7 +18,10 @@ class NotificationController extends Controller
 
         $notif = array(
     		'title'=> $title,
-    		'body'=> $description
+    		'body'=> $description,
+            'notification_priority'=> 4,
+            'default_vibrate_timings'=> true,
+            'default_light_settings'=> true,
     	);
 
     	$this->sendNotification($to, $notif);
