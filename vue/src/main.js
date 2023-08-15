@@ -6,6 +6,7 @@ import 'v-calendar/dist/style.css';
 import App from './App.vue'
 import VCalendar from "v-calendar";
 import mitt from 'mitt';
+
 // import Loading from 'vue-loading-overlay';
 // import './../vue-loading-overlay/dist/vue-loading.css';
 

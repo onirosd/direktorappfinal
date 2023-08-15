@@ -23,9 +23,9 @@
                   @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad});"
                   v-model="restriction_data.desActividad"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
+                  class=" w-full text-xs border border-[#8A9CC9] px-1 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{ height: autoSize1 + 'px' }"
+                  :style="{ marginTop: '5px'}"
                   @input="updateHeight1"
 
 
@@ -39,9 +39,9 @@
                   ref="exercise"
                   name="exercise"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
+                  class="w-full text-xs border border-[#8A9CC9] px-1 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{ height: autoSize1 + 'px' }"
+                  :style="{ marginTop: '5px'}"
                   @input="updateHeight1"
 
             >
@@ -55,9 +55,9 @@
                   @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})"
                   v-model="restriction_data.desRestriccion"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
+                  class="w-full text-xs border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{height: autoSize2 + 'px'}"
+                  :style="{ marginTop: '5px'}"
                   @input="updateHeight2"
             >
             </textarea>
@@ -69,9 +69,9 @@
                   ref="restriction"
                   name="restriction"
                   type="text"
-                  class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
+                  class="w-full text-xs border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{height: autoSize2 + 'px'}"
+                  :style="{ marginTop: '5px'}"
                   @input="updateHeight2"
 
             >
@@ -83,7 +83,7 @@
             name="restrictionType"
             v-if="INItipo && restriction_data.codEstadoActividad < 3"
             v-model="restriction_data.codTipoRestriccion"
-            class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded  selectPer"
+            class="text-xs w-full  border border-[#8A9CC9] pr-5 px-2 h-8 rounded  selectPer"
             :class="{'bg-gray-100': !INItipo , 'text-gray-700': !INItipo  }"
             @change="verificarCambio({name:'codTipoRestriccion', value: restriction_data.codTipoRestriccion, change: $event });"
           >
@@ -100,7 +100,7 @@
                  :disabled="true"
                  :value="restriction_data.desTipoRestriccion"
                  type="text"
-                 class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                 class="w-full border border-[#8A9CC9] pr-5 px-2 text-xs h-8  rounded"
                  :class="{'bg-gray-100': !INItipo , 'text-gray-700': !INItipo }" />
 
 
@@ -112,7 +112,7 @@
             v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFRequerida )"
              name="date_required"
 
-             @change="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"
+             @change="verificarCambio({name:'dayFechaRequerida', value: formated_val(restriction_data.dayFechaRequerida)})"
              v-model="restriction_data.dayFechaRequerida"
              type="date"
              class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
@@ -124,7 +124,7 @@
              name="date_required"
              :disabled="true"
 
-             :value="restriction_data.dayFechaRequerida"
+             :value="formated_val(restriction_data.dayFechaRequerida)"
              type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
              :class="{
                           'bg-gray-100': !INIstateRestriction ,
@@ -133,38 +133,9 @@
                       }"
             />
 
-
-            <!-- <v-date-picker v-if="statusRestriction" @click="verificarCambio({name:'dayFechaRequerida', value: restriction_data.dayFechaRequerida})"  ref="datepicker"  v-model="restriction_data.dayFechaRequerida" mode="date" is24hr: false class="flex relative  cursor-pointer cursor-pointer"  >
-                <template v-slot="{ inputValue, inputEvents }" >
-                  <input
-
-
-                    class="w-full border border-[#8A9CC9] px-2 text-xs h-8 rounded "
-                    placeholder="Fecha de inicio*"
-                    :value="inputValue"
-                    v-on="inputEvents"
-
-                  />
-                </template>
-              </v-date-picker>
-            <input :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaRequerida2" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"  :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> -->
-
           </td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_conciliad') > -1}">
-
-            <!-- <v-date-picker v-if="statusRestriction" @click="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"  ref="datepicker"  v-model="(restriction_data.dayFechaConciliada)" mode="date" is24hr: false class="flex relative  cursor-pointer cursor-pointer" >
-                <template v-slot="{ inputValue, inputEvents }" >
-                  <input
-                    class="w-full border border-[#8A9CC9] px-2 text-xs h-8 rounded "
-                    placeholder="Fecha de inicio*"
-                    :value="inputValue"
-                    v-on="inputEvents"
-
-                  />
-                </template>
-              </v-date-picker>
-              <input  :disabled="!statusRestriction"  v-if="!statusRestriction" :value="restriction_data.dayFechaConciliada2" type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded" :class="{'bg-gray-100': !statusRestriction , 'text-gray-700': !statusRestriction  }" /> -->
 
               <input
                     v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFConciliada )"
@@ -180,7 +151,7 @@
                     v-if="!INIstateRestriction || restriction_data.codEstadoActividad == 3 || restriction_data.isEnabledFConciliada == false"
                     name="date_conciliad"
                     :disabled="true"
-                    :value="restriction_data.dayFechaConciliada"
+                    :value=formated_val(restriction_data.dayFechaConciliada)
                     type="text"
                     class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
                     :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
@@ -194,7 +165,7 @@
 
                     name="date_identity"
                     :disabled="true"
-                    :value="restriction_data.dayFechaIdentificacion"
+                    :value="formated_val(restriction_data.dayFechaIdentificacion)"
                     type="text"
                     class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
                     :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
@@ -207,7 +178,7 @@
             v-if="(INIresponsable && getOptionResponsables().length > 0) && restriction_data.codEstadoActividad < 3"
             name="responsible"
             v-model="restriction_data.idUsuarioResponsable"
-            class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
+            class="text-xs w-full  border border-[#8A9CC9] pr-5 px-2 h-8 rounded selectPer"
             :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }"
             @change="verificarCambio({name:'idUsuarioResponsable', value: restriction_data.idUsuarioResponsable})"
             >
@@ -225,7 +196,7 @@
               :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')"
               :value="restriction_data.desUsuarioResponsable"
               type="text"
-              class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+              class="w-full border border-[#8A9CC9] pr-5 px-2 text-xs h-8  rounded"
               :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }" 
           />
 
@@ -234,18 +205,27 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-xs h-8  rounded"/></td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
+              <span>fffffffffffa</span>
               <select
               v-if="INIstateRestriction"
               name="condition"
               v-model="restriction_data.codEstadoActividad"
-              class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded selectPer"
-              :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
+              class="text-xs pr-5 w-full  border border-[#8A9CC9] px-2 h-8 rounded selectPer"
+              :class="{'bg-gray-100,text-gray-700': !INIstateRestriction }"
               @change="verificarCambio({name:'codEstadoActividad', value: restriction_data.codEstadoActividad})"
+              @input="selectItem()"
               >
-
+              
               <option
-              v-for="item in getOptionEstados()" v-bind:key="item.value" v-bind:value = "item.value">
-                {{ item.name }}
+              v-for="item in getOptionEstados()" v-bind:key="item.value" v-bind:value = "item.value" 
+              :class="{'bg-black': item.value==1}"
+              >
+                <div v-if="item.value === 1">
+                </div>
+                <div v-if="item.value === 2">2
+                </div>
+                <div v-if="item.value === 3">3
+                </div>
               </option>
 
             </select>
@@ -255,7 +235,7 @@
                   :disabled="true"
                   :value="restriction_data.desEstadoActividad"
                   type="text"
-                  class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                  class="w-full pr-5 border border-[#8A9CC9] px-2 text-xs h-8  rounded"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
             />
 
@@ -273,6 +253,7 @@ import draggable from "vuedraggable";
 import TableTooltip from "./TableTooltip.vue";
 import ClickOutside from "vue-click-outside";
 import SelectOption from "./SelectOption.vue";
+import moment from 'moment'
 
 export default {
   name: "eliminar_test",
@@ -317,9 +298,18 @@ export default {
       autoSize1: 30,
       autoSize2: 30,
 
+      isVisible: false,
+
+      dateVal: moment(this.restriction_data.dayFechaRequerida).format("DD/MM/YY")
     }
   },
   methods:{
+
+    formated_val(date) {
+      if (date) {
+           return moment(String(date)).format('DD/MM/YY')
+      }
+    },
 
     updateHeight1(event) {
       try {
@@ -550,24 +540,20 @@ export default {
     hide: function () {
       this.isOpen = false;
     },
+
+    visibleSelector: function () {
+      this.isVisible = !this.isVisible;
+    },
+
+    selectItem: function() {
+      this.isVisible = !this.isVisible;
+    }
   },
 
   directives: {
     ClickOutside,
   },
   watch: {
-
-    // restriction_data :{
-    // deep: true, 
-    // handler(newVal, oldValor) {
-
-    //   console.log(">>>> verificamos los cambios")
-    //   console.log(">> antiguo")
-    //   console.log(oldValor)
-    //   console.log(">> nuevo")
-    //   console.log(newVal)
-
-    // }},
 
     validarUpd(newValor, oldValor) {
       // console.log(">>>>>>> validamos que se esten haciendo la escucha del flag de cambios")

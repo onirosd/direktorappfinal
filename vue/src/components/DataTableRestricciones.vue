@@ -4,10 +4,10 @@
   <!-- <nav @click="validamosArray"> click aqui para ver </nav> -->
   <table class="w-full tbldownload">
     <thead class="bg-[#DCE4F9]">
-      <tr :class="{ 'h-14': tableType === 'scroll' }">
+      <tr :class="{ 'h-10': tableType === 'scroll' }">
         <th
           v-if="tableType === 'scroll'"
-          class="px-4 py-3 rounded-tl-[7px] w-24 absolute left-0 bg-[#DCE4F9] h-14 flex"
+          class="px-4 py-3 rounded-tl-[7px] w-24 absolute left-0 bg-[#DCE4F9] h-10 flex"
         >
         <span>
 
@@ -38,7 +38,7 @@
         <th
           v-for="(col, key) in cols"
           :key="key"
-          class="text-left w-[20em] text-xs leading-6 px-3 last:rounded-tr-[7px] [&:nth-child(2)]:w-[90px]"
+          class="text-left text-xs px-3 last:rounded-tr-[7px] [&:nth-child(2)]:w-[90px]"
           :class="{
             hidden: tableType === 'scroll' && hideCols.indexOf(key) > -1,
             '[&:nth-child(2)]:w-28 [&:nth-child(5)]:w-44':
@@ -95,6 +95,7 @@
 // import ClickOutside from "vue-click-outside";
 import DataTableRestriccionesRow2 from "./DataTableRestriccionesRow2.vue";
 import draggable from "vuedraggable";
+import "../assets/css/reset.css"
 
 export default {
   name: "data-table-restrictions",

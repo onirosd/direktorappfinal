@@ -10,7 +10,8 @@ module.exports = {
         14: "3.5rem",
       },
       width: {
-        'content': 'calc(100% - 256px)'
+        'content': 'calc(100% - 256px)',
+        '100': '6.3rem'
       },
       colors: {
         main: "#002B6B",
