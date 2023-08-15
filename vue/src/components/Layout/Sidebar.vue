@@ -1,16 +1,16 @@
 <template>
   <div class="relative">
     <div
-      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[104px] h-screen bg-side sm:hidden transition-all duration-300"
+      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[90px] h-screen bg-side sm:hidden transition-all duration-300"
       :class="openSidebar === true ? 'w-48' : 'w-0 overflow-hidden'"
     >
       <div>
-        <h1 class="text-base mb-6 px-8">Tus aplicaciones</h1>
+        <h1 class="text-base mb-6 px-5">Tus aplicaciones</h1>
         <ul>
           <li
             v-for="route in routes"
             :key="route.id"
-            class="cursor-pointer py-4 relative px-8 "
+            class="cursor-pointer py-3 relative px-4 "
             :class="{
               'bg-[#002b6b]':route.cerrar,
               'text-white':route.cerrar,
@@ -45,7 +45,7 @@
               />
             </a>
             <ul
-              class="border-l border-l-[#8A9CC9] ml-7 mt-4"
+              class="border-l border-l-[#8A9CC9] ml-4 mt-4"
               v-if="route.childs && route.isOpen"
             >
               <li
@@ -67,7 +67,7 @@
         </ul>
       </div>
       <div
-        class="relative flex items-center justify-end px-8 bottom-0 h-[56px] border-t border-t-[#D0D9F1]"
+        class="relative cursor-pointer flex items-center justify-end px-8 bottom-0 h-[40px] border-t border-t-[#D0D9F1]"
         @click="$emit('toggleSidebar')"
       >
         <img
@@ -79,7 +79,7 @@
       </div>
     </div>
     <div
-      class="absolute -right-10 h-14 w-12 bottom-0 flex bg-side rounded-r sm:hidden"
+      class="absolute -right-10 h-10 w-10 bottom-0 flex bg-side rounded-r sm:hidden"
       :class="openSidebar === false ? '' : 'hidden'"
       @click="$emit('toggleSidebar')"
     >

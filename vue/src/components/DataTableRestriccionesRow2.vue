@@ -205,8 +205,8 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-xs h-8  rounded"/></td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
-              <span>fffffffffffa</span>
-              <select
+           
+            <select
               v-if="INIstateRestriction"
               name="condition"
               v-model="restriction_data.codEstadoActividad"
@@ -214,20 +214,13 @@
               :class="{'bg-gray-100,text-gray-700': !INIstateRestriction }"
               @change="verificarCambio({name:'codEstadoActividad', value: restriction_data.codEstadoActividad})"
               @input="selectItem()"
-              >
-              
+            >
               <option
-              v-for="item in getOptionEstados()" v-bind:key="item.value" v-bind:value = "item.value" 
-              :class="{'bg-black': item.value==1}"
-              >
-                <div v-if="item.value === 1">
-                </div>
-                <div v-if="item.value === 2">2
-                </div>
-                <div v-if="item.value === 3">3
-                </div>
+                v-for="item in getOptionEstados()"
+                v-bind:key="item.name"
+                v-bind:value = "item.value"
+              >{{ item.name }}
               </option>
-
             </select>
             <input
                   v-if="!INIstateRestriction"
@@ -254,6 +247,7 @@ import TableTooltip from "./TableTooltip.vue";
 import ClickOutside from "vue-click-outside";
 import SelectOption from "./SelectOption.vue";
 import moment from 'moment'
+import "../assets/css/reset.css"
 
 export default {
   name: "eliminar_test",
@@ -541,7 +535,7 @@ export default {
       this.isOpen = false;
     },
 
-    visibleSelector: function () {
+    onClickSpan: function () {
       this.isVisible = !this.isVisible;
     },
 

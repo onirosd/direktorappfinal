@@ -1,5 +1,5 @@
 <template>
-    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-16 sm:h-14 bg-main pl-8 z-10">
+    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-12 sm:h-14 bg-main pl-8 z-10">
         <img
             src="../../assets/logo.png"
             class="sm:content-phoneLogo cursor-pointer"

@@ -7,14 +7,17 @@ import App from './App.vue'
 import VCalendar from "v-calendar";
 import mitt from 'mitt';
 
-// import Loading from 'vue-loading-overlay';
-// import './../vue-loading-overlay/dist/vue-loading.css';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+library.add(faCircle);
 const emitter = mitt();
 
 const app = createApp(App);
+app.component("font-awesome-icon", FontAwesomeIcon)
 app.use(store);
 app.use(VCalendar, {});
 app.use(router);
 app.provide('emitter', emitter);
-app.mount('#app');
+app.mount('#app');  

@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@vuepic/vue-datepicker": "^3.5.3",
+        "bootstrap-vue": "^2.23.1",
         "tailwind-nth-child": "^1.0.1",
         "tailwindcss": "^3.2.4",
         "v-click-outside": "^3.2.0",
