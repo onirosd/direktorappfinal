@@ -5,7 +5,7 @@
           <input type="hidden" name="phaseName" :value="phaseName">
 
           <td v-if="rolProyecto == 3 || rolProyecto == 0" class="absolute left-0 mt-2 text-[0.6rem]">
-            <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
+            <button class="bg-[#DCE4F9] py-2  rounded-md justify-center flex items-center" @click="handleClick('modal')"
               v-click-outside="hide">
               <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
             </button>
