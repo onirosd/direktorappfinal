@@ -31,7 +31,7 @@
         :cols="headerCols"
         :colsref="headerColsRefs"
         :rows="rows"
-        class="sm:hidden"
+        class="sm:hidden text-[0.6rem]"
       >
         <template #default="{ row, index }">
           <RestrictionTableRow

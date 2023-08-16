@@ -6,14 +6,13 @@
       <div class="flex" :class="{ 'sm:hidden': menu }">
         <Sidebar :openSidebar="statusSidebar" @toggleSidebar="toggleSidebar" />
         <div
-          class="h-screen pt-10 sm:w-full sm:pt-10 sm:bg-[#F6F8FE]"
-          :class="statusSidebar ? 'w-content' : 'w-full'"
+          class="h-screen pt-10 sm:w-full sm:pt-10 sm:bg-[#F6F8FE] w-full"
         >
         <!-- h-full  => esto hace que sea centrado y full -->
           <!-- <div class="max-h-[39rem] px-16 sm:px-8 py-8 overflow-y-auto">
             <router-view />
           </div> -->
-          <div class="h-full px-16 sm:px-8 py-8 overflow-y-auto">
+          <div class="h-full px-12 sm:px-8 py-4 overflow-y-auto">
             <router-view />
           </div>
         </div>

@@ -26,7 +26,7 @@
         :tableType="'common'"
         :cols="headerCols"
         :rows="rows"
-        class="sm:hidden"
+        class="sm:hidden text-[0.6rem]"
       >
         <template #default="{ row, index }">
           <RestrictionTableRow
@@ -72,7 +72,7 @@
             >
           </div>
           <div class="flex mb-2">
-            <span class="flex flex-col">
+            <span class="flex flex-col text-[0.6rem]">
               <span v-for="(equipment, index) in row.integrantes" :key="index">{{ equipment }}</span>
             </span>
           </div>

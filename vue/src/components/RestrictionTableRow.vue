@@ -2,7 +2,7 @@
   <tr>
     <td>
       <button
-        class="border-2 border-orange rounded h-8 text-orange text-xs px-4"
+        class="border border-orange rounded h-8 text-orange text-[0.7rem] px-4"
         @click="ConstraintAnalysis(row.codProyecto)"
         ref="Boton para ingresar al administrador de restricciones"
       >
@@ -11,24 +11,24 @@
     </td>
     <td>
       <span class="flex items-center">
-        <span class="mr-2" :class="{'status_open': row.codEstado == 0 , 'status_closed': row.codEstado > 0    }">{{ row.codEstado == 0 ? `Abierto` : `Cerrado` }}</span>
+        <span class="mr-2 text-[0.6rem]" :class="{'status_open': row.codEstado == 0 , 'status_closed': row.codEstado > 0    }">{{ row.codEstado == 0 ? `Abierto` : `Cerrado` }}</span>
         <!-- <span class="mr-2">abierto</span> -->
         <img src="../assets/edit.svg" alt="" class="cursor-pointer" @click="openModal({param: 'editStatus', id: row.codProyecto})" />
       </span>
     </td>
-    <td>{{ row.desnombreproyecto }}</td>
+    <td class="text-[0.6rem]">{{ row.desnombreproyecto }}</td>
     <td>
       <p class="flex flex-col">
-        <span>No retrasadas: {{ row.indNoRetrasados }}</span>
-        <span v-if="row.indRetrasados == 0">Retrasadas: {{ row.indRetrasados }}</span>
-        <span v-if="row.indRetrasados > 0" style="color: red; font-weight: bold;">Retrasadas: {{ row.indRetrasados }}
+        <span class="text-[0.6rem]">No retrasadas: {{ row.indNoRetrasados }}</span>
+        <span class="text-[0.6rem]" v-if="row.indRetrasados == 0">Retrasadas: {{ row.indRetrasados }}</span>
+        <span class="text-[0.6rem]" v-if="row.indRetrasados > 0" style="color: red; font-weight: bold;">Retrasadas: {{ row.indRetrasados }}
           <img src="../assets/alert.svg" alt="Alert icon" class="inline-block w-4 h-4 ml-2 text-red-500">
         </span>
 
       </p>
     </td>
     <td>
-      <span class="flex flex-col">
+      <span class="flex flex-col text-[0.6rem]">
         <template v-for="(equipment, index) in row.integrantesProy" :key="index">
 
           <span  v-if ="row.integrantes.includes(equipment.codProyIntegrante)">

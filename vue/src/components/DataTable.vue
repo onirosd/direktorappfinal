@@ -22,7 +22,7 @@
         <th
           v-for="(col, key) in cols"
           :key="key"
-          class="text-left w-[250px] text-sm leading-6 py-3 px-4 last:rounded-tr-[7px] [&:nth-child(2)]:w-[100px]"
+          class="text-left w-[250px] text-xs leading-6 py-2 px-4 last:rounded-tr-[7px] [&:nth-child(2)]:w-[100px]"
           :class="{
             hidden: tableType === 'scroll' && hideCols.indexOf(key) > -1,
             '[&:nth-child(2)]:w-28 [&:nth-child(5)]:w-44':
@@ -48,7 +48,10 @@
   </table>
 </template>
 
+
 <script>
+import "../assets/css/reset.css"
+
 export default {
   props: {
     tableType: String,

@@ -4,7 +4,7 @@
       <li
         v-for="(path, i) in paths"
         :key="i"
-        class="last:text-[#616E8E] flex cursor-pointer"
+        class="last:text-xs flex cursor-pointer text-[11px]"
         :class="{'sm:hidden': i <= paths.length - 3}"
         @click="handleRedirect(urls[i])"
       >
@@ -18,7 +18,7 @@
         {{ path }}
       </li>
     </ul>
-    <span class="text-orange flex text-xs items-center" v-if="settingFlag">
+    <span class="text-orange flex text-tinysm items-center" v-if="settingFlag">
       <span class="mr-1 sm:hidden"> Configurar reporte </span>
       <img src="../../assets/setting.svg" alt="" />
     </span>
