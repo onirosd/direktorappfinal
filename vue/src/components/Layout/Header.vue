@@ -1,8 +1,8 @@
 <template>
-    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-12 sm:h-14 bg-main pl-8 z-10">
+    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-9 sm:h-14 bg-main pl-8 z-10">
         <img
             src="../../assets/logo.png"
-            class="sm:content-phoneLogo cursor-pointer"
+            class="sm:content-phoneLogo cursor-pointer h-7"
             title="Volver a la pagina de Inicio."
             @click="handleRedirect('Home')"
         />
@@ -10,7 +10,7 @@
             <li
                     v-for="route in routes"
                     :key="route.id"
-                    class="h-full flex items-center mx-4 text-white text-lg font-medium cursor-pointer border-y-[6px] border-y-transparent"
+                    class="h-full flex items-center mx-4 text-white text-xs font-medium cursor-pointer border-y-[6px] border-y-transparent"
                     @click="handleRedirect(route.path)"
                     :class="{ 'font-semibold border-b-[6px] border-b-orange': route.path === currentPath }"
             >
@@ -21,7 +21,7 @@
 
         <div class="h-full flex items-center bg-main hover:bg-[#001E4A] ... cursor-pointer" @click="updateisOpen">
             <div class="flex items-center px-8 sm:px-3 ">
-                <span class="text-base font-medium text-white sm:hidden">Hola, {{nombre}} </span>
+                <span class="text-xs font-medium text-white sm:hidden">Hola, {{nombre}} </span>
                 <!-- <img src="../../assets/bell.svg" class="mx-4 sm:mx-6 sm:content-phoneBell" alt="" /> -->
                 <!-- <img
                   src="../../assets/user.png"

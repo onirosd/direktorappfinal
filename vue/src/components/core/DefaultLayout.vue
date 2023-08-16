@@ -9,7 +9,7 @@
         @toggleSidebar="toggleSidebar"
         />
         <div
-          class="h-screen pt-16 sm:w-full sm:pt-14 sm:bg-[#F6F8FE]"
+          class="h-screen pt-10 sm:w-full sm:pt-10 sm:bg-[#F6F8FE]"
           :class="statusSidebar ? 'w-content' : 'w-full'"
         >
           <div class="h-full px-16 sm:px-8 py-8 overflow-y-auto">

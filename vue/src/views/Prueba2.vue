@@ -22,7 +22,7 @@
     </div>
 
     <!-- Segundo bloque - 2 indicadores en Barra -->
-    <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+    <div class="flex-1 flex flex-col space-y-2 w-[9em]">
       <div>
         <span class="mr-2 text-xs">Áreas cubiertas:</span>
         <div class="h-2 w-full bg-gray-300">
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Tercer bloque - 2 indicadores en Barra -->
-    <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+    <div class="flex-1 flex flex-col space-y-2 w-[9em]">
       <!-- Aquí puedes agregar los dos indicadores adicionales siguiendo el formato anterior -->
     </div>
   </div>

@@ -6,7 +6,7 @@
       <div class="flex" :class="{ 'sm:hidden': menu }">
         <Sidebar :openSidebar="statusSidebar" @toggleSidebar="toggleSidebar" />
         <div
-          class="h-screen pt-16 sm:w-full sm:pt-14 sm:bg-[#F6F8FE]"
+          class="h-screen pt-10 sm:w-full sm:pt-10 sm:bg-[#F6F8FE]"
           :class="statusSidebar ? 'w-content' : 'w-full'"
         >
         <!-- h-full  => esto hace que sea centrado y full -->

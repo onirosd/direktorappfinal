@@ -1,16 +1,16 @@
 <template>
   <div class="relative">
     <div
-      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[90px] h-screen bg-side sm:hidden transition-all duration-300"
-      :class="openSidebar === true ? 'w-48' : 'w-0 overflow-hidden'"
+      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[70px] h-screen bg-side sm:hidden transition-all duration-300"
+      :class="openSidebar === true ? 'w-36' : 'w-0 overflow-hidden'"
     >
       <div>
-        <h1 class="text-base mb-6 px-5">Tus aplicaciones</h1>
+        <h1 class="text-xs mb-6 px-5 font-bold">Tus aplicaciones</h1>
         <ul>
           <li
             v-for="route in routes"
             :key="route.id"
-            class="cursor-pointer py-3 relative px-4 "
+            class="cursor-pointer py-2 relative px-4 "
             :class="{
               'bg-[#002b6b]':route.cerrar,
               'text-white':route.cerrar,
@@ -31,7 +31,7 @@
                   v-bind:alt="route.img "
 
                 />
-                <span class="px-2 text-sm">{{ route.label }}</span>
+                <span class="px-2 text-xs font-bold">{{ route.label }}</span>
               </span>
               <img
                 src="../../assets/arrow-up.svg"
@@ -67,7 +67,7 @@
         </ul>
       </div>
       <div
-        class="relative cursor-pointer flex items-center justify-end px-8 bottom-0 h-[40px] border-t border-t-[#D0D9F1]"
+        class="relative cursor-pointer flex items-center justify-end px-8 bottom-0 h-[30px] border-t border-t-[#D0D9F1]"
         @click="$emit('toggleSidebar')"
       >
         <img
@@ -75,7 +75,7 @@
           alt=""
           class="justify-items-center"
         />
-        <span class="text-sm ml-2 text-[#002B6B]">Ocultar</span>
+        <span class="text-xs font-bold ml-2 text-[#002B6B]">Ocultar</span>
       </div>
     </div>
     <div

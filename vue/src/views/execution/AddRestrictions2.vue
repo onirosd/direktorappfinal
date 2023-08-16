@@ -29,8 +29,8 @@
               class="flex-1 text-white rounded-lg p-3 shadow-md"
               :class="getBgColor"
           >
-            <h2 class="text-lg">Avance de restricciones</h2>
-            <h3 class="text-sm">{{indicadorAvanceGeneral}}%</h3>
+            <h2 class="text-sm">Avance de restricciones</h2>
+            <h3 class="text-xs">{{indicadorAvanceGeneral}}%</h3>
             <div class="h-2 bg-white mt-2">
             <div class="h-full bg-orange400-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
 
@@ -38,13 +38,13 @@
         </div>
 
         <!-- Segundo bloque - 2 indicadores en Barra -->
-        <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+        <div class="flex-1 flex flex-col space-y-2 w-[9em]">
           <div>
             <span class="mr-2 text-xs">Tiempo de Anticipacion:</span>
             <div class="h-2 w-full bg-gray-300">
               <!-- <div class="h-full bg-green400-500" style="width: 30%;"></div> -->
             </div>
-            <span class="ml-2 text-sm">{{indicadorAnticipacion}} dias Promedio</span>
+            <span class="ml-2 text-xs">{{indicadorAnticipacion}} dias Promedio</span>
           </div>
 
           <div>
@@ -52,12 +52,12 @@
             <div class="h-2 w-full bg-gray-300">
               <!-- <div class="h-full bg-red400-500" style="width: 40%;"></div> -->
             </div>
-            <span class="ml-2 text-sm">{{indicadorCumplimiento}} dias promedio</span>
+            <span class="ml-2 text-xs">{{indicadorCumplimiento}} dias promedio</span>
           </div>
         </div>
 
   <!-- Tercer bloque - 2 indicadores en Barra -->
-  <div class="flex-1 flex flex-col space-y-2 w-[12em]">
+  <div class="flex-1 flex flex-col space-y-2 w-[9em]">
     <!-- Aquí puedes agregar los dos indicadores adicionales siguiendo el formato anterior -->
   </div>
 </div>
@@ -76,7 +76,7 @@
       <div class=" flex gap-2 w-[50%] sm:w-full " v-if="!fullScreen">
         <button
             :disabled="isDisabled"
-            class="bg-white w-[17%]  sm:w-[25%] h-[40px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+            class="bg-white w-[13%]  sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
             @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
             @click="openModal({ param: 'addFront' })"
             :class="{
@@ -89,7 +89,7 @@
         </button>
 
         <button
-          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          class="bg-white w-[13%] sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           :disabled="isDisabled"
           @click="openModal({ param: 'addPhase' })"
@@ -103,7 +103,7 @@
         </button>
 
         <button
-          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          class="bg-white w-[13%] sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           :disabled="isDisabled"
           :class="{
@@ -117,7 +117,7 @@
         </button>
 
         <button
-          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+          class="bg-white w-[13%] sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           @click="openModal({ param: 'enviarNoti' })"
           :disabled="disabledItemsEnviarCorreos"
@@ -128,7 +128,7 @@
 
           >
           <i class="fas fa-envelope"></i> Enviar Correos
-          <span class="badge absolute top-0 right-0 h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm" >{{countNotNoti}}</span>
+          <span class="badge absolute top-0 right-0 h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
         </button>
 
       </div>
@@ -151,13 +151,13 @@
       <div class=" flex  w-[50%] sm:w-full gap-2  justify-end" v-if="!fullScreen">
         <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
           <div class="flex-1 gap-2 flex justify-end text-xs ">
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[42px] text-tinysm" @click="downloadFile">
+            <button class="py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-tinysm" @click="downloadFile">
               <i class="fas fa-file-download"></i> Descargar Plantilla
             </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[42px] text-tinysm" @click="openModal({ param: 'uploadExcel' })">
+            <button class="py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-tinysm" @click="openModal({ param: 'uploadExcel' })">
               <i class="fas fa-file-upload"></i> Subir Plantilla
             </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[42px] text-tinysm" @click="downloadReporte">
+            <button class="py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-tinysm" @click="downloadReporte">
               <i class="fas fa-file-download"></i> Reporte
             </button>
           </div>
@@ -167,7 +167,7 @@
             <div class="flex-1 relative z-10">
               <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
 
-              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[42px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 text-tinysm">
+              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[30px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 text-tinysm">
 
               <!-- Lista de filtros seleccionados -->
               <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
@@ -215,7 +215,7 @@
             class="flex justify-between items-cener sm:w-full cursor-pointer"
             @click="toggleOpen(frente.desFrente)"
           >
-            <span class="text-xl text-activeText">
+            <span class="mt-2 text-base text-activeText">
               {{ frente.desFrente }}
 
 

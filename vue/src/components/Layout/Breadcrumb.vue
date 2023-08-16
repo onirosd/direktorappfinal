@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-between mb-12 sm:mb-8">
+  <div class="flex items-center justify-between mb-9 sm:mb-6">
     <ul class="text-[#8A9CC9] items-center flex text-xs">
       <li
         v-for="(path, i) in paths"
