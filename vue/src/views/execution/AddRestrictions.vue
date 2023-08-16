@@ -249,11 +249,11 @@
               :key="index2"
             >
               <div>
-                <span class="text-base leading-7 text-activeText shrink-0">
+                <span class="text-[0.7rem] leading-7 text-activeText shrink-0">
                   {{ fase.desFase }}
                 </span>
                 <span
-                  class="ml-[100px] sm:ml-8 text-base leading-7 text-activeText"
+                  class="ml-[100px] sm:ml-8 text-[0.657remrem] leading-7 text-activeText"
                 >
 
 

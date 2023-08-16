@@ -4,7 +4,7 @@
           <input type="hidden" name="frontName" :value="frontName">
           <input type="hidden" name="phaseName" :value="phaseName">
 
-          <td v-if="rolProyecto == 3 || rolProyecto == 0" class="absolute left-0 mt-2">
+          <td v-if="rolProyecto == 3 || rolProyecto == 0" class="absolute left-0 mt-2 text-[0.6rem]">
             <button class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center" @click="handleClick('modal')"
               v-click-outside="hide">
               <img src="../assets/points.svg" :class="{ 'content-pointsActive': restriction_data.isTooltip }" alt="" />
@@ -23,13 +23,9 @@
                   @keyup="verificarCambio({name:'desActividad', value: restriction_data.desActividad});"
                   v-model="restriction_data.desActividad"
                   type="text"
-                  class=" w-full text-xs border border-[#8A9CC9] px-1 h-8 rounded resizable-textarea"
-                  :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{ marginTop: '5px'}"
+                  class="mt-1.5 w-full text-[0.6rem] border border-[#8A9CC9] px-1 h-6 rounded resizable-textarea"
+                  :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction, 'text-[0.6rem]': !INIstateRestriction }"
                   @input="updateHeight1"
-
-
-
             >
             </textarea>
             <textarea
@@ -39,9 +35,8 @@
                   ref="exercise"
                   name="exercise"
                   type="text"
-                  class="w-full text-xs border border-[#8A9CC9] px-1 h-8 rounded resizable-textarea"
+                  class="mt-1.5 w-full text-[0.6rem] border border-[#8A9CC9] px-1 h-6 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{ marginTop: '5px'}"
                   @input="updateHeight1"
 
             >
@@ -55,7 +50,7 @@
                   @keyup="verificarCambio({name:'desRestriccion', value: restriction_data.desRestriccion})"
                   v-model="restriction_data.desRestriccion"
                   type="text"
-                  class="w-full text-xs border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
+                  class="w-full text-[0.6rem] border border-[#8A9CC9] px-2 h-6 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
                   :style="{ marginTop: '5px'}"
                   @input="updateHeight2"
@@ -69,7 +64,7 @@
                   ref="restriction"
                   name="restriction"
                   type="text"
-                  class="w-full text-xs border border-[#8A9CC9] px-2 h-8 rounded resizable-textarea"
+                  class="w-full text-[0.6rem] border border-[#8A9CC9] px-2 h-6 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
                   :style="{ marginTop: '5px'}"
                   @input="updateHeight2"
@@ -83,7 +78,7 @@
             name="restrictionType"
             v-if="INItipo && restriction_data.codEstadoActividad < 3"
             v-model="restriction_data.codTipoRestriccion"
-            class="text-xs w-full  border border-[#8A9CC9] pr-5 px-2 h-8 rounded  selectPer"
+            class="text-[0.6rem] w-full  border border-[#8A9CC9] pr-5 px-2 h-6 rounded  selectPer"
             :class="{'bg-gray-100': !INItipo , 'text-gray-700': !INItipo  }"
             @change="verificarCambio({name:'codTipoRestriccion', value: restriction_data.codTipoRestriccion, change: $event });"
           >
@@ -100,7 +95,7 @@
                  :disabled="true"
                  :value="restriction_data.desTipoRestriccion"
                  type="text"
-                 class="w-full border border-[#8A9CC9] pr-5 px-2 text-xs h-8  rounded"
+                 class="w-full border border-[#8A9CC9] pr-5 px-2 text-[0.6rem] h-6  rounded"
                  :class="{'bg-gray-100': !INItipo , 'text-gray-700': !INItipo }" />
 
 
@@ -115,7 +110,7 @@
              @change="verificarCambio({name:'dayFechaRequerida', value: formated_val(restriction_data.dayFechaRequerida)})"
              v-model="restriction_data.dayFechaRequerida"
              type="date"
-             class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
+             class="text-[0.6rem] w-full border border-[#8A9CC9] px-2 h-6 rounded"
              :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
             />
 
@@ -125,7 +120,7 @@
              :disabled="true"
 
              :value="formated_val(restriction_data.dayFechaRequerida)"
-             type="text" class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+             type="text" class="w-full border border-[#8A9CC9] px-2 text-[0.6rem] h-6  rounded"
              :class="{
                           'bg-gray-100': !INIstateRestriction ,
                           'text-gray-700': !INIstateRestriction,
@@ -143,7 +138,7 @@
                     @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
                     v-model="restriction_data.dayFechaConciliada"
                     type="date"
-                    class="text-xs w-full border border-[#8A9CC9] px-2 h-8 rounded"
+                    class="text-[0.6rem] w-full border border-[#8A9CC9] px-2 h-6 rounded"
                     :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
               />
 
@@ -153,7 +148,7 @@
                     :disabled="true"
                     :value=formated_val(restriction_data.dayFechaConciliada)
                     type="text"
-                    class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                    class="w-full border border-[#8A9CC9] px-2 text-[0.6rem] h-6  rounded"
                     :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
               />
 
@@ -167,7 +162,7 @@
                     :disabled="true"
                     :value="formated_val(restriction_data.dayFechaIdentificacion)"
                     type="text"
-                    class="w-full border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                    class="w-full border border-[#8A9CC9] px-2 text-[0.6rem] h-6  rounded"
                     :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
               />
 
@@ -178,7 +173,7 @@
             v-if="(INIresponsable && getOptionResponsables().length > 0) && restriction_data.codEstadoActividad < 3"
             name="responsible"
             v-model="restriction_data.idUsuarioResponsable"
-            class="text-xs w-full  border border-[#8A9CC9] pr-5 px-2 h-8 rounded selectPer"
+            class="text-[0.6rem] w-full  border border-[#8A9CC9] pr-5 px-2 h-6 rounded selectPer"
             :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }"
             @change="verificarCambio({name:'idUsuarioResponsable', value: restriction_data.idUsuarioResponsable})"
             >
@@ -196,13 +191,13 @@
               :placeholder="(getOptionResponsables().length == 0 ? 'Sin Miembros': '')"
               :value="restriction_data.desUsuarioResponsable"
               type="text"
-              class="w-full border border-[#8A9CC9] pr-5 px-2 text-xs h-8  rounded"
+              class="w-full border border-[#8A9CC9] pr-5 px-2 text-[0.6rem] h-6  rounded"
               :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }" 
           />
 
           </td>
 
-          <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-xs h-8  rounded"/></td>
+          <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-[0.6rem] h-6  rounded"/></td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
            
@@ -210,7 +205,7 @@
               v-if="INIstateRestriction"
               name="condition"
               v-model="restriction_data.codEstadoActividad"
-              class="text-xs pr-5 w-full  border border-[#8A9CC9] px-2 h-8 rounded selectPer"
+              class="text-[0.6rem] pr-5 w-full  border border-[#8A9CC9] px-2 h-6 rounded selectPer"
               :class="{'bg-gray-100,text-gray-700': !INIstateRestriction }"
               @change="verificarCambio({name:'codEstadoActividad', value: restriction_data.codEstadoActividad})"
               @input="selectItem()"
@@ -228,14 +223,14 @@
                   :disabled="true"
                   :value="restriction_data.desEstadoActividad"
                   type="text"
-                  class="w-full pr-5 border border-[#8A9CC9] px-2 text-xs h-8  rounded"
+                  class="w-full pr-5 border border-[#8A9CC9] px-2 text-[0.6rem] h-6  rounded"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
             />
 
           </td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('applicant') > -1}">
-            <input name="applicant" type="text" :value="restriction_data.desUsuarioSolicitante" readonly class="w-full border px-2 text-xs h-8  rounded"/>
+            <input name="applicant" type="text" :value="restriction_data.desUsuarioSolicitante" readonly class="w-full border px-2 text-[0.6rem] h-6  rounded"/>
           </td>
         </tr>
 
@@ -247,7 +242,7 @@ import TableTooltip from "./TableTooltip.vue";
 import ClickOutside from "vue-click-outside";
 import SelectOption from "./SelectOption.vue";
 import moment from 'moment'
-import "../assets/css/reset.css"
+import "../assets/css/reset_datatable.css"
 
 export default {
   name: "eliminar_test",

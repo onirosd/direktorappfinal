@@ -255,11 +255,11 @@
               :key="index2"
             >
               <div>
-                <span class="text-base leading-7 text-activeText shrink-0">
+                <span class="text-[0.7rem] leading-7 text-activeText shrink-0">
                   {{ fase.desFase }}
                 </span>
                 <span
-                  class="ml-[100px] sm:ml-8 text-base leading-7 text-activeText"
+                  class="ml-[100px] sm:ml-8 text-[0.7rem] leading-7 text-activeText"
                 >
 
 
@@ -269,7 +269,7 @@
                 </span>
               </div>
 
-              <div>
+              <div class="mt-6">
                 <div class="flex sm:flex-col justify-between sm:mb-10">
                   <div
                     class="flex mt-1 mb-3 items-start cursor-pointer"
@@ -286,7 +286,7 @@
                       alt=""
                       class="mr-1"
                     />
-                    <span class="text-xs text-[#002B6B]"
+                    <span class="text-[0.6rem] text-[#002B6B]"
                       >Ocultar / mostrar columnas</span
                     >
                   </div>

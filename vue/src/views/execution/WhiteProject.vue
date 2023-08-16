@@ -142,11 +142,11 @@
               :key="index"
             >
               <div>
-                <span class="text-base leading-7 text-activeText shrink-0">
+                <span class="text-[0.7rem] leading-7 text-activeText shrink-0">
                   {{ item.name }}
                 </span>
                 <span
-                  class="ml-[100px] sm:ml-8 text-base leading-7 text-activeText"
+                  class="ml-[100px] sm:ml-8 text-[0.7rem] leading-7 text-activeText"
                 >
                   No retrasadas: {{ item.notDelayed }}
                   <span class="sm:hidden">/</span> Retrasadas:

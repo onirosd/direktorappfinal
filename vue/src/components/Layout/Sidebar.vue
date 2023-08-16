@@ -10,7 +10,7 @@
           <li
             v-for="route in routes"
             :key="route.id"
-            class="cursor-pointer py-2 relative px-4 "
+            class="cursor-pointer py-3 relative px-4"
             :class="{
               'bg-[#002b6b]':route.cerrar,
               'text-white':route.cerrar,

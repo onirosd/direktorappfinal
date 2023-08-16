@@ -38,7 +38,7 @@
         <th
           v-for="(col, key) in cols"
           :key="key"
-          class="text-left text-xs px-3 last:rounded-tr-[7px] [&:nth-child(2)]:w-[90px]"
+          class="text-left text-[0.6rem] px-3 last:rounded-tr-[7px] [&:nth-child(2)]:w-[90px]"
           :class="{
             hidden: tableType === 'scroll' && hideCols.indexOf(key) > -1,
             '[&:nth-child(2)]:w-28 [&:nth-child(5)]:w-44':
