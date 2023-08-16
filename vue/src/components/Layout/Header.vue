@@ -1,8 +1,8 @@
 <template>
-    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-9 sm:h-14 bg-main pl-8 z-10">
+    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-12 sm:h-14 bg-main pl-6 z-10">
         <img
             src="../../assets/logo.png"
-            class="sm:content-phoneLogo cursor-pointer h-7"
+            class="sm:content-phoneLogo cursor-pointer h-8"
             title="Volver a la pagina de Inicio."
             @click="handleRedirect('Home')"
         />
@@ -10,7 +10,7 @@
             <li
                     v-for="route in routes"
                     :key="route.id"
-                    class="h-full flex items-center mx-4 text-white text-xs font-medium cursor-pointer border-y-[6px] border-y-transparent"
+                    class="h-full flex items-center mx-3 text-white text-sm font-medium cursor-pointer border-y-[6px] border-y-transparent"
                     @click="handleRedirect(route.path)"
                     :class="{ 'font-semibold border-b-[6px] border-b-orange': route.path === currentPath }"
             >
@@ -32,19 +32,6 @@
             </div>
 
             <TableTooltipPerson :type="'person'" v-if="isOpenUser" @selectPersonInfo="selectPersonInfo"/>
-            <!--<TableTooltipPerson :type="'bell'" v-show="isOpenBell" @checkNotification="checkNotification"
-                                :messages="messages"/>-->
-            <!--<TableTooltipPerson :type="'bell'" @checkNotification="checkNotification"
-                                :messages="ms"/>
-            <button class="w-16 sm:w-14 h-full flex items-center justify-center bg-[#001E4A]">
-                <img src="../../assets/bell.svg" alt="" class="sm:hidden" @click.stop="clickBell"/>
-                <span style="color: white" @click.stop="clickBell">{{messages.length}}</span>
-
-                <img src="../../assets/phone-menu.svg" alt="" class="hidden sm:block" v-if="!menu"
-                     @click="toggleMenu"/>
-                <img src="../../assets/close.svg" alt="" class="hidden sm:block" v-if="menu"
-                     @click="toggleMenu"/>
-            </button>-->
 
             <DropdownComponent/>
 

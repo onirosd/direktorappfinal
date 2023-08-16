@@ -4,7 +4,7 @@
       <tr :class="{ 'h-14': tableType === 'scroll' }">
         <th
           v-if="tableType === 'scroll'"
-          class="px-4 py-3 rounded-tl-[7px] w-24 absolute left-0 bg-[#DCE4F9] h-10 flex"
+          class="px-4 py-3 rounded-tl-[7px] w-16 absolute left-0 bg-[#DCE4F9] h-14 flex"
         >
           <img
             src="../assets/full-screen.svg"

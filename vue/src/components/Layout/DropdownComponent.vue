@@ -1,8 +1,8 @@
 <template>
 
-    <button class="w-16 sm:w-14 h-full flex items-center justify-center bg-[#001E4A]" @click.stop="clickBell">
-        <img src="../../assets/bell.svg" alt="" class="sm:hidden"/>
-        <span style="color: white">{{messages.length}}</span>
+    <button class="w-12 sm:w-14 h-full flex items-center justify-center bg-[#001E4A]" @click.stop="clickBell">
+        <img src="../../assets/bell.svg" alt="" class="sm:hidden w-5"/>
+        <span style="color: white" class="text-xs">{{messages.length}}</span>
 
         <img src="../../assets/phone-menu.svg" alt="" class="hidden sm:block"
         />

@@ -1,16 +1,16 @@
 <template>
   <div class="relative">
     <div
-      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[70px] h-screen bg-side sm:hidden transition-all duration-300"
+      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[82px] h-screen bg-side sm:hidden transition-all duration-300"
       :class="openSidebar === true ? 'w-48' : 'w-0 overflow-hidden'"
     >
       <div>
-        <h1 class="text-xs mb-6 px-5 font-bold">Tus aplicaciones</h1>
+        <h1 class="text-sm mb-6 px-5 font-bold">Tus aplicaciones</h1>
         <ul>
           <li
             v-for="route in routes"
             :key="route.id"
-            class="cursor-pointer py-3 relative px-4"
+            class="cursor-pointer py-3 relative pl-4 pr-5"
             :class="{
               'bg-[#002b6b]':route.cerrar,
               'text-white':route.cerrar,
@@ -51,7 +51,7 @@
               <li
                 v-for="child in route.childs"
                 :key="child.id"
-                class="font-medium text-xs leading-5 cursor-pointer pl-4 mb-3 last:mb-0 -ml-0.5"
+                class="font-medium text-[0.65rem] leading-5 cursor-pointer pl-4 mb-3 last:mb-0 -ml-0.5"
                 :class="{
                   'text-activeText before:border-l-[2px] before:border-l-[#EB5D00] before:absolute before:-ml-[15.5px] before:h-4 before:rounded':
                     child.path === currentPath,
@@ -67,7 +67,7 @@
         </ul>
       </div>
       <div
-        class="relative cursor-pointer flex items-center justify-end px-8 bottom-0 h-[30px] border-t border-t-[#D0D9F1]"
+        class="relative cursor-pointer flex items-center justify-end py-5 text-xs px-8 bottom-0 h-[30px] border-t border-t-[#D0D9F1]"
         @click="$emit('toggleSidebar')"
       >
         <img
@@ -75,7 +75,7 @@
           alt=""
           class="justify-items-center"
         />
-        <span class="text-xs font-bold ml-2 text-[#002B6B]">Ocultar</span>
+        <span class="text-[0.7rem] font-bold  text-[#002B6B]">Ocultar</span>
       </div>
     </div>
     <div

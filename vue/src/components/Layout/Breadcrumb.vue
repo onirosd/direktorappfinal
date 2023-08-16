@@ -4,7 +4,7 @@
       <li
         v-for="(path, i) in paths"
         :key="i"
-        class="last:text-xs flex cursor-pointer text-[11px]"
+        class="last:text-xs flex cursor-pointer text-[9px]"
         :class="{'sm:hidden': i <= paths.length - 3}"
         @click="handleRedirect(urls[i])"
       >

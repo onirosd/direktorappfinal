@@ -315,10 +315,10 @@
                 </div>
                 <div
                   id="filterSection"
-                  class="outer relative border border-[#D0D9F1] rounded-lg before:w-24 before:absolute before:h-full before:shadow-tooltip"
+                  class="outer relative border border-[#D0D9F1] rounded-lg before:w-18 before:absolute before:h-full before:shadow-tooltip"
                 >
                   <div
-                    class="inner overflow-scroll overflow-hidden ml-24"
+                    class="inner overflow-scroll overflow-hidden ml-16"
                     :style="{ 'min-height': `${heigthDiv}px` }"
                   >
                     <DataTableRestricciones

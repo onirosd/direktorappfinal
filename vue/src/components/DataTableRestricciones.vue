@@ -7,7 +7,7 @@
       <tr :class="{ 'h-10': tableType === 'scroll' }">
         <th
           v-if="tableType === 'scroll'"
-          class="px-4 py-3 rounded-tl-[7px] w-24 absolute left-0 bg-[#DCE4F9] h-10 flex"
+          class="pl-2 pr-10 pt-2 pb-3 rounded-tl-[7px]  absolute left-0 bg-[#DCE4F9] h-10 flex"
         >
         <span>
 
@@ -16,7 +16,7 @@
           <img
             v-if="!mfullScreen"
             src="../assets/maximizar-icon.svg"
-            class="cursor-pointer"
+            class="cursor-pointer w-6 h-6"
             @click="$emit('fullScreen', {frontId: frontId, phaseId: phaseId, frontName: frontName, phaseName: phaseName, restrictions:restrictions, idxFront:idxFront, idxPhase:idxPhase })"
             alt=""
           />
