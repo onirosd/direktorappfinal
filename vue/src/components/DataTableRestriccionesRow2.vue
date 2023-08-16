@@ -24,9 +24,10 @@
                   v-model="restriction_data.desActividad"
                   type="text"
                   class="mt-1.5 w-full text-[0.6rem] border border-[#8A9CC9] px-1 h-6 rounded resizable-textarea"
+                  
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction, 'text-[0.6rem]': !INIstateRestriction }"
                   @input="updateHeight1"
-                  :style="{ lineHeight: 'initial'}"
+                  :style="{ lineHeight: 'initial', height: autoSize1 + 'px'}"
             >
             </textarea>
             <textarea
@@ -39,7 +40,7 @@
                   class="mt-1.5 w-full text-[0.6rem] border border-[#8A9CC9] px-1 h-6 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
                   @input="updateHeight1"
-                  :style="{ lineHeight: 'initial'}"
+                  :style="{ lineHeight: 'initial', height: autoSize1 + 'px'}"
 
             >
             </textarea>
@@ -54,7 +55,7 @@
                   type="text"
                   class="w-full text-[0.6rem] border border-[#8A9CC9] px-2 h-6 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{ marginTop: '5px', lineHeight: 'initial'}"
+                  :style="{ marginTop: '5px', lineHeight: 'initial', height: autoSize2 + 'px'}"
                   @input="updateHeight2"
             >
             </textarea>
@@ -68,7 +69,7 @@
                   type="text"
                   class="w-full text-[0.6rem] border border-[#8A9CC9] px-2 h-6 rounded resizable-textarea"
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction  }"
-                  :style="{ marginTop: '5px', lineHeight: 'initial'}"
+                  :style="{ marginTop: '5px', lineHeight: 'initial', height: autoSize2 + 'px'}"
                   @input="updateHeight2"
 
             >
