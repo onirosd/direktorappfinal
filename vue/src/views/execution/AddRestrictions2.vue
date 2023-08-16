@@ -23,7 +23,7 @@
 
 
       <!-- <div @click="mverificamos"> hacer clicks para probar</div> -->
-      <div class="flex justify-between space-x-4">
+      <div class="flex justify-between space-x-4 h-24">
         <!-- Primer bloque - Indicador principal en Card -->
         <div
               class="flex-1 text-white rounded-lg p-3 shadow-md"
@@ -39,16 +39,16 @@
 
         <!-- Segundo bloque - 2 indicadores en Barra -->
         <div class="flex-1 flex flex-col space-y-2 w-[9em]">
-          <div>
-            <span class="mr-2 text-xs">Tiempo de Anticipacion:</span>
+          <div class="h-12">
+            <span class="mr-2 text-[0.6rem]">Tiempo de Anticipacion:</span>
             <div class="h-2 w-full bg-gray-300">
               <!-- <div class="h-full bg-green400-500" style="width: 30%;"></div> -->
             </div>
             <span class="ml-2 text-xs">{{indicadorAnticipacion}} dias Promedio</span>
           </div>
 
-          <div>
-            <span class="mr-2 text-xs">Tiempo de Cumplimiento:</span>
+          <div class="!mt-0 h-12">
+            <span class="mr-2 text-[0.6rem]">Tiempo de Cumplimiento:</span>
             <div class="h-2 w-full bg-gray-300">
               <!-- <div class="h-full bg-red400-500" style="width: 40%;"></div> -->
             </div>
@@ -73,10 +73,10 @@
 
     <div class=" flex  justify-between  sm:flex-col">
       <!-- Sección izquierda -->
-      <div class=" flex gap-2 w-[50%] sm:w-full " v-if="!fullScreen">
+      <div class=" flex w-[50%] sm:w-full " v-if="!fullScreen">
         <button
             :disabled="isDisabled"
-            class="bg-white w-[13%]  sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+            class="bg-white w-[18%]  sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
             @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
             @click="openModal({ param: 'addFront' })"
             :class="{
@@ -89,7 +89,7 @@
         </button>
 
         <button
-          class="bg-white w-[13%] sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           :disabled="isDisabled"
           @click="openModal({ param: 'addPhase' })"
@@ -103,7 +103,7 @@
         </button>
 
         <button
-          class="bg-white w-[13%] sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           :disabled="isDisabled"
           :class="{
@@ -117,7 +117,7 @@
         </button>
 
         <button
-          class="bg-white w-[13%] sm:w-[25%] h-[30px] text-tinysm hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+          class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           @click="openModal({ param: 'enviarNoti' })"
           :disabled="disabledItemsEnviarCorreos"
@@ -148,16 +148,16 @@
             </ul>
       </div>
 
-      <div class=" flex  w-[50%] sm:w-full gap-2  justify-end" v-if="!fullScreen">
+      <div class=" flex  w-[50%] sm:w-full justify-end" v-if="!fullScreen">
         <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
-          <div class="flex-1 gap-2 flex justify-end text-xs ">
-            <button class="py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-tinysm" @click="downloadFile">
+          <div class="flex-1 flex justify-end text-xs ">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[30px] text-[0.55rem]" @click="downloadFile">
               <i class="fas fa-file-download"></i> Descargar Plantilla
             </button>
-            <button class="py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-tinysm" @click="openModal({ param: 'uploadExcel' })">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[30px] text-[0.55rem]" @click="openModal({ param: 'uploadExcel' })">
               <i class="fas fa-file-upload"></i> Subir Plantilla
             </button>
-            <button class="py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-tinysm" @click="downloadReporte">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-[0.55rem]" @click="downloadReporte">
               <i class="fas fa-file-download"></i> Reporte
             </button>
           </div>
@@ -167,7 +167,7 @@
             <div class="flex-1 relative z-10">
               <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
 
-              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[30px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 text-tinysm">
+              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[30px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 text-[0.6rem]">
 
               <!-- Lista de filtros seleccionados -->
               <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
@@ -215,12 +215,12 @@
             class="flex justify-between items-cener sm:w-full cursor-pointer"
             @click="toggleOpen(frente.desFrente)"
           >
-            <span class="mt-2 text-base text-activeText">
+            <span class="mt-1 text-sm text-activeText font-bold">
               {{ frente.desFrente }}
 
 
-                  <div class="bar">
-                      <div class="filled"
+                  <div class="!h-4 !w-40 bar">
+                      <div class="!h-4 filled"
                           :class="countActivities(frente.codFrente).colorClass"
                           :style="{ width: countActivities(frente.codFrente).percentage + '%' }">
                           {{ countActivities(frente.codFrente).percentage }}%

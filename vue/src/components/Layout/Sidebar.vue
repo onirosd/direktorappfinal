@@ -2,7 +2,7 @@
   <div class="relative">
     <div
       class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[70px] h-screen bg-side sm:hidden transition-all duration-300"
-      :class="openSidebar === true ? 'w-36' : 'w-0 overflow-hidden'"
+      :class="openSidebar === true ? 'w-48' : 'w-0 overflow-hidden'"
     >
       <div>
         <h1 class="text-xs mb-6 px-5 font-bold">Tus aplicaciones</h1>
