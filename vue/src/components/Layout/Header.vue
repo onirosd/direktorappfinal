@@ -1,8 +1,8 @@
 <template>
-    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-16 sm:h-14 bg-main pl-8 z-10">
+    <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-12 sm:h-12 bg-main pl-8 z-10">
         <img
             src="../../assets/logo.png"
-            class="sm:content-phoneLogo cursor-pointer"
+            class="sm:content-phoneLogo cursor-pointer w-[3em]"
             title="Volver a la pagina de Inicio."
             @click="handleRedirect('Home')"
         />
@@ -10,7 +10,7 @@
             <li
                     v-for="route in routes"
                     :key="route.id"
-                    class="h-full flex items-center mx-4 text-white text-lg font-medium cursor-pointer border-y-[6px] border-y-transparent"
+                    class="h-full flex items-center mx-4 text-white text-sm font-medium cursor-pointer border-y-[6px] border-y-transparent"
                     @click="handleRedirect(route.path)"
                     :class="{ 'font-semibold border-b-[6px] border-b-orange': route.path === currentPath }"
             >

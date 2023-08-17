@@ -1,16 +1,16 @@
 <template>
   <div class="relative">
     <div
-      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[104px] h-screen bg-side sm:hidden transition-all duration-300"
-      :class="openSidebar === true ? 'w-64' : 'w-0 overflow-hidden'"
+      class="flex shrink-0 flex-col justify-between top-0 left-0 pt-[8em] h-screen bg-side sm:hidden transition-all duration-300"
+      :class="openSidebar === true ? 'w-[20em]' : 'w-0 overflow-hidden'"
     >
       <div>
-        <h1 class="text-xl mb-6 px-8">Tus aplicaciones</h1>
+        <h1 class="text-sm mb-2 px-8">Tus aplicaciones</h1>
         <ul>
           <li
             v-for="route in routes"
             :key="route.id"
-            class="cursor-pointer py-4 relative px-8 "
+            class="cursor-pointer py-2 relative px-8 "
             :class="{
               'bg-[#002b6b]':route.cerrar,
               'text-white':route.cerrar,
@@ -51,7 +51,7 @@
               <li
                 v-for="child in route.childs"
                 :key="child.id"
-                class="font-medium text-xs leading-5 cursor-pointer pl-4 mb-3 last:mb-0 -ml-0.5"
+                class="font-medium text-xxs leading-5 cursor-pointer pl-4 mb-1 last:mb-0 -ml-0.5"
                 :class="{
                   'text-activeText before:border-l-[2px] before:border-l-[#EB5D00] before:absolute before:-ml-[15.5px] before:h-4 before:rounded':
                     child.path === currentPath,

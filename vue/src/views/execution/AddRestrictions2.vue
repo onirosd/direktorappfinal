@@ -26,33 +26,50 @@
       <div class="flex justify-between space-x-4">
         <!-- Primer bloque - Indicador principal en Card -->
         <div
-              class="flex-1 text-white rounded-lg p-3 shadow-md"
+              class="flex-1 text-white rounded-lg p-1 shadow-md"
               :class="getBgColor"
           >
-            <h2 class="text-lg">Avance de restricciones</h2>
-            <h3 class="text-md">{{indicadorAvanceGeneral}}%</h3>
+            <h2 class="text-md">Avance de restricciones</h2>
+            <h3 class="text-lg">{{indicadorAvanceGeneral}}%</h3>
             <div class="h-2 bg-white mt-2">
-            <div class="h-full bg-orange400-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
+            <div
+                class="h-full " v-bind:style="{ width: indicadorAvanceGeneral + '%' }"
+                :class="getBgColorBold"
+            ></div>
 
           </div>
         </div>
 
         <!-- Segundo bloque - 2 indicadores en Barra -->
-        <div class="flex-1 flex flex-col space-y-2 w-[12em]">
-          <div>
-            <span class="mr-2 text-xs">Tiempo de Anticipacion:</span>
-            <div class="h-2 w-full bg-gray-300">
-              <!-- <div class="h-full bg-green400-500" style="width: 30%;"></div> -->
+        <div class="space-y-2 w-[12em]">
+          <div class="text-xxs flex ">
+            <span class="mr-2 flex-col  ">Tiempo de Anticipacion <b>(Promedio)</b></span>
+
+            <!-- <span class="ml-2 text-md w-[20px] ws_green400"></span> -->
+            <div class="ml-2 text-center">
+            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+              {{indicadorAnticipacion}}
+
             </div>
-            <span class="ml-2 text-md">{{indicadorAnticipacion}} dias Promedio</span>
+            dias
           </div>
 
-          <div>
-            <span class="mr-2 text-xs">Tiempo de Cumplimiento:</span>
-            <div class="h-2 w-full bg-gray-300">
-              <!-- <div class="h-full bg-red400-500" style="width: 40%;"></div> -->
+          </div>
+        </div>
+
+        <div class="space-y-2 w-[12em]">
+          <div class="text-xxs flex ">
+            <span class="mr-2 flex-col  ">Tiempo de Cumplimiento <b>(Promedio)</b></span>
+
+            <!-- <span class="ml-2 text-md w-[20px] ws_green400"></span> -->
+            <div class="ml-2 text-center">
+            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+              {{indicadorCumplimiento}}
+
             </div>
-            <span class="ml-2 text-md">{{indicadorCumplimiento}} dias promedio</span>
+            dias
+          </div>
+
           </div>
         </div>
 
@@ -73,10 +90,10 @@
 
     <div class=" flex  justify-between  sm:flex-col">
       <!-- Sección izquierda -->
-      <div class=" flex  w-[50%] sm:w-full " v-if="!fullScreen">
+      <div class=" flex text-xxs w-[50%] h-8 sm:w-full " v-if="!fullScreen">
         <button
             :disabled="isDisabled"
-            class="bg-white w-[17%]  sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+            class="bg-white  hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
             @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
             @click="openModal({ param: 'addFront' })"
             :class="{
@@ -89,7 +106,7 @@
         </button>
 
         <button
-          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          class="bg-white w-[19%] sm:w-[25%] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           :disabled="isDisabled"
           @click="openModal({ param: 'addPhase' })"
@@ -103,7 +120,7 @@
         </button>
 
         <button
-          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+          class="bg-white w-[17%] sm:w-[25%]hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           :disabled="isDisabled"
           :class="{
@@ -116,8 +133,28 @@
           <i class="fas fa-trash"></i> Eliminar
         </button>
 
+
         <button
-          class="bg-white w-[17%] sm:w-[25%] h-[40px] text-xs hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+           type="button"
+           class="relative inline-flex items-center font-medium text-center hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange dark:focus:ring-blue-800"
+           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+           @click="openModal({ param: 'enviarNoti' })"
+           :disabled="disabledItemsEnviarCorreos"
+           :class="{
+                'border-orange': !disabledItemsEnviarCorreos,
+                'border-[#DCE4F9]': disabledItemsEnviarCorreos,
+              }"
+           >
+
+          <i class="fas fa-envelope"></i> Enviar Correos
+          <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{countNotNoti}}</div>
+
+        </button>
+
+<!--
+
+        <button
+          class="bg-white w-[17%] sm:w-[25%]  hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
           @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
           @click="openModal({ param: 'enviarNoti' })"
           :disabled="disabledItemsEnviarCorreos"
@@ -127,12 +164,16 @@
               }"
 
           >
-          <i class="fas fa-envelope"></i> Enviar Correos
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+    <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
+    <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
+  </svg>
+          Enviar Correos
           <span class="badge absolute top-0 right-0 h-5 w-5 bg-red400-500 rounded-full text-white text-center text-xs" >{{countNotNoti}}</span>
-        </button>
+        </button> -->
 
       </div>
-      <div class=" flex  w-[50%] sm:w-full" v-if="fullScreen">
+      <div class=" flex  w-[50%] sm:w-full h-8" v-if="fullScreen">
             <ul class="text-[#8A9CC9] items-center flex text-xs">
               <li class="flex">
                 {{ frontName }}
@@ -148,26 +189,27 @@
             </ul>
       </div>
 
-      <div class=" flex  w-[50%] sm:w-full  justify-end" v-if="!fullScreen">
+
+      <div class=" flex  w-[50%] sm:w-full h-8 justify-end" v-if="!fullScreen">
         <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
-          <div class="flex-1 flex justify-end text-xs ">
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[42px]" @click="downloadFile">
+          <div class="flex-1 flex justify-end text-xxs ">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100  " @click="downloadFile">
               <i class="fas fa-file-download"></i> Descargar Plantilla
             </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[42px]" @click="openModal({ param: 'uploadExcel' })">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100" @click="openModal({ param: 'uploadExcel' })">
               <i class="fas fa-file-upload"></i> Subir Plantilla
             </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[42px]" @click="downloadReporte">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 " @click="downloadReporte">
               <i class="fas fa-file-download"></i> Reporte
             </button>
           </div>
         </div>
 
         <div class=" flex flex-col w-[40%] sm:w-full ">
-            <div class="flex-1 relative z-10">
+            <div class="flex-1 relative h-full z-10">
               <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
 
-              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[42px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 ">
+              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 h-full ">
 
               <!-- Lista de filtros seleccionados -->
               <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
@@ -1907,6 +1949,15 @@ export default {
                 return 'bg-orange400';
             } else {
                 return 'bg-red400';
+            }
+    },
+    getBgColorBold() {
+            if (this.indicadorAvanceGeneral === 100) {
+                return 'bg-greenbold';
+            } else if (this.indicadorAvanceGeneral >= 20) {
+                return 'bg-orangebold';
+            } else {
+                return 'bg-redbold';
             }
     },
     visibleOptions() {

@@ -17,6 +17,7 @@
     "eventemitter3": "^5.0.0",
     "export-from-json": "^1.7.2",
     "file-saver": "^2.0.5",
+    "flowbite": "^1.8.1",
     "mitt": "^3.0.0",
     "module_name": "^1.0.0",
     "moment": "^2.29.4",
