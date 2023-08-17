@@ -4,6 +4,12 @@ module.exports = {
   theme: {
     extend: {
       fontSize:{
+        'xxs': '0.68rem',
+        'xs': '0.75rem',     // 12px
+        'sm': '0.875rem',    // 14px
+        'base': '1rem',      // 16px
+        'lg': '1.125rem',    // 18px
+        'xl': '1.25rem',     // 20px
         tinysm: "0.48rem"
       },
       height: {
@@ -17,8 +23,11 @@ module.exports = {
         main: "#002B6B",
         orange: "#EB5D00",
         orange400: "#fb923c",
-        green400: "#4bde81",
-        red400: "#f87171",
+        orangebold: "#e37012",
+        green400: "#3ac189",
+        greenbold: "#20a36d",
+        red400: "#d13a3a",
+        redbold: "#851616",
         side: "#E5EBFB",
         activeText: "#212530",
         inactiveText: "#616E8E",

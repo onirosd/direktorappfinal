@@ -22,45 +22,66 @@
 
 
 
+
+
       <!-- <div @click="mverificamos"> hacer clicks para probar</div> -->
-      <div class="flex justify-between space-x-4 h-24">
+      <div class="flex justify-between space-x-4">
         <!-- Primer bloque - Indicador principal en Card -->
         <div
-              class="flex-1 text-white rounded-lg p-3 shadow-md"
+              class="flex-1 text-white rounded-lg p-1 shadow-md"
               :class="getBgColor"
           >
-            <h2 class="text-sm">Avance de restricciones</h2>
-            <h3 class="text-xs">{{indicadorAvanceGeneral}}%</h3>
+            <h2 class="text-md">Avance General</h2>
+            <h3 class="text-lg">{{indicadorAvanceGeneral}}%</h3>
             <div class="h-2 bg-white mt-2">
-            <div class="h-full bg-orange400-500" v-bind:style="{ width: indicadorAvanceGeneral + '%' }"></div>
+            <div
+                class="h-full " v-bind:style="{ width: indicadorAvanceGeneral + '%' }"
+                :class="getBgColorBold"
+            ></div>
 
           </div>
         </div>
 
         <!-- Segundo bloque - 2 indicadores en Barra -->
-        <div class="flex-1 flex flex-col space-y-2 w-[9em]">
-          <div class="h-12">
-            <span class="mr-2 text-[0.6rem]">Tiempo de Anticipacion:</span>
-            <div class="h-2 w-full bg-gray-300">
-              <!-- <div class="h-full bg-green400-500" style="width: 30%;"></div> -->
+        <div class="space-y-2 w-[12em]">
+          <div class="text-xxs flex ">
+            <span class="mr-2 flex-col  ">Tiempo de Anticipacion <b>(Promedio)</b></span>
+
+            <!-- <span class="ml-2 text-md w-[20px] ws_green400"></span> -->
+            <div class="ml-2 text-center">
+            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+              {{indicadorAnticipacion}}
+
             </div>
-            <span class="ml-2 text-xs">{{indicadorAnticipacion}} dias Promedio</span>
+            dias
           </div>
 
-          <div class="!mt-0 h-12">
-            <span class="mr-2 text-[0.6rem]">Tiempo de Cumplimiento:</span>
-            <div class="h-2 w-full bg-gray-300">
-              <!-- <div class="h-full bg-red400-500" style="width: 40%;"></div> -->
+          </div>
+        </div>
+
+        <div class="space-y-2 w-[12em]">
+          <div class="text-xxs flex ">
+            <span class="mr-2 flex-col  ">Tiempo de Cumplimiento <b>(Promedio)</b></span>
+
+            <!-- <span class="ml-2 text-md w-[20px] ws_green400"></span> -->
+            <div class="ml-2 text-center">
+            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+              {{indicadorCumplimiento}}
+
             </div>
-            <span class="ml-2 text-xs">{{indicadorCumplimiento}} dias promedio</span>
+            dias
+          </div>
+
           </div>
         </div>
 
   <!-- Tercer bloque - 2 indicadores en Barra -->
-  <div class="flex-1 flex flex-col space-y-2 w-[9em]">
+  <div class="flex-1 flex flex-col space-y-2 w-[12em]">
     <!-- Aquí puedes agregar los dos indicadores adicionales siguiendo el formato anterior -->
   </div>
 </div>
+
+
 
 
 
@@ -128,7 +149,7 @@
 
           >
           <i class="fas fa-envelope"></i> Enviar Correos
-          <span class="badge absolute top-0 right-0 h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
+          <span class="badge absolute top-[-2] right-[-4] h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
         </button>
 
       </div>
@@ -205,33 +226,35 @@
     </div>
 
 
-
+    <br>
     <div class="flex flex-col">
       <!-- <div v-if="!fullScreen"> -->
       <div v-if="!fullScreen">
         <div v-for="(frente, index1) in rows" :key="index1">
-          <hr v-if="index1 !== 0" class="mb-6 bg-[#D0D9F1]" />
+          <!-- <hr v-if="index1 !== 0" class="mb-6 bg-[#D0D9F1]" /> -->
           <div
-            class="flex justify-between items-cener sm:w-full cursor-pointer"
-            @click="toggleOpen(frente.desFrente)"
-          >
+        :class="{
+            'border-t-2': index1 === 0,
+            'border-b-2': index1 === rows.length - 1,
+            'border-t': index1 !== 0,
+            'border-l-2 border-r-2':  1==1,
+            'rounded-t-lg': index1 === 0,
+            'rounded-b-lg': index1 === rows.length - 1
+        }"
+        class="pl-2 pb-2 pr-2 border-gray-300 flex justify-between items-center sm:w-full cursor-pointer"
+        @click="toggleOpen(frente.desFrente)"
+    >
             <span class="mt-1 text-sm text-activeText font-bold">
               {{ frente.desFrente }}
 
 
-                  <div class="!h-4 !w-40 bar">
-                      <div class="!h-4 filled"
+                  <div class="!h-3 !w-25 bar">
+                      <div class="!h-3 filled"
                           :class="countActivities(frente.codFrente).colorClass"
                           :style="{ width: countActivities(frente.codFrente).percentage + '%' }">
                           {{ countActivities(frente.codFrente).percentage }}%
                       </div>
                   </div>
-
-
-<!--
-              <div class="bar" :class="countActivities(frente.codFrente).colorClass" style="width: countActivities(frente.codFrente).percentage + '%'">
-               {{ countActivities(frente.codFrente).percentage }}%
-              </div> -->
 
 
               </span>
@@ -246,11 +269,11 @@
             />
           </div>
           <div
-            class="flex flex-col mt-2 pl-8 sm:pl-4"
+            class="flex flex-col  sm:pl-4 border-l-2 border-r-2"
             v-if="frente.isOpen"
           >
             <div
-              class="flex flex-col mb-4"
+              class="flex flex-col mb-4 pl-8 sm:pl-4 bg-[#f8f9f9] "
               v-for="(fase, index2) in frente.listaFase"
               :key="index2"
             >
@@ -1901,14 +1924,23 @@ export default {
     },
 
     getBgColor() {
-            if (this.indicadorAvanceGeneral === 100) {
-                return 'bg-green400';
-            } else if (this.indicadorAvanceGeneral >= 20) {
-                return 'bg-orange400';
-            } else {
-                return 'bg-red400';
-            }
-    },
+              if (this.indicadorAvanceGeneral === 100) {
+                  return 'bg-green400';
+              } else if (this.indicadorAvanceGeneral >= 20) {
+                  return 'bg-orange400';
+              } else {
+                  return 'bg-red400';
+              }
+      },
+      getBgColorBold() {
+              if (this.indicadorAvanceGeneral === 100) {
+                  return 'bg-greenbold';
+              } else if (this.indicadorAvanceGeneral >= 20) {
+                  return 'bg-orangebold';
+              } else {
+                  return 'bg-redbold';
+              }
+      },
     visibleOptions() {
         return this.options.filter(option => option.visible);
     },
@@ -2035,16 +2067,16 @@ export default {
 .bar {
     width: 200px;
     height: 20px;
-    border-radius: 10px;
+    border-radius: 2px;
     background-color: #f0f0f0; /* Un color de fondo para la parte no llena de la barra */
 }
 
 .bar .filled {
-    height: 20px;
-    border-radius: 10px;
+    /* height: 1.5em; */
+    border-radius: 2px;
     text-align: center;
-    font-size: 0.6em;
-    line-height: 20px;
+    font-size: 0.7em;
+    line-height: 1.2em;
     color: white;
 }
 

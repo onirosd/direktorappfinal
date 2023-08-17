@@ -1,6 +1,6 @@
 <template>
 
-        <tr style="cursor: grab" @click="valida" ref="tableRow">
+        <tr class = "bg-[#ffff]" style="cursor: grab" @click="valida" ref="tableRow">
           <input type="hidden" name="frontName" :value="frontName">
           <input type="hidden" name="phaseName" :value="phaseName">
 
@@ -24,7 +24,7 @@
                   v-model="restriction_data.desActividad"
                   type="text"
                   class="mt-1.5 w-full text-[0.6rem] border border-[#8A9CC9] px-1 h-6 rounded resizable-textarea"
-                  
+
                   :class="{'bg-gray-100': !INIstateRestriction , 'text-gray-700': !INIstateRestriction, 'text-[0.6rem]': !INIstateRestriction }"
                   @input="updateHeight1"
                   :style="{ lineHeight: 'initial', height: autoSize1 + 'px'}"
@@ -195,7 +195,7 @@
               :value="restriction_data.desUsuarioResponsable"
               type="text"
               class="w-full border border-[#8A9CC9] pr-5 px-2 text-[0.6rem] h-6  rounded"
-              :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }" 
+              :class="{'bg-gray-100': !INIresponsable , 'text-gray-700': !INIresponsable  }"
           />
 
           </td>
@@ -203,7 +203,7 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('responsible_area') > -1}" ><input name="responsible_area" type="text" :value="restriction_data.desAreaResponsable" readonly class="w-full border  px-2 text-[0.6rem] h-6  rounded"/></td>
 
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('condition') > -1}">
-           
+
             <select
               v-if="INIstateRestriction"
               name="condition"
@@ -336,7 +336,7 @@ export default {
       } else
         this.isOpen = !this.isOpen;
     },
-    
+
     getOption: function () {
       const options = [];
       this.$store.state.Restrictionlist.map((row) => {
@@ -551,7 +551,7 @@ export default {
       // console.log(">>>>>>> validamos que se esten haciendo la escucha del flag de cambios")
       // console.log(newValor)
       if(newValor == true){
-        
+
         // console.log("###################")
         // console.log(">> guardado")
         // console.log(this.restriction_row)
