@@ -1,38 +1,6 @@
 <template>
  <br><br>
- <!-- <div @click="valimosver"> validamos</div> -->
-    <!-- <div v-if="projectLength == 0 " class="h-full flex justify-center ">
-      <div
-        v-if="isLoading == false"
-        class="h-full flex justify-center sm:items-start"
-      >
-        <loading
-          v-model:active="isLoadingTrue"
-          :can-cancel="false"
-          :is-full-page="true"
-          loader="dots"
-        />
-
-
-      </div>
-      <div
-          class="flex flex-col items-center w-[480px] sm:w-full mt-24 sm:mt-4 h-[312px] sm:h-[292px] p-16 sm:p-10 justify-center shadow-tooltip rounded-2xl bg-white cursor-pointer"
-          :class="{ 'z-30': true }"
-          @click="createNewProject"
-          v-if="isLoading == true"
-
-        >
-          <img
-            src="../../assets/computer.svg"
-            class="mb-8 sm:mb-6"
-            alt=""
-          />
-          <span class="text-[28px] leading-9 text-center"
-            >Crea tu primer proyecto</span
-          >
-      </div>
-
-    </div> -->
+ 
     <div
         v-if="isLoading == false"
         class="h-full flex justify-center sm:items-start"
@@ -105,7 +73,7 @@
             :buttonText="'Crear proyecto'"
             @createNewProject="createNewProject"
           />
-          <div class="mb-8 border sm:border-0 border-[#D0D9F1] rounded-lg">
+          <div class="w-10/12 mb-8 border sm:border-0 border-[#D0D9F1] rounded-lg m-auto">
             <DataTable
               :tableType="'common'"
               :cols="headerCols"

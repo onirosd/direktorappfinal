@@ -1,38 +1,39 @@
 <template>
-  <div class="flex flex-col">
-    <span class="text-2xl sm:text-xl mb-8"
+  <div class="flex flex-col w-[80%] m-auto">
+    <span class="text-base sm:text-xl mb-4"
       >Configura la frecuencia con la que se enviará el reporte del proyecto</span
     >
 
     <template v-if="reportstate === true">
-      <div class="w-[672px] sm:w-full">
-        <div class="flex sm:flex-col justify-between items-center">
-          <span class="text-base sm:mr-0 sm:mb-2 sm:w-full">Días de programación</span>
+      <div class="w-[80%] sm:w-full">
+        <div class="flex sm:flex-col justify-between">
+          <span class="text-xs sm:mr-0 sm:mb-2 sm:w-full">Días de programación</span>
           <Select
+            class="text-[0.7rem]"
             :indexVal="1"
             :typeVal="'text'"
             :placeHolder="'Selecciona'"
             :selType="'pro_days'"
-            :class="'w-[352px] sm:w-full'"
+            :class="'w-[50%] sm:w-full'"
             @selTypeFre="selTypeFre"
             :value="proDay"
             :options="programmingDayTypes"
           />
         </div>
-        <div class="flex mb-4 sm:mb-8">
+        <div class="flex mb-4 sm:mb-2 items-center">
           <input
             type="checkbox"
             name="quality_date"
             id="quality_date"
             value="quality_date"
-            class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+            class="w-4 h-4 border border-[#8A9CC9] text-[0.7rem] rounded mr-4 accent-orange"
           />
           <div>
-            <label for="quality_date" class="text-sm leading-6 mb-1"
+            <label for="quality_date" class="text-[0.7rem] leading-6 mb-1"
               >Fecha de calidad</label
             >
             <div class="flex">
-              <span class="mr-1 font-medium text-xs leading-5 text-[#8A9CC9]">
+              <span class="mr-1 font-medium text-xs leading-5 text-[0.7rem]">
                 *Opción válida para
                 <span class="font-semibold text-[#002B6B]">PREMIUM</span>
               </span>
@@ -42,15 +43,15 @@
         </div>
         <div>
           <div v-for="(report, index) in reports" :key="index">
-            <div class="flex sm:flex-col justify-between items-center sm:mb-4">
-              <span class="text-base sm:mr-0 sm:w-full sm:mb-2">Reporte a programar</span>
+            <div class="flex sm:flex-col justify-between sm:mb-4">
+              <span class="text-[0.7rem] sm:mr-0 sm:w-full sm:mb-2">Reporte a programar</span>
               <!-- Report a programming -->
               <Select
                 :indexVal="index"
                 :typeVal="'text'"
                 :placeHolder="'Reporte'"
                 :selType="'report'"
-                :class="'w-[352px] sm:w-full'"
+                :class="'w-[50%] sm:w-full text-[0.7rem]'"
                 @selReport="selReport"
                 :value="report.reportSchedule"
                 :options="[
@@ -67,7 +68,7 @@
             </div>
             <!-- Envío de reporte masivo check box -- start -->
             <div class="flex sm:flex-col justify-between items-center">
-              <div class="flex sm:mb-2 sm:w-full">
+              <div class="flex sm:mb-2 sm:w-full items-center">
                 <input
                   type="checkbox"
                   :name="'massive_all_' + index"
@@ -75,9 +76,9 @@
                   :value="'massive_all_' + index"
                   @input="massiveAll(index)"
                   v-model="report.massiveStatus"
-                  class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+                  class="w-4 h-4 border border-[#8A9CC9] rounded mr-4 accent-orange"
                 />
-                <label :for="'massive_all_' + index" class="text-sm leading-6"
+                <label :for="'massive_all_' + index" class="text-[0.7rem] leading-6"
                   >Envío de reporte masivo</label
                 >
               </div>
@@ -99,9 +100,9 @@
                     :value="'apply_all_' + index"
                     v-model="report.applyAllStatus"
                     @input="applyAll(index)"
-                    class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+                    class="w-4 h-4 border border-[#8A9CC9] rounded mr-4 accent-orange"
                   />
-                  <label :for="'apply_all_' + index" class="text-sm leading-6"
+                  <label :for="'apply_all_' + index" class="text-[0.7rem] leading-6"
                     >Aplicar frecuencia para todos los usuarios de este reporte</label
                   >
                 </div>
@@ -110,7 +111,7 @@
                   class="flex sm:flex-col justify-between mb-6 items-center"
                   :class="report.applyAllStatus && childIndex > 0 ? 'hidden' : ''"
                 >
-                  <span class="text-base sm:mb-2 sm:w-full">{{
+                  <span class="text-[0.7rem] sm:mb-2 sm:w-full">{{
                     report.applyAllStatus ? "" : user.user
                   }}</span>
                   <Select
@@ -119,7 +120,7 @@
                     :textState="report.applyAllStatus"
                     :placeHolder="'Frecuencia'"
                     :selType="'frequency'"
-                    :class="'w-[352px] sm:w-full'"
+                    :class="'w-[50%] sm:w-full'"
                     :parentindex="index"
                     @selFrequency="selFrequency"
                     :value="frequencytext[parseInt(user.freq) - 1]"
@@ -149,7 +150,7 @@
                   :typeVal="'text'"
                   :placeHolder="'Frecuencia'"
                   :selType="'frequency'"
-                  :class="'w-[352px] sm:w-full'"
+                  :class="'w-[50%] sm:w-[50%]'"
                   :value="frequencytext[parseInt(report.frequency) - 1]"
                   :parentindex="index"
                   @selFrequency="selFrequency"
@@ -178,21 +179,22 @@
             class="mr-2"
             alt=""
           />
-          <span class="text-base leading-4 text-orange">Agregar nuevo reporte</span>
+          <span class="text-[0.7rem] leading-4 text-orange">Agregar nuevo reporte</span>
         </div>
       </div>
     </template>
 
     <template v-else>
-      <div class="w-[672px] sm:w-full">
-        <div class="flex sm:flex-col justify-between items-center">
+      <div class="w-[80%] sm:w-full">
+        <div class="flex sm:flex-col justify-between">
           <span class="text-base sm:mr-0 sm:mb-2 sm:w-full">Días de programación</span>
           <Select
+            class="text-[0.7rem]"
             :indexVal="1"
             :typeVal="'text'"
             :placeHolder="'Selecciona'"
             :selType="'pro_days'"
-            :class="'w-[352px] sm:w-full'"
+            :class="'w-[50%] sm:w-full'"
             @selTypeFre="selTypeFre"
             :options="programmingDayTypes"
           />
@@ -203,7 +205,7 @@
             name="quality_date"
             id="quality_date"
             value="quality_date"
-            class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+            class="w-3 h-3 border border-[#8A9CC9] rounded mr-4 accent-orange"
           />
           <div>
             <label for="quality_date" class="text-sm leading-6 mb-1"
@@ -220,14 +222,14 @@
         </div>
         <div>
           <div v-for="(report, index) in reports" :key="index">
-            <div class="flex sm:flex-col justify-between items-center sm:mb-4">
-              <span class="text-base sm:mr-0 sm:w-full sm:mb-2">Reporte a programar</span>
+            <div class="flex sm:flex-col justify-between  sm:mb-4">
+              <span class="text-[0.7rem] sm:mr-0 sm:w-full sm:mb-2">Reporte a programar</span>
               <Select
                 :indexVal="index"
                 :typeVal="'text'"
                 :placeHolder="'Reporte'"
                 :selType="'report'"
-                :class="'w-[352px] sm:w-full'"
+                :class="'w-[50%] sm:w-full'"
                 @selReport="selReport"
                 :options="[
                   {
@@ -249,9 +251,9 @@
                   :id="'massive_all_' + index"
                   :value="'massive_all_' + index"
                   @input="massiveAll(index)"
-                  class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+                  class="w-4 h-4 border border-[#8A9CC9] rounded mr-4 accent-orange"
                 />
-                <label :for="'massive_all_' + index" class="text-sm leading-6"
+                <label :for="'massive_all_' + index" class="text-[0.7rem] leading-6"
                   >Envío de reporte masivo</label
                 >
               </div>
@@ -289,7 +291,7 @@
                     :typeVal="'text'"
                     :placeHolder="'Frecuencia'"
                     :selType="'frequency'"
-                    :class="'w-[352px] sm:w-full'"
+                    :class="'w-[80%] sm:w-full'"
                     :parentindex="index"
                     @selFrequency="selFrequency"
                     :options="[
@@ -308,17 +310,18 @@
               <div
                 v-for="(user, childIndex) in users"
                 :key="childIndex"
-                class="flex sm:flex-col justify-between mb-6 items-center"
+                class="flex sm:flex-col justify-between mb-6 items-center w-[50%]"
                 :class="report.massiveStatus === false ? 'hidden' : ''"
               >
                 <span class="text-base sm:mb-2 sm:w-full"></span>
                 <Select
+                  class="w-[50%]"
                   v-if="childIndex === 0"
                   :indexVal="childIndex"
                   :typeVal="'text'"
                   :placeHolder="'Frecuencia'"
                   :selType="'frequency'"
-                  :class="'w-[352px] sm:w-full'"
+                  :class="'sm:w-full'"
                   :parentindex="index"
                   @selFrequency="selFrequency"
                   :options="[

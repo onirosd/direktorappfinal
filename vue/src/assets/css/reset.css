@@ -21,3 +21,14 @@
 .text-left:nth-child(6){
     width: 20%;
 }
+
+.project_form1{
+    display: flex;
+    align-items: center;
+}
+
+.project_form2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

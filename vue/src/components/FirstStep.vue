@@ -1,50 +1,31 @@
 <template>
 
   <div class="flex flex-col" >
-    <span class="text-2xl mb-8">Crea tu primer proyecto</span>
-    <div class="flex justify-between sm:flex-col">
-      <div class="flex flex-col w-[48%] sm:w-full">
-
-       <!-- <div> placeholder ::: {{placeholder}}</div> -->
-       <!-- <div> ubigeo ::: {{ubigeo}}</div> -->
-        <!-- <Alert
-          v-if="Object.keys(errors).length"
-          class="flex-col items-stretch text-sm"
-
-
-          @click="sinFocoEmpresa(); sinFocoUbicacion();"
-        >
-          <div v-for="(field, i) of Object.keys(errors)" :key="i">
-            <div v-for="(error, ind) of errors[field] || []" :key="ind">
-              * {{ error }}
-            </div>
-          </div>
-        </Alert> -->
-
-        <div class="mb-4 ">
+    <span class="w-[80%] m-auto text-base mb-4">Crea tu primer proyecto</span>
+    <div class="flex w-[80%] m-auto justify-between sm:flex-col">
+      <div class="flex flex-col w-[40%] sm:w-full">
+      <div class="mb-4 ">
         <input
           type="text"
           placeholder="Nombre del proyecto*"
           v-model="projectName"
           :class="{ 'invalid-input': (errors.projectName != undefined)  }"
-          class="h-[52px] w-full border border-[#8A9CC9] rounded px-4 "
+          class="h-[32px] text-[0.7rem] w-full border border-[#8A9CC9] rounded px-4 "
           @focus="limpiarErrores()"
-
-
         />
 
         <div class="text-[0.7em]">{{ errors.projectName }}</div>
       </div>
 
         <div
-           class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded "
+           class="autocompleteel h-[32px] w-full mb-4 border border-[#8A9CC9] rounded "
            :class="{ 'invalid-input': (errors.business != undefined)  }"
         >
 	  		<div class="w-full"
         >
           <input type="hidden" v-model="business">
 		  		<input type='text' @keyup='loadSuggestions' placeholder='Empresa'
-            class="pl-4 foco_empresa"
+            class="pl-4 foco_empresa text-[0.7rem] pt-1.5 pb-1.5"
 		  			v-model='searchText'
             @focus="(this.focoEmpresa = true); limpiarErrores();"
 
@@ -61,7 +42,7 @@
               <!-- Mostrando {{ suggestiondata.length }} resultados -->
 
               <div class="flex justify-between sm:flex-col foco_empresa">
-              <div class="flex flex-col w-[80%] foco_empresa">
+              <div class="flex flex-col w-[80%] foco_empresa text-[0.7rem]">
                 Mostrando {{ suggestiondata.length }} resultados.
 
               </div>
@@ -84,7 +65,7 @@
                   v-bind:key="item.cod_Empresa"
                   v-bind:value = "item.cod_Empresa"
                   @click='itemSelected(item.cod_Empresa);'
-                  class="cursor-pointer hover:bg-gray-100 p-1 foco_empresa"
+                  class="cursor-pointer hover:bg-gray-100 p-1 foco_empresa text-[0.7rem]"
                   >
                     {{ item.des_Empresa }}
                   </li>
@@ -102,7 +83,7 @@
           placeholder="Plazo"
           v-model="term"
           @keypress="onlyNumber"
-          class="h-[52px] w-full border border-[#8A9CC9] rounded px-4"
+          class="h-[32px] w-full border border-[#8A9CC9] rounded px-4 text-[0.7rem]"
           :class="{ 'invalid-input': (errors.term != undefined)  }"
           @focus="limpiarErrores()"
         />
@@ -120,14 +101,14 @@
             v-model="coveredArea"
             @keypress="onlyNumber"
             @focus="limpiarErrores()"
-            class="h-[52px] w-[82%] border border-[#8A9CC9] rounded-l pl-4 pr-[116px]"
+            class="h-[32px] w-[82%] border border-[#8A9CC9] rounded-l pl-4 pr-[116px] text-[0.7rem]"
             :class="{ 'invalid-input': (errors.coveredArea != undefined)  }"
           />
 
-          <div class="w-[18%] border border-[#8A9CC9] rounded-r px-4"
+          <div class="w-[18%] border border-[#8A9CC9] flex items-center justify-center rounded-r px-4"
               :class="{ 'invalid-input': (errors.coveredArea != undefined)  }"
           >
-            <p class="font-normal text-[#8A9CC9] mt-[30%] ml-[10%]">m2</p>
+            <p class="font-normal text-[0.7rem] ml-[10%]">m2</p>
 
           </div>
         </div>
@@ -140,7 +121,7 @@
 
           <select
           v-model="projectType"
-          class="h-[52px] w-full border border-[#8A9CC9] rounded pl-4 selectPer2"
+          class="h-[32px] w-full border border-[#8A9CC9] rounded pl-4 selectPer2 text-[0.7rem]"
           :class="{ 'invalid-input': (errors.projectType != undefined)  }"
           @focus="limpiarErrores()"
           >
@@ -155,22 +136,8 @@
           <div class="text-[0.7em]">{{ errors.projectType }}</div>
 
         </div>
-
-
-          <!-- <autocomplete
-        v-model="ubigeo"
-
-        :items="listaUbigeos"
-        permitArbitraryValues
-        :returned="'codUbigeo'"
-        displayed="desUbigeo"
-        :placeholder="placeholder"
-        modelValue = ""
-        class="h-[52px] w-full border border-[#8A9CC9] rounded pl-4 pr-[116px] mb-4 relative flex"
-     /> -->
-
       <div
-          class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded "
+          class="autocompleteel h-[32px] w-full mb-4 border border-[#8A9CC9] rounded "
           :class="{ 'invalid-input': (errors.ubigeo != undefined)  }"
       >
 	  		<div >
@@ -180,7 +147,7 @@
                  placeholder='Ubicación'
 		  			     v-model='searchTextUbigeo'
                  @keypress=" searchTextUbigeoFlg = 0"
-                 class="border border-[#8A9CC9] rounded px-4 foco_ubigeo"
+                 class="border border-[#8A9CC9] rounded px-4 foco_ubigeo text-[0.7rem] pt-1.5 pb-1.5"
                  @blur="focoUbigeo = true"
                  @focus="limpiarErrores()"
 
@@ -196,11 +163,11 @@
               class="px-1 pt-1 pb-2 font-bold border-b border-gray-200 foco_ubigeo"
               >
               <div class="flex justify-between sm:flex-col foco_ubigeo">
-              <div class="flex flex-col w-[80%] foco_ubigeo">
+              <div class="flex flex-col w-[80%] foco_ubigeo text-[0.7rem]">
                 Mostrando {{ loadSuggestionsUbigeo.length }} de {{ listaUbigeos.length }} resultados.
 
               </div>
-              <div class="flex flex-col w-[10%] foco_ubigeo">
+              <div class="flex flex-col w-[5%] foco_ubigeo">
 
                 <img
                   src="../assets/close.svg"
@@ -221,7 +188,7 @@
                   v-bind:key="item.codUbigeo"
                   v-bind:value = "item.codUbigeo"
                   @click='itemSelectedUbigeo(item.codUbigeo)'
-                  class="cursor-pointer hover:bg-gray-100 p-1 foco_ubigeo"
+                  class="cursor-pointer hover:bg-gray-100 p-1 foco_ubigeo text-[0.7rem]"
                   >
                     {{ item.desUbigeo }}
                   </li>
@@ -235,12 +202,12 @@
       </div>
 
 
-      <div class="flex flex-col w-[48%] sm:w-full">
+      <div class="flex flex-col w-[40%] sm:w-full">
         <div class=" mb-4">
             <v-date-picker v-model="startDate" mode="date" class="rounded" >
               <template v-slot="{ inputValue, inputEvents }" >
                 <input
-                  class="h-[52px] w-full  border border-[#8A9CC9] rounded px-4"
+                  class="h-[32px] w-full  border border-[#8A9CC9] rounded px-4 text-[0.7rem]"
                   :class="{ 'invalid-input': (errors.startDate != undefined)  }"
                   placeholder="Fecha de inicio*"
                   :value="inputValue"
@@ -253,14 +220,14 @@
         </div>
 
         <div class="mb-4 ">
-          <div class="flex h-[52px] rounded ">
+          <div class="flex h-[32px] rounded ">
             <input
               type="text"
               placeholder="Monto referencial"
               v-model="referenceAmount"
               @keyup="formatNumber"
               @focus="limpiarErrores()"
-              class="h-[52px] w-[82%] mb-4 border border-[#8A9CC9] rounded-l px-4 "
+              class="h-[32px] w-[82%] mb-4 border border-[#8A9CC9] rounded-l px-4 text-[0.7rem]"
               :class="{ 'invalid-input': (errors.referenceAmount != undefined)  }"
             />
 
@@ -270,7 +237,7 @@
             >
               <select
               v-model="codMoneda"
-              class="flex  right-0 h-full justify-between border-[#8A9CC9] w-full selectPer1"
+              class="flex  right-0 h-full justify-between border-[#8A9CC9] w-full selectPer1 text-[0.7rem] pl-3"
               @focus="limpiarErrores()"
 
               >
@@ -285,21 +252,21 @@
         </div>
 
         <div class="mb-4 ">
-          <div class="flex h-[52px]">
+          <div class="flex h-[32px]">
               <input
                   type="text"
                   placeholder="Área techada"
                   v-model="builtArea"
                   @keypress="onlyNumber"
                   @focus="limpiarErrores()"
-                  class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded-l px-4 w-[82%]"
+                  class="h-[32px] w-full mb-4 border border-[#8A9CC9] rounded-l px-4 w-[82%] text-[0.7rem]"
                   :class="{ 'invalid-input': (errors.builtArea != undefined)  }"
               />
               <div
-                class="w-[18%] border border-[#8A9CC9] rounded-r px-4"
+                class="w-[18%] border border-[#8A9CC9] rounded-r px-4 flex justify-center items-center"
                 :class="{ 'invalid-input': (errors.builtArea != undefined)  }"
               >
-                  <p class="font-normal text-[#8A9CC9] mt-[30%] ml-[10%]">m2</p>
+                  <p class="font-normal text-[#8A9CC9] ml-[10%] text-[0.7rem]">m2</p>
               </div>
           </div>
           <div class="text-[0.7em]">{{ errors.builtArea }}</div>
@@ -312,13 +279,13 @@
           :errors="errors"
           readonly="readonly"
 
-          class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+          class="h-[32px] w-full mb-4 border border-[#8A9CC9] rounded px-4 text-[0.7rem]"
         />
         <input
           type="text"
           placeholder="Dirección"
           v-model="address"
-          class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+          class="h-[32px] w-full mb-4 border border-[#8A9CC9] rounded px-4 text-[0.7rem]"
         />
 
 
@@ -890,10 +857,7 @@ export default {
   .autocompleteel input[type=text]{
       width: 100%;
       border: none;
-      height: 3em;
-      /* margin-left: -1em; */
-
-  }
+}
 
 
   .invalid-input {

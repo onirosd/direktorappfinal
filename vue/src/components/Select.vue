@@ -6,7 +6,7 @@
         :placeholder="placeHolder"
         :value="selName"
         @input="this.$emit('input', $event.target.value)"
-        class="h-[52px] w-full border border-[#8A9CC9] rounded px-4"
+        class="h-[30px] w-full border border-[#8A9CC9] rounded px-4 text-[0.7rem]"
       />
 
       <img
@@ -14,7 +14,7 @@
         @click="handleClick()"
         :class="status === true ? 'rotate-180' : ''"
         alt=""
-        class="absolute top-1/2 -translate-y-1/2 right-4 transition cursor-pointer"
+        class="absolute top-1/2 -translate-y-1/2 right-4 transition cursor-pointer "
       />
     </div>
     <SelectOption

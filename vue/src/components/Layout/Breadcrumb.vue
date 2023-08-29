@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center justify-between mb-9 sm:mb-6">
+  <div class="flex items-center justify-between mb-4 sm:mb-6">
     <ul class="text-[#8A9CC9] items-center flex text-xs">
       <li
         v-for="(path, i) in paths"
         :key="i"
-        class="last:text-xs flex cursor-pointer text-[9px]"
+        class="last:text-xs flex cursor-pointer text-[8px]"
         :class="{'sm:hidden': i <= paths.length - 3}"
         @click="handleRedirect(urls[i])"
       >

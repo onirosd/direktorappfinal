@@ -18,7 +18,7 @@
     </td>
 
     <td>
-      <span class="flex flex-col text-xs text-orange">
+      <span class="flex flex-col text-[0.68rem] text-orange">
         <span v-if="row.isInvitado == 0" class="cursor-pointer" @click="$emit('editProject', row.projectId)">Editar</span>
         <span class="cursor-pointer" @click="$emit('viewProject', row.id); openModal({param: 'viewproject', id: row.id})">Ver</span>
       </span>

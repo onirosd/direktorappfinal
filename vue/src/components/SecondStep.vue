@@ -1,22 +1,22 @@
 <template>
 
-  <div class="flex flex-col">
-    <span @click="probar" class="text-2xl mb-8"
+  <div class="flex flex-col w-[80%] m-auto text-[0.7rem]">
+    <span @click="probar" class="text-xl mb-4"
       >Asigna los miembros de tu primer proyecto
     </span>
     <div class="flex justify-between sm:flex-col mb-8">
       <div class="flex flex-col w-[6%] sm:w-full sm:mb-8">
-        <span class="text-sm leading-6 mb-4">Acción</span>
+        <span class="text-xs leading-6 mb-4">Acción</span>
 
         <div
-              class="h-[52px] w-full mb-4  rounded px-4"
+              class="h-[32px] w-full mb-4  rounded px-4"
               v-for="(user, index) in users"
               :key="index"
         >
 
           <button
             @click="eliminarUsuario(user.codProyIntegrante)"
-            class="p-2 rounded-full bg-red-500 text-white w-[2em] mt-2"
+            class="p-2 rounded-full bg-red-500 text-white w-[2.5em]"
 
 
         >
@@ -29,25 +29,22 @@
       </div>
 
       <div class="flex flex-col w-[30%] sm:w-full sm:mb-8">
-        <span class="text-sm leading-6 mb-4">Ingresa el correo del miembro</span>
+        <span class="text-xs leading-6 mb-4">Ingresa el correo del miembro</span>
         <div
-            class="autocompleteel h-[52px] w-full mb-4 border border-[#8A9CC9] rounded rounded"
+            class="autocompleteel h-[32px] w-full mb-4 border border-[#8A9CC9] rounded rounded flex items-center justify-center"
             :class="{ 'invalid-input': (user.error_userEmail != undefined)  }"
             v-for="(user, index) in users" v-bind:key="user.id" >
 
             <input type="hidden" v-model="user.id">
             <input
-
               type="text"
               :disabled="user.flgInsertado"
               :key="index"
               placeholder="Correo electrónico"
               v-model="user.userEmail"
-              class="h-[52px] w-full mb-2 rounded px-4"
+              class="w-full pt-1.5 pb-1.5 rounded px-4"
               @keyup='loadSuggestions(user.userEmail, index);'
               @focus="limpiarErrores()"
-
-
             />
             <br>
                 <div class="w-[110%] mx-[-5%] rounded bg-white border border-gray-300 px-4 py-2 space-y-1 relative z-50"
@@ -76,13 +73,13 @@
 
       </div>
       <div class="flex flex-col w-[30%] sm:w-full sm:mb-8">
-        <span class="text-sm leading-6 mb-4">Selecciona el rol</span>
+        <span class="text-xs leading-6 mb-4">Selecciona el rol</span>
 
         <select
         v-model="value.userRole"
         v-for="(value, index) in users"
         :key="index"
-        class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+        class="h-[32px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
         :class="{ 'invalid-input': (value.error_userRole != undefined)  }"
         @focus="limpiarErrores()"
         >
@@ -95,7 +92,7 @@
 
       </div>
       <div class="flex flex-col w-[30%] sm:w-full">
-        <span class="text-sm leading-6 mb-4"
+        <span class="text-xs leading-6 mb-4"
           >Selecciona área al que pertenece</span
         >
 
@@ -103,7 +100,7 @@
         v-model="value.userArea"
         v-for="(value, index) in users"
         :key="index"
-        class="h-[52px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
+        class="h-[32px] w-full mb-4 border border-[#8A9CC9] rounded px-4"
         :class="{ 'invalid-input': (value.error_userArea != undefined)  }"
         @focus="limpiarErrores()"
         >
@@ -122,7 +119,7 @@
         class="mr-2"
         alt=""
       />
-      <span class="text-base leading-4 text-orange" @click="addUser">Agregar miembro</span>
+      <span class="text-sm leading-4 text-orange" @click="addUser">Agregar miembro</span>
     </div>
 
     <span class="text-red-500 flex items-start" v-if="!validarMiembros()">

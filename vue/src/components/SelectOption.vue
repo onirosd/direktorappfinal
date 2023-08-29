@@ -5,7 +5,7 @@
         v-for="(option, index) in options"
         :key="index"
         :value="option.value"
-        class="mb-2 cursor-pointer h-14 p-4 font-normal text-base relative"
+        class="mb-1 cursor-pointer h-10 p-2 font-normal text-[0.7rem] relative"
         @click="$emit('selected', { value: option.value, name: option.name, name_variable:name, carea:option.carea })"
       >
         {{ option.name }}
@@ -25,7 +25,7 @@
                         v-for="(option, index) in optionsF"
                         :key="index"
                         :value="option.value"
-                        class="mb-2 cursor-pointer h-14 p-4 font-normal text-base relative"
+                        class="mb-2 cursor-pointer h-10 p-2 font-normal text-[0.7rem] relative"
                         @click="onListClick(option)"
                 >
                     {{option.name}}
@@ -46,7 +46,7 @@
                             v-for="(option, index) in optionsM"
                             :key="index"
                             :value="option.value"
-                            class="mb-2 cursor-pointer h-14 p-4 font-normal text-base relative"
+                            class="mb-2 cursor-pointer h-10 p-2 font-normal text-[0.7rem] relative"
                             @click="onSubListClick(option)"
                     >{{option.name}}
 
@@ -56,7 +56,7 @@
                         v-for="(option, index) in optionsE"
                         :key="index"
                         :value="option.value"
-                        class="mb-2 cursor-pointer h-14 p-4 font-normal text-base relative"
+                        class="mb-2 cursor-pointer h-10 p-2 font-normal text-[0.7rem] relative"
                         @click="onListClick(option)"
                 >
                     {{option.name}}
@@ -72,7 +72,7 @@
                     />
                 </li>
                 <li
-                class="mb-2 cursor-pointer h-14 p-4 font-normal text-base relative"
+                class="mb-2 cursor-pointer h-10 p-2 font-normal text-[0.7rem] relative"
                 @click="onListClickClean"
                 >
                   Limpiar Filtro

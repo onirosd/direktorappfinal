@@ -17,6 +17,14 @@
       :settingFlag="true"
     />
 
+    <!-- <div class="h-[25px] w-[60px]">
+      <FlagSelect v-model="valor_defecto" @change="capturamos_veremos" disabled="true" />
+    </div> -->
+
+    <br>
+
+
+
     <div class="flex flex-col">
       <div class="flex justify-start"  v-if="!fullScreen">
 
@@ -172,13 +180,13 @@
       <div class=" flex  w-[50%] sm:w-full justify-end" v-if="!fullScreen">
         <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
           <div class="flex-1 flex justify-end text-xs ">
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[30px] text-[0.55rem]" @click="downloadFile">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[30px] text-[0.55rem]" @click="download_template_for_project">
               <i class="fas fa-file-download"></i> Descargar Plantilla
             </button>
             <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[30px] text-[0.55rem]" @click="openModal({ param: 'uploadExcel' })">
               <i class="fas fa-file-upload"></i> Subir Plantilla
             </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-[0.55rem]" @click="downloadReporte">
+            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-[0.55rem]" @click="download_reporte_for_project">
               <i class="fas fa-file-download"></i> Reporte
             </button>
           </div>
@@ -198,7 +206,7 @@
 
               <transition name="fade">
 
-              <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg" v-if="showOptions" ref="dropdown">
+              <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg text-[0.8rem]" v-if="showOptions" ref="dropdown">
                 <div v-for="(option, index) in visibleOptions" :key="index" class="px-2 py-1 cursor-pointer mb-2 shadow-sm"  @click="optionClicked(option)">
                   <div class="font-normal flex justify-between">
                     <span>{{option.name}}</span>
@@ -543,7 +551,11 @@
 
 <script>
 // import excelParser from "../excel-parser";
+// import { AdjustmentsIcon } from "@vue-hero-icons/solid"
 import moment from 'moment'
+import * as XLSX from "xlsx"
+import FileSaver from 'file-saver';
+import excelJs from 'exceljs'
 import exportFromJSON from "export-from-json";
 import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 
@@ -564,12 +576,14 @@ import DeleteFront from "../../components/DeleteFront.vue";
 import Loading from "vue-loading-overlay";
 
 import AddRowData from "../../components/AddRowData.vue";
+import FlagSelect from '../../components/FlagSelect.vue';
 
 import store from "../../store";
 import '@fortawesome/fontawesome-free/css/all.css'
 export default {
   name: "white-project-component",
   components: {
+    FlagSelect,
     Loading,
     Breadcrumb,
     AddFront,
@@ -593,6 +607,8 @@ export default {
   },
   data: function () {
     return {
+      valor_defecto:2,
+      data_array: [],
       bloqConfirmNotification:false,
       // mensajeNotificaciones: 'Se enviaran '+this.countNotNoti+' Notificaciones',
       sizeActually: 0,
@@ -631,6 +647,7 @@ export default {
       search: '',
       showOptions: false,
       options: [
+        { name: 'Estado', visible: false ,subOptions: [], showSubOptions: false },
         { name: 'Responsables', visible: false ,subOptions: [], showSubOptions: false },
         { name: 'Solicitantes', visible: false, subOptions: [], showSubOptions: false },
         { name: 'Vencimiento', visible: false , subOptions: [], showSubOptions: false },
@@ -639,10 +656,11 @@ export default {
       anyResults: false,
       selectedFilters: [],
 
-
-
-
       options0: [
+        {
+          name: "Estado",
+          value: "estado",
+        },
         {
           name: "Responsable",
           value: "responsible",
@@ -741,6 +759,11 @@ export default {
   },
   methods: {
 
+    capturamos_veremos(data){
+      console.log(">>>>> entrada")
+      console.log(this.valor_defecto)
+    },
+
     mverificamos(){
       console.log(">> impresion de la var. restricciones")
       console.log(this.restrictions)
@@ -777,26 +800,236 @@ export default {
 
     return conteo;
    },
-   downloadReporte(){
+   download_reporte_for_project(){
 
     store.dispatch("report_restrictions_for_project");
 
    },
-   downloadFile() {
-      // const nombreArchivo = 'formato.xlsx';
-      // const rutaArchivo = require('@/assets/' + nombreArchivo);
-      // this.$refs.descarga.href = rutaArchivo;
-      // this.$refs.descarga.download = nombreArchivo;
-      // this.$refs.descarga.click();
 
-      const filePath = import.meta.env.VITE_WEB_FIN_BASE_URL+'/formato.xlsx';
-      const link = document.createElement('a');
-      link.href = filePath;
-      link.download = 'plantilla_data_masiva';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-   },
+   download_template_for_project(payload) {
+    store.dispatch("get_datos_restricciones", payload).then((response) => {
+      const Frente = [];
+      const Fase = [];
+      const TipoRestriccion = [];
+      const Responsable = [];
+      const Estado = [];
+      const Solicitante = [];
+      for(let i = 0; i < response.restricciones.length; i ++){
+        Frente[i] = response.restricciones[i]['desFrente'];
+        if (response.restricciones[i]['listaFase'].length > 0){
+
+          Fase[i]   = response.restricciones[i]['listaFase'][0]['desFase'];
+          for(let j = 0; j < response.restricciones[i]['listaFase'][0]['listaRestricciones'].length; j ++){
+
+            if(response.restricciones[i]['listaFase'][0]['listaRestricciones'][j]['desUsuarioResponsable'] && (!Responsable.includes(response.restricciones[i]['listaFase'][0]['listaRestricciones'][j]['desUsuarioResponsable']))){
+              Responsable.push(response.restricciones[i]['listaFase'][0]['listaRestricciones'][j]['desUsuarioResponsable']);
+            }
+          }
+
+        }
+
+      }
+      for(let k = 0; k < response.tipoRestricciones.length; k ++){
+        TipoRestriccion.push(response.tipoRestricciones[k]['desTipoRestricciones']);
+      }
+      for (let h = 0; h < response.estados.length; h ++){
+        Estado[h] = response.estados[h]['desEstado'];
+      }
+      Solicitante.push(response.solicitanteActual);
+      const data_array = [
+        {
+          "A": Frente,
+          "B": Fase,
+          "C": "",
+          "D": "",
+          "E": TipoRestriccion,
+          "F": "",
+          "G": "",
+          "H": Responsable,
+          "I": Estado,
+          "J": Solicitante
+        }
+      ];
+
+      const workbook = new excelJs.Workbook();
+      const ws = workbook.addWorksheet('Restricciones');
+      ws.addRow(["Frente", "Fase", "Actividad", "Restriccion", "Tipo Restriccion", "Fecha Requerida", "Fecha Conciliada", "Responsable", "Estado", "Solicitante"]);
+      ws.addRow(["", "", "", "", "", "", "", "", "", ""]);
+
+      const header_row = ws.getRow(1);
+      header_row.height = 22;
+
+
+      const columnA = ws.getColumn('A');
+      columnA.width = 16;
+
+      const columnB = ws.getColumn('B');
+      columnB.width = 16;
+
+      const columnC = ws.getColumn('C');
+      columnC.width = 12;
+
+      const columnD = ws.getColumn('D');
+      columnD.width = 12;
+
+      const columnE = ws.getColumn('E');
+      columnE.width = 20;
+
+      const columnF = ws.getColumn('F');
+      columnF.width = 16;
+
+      const columnG = ws.getColumn('G');
+      columnG.width = 16
+
+      const columnH = ws.getColumn('H');
+      columnH.width = 16;
+
+      const columnI = ws.getColumn('I');
+      columnI.width = 12;
+
+      const columnJ = ws.getColumn('J');
+      columnJ.width = 14;
+
+
+      const fill_data = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'A5A5A5' },
+      };
+      const font_data =  {
+        color: { argb: '000000', bold: true },
+      };
+      const alignment_data = { vertical: 'middle', horizontal: 'center' };
+      const border_data = {
+                              top: {style:'thin'},
+                              left: {style:'thin'},
+                              bottom: {style:'thin'},
+                              right: {style:'thin'}
+                          };
+
+
+      const header_frente = ws.getCell('A1');
+      header_frente.fill = fill_data
+      header_frente.font = font_data
+      header_frente.alignment = alignment_data;
+      header_frente.border    = border_data;
+
+      const header_Fase = ws.getCell('B1');
+      header_Fase.fill = fill_data
+      header_Fase.font = font_data
+      header_Fase.alignment = alignment_data;
+      header_Fase.border    = border_data;
+
+      const header_Actividad = ws.getCell('C1');
+      header_Actividad.fill = fill_data
+      header_Actividad.font = font_data
+      header_Actividad.alignment = alignment_data;
+      header_Actividad.border    = border_data;
+
+      const header_Restriccion = ws.getCell('D1');
+      header_Restriccion.fill = fill_data
+      header_Restriccion.font = font_data
+      header_Restriccion.alignment = alignment_data;
+      header_Restriccion.border    = border_data;
+
+
+      const header_Tipo = ws.getCell('E1');
+      header_Tipo.fill = fill_data
+      header_Tipo.font = font_data
+      header_Tipo.alignment = alignment_data;
+      header_Tipo.border    = border_data;
+
+      const header_FechaR = ws.getCell('F1');
+      header_FechaR.fill = fill_data
+      header_FechaR.font = font_data
+      header_FechaR.alignment = alignment_data;
+      header_FechaR.border    = border_data;
+
+      const header_FechaC = ws.getCell('G1');
+      header_FechaC.fill = fill_data
+      header_FechaC.font = font_data
+      header_FechaC.alignment = alignment_data;
+      header_FechaC.border    = border_data;
+
+      const header_Responsable = ws.getCell('H1');
+      header_Responsable.fill = fill_data
+      header_Responsable.font = font_data
+      header_Responsable.alignment = alignment_data;
+      header_Responsable.border    = border_data;
+
+      const header_Estado = ws.getCell('I1');
+      header_Estado.fill = fill_data
+      header_Estado.font = font_data
+      header_Estado.alignment = alignment_data;
+      header_Estado.border    = border_data;
+
+      const header_Soli = ws.getCell('J1');
+      header_Soli.fill = fill_data
+      header_Soli.font = font_data
+      header_Soli.alignment = alignment_data;
+      header_Soli.border    = border_data;
+
+
+
+
+      for(let i = 2; i < 100; i ++){
+        const validationCell_Frente = ws.getCell('A'+`"${i}"`);
+        validationCell_Frente.dataValidation = {
+          type: 'list',
+          allowBlank: false,
+          showDropDown: true,
+          formulae: [`"${data_array[0].A.join(',')}"`],
+        };
+
+        const validationCell_Fase = ws.getCell('B'+`"${i}"`);
+        validationCell_Fase.dataValidation = {
+          type: 'list',
+          allowBlank: false,
+          showDropDown: true,
+          formulae: [`"${data_array[0].B.join(',')}"`],
+        };
+
+        const validationCell_Tipo = ws.getCell('E'+`"${i}"`);
+        validationCell_Tipo.dataValidation = {
+          type: 'list',
+          allowBlank: false,
+          showDropDown: true,
+          formulae: [`"${data_array[0].E.join(',')}"`],
+        };
+
+        const validationCell_Res = ws.getCell('H'+`"${i}"`);
+        validationCell_Res.dataValidation = {
+          type: 'list',
+          allowBlank: false,
+          showDropDown: true,
+          formulae: [`"${data_array[0].H.join(',')}"`],
+        };
+
+        const validationCell_Estado = ws.getCell('I'+`"${i}"`);
+        validationCell_Estado.dataValidation = {
+          type: 'list',
+          allowBlank: false,
+          showDropDown: true,
+          formulae: [`"${data_array[0].I.join(',')}"`],
+        };
+
+        const validationCell_Soli = ws.getCell('J'+`"${i}"`);
+        validationCell_Soli.dataValidation = {
+          type: 'list',
+          allowBlank: false,
+          showDropDown: true,
+          formulae: [`"${data_array[0].J.join(',')}"`],
+        };
+      }
+
+      // Save the workbook to a file
+      workbook.xlsx.writeBuffer().then(buffer => {
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        FileSaver.saveAs(blob, ('plantilla_'+this.nameProyecto+'.xlsx').toLowerCase());
+      });
+
+    });
+  },
 
     setColumnsStatus: function (payload) {
       let point = this;
@@ -1571,6 +1804,27 @@ export default {
         };
       });
     },
+    getResEstados(payload) {
+      console.log(">>>> entramos a ver los estados")
+      console.log(payload);
+      console.log(this.$store.state.whiteproject_rows)
+      //return this.$store.getters.getResTypeRows(payload);
+      return this.$store.state.whiteproject_rows.map((row) => {
+        return {
+          ...row,
+          listaFase: row.listaFase.map((fase) => {
+            return {
+              ...fase,
+              listaRestricciones: fase.listaRestricciones.filter(
+                (restriction) =>
+                parseInt(restriction.codEstadoActividad) === payload.id
+              ),
+            };
+          }),
+        };
+      });
+    },
+
     countActivities(codFrente) {
       let total = 0;
         let completed = 0;
@@ -1641,24 +1895,14 @@ export default {
 
           this.updateTipoRestricciones();
           this.updateVencimiento();
-
-
-
-
-
+          this.updateEstados();
       });
-
 
       console.log(">> entro 3");
       await this.filterSectionHeight();
       this.pageloadflag = true;
 
-
     },
-
-
-
-
 
     /* TENEMOS FUNCIONES PARA EL FILTRO */
 
@@ -1728,6 +1972,16 @@ export default {
 
       this.optionSubFilterSelected = subOption ? subOption : option
       this.optionFilterIndex       = subOption.key
+
+      this.rows.map((row) => {
+        // console.log(row);
+        // if (row.desFrente === param) {
+          row.isOpen = true;
+        // }
+      });
+
+      /* Abrimos todos los frentes para que se vea el resultado de los filtros */
+
     },
     removeFilter(index) {
         this.selectedFilters.splice(index, 1);
@@ -1744,6 +1998,7 @@ export default {
 
 
     },
+
     updateTipoRestricciones() {
       let tiporestricciones = this.$store.state.Restrictionlist_P.map(tipos => {
               return { name: tipos.desTipoRestricciones, id: tipos.codTipoRestricciones , key: 3 };
@@ -1752,6 +2007,18 @@ export default {
       const tipoRestriccionesOption = this.options.find(option => option.name === 'Tipo de Restricción');
         if (tipoRestriccionesOption) {
           tipoRestriccionesOption.subOptions = tiporestricciones;
+        }
+
+    },
+
+    updateEstados() {
+      let tipoEstados = this.$store.state.anaEstado.map(estados => {
+              return { name: estados.desEstado, id: estados.codEstado , key: 5 };
+            });
+
+      const estadoOption = this.options.find(option => option.name === 'Estado');
+        if (estadoOption) {
+          estadoOption.subOptions = tipoEstados;
         }
 
     },
@@ -1801,19 +2068,10 @@ export default {
                 fase.listaRestricciones && fase.listaRestricciones.map(res => res.idUsuarioSolicitante)
               )
             ))];
-
-            // console.log(">> lista de ids")
-            // console.log(uniqueResponsables)
-
-            // Busca los responsables en la lista de integrantesAnaReS y obtén el desProyIntegrante.
             const solicitantes = datamembers.filter(integrante => uniqueSolicitantes.includes(integrante.idIntegrante)).map(integrante => {
               return { name: integrante.desProyIntegrante, id: integrante.idIntegrante , key: 2 };
             });
 
-            // console.log(">>>> llegando a esta parte")
-            // console.log(responsables)
-
-            // Encuentra el elemento "Reponsable" en options y actualiza su subOptions.
             const responsableOption = this.options.find(option => option.name === 'Solicitantes');
             if (responsableOption) {
               responsableOption.subOptions = solicitantes;
@@ -1856,12 +2114,7 @@ export default {
               contador++;
 
             }
-
-
           }
-
-
-
         });
       });
     });
@@ -1897,9 +2150,6 @@ export default {
     },
     indicadorAvanceGeneral: function () {
 
-        // Asume que 'data' es el objeto JSON que obtienes del API REST
-        // console.log("entramos al indicador de avance general ")
-        // console.log(this.$store.state.whiteproject_rows)
         let listaRestricciones = this.restrictions.flatMap(frente =>
         frente.listaFase.flatMap(fase => fase.listaRestricciones)
         );
@@ -1955,8 +2205,6 @@ export default {
       res.forEach(obj => {
         obj.listaFase.forEach(fase => {
           fase.listaRestricciones.forEach(restriccion => {
-            // console.log(">>>>>>>")
-            // console.log(restriccion)
             if (restriccion.flgNoti === 0) {
               contador++;
             }
@@ -1995,8 +2243,12 @@ export default {
           case 3:
             // console.log(">>>> entrando a la restriccion");
             return this.getResTypeRows(this.optionSubFilterSelected );
-
             break;
+          case 5:
+          // console.log(">>>> entrando a la restriccion");
+            return this.getResEstados(this.optionSubFilterSelected );
+            break;
+
           default:
             return [];
             break;
