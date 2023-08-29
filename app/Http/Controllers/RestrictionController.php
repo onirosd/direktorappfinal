@@ -305,26 +305,7 @@ class RestrictionController extends Controller
         return $request;
     }
 
-    // public function upd_restricciones(Request $request){
-    //     $enviar = array();
-    //     $enviar["flag"]     = 0;
-    //     $enviar["mensaje"]  = "";
-    //     $data   = $request['userInvData']
 
-    //     foreach ($request as $value1) {
-    //         //  print_r($value['desActividad']);
-
-    //         // foreach ($value1 as  $value2) {
-    //             // echo  $value2['desActividad'];
-    //             $enviar["mensaje"]  = $value1['desActividad'];
-    //             // break;
-    //             // $enviar["mensaje"]  = $value2['desActividad'];
-    //         // }
-    //         // break;
-    //     }
-
-    //     return $enviar;
-    // }
 
     public function cron_enviar_notificacionDiaria(){
         $query_proyectos_retrasados = "
@@ -586,21 +567,21 @@ class RestrictionController extends Controller
 
                         $codAnaRes = Restriction::where('codProyecto', $request['projectId'])->get('codAnaRes');
                         $idactividad = PhaseActividad::insertGetId([
-                            'codTipoRestriccion' => $value['codTipoRestriccion'],
-                            'desActividad'       => (string)$value['desActividad'],
-                            'desRestriccion'     => (string)$value['desRestriccion'],
+                            'codTipoRestriccion'     => $value['codTipoRestriccion'],
+                            'desActividad'           => (string)$value['desActividad'],
+                            'desRestriccion'         => (string)$value['desRestriccion'],
                             'idUsuarioResponsable'   => $value['idUsuarioResponsable'],
                             'codEstadoActividad'     => $value['codEstadoActividad'],
                             'dayFechaRequerida'      => ($fecha == 'null' || $fecha == '') ? null : $fecha,
                             'dayFechaConciliada'     => ($fechac == 'null' || $fechac == '') ? null : $fechac,
-                            'codProyecto'   => $request['projectId'],
-                            'codAnaRes'     => $codAnaRes[0]['codAnaRes'],
-                            'codAnaResFase' => $value['codAnaResFase'],
-                            'codAnaResFrente' => $value['codAnaResFrente'],
-                            'codUsuarioSolicitante' => $request['userId'],
-                            'numOrden'              => $value['idrestriccion'] + 0.01,
-                            'flgNoti'               => 0,
-                            'dayFechaCreacion'      => Carbon::now()
+                            'codProyecto'            => $request['projectId'],
+                            'codAnaRes'              => $codAnaRes[0]['codAnaRes'],
+                            'codAnaResFase'          => $value['codAnaResFase'],
+                            'codAnaResFrente'        => $value['codAnaResFrente'],
+                            'codUsuarioSolicitante'  => $request['userId'],
+                            'numOrden'               => $value['idrestriccion'] + 0.01,
+                            'flgNoti'                => 0,
+                            'dayFechaCreacion'       => Carbon::now()
                         ]);
 
                         $tiporesultado = "ins";
@@ -815,15 +796,6 @@ class RestrictionController extends Controller
 
         $tipoRestricciones = Ana_TipoRestricciones::All();
         $areaIntegrante    = Proy_AreaIntegrante::all();
-
-        // $integrantesAnaRes = RestrictionMember::select("ana_integrantes.*", "proy_integrantes.desCorreo as desProyIntegrante", "proy_integrantes.codArea")
-        // ->leftJoin('proy_integrantes', function($join){
-        //     $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
-        //     $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
-
-        //  })
-        //  ->where('ana_integrantes.codProyecto', $request['id'])->get();
-
         $datos_estado = Conf_Estado::where('desModulo', 'ANARES')->get();
 
         $enviar['estadoRestriccion'] = $restriction[0]['codEstado'] == 0 ? true : false;
@@ -836,8 +808,6 @@ class RestrictionController extends Controller
         $enviar['solicitanteActual'] = $usuario[0]['name']." ".$usuario[0]['lastname'];
         $enviar['rolUsuario']        = $rolUsuario;
         $enviar['areaUsuario']       = $areaUsuario;
-
-
 
         return $enviar;
     }
@@ -1034,10 +1004,35 @@ class RestrictionController extends Controller
                         $check_anares_tiporestricciones = Ana_TipoRestricciones::where('desTipoRestricciones',$TipoRestriccion)->first();
                         if($check_anares_tiporestricciones){
                             /* check in proy_integrantes*/
-                            $proy_integrantes = ProjectUser::where(['codProyecto'=>$projectId,'desCorreo'=>$Responsable])->first();
-                            if($proy_integrantes){
+                            $sql_proy_integrantes = "
+
+                            select * from (
+                                select
+                                a.codProyIntegrante,
+                                case when u.id is not null then
+                                concat(u.name,' ', u.lastname)
+                                else
+                                a.desCorreo
+                                end as nombre
+                                from proy_integrantes a
+                                left join users u on a.idIntegrante  = u.id
+                                where codProyecto = ".$projectId."
+                            ) c where c.nombre  = '".$Responsable."'
+
+                            ";
+
+                            // $valores      = array($projectId, $Responsable);
+                            $proy_integrantes = DB::select($sql_proy_integrantes);
+                            $proy_integrantes = collect($proy_integrantes)->first();
+
+                            // $proy_integrantes = array_map(function ($value) {
+                            //     return (array)$value;
+                            // }, $proy_integrantes);
+
+                            // $proy_integrantes = ProjectUser::where(['codProyecto'=>$projectId,'desCorreo'=>$Responsable])->first();
+                            if(!empty($proy_integrantes)){
                                 /* check in ana_integrantes */
-                                $check_ana_integrantes = RestrictionMember::where('codProyIntegrante',$proy_integrantes->codProyIntegrante)->first();
+                                $check_ana_integrantes = RestrictionMember::where('codProyIntegrante',$proy_integrantes->codProyIntegrante);
                                 if($check_ana_integrantes){
                                     /* check in conf_estado */
                                     $conf_estado = Conf_Estado::where(['desEstado'=>$Estado,'desModulo'=>'ANARES'])->first();
@@ -1084,10 +1079,11 @@ class RestrictionController extends Controller
                                         $anares_actividad->codProyecto = $projectId;
                                         $anares_actividad->codAnaRes = $codAnaRes;
 
-                                        $anares_actividad->codTipoRestriccion = $check_anares_tiporestricciones->codTipoRestricciones;
-                                        $anares_actividad->dayFechaRequerida = gettype($FechaRequerida)=="integer" ? (Date::excelToDateTimeObject($FechaRequerida))->format('Y-m-d') : date('Y-m-d H:i:s');
-                                        $anares_actividad->dayFechaConciliada = gettype($FechaConciliada)=="integer" ? (Date::excelToDateTimeObject($FechaConciliada))->format('Y-m-d') : date('Y-m-d H:i:s');
-                                        $anares_actividad->idUsuarioResponsable = $proy_integrantes->codProyIntegrante;
+                                        $anares_actividad->codTipoRestriccion    = $check_anares_tiporestricciones->codTipoRestricciones;
+                                        $anares_actividad->dayFechaRequerida     = gettype($FechaRequerida)=="integer" ? (Date::excelToDateTimeObject($FechaRequerida))->format('Y-m-d') : date('Y-m-d H:i:s');
+                                        $anares_actividad->dayFechaConciliada    = gettype($FechaConciliada)=="integer" ? (Date::excelToDateTimeObject($FechaConciliada))->format('Y-m-d') : date('Y-m-d H:i:s');
+                                        $anares_actividad->dayFechaCreacion      = Carbon::now();
+                                        $anares_actividad->idUsuarioResponsable  = $proy_integrantes->codProyIntegrante;
                                         $anares_actividad->codUsuarioSolicitante = $id;
 
                                         $anares_actividad->codEstadoActividad = $conf_estado->codEstado;
