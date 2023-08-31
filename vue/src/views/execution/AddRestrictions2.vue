@@ -39,8 +39,8 @@
               class="flex-1 text-white rounded-lg p-1 shadow-md"
               :class="getBgColor"
           >
-            <h2 class="text-md">Avance General</h2>
-            <h3 class="text-lg">{{indicadorAvanceGeneral}}%</h3>
+            <h2 class="text-sm text-center">Avance General</h2>
+            <h3 class="text-lg text-center">{{indicadorAvanceGeneral}}%</h3>
             <div class="h-2 bg-white mt-2">
             <div
                 class="h-full " v-bind:style="{ width: indicadorAvanceGeneral + '%' }"
@@ -53,11 +53,11 @@
         <!-- Segundo bloque - 2 indicadores en Barra -->
         <div class="space-y-2 w-[12em]">
           <div class="text-xxs flex ">
-            <span class="mr-2 flex-col  ">Tiempo de Anticipacion <b>(Promedio)</b></span>
+            <span class="mr-2 flex-col  ">Tiempo de Anticipacion <b>(Promedio Total)</b></span>
 
             <!-- <span class="ml-2 text-md w-[20px] ws_green400"></span> -->
             <div class="ml-2 text-center">
-            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white text-sm">
               {{indicadorAnticipacion}}
 
             </div>
@@ -69,11 +69,11 @@
 
         <div class="space-y-2 w-[12em]">
           <div class="text-xxs flex ">
-            <span class="mr-2 flex-col  ">Tiempo de Cumplimiento <b>(Promedio)</b></span>
+            <span class="mr-2 flex-col  ">Tiempo de Cumplimiento <b>(Promedio Total)</b></span>
 
             <!-- <span class="ml-2 text-md w-[20px] ws_green400"></span> -->
             <div class="ml-2 text-center">
-            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+            <div class="flex w-11 h-10 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white text-sm">
               {{indicadorCumplimiento}}
 
             </div>
@@ -2097,23 +2097,25 @@ export default {
       restriccion.listaFase.forEach((fase) => {
         fase.listaRestricciones.forEach((item) => {
 
-          if (item.dayFechaLevantamiento && item.dayFechaIdentificacion && (this.rolProyecto == 3 || this.rolProyecto == 0)) {
+          // if (item.dayFechaLevantamiento != '' && item.dayFechaRequerida != '' && (this.rolProyecto == 3 || this.rolProyecto == 0)) {
+            if (item.dayFechaLevantamiento != '' && item.dayFechaRequerida != '' && item.codEstadoActividad == "3"){
+
             let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
-            let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
-            let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+            let dayFechaRequerida = new Date(item.dayFechaRequerida);
+            let diferenciaDias = Math.round((dayFechaRequerida - fechaLevantamiento) / (1000 * 60 * 60 * 24));
             totalDias += diferenciaDias;
             contador++;
-          }else{
+          // }else{
 
-            if (item.dayFechaLevantamiento && item.dayFechaIdentificacion && item.codAreaRestriccion == this.areaUsuario && !(this.rolProyecto == 3 || this.rolProyecto == 0) ) {
+          //   if (item.dayFechaLevantamiento && item.dayFechaIdentificacion && item.codAreaRestriccion == this.areaUsuario && !(this.rolProyecto == 3 || this.rolProyecto == 0) ) {
 
-              let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
-              let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
-              let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
-              totalDias += diferenciaDias;
-              contador++;
+          //     let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
+          //     let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
+          //     let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+          //     totalDias += diferenciaDias;
+          //     contador++;
 
-            }
+          //   }
           }
         });
       });
@@ -2132,10 +2134,10 @@ export default {
       this.restrictions.forEach((restriccion) => {
         restriccion.listaFase.forEach((fase) => {
           fase.listaRestricciones.forEach((item) => {
-            if (item.dayFechaLevantamiento && item.dayFechaIdentificacion) {
-              let fechaLevantamiento = new Date(item.dayFechaLevantamiento);
+            if (item.dayFechaRequerida  !="" && item.dayFechaIdentificacion != "") {
+              let dayFechaRequerida = new Date(item.dayFechaRequerida);
               let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
-              let diferenciaDias = Math.round((fechaLevantamiento - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+              let diferenciaDias = Math.round((dayFechaRequerida - fechaIdentificacion) / (1000 * 60 * 60 * 24));
               totalDias += diferenciaDias;
               contador++;
             }
