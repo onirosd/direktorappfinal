@@ -685,6 +685,7 @@ class RestrictionController extends Controller
         $enviar      = array();
         $anaresdata  = [];
         $conteo      = 0;
+
         foreach($frontdata as $eachdata) {
             $dataFrente = [
                 'codFrente'   => $eachdata['codAnaResFrente'],
@@ -693,11 +694,13 @@ class RestrictionController extends Controller
                 'listaFase'   => [],
             ];
 
-            $phasedata = RestrictionPhase::where('codAnaResFrente', $eachdata['codAnaResFrente'])->get();
+            $phasedata   = RestrictionPhase::where('codAnaResFrente', $eachdata['codAnaResFrente'])->get();
+            $conteo_fase = 0;
             foreach($phasedata as $sevdata) {
                 $dataFase = [
                     'codFase' => $sevdata['codAnaResFase'],
                     'desFase' => $sevdata['desAnaResFase'],
+                    'isOpen'  => true, //$conteo_fase == 0 ? true : false,
                     // 'notDelayed' => $restriction[0]['indNoRetrasados'],
                     // 'delayed' => $restriction[0]['indRetrasados'],
                     'listaRestricciones' => [],
@@ -789,6 +792,7 @@ class RestrictionController extends Controller
                         array_push($dataFase['listaRestricciones'], $restricciones);
                     }
                 array_push($dataFrente['listaFase'], $dataFase);
+                $conteo_fase++;
             }
             array_push($anaresdata, $dataFrente);
             $conteo++;

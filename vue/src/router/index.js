@@ -16,6 +16,8 @@ import Restrictions from "../views/execution/Restrictions.vue";
 import AddRestrictions from "../views/execution/AddRestrictions.vue";
 import AddRestrictions2 from "../views/execution/AddRestrictions2.vue";
 
+import Dashboard2 from "../views/Dashboard2.vue";
+
 import Graphic from "../views/execution/Graphic.vue";
 import Person from "../views/person/Person.vue";
 import Person_edit from "../views/person/Person_edit.vue";
@@ -70,9 +72,9 @@ var routes = [
 
       },
       {
-        path: "/prueba2",
-        name: "prueba2",
-        component: Prueba2,
+        path: "/Dashboard",
+        name: "Dashboard",
+        component: Dashboard2,
         meta: { layout: 'login' , sidebarOpen: false},
       },
 

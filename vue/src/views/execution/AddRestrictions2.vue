@@ -285,7 +285,18 @@
               v-for="(fase, index2) in frente.listaFase"
               :key="index2"
             >
-              <div>
+              <div
+                 :class="{
+                  'border-t-2': index2 === 0,
+                  'border-b-2': !fase.isOpen,
+                  'border-l-2 border-r-2':  1==1,
+                  'rounded-t-lg': index2 === 0,
+                  'rounded-b-lg': !fase.isOpen,
+
+                 }"
+                 class="pl-2 pb-2 pr-2 border-gray-300 sm:w-full cursor-pointer"
+                 @click="toggleOpenFase(frente.codFrente , fase.codFase)"
+              >
                 <span class="text-[0.7rem] leading-7 text-activeText shrink-0">
                   {{ fase.desFase }}
                 </span>
@@ -300,7 +311,14 @@
                 </span>
               </div>
 
-              <div class="mt-6">
+              <div
+                  class=" border-l-2 border-r-2 border-gray-300"
+                  :class = "{
+                     'rounded-b-lg': index2 === frente.listaFase.length - 1,
+
+                  }"
+                  v-if="fase.isOpen"
+              >
                 <div class="flex sm:flex-col justify-between sm:mb-10">
                   <div
                     class="flex mt-1 mb-3 items-start cursor-pointer"
@@ -819,12 +837,6 @@ export default {
         if (response.restricciones[i]['listaFase'].length > 0){
 
           Fase[i]   = response.restricciones[i]['listaFase'][0]['desFase'];
-          for(let j = 0; j < response.restricciones[i]['listaFase'][0]['listaRestricciones'].length; j ++){
-
-            if(response.restricciones[i]['listaFase'][0]['listaRestricciones'][j]['desUsuarioResponsable'] && (!Responsable.includes(response.restricciones[i]['listaFase'][0]['listaRestricciones'][j]['desUsuarioResponsable']))){
-              Responsable.push(response.restricciones[i]['listaFase'][0]['listaRestricciones'][j]['desUsuarioResponsable']);
-            }
-          }
 
         }
 
@@ -835,6 +847,11 @@ export default {
       for (let h = 0; h < response.estados.length; h ++){
         Estado[h] = response.estados[h]['desEstado'];
       }
+
+      for (let h = 0; h < response.integrantesAnaReS.length; h ++){
+        Responsable[h] = response.integrantesAnaReS[h]['desProyIntegrante'];
+      }
+
       Solicitante.push(response.solicitanteActual);
       const data_array = [
         {
@@ -1060,6 +1077,30 @@ export default {
           row.isOpen = !row.isOpen;
         }
       });
+    },
+
+    toggleOpenFase: function (codfrente , codfase) {
+
+      this.rows.map((frente) => {
+
+
+        if (frente.codFrente === codfrente) {
+
+          console.log(frente)
+
+          frente.listaFase.map((fase) => {
+
+            if(fase.codFase === codfase){
+              fase.isOpen  = !fase.isOpen;
+            }
+
+          });
+
+        }
+
+
+      });
+
     },
 
     pruebavalidar: function (payload) {
@@ -1731,98 +1772,141 @@ export default {
     getResponsibleRows(payload) {
       // return this.$store.getters.getResponsibleRows(payload);
       return this.$store.state.whiteproject_rows.map((row) => {
+        const nuevasFases = row.listaFase.map((fase) => {
+          const match = fase.listaRestricciones.some(
+            (restriction) => restriction.idUsuarioResponsable === payload.id
+          );
+
+          return {
+            ...fase,
+            isOpen: match ? true : fase.isOpen,
+            listaRestricciones: fase.listaRestricciones.filter(
+              (restriction) => restriction.idUsuarioResponsable === payload.id
+            ),
+            shouldShow: match, // Agregamos un campo 'shouldShow' para saber si se debe mostrar
+          };
+        }).filter(fase => fase.shouldShow); // Filtramos las fases que no tienen coincidencias
+
         return {
           ...row,
-          listaFase: row.listaFase.map((fase) => {
-            return {
-              ...fase,
-              listaRestricciones: fase.listaRestricciones.filter(
-                (restriction) =>
-                  restriction.idUsuarioResponsable === payload.id
-              ),
-            };
-          }),
+          listaFase: nuevasFases,
+          shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      });
+      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
+
     },
     getApplicantRows(payload) {
       // return this.$store.getters.getApplicantRows();
       // let applicantId = sessionStorage.getItem("Id");
       return this.$store.state.whiteproject_rows.map((row) => {
+        const nuevasFases = row.listaFase.map((fase) => {
+          const match = fase.listaRestricciones.some(
+            (restriction) => restriction.idUsuarioSolicitante === payload.id
+          );
+
+          return {
+            ...fase,
+            isOpen: match ? true : fase.isOpen,
+            listaRestricciones: fase.listaRestricciones.filter(
+              (restriction) => restriction.idUsuarioSolicitante === payload.id
+            ),
+            shouldShow: match, // Agregamos un campo 'shouldShow' para saber si se debe mostrar
+          };
+        }).filter(fase => fase.shouldShow); // Filtramos las fases que no tienen coincidencias
+
         return {
           ...row,
-          listaFase: row.listaFase.map((fase) => {
-            return {
-              ...fase,
-              listaRestricciones: fase.listaRestricciones.filter(
-                (restriction) =>
-                  restriction.idUsuarioSolicitante === payload.id
-              ),
-            };
-          }),
+          listaFase: nuevasFases,
+          shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      });
+      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
+
+
     },
     getExpirationRows(payload) {
-      // console.log(payload);
-      // return this.$store.getters.getExpirationRows(payload);
-      let res = this.$store.state.whiteproject_rows.map((row) => {
-        return {
-          ...row,
-          listaFase: row.listaFase.map((fase) => {
-            return {
-              ...fase,
-              listaRestricciones: fase.listaRestricciones.filter(
-                (restriction) =>
-                parseInt(restriction.codEstadoActividad,10) != this.$store.state.anaEstado.find(
+
+      return this.$store.state.whiteproject_rows.map((row) => {
+        const nuevasFases = row.listaFase.map((fase) => {
+          const match = fase.listaRestricciones.some(
+            (restriction) =>  parseInt(restriction.codEstadoActividad,10) != this.$store.state.anaEstado.find(
                       (estado) => estado.desEstado == "Completado"
                     ).codEstado &&
                   new Date(restriction.dayFechaConciliada) < new Date()
-              ),
-            };
-          }),
-        };
-      });
+          );
 
-      return res;
+          return {
+            ...fase,
+            isOpen: match ? true : fase.isOpen,
+            listaRestricciones: fase.listaRestricciones.filter(
+              (restriction) => parseInt(restriction.codEstadoActividad,10) != this.$store.state.anaEstado.find(
+                      (estado) => estado.desEstado == "Completado"
+                    ).codEstado &&
+                  new Date(restriction.dayFechaConciliada) < new Date()
+            ),
+            shouldShow: match, // Agregamos un campo 'shouldShow' para saber si se debe mostrar
+          };
+        }).filter(fase => fase.shouldShow); // Filtramos las fases que no tienen coincidencias
+
+        return {
+          ...row,
+          listaFase: nuevasFases,
+          shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
+        };
+      }).filter(row => row.shouldShow);
+
+
     },
     getResTypeRows(payload) {
-      console.log(payload);
+      // console.log(payload);
       //return this.$store.getters.getResTypeRows(payload);
       return this.$store.state.whiteproject_rows.map((row) => {
+        const nuevasFases = row.listaFase.map((fase) => {
+          const match = fase.listaRestricciones.some(
+            (restriction) => parseInt(restriction.codTipoRestriccion) === payload.id
+          );
+
+          return {
+            ...fase,
+            isOpen: match ? true : fase.isOpen,
+            listaRestricciones: fase.listaRestricciones.filter(
+              (restriction) => parseInt(restriction.codTipoRestriccion) === payload.id
+            ),
+            shouldShow: match, // Agregamos un campo 'shouldShow' para saber si se debe mostrar
+          };
+        }).filter(fase => fase.shouldShow); // Filtramos las fases que no tienen coincidencias
+
         return {
           ...row,
-          listaFase: row.listaFase.map((fase) => {
-            return {
-              ...fase,
-              listaRestricciones: fase.listaRestricciones.filter(
-                (restriction) =>
-                  restriction.codTipoRestriccion === payload.id
-              ),
-            };
-          }),
+          listaFase: nuevasFases,
+          shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      });
+      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
     },
+
     getResEstados(payload) {
-      console.log(">>>> entramos a ver los estados")
-      console.log(payload);
-      console.log(this.$store.state.whiteproject_rows)
-      //return this.$store.getters.getResTypeRows(payload);
+
       return this.$store.state.whiteproject_rows.map((row) => {
+        const nuevasFases = row.listaFase.map((fase) => {
+          const match = fase.listaRestricciones.some(
+            (restriction) => parseInt(restriction.codEstadoActividad) === payload.id
+          );
+
+          return {
+            ...fase,
+            isOpen: match ? true : fase.isOpen,
+            listaRestricciones: fase.listaRestricciones.filter(
+              (restriction) => parseInt(restriction.codEstadoActividad) === payload.id
+            ),
+            shouldShow: match, // Agregamos un campo 'shouldShow' para saber si se debe mostrar
+          };
+        }).filter(fase => fase.shouldShow); // Filtramos las fases que no tienen coincidencias
+
         return {
           ...row,
-          listaFase: row.listaFase.map((fase) => {
-            return {
-              ...fase,
-              listaRestricciones: fase.listaRestricciones.filter(
-                (restriction) =>
-                parseInt(restriction.codEstadoActividad) === payload.id
-              ),
-            };
-          }),
+          listaFase: nuevasFases,
+          shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      });
+      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
     },
 
     countActivities(codFrente) {
