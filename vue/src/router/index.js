@@ -16,6 +16,10 @@ import Restrictions from "../views/execution/Restrictions.vue";
 import AddRestrictions from "../views/execution/AddRestrictions.vue";
 import AddRestrictions2 from "../views/execution/AddRestrictions2.vue";
 
+
+import RestrictionsIndicators from "../views/execution/RestrictionsIndicators.vue";
+
+
 import Dashboard2 from "../views/Dashboard2.vue";
 
 import Graphic from "../views/execution/Graphic.vue";
@@ -98,6 +102,15 @@ var routes = [
         name: "Create_Project",
         component: Project,
         meta: { layout: 'home' , sidebarOpen: true},
+      },
+      {
+        path: "/indicadores",
+        name: "RestrictionsIndicators",
+        component: RestrictionsIndicators,
+        meta: { layout: 'home' , sidebarOpen: true},
+        // children:[
+
+        // ]
       },
       {
         path: "/restricciones",

@@ -23,7 +23,8 @@
     <Indicator
       :header="'Análisis de restricciones'"
       :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno'"
-      :buttonText="'Ver indicadores'"
+      :buttonText="'Ver indicadores 2'"
+      @indicadoresRestricciones = "redireccionarIndicadores"
     />
     <div class="mb-8 border border-[#D0D9F1] rounded-lg">
       <DataTable
@@ -234,6 +235,10 @@ export default {
     };
   },
   methods: {
+
+    redireccionarIndicadores(){
+      this.$router.push('indicadores');
+    },
     handleRedirect(path) {
       this.$router.push(path);
     },
