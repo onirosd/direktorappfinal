@@ -1255,6 +1255,7 @@ const store = createStore({
         data: projectData.desTipoProyecto === 'Abierto' ? true:false,
         projectName: projectData.desNombreProyecto,
         isInvitado : projectData.isInvitado,
+        rol : projectData.rol,
         codEstado  : projectData.codEstado,
         restriction: {
           delayed: 60,
