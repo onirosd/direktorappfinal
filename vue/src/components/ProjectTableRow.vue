@@ -26,6 +26,13 @@
   </tr>
 </template>
 
+
+
+
+
+
+
+
 <script>
 export default {
   name: "project-table-row-component",
