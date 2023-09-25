@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import BarChart2 from '../views/BarChart2.vue'; // Asegúrate de que la ruta sea correcta
+import BarChart2 from '../components/BarChart2.vue'; // Asegúrate de que la ruta sea correcta
 import { mapState } from 'vuex';
 
 export default {
@@ -209,8 +209,6 @@ export default {
     return data;
     },
 
-
-
     groupedByWeek() {
       const groups    = {};
       const groups_m  = {};
@@ -281,7 +279,6 @@ export default {
 
       return data;
     },
-
 
     groupedByState() {
       const groups = {};

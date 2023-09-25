@@ -1,8 +1,9 @@
 <template>
     <div class=" fixed top-0 left-0 right-0 flex justify-between items-center h-12 sm:h-14 bg-main pl-6 z-10">
-        <img
+      <!-- class="sm:content-phoneLogo cursor-pointer h-8" -->
+      <img
             src="../../assets/logo.png"
-            class="sm:content-phoneLogo cursor-pointer h-8"
+            class="cursor-pointer h-8"
             title="Volver a la pagina de Inicio."
             @click="handleRedirect('Home')"
         />

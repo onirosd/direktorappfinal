@@ -1,6 +1,6 @@
 <template>
  <br><br>
- 
+
     <div
         v-if="isLoading == false"
         class="h-full flex justify-center sm:items-start"
@@ -72,8 +72,9 @@
             :paragraph="'Acá podrás visualizar tus proyectos creados y los datos más importantes. Podrás editarlo.'"
             :buttonText="'Crear proyecto'"
             @createNewProject="createNewProject"
+            class="w-full"
           />
-          <div class="w-10/12 mb-8 border sm:border-0 border-[#D0D9F1] rounded-lg m-auto">
+          <div class="w-full mb-8 border sm:border-0 border-[#D0D9F1] rounded-lg m-auto">
             <DataTable
               :tableType="'common'"
               :cols="headerCols"

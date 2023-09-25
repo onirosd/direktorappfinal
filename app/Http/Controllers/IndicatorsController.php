@@ -26,7 +26,7 @@ class IndicatorsController extends Controller
 {
 
 
-    public function get_project_indicators (Request $request) {
+    public function get_project_indicators(Request $request) {
         $query = "
 
             select
@@ -60,7 +60,7 @@ class IndicatorsController extends Controller
 
         ";
 
-        $valores = array($request['id'], $request['id'] , 1);
+        $valores = array($request['coduser'], $request['coduser'] , 1);
         $project = DB::select($query, $valores);
 
         return $project;
@@ -137,7 +137,7 @@ class IndicatorsController extends Controller
                 //     'hideCols' => [],
                 // ];
 
-                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable","proy_integrantes.idIntegrante", "proy_integrantes.codRolIntegrante",  "proy_integrantes.codArea"  ,"proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname", "proy_proyecto.id as codCreador")
+                $Activedata = PhaseActividad::select("anares_actividad.*" , "anares_tiporestricciones.desTipoRestricciones as desTipoRestriccion" , "proy_integrantes.desCorreo as desUsuarioResponsable","proy_integrantes.idIntegrante", "proy_integrantes.codRolIntegrante",  "proy_integrantes.codArea"  ,"proy_areaintegrante.desArea", "conf_estado.desEstado as desEstadoActividad", "users.name as name", "users.lastname as lastname", "proy_proyecto.id as codCreador", "proy_proyecto.codProyecto as codProyecto", "proy_proyecto.desNombreProyecto as desNombreProyecto")
                 ->leftjoin('anares_tiporestricciones', 'anares_actividad.codTipoRestriccion', '=', 'anares_tiporestricciones.codTipoRestricciones')
                 ->leftJoin('proy_integrantes', function($join){
                     $join->on('proy_integrantes.codProyIntegrante', '=', 'anares_actividad.idUsuarioResponsable');
@@ -194,35 +194,44 @@ class IndicatorsController extends Controller
                         // $data['idIntegrante']
 
                         $restricciones = [
-
+                            'id'              => $data['codAnaResActividad'],
+                            'codProyecto'     => $eachdata['codProyecto'],
                             'codAnaResFrente' => $eachdata['codAnaResFrente'],
                             'desAnaResFrente' => $eachdata['desAnaResFrente'],
                             'codAnaResFase'   => $sevdata['codAnaResFase'],
                             'desAnaResFase'   => $sevdata['desAnaResFase'],
-                            'codAnaResActividad' => $data['codAnaResActividad'],
+                            'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaRequerida'])),
+                            'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaCreacion'])),
+                            'codEstadoActividad' => $data['codEstadoActividad'],
+                            'estado' => $data['desEstadoActividad'],
+                            'codresponsable'  => $data['idUsuarioResponsable'] == '' ? '9999' : $data['idUsuarioResponsable'] ,
+                            'responsable' => $des_usuarioResponsable == "" ? 'No Asignado' : $des_usuarioResponsable,
                             'desActividad'       => $data['desActividad'],
-                            'desRestriccion'     => $data['desRestriccion'],
                             'codTipoRestriccion' => $data['codTipoRestriccion'],
                             'desTipoRestriccion' => $data['desTipoRestriccion'],
-                            'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaRequerida'])),  //$data['dayFechaRequerida'] == null ? '' : $data['dayFechaRequerida'],
-                            'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaConciliada'])),  //$data['dayFechaConciliada'] == null ? '' : $data['dayFechaConciliada'],
-                            'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaCreacion'])),
-                            'dayFechaLevantamiento'    => $data['dayFechaLevantamiento'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaLevantamiento'])),
-                            'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
-                            'desUsuarioResponsable' => $des_usuarioResponsable ,
-                            'desUsuarioSolicitante' => $data['name']." ".$data["lastname"],
-                            'idUsuarioSolicitante' => (int)$data['codUsuarioSolicitante'],
-                            'codEstadoActividad' => $data['codEstadoActividad'],
-                            'desEstadoActividad' => $data['desEstadoActividad'],
-                            'desAreaResponsable' => $data['desArea'],
-                            'codAreaRestriccion' => $data['codArea'],
-                            'numOrden'           => $data['numOrden'],
-                            'flgNoti'            => $data['flgNoti'],
-                            // 'isEnabled'          =>  $habilitado,
-                            // 'isEnabledFRequerida' => $frequerida_enabled,
-                            // 'isEnabledFConciliada'=> $fconciliada_enabled,
-                            'isupdate'           => false
-                            // 'applicant' => "Lizeth Marzano",
+                            'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaConciliada'])),
+                            'dayFechaLevantamiento'    => $data['dayFechaLevantamiento'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaLevantamiento'])),
+                            'desRestriccion'     => $data['desRestriccion']
+
+
+
+
+
+                            // 'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaRequerida'])),  //$data['dayFechaRequerida'] == null ? '' : $data['dayFechaRequerida'],
+                            // 'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaConciliada'])),  //$data['dayFechaConciliada'] == null ? '' : $data['dayFechaConciliada'],
+                            // 'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaCreacion'])),
+                            // 'dayFechaLevantamiento'    => $data['dayFechaLevantamiento'] == null ? '' : date("Y-m-d", strtotime($data['dayFechaLevantamiento'])),
+                            // 'idUsuarioResponsable'  => $data['idUsuarioResponsable'],
+                            // 'desUsuarioResponsable' => $des_usuarioResponsable ,
+                            // 'desUsuarioSolicitante' => $data['name']." ".$data["lastname"],
+                            // 'idUsuarioSolicitante' => (int)$data['codUsuarioSolicitante'],
+
+                            // 'desEstadoActividad' => $data['desEstadoActividad'],
+                            // 'desAreaResponsable' => $data['desArea'],
+                            // 'codAreaRestriccion' => $data['codArea'],
+                            // 'numOrden'           => $data['numOrden'],
+                            // 'flgNoti'            => $data['flgNoti'],
+                            // 'isupdate'           => false
                         ];
                          array_push($anarestricciones, $restricciones);
                     }

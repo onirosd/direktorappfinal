@@ -26,6 +26,7 @@
     "exceljs": "^4.3.0",
     "export-from-json": "^1.7.2",
     "file-saver": "^2.0.5",
+    "luxon": "^3.4.3",
     "mitt": "^3.0.0",
     "module_name": "^1.0.0",
     "moment": "^2.29.4",

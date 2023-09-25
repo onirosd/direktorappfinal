@@ -1,12 +1,12 @@
 <template>
 
 
-   <div style="position: relative;" :width="width" >
+   <div style="position: relative;"  >
     <div class="custom-icon">
       <i class="fa-solid fa-filter-circle-xmark cursor-pointer" v-if="showIcon" @click="removerFiltros"></i>
     </div>
 
-    <apexchart  :width="width" :height="height" type="bar" :options="chartOptions" :series="chartSeries" @dataPointSelection = "onClick" ></apexchart>
+    <apexchart  :height="height" type="bar" :options="chartOptions" :series="chartSeries" @dataPointSelection = "onClick" ></apexchart>
   </div>
 </template>
 
