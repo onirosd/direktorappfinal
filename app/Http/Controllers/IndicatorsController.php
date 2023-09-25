@@ -193,6 +193,12 @@ class IndicatorsController extends Controller
 
                         // $data['idIntegrante']
 
+                        $desc_estado_upd = $data['codEstadoActividad'] == '3' ? 'Completado' :
+(
+     ( $data['codEstadoActividad']  != 3 && (Carbon::parse($data['dayFechaConciliada']) >= Carbon::now() ) ) ? 'Pendiente' :
+     ( ($data['codEstadoActividad'] != 3 && (Carbon::parse($data['dayFechaConciliada']) < Carbon::now())) ? 'Retrasado' : 0 )
+);
+                        $cod_estado_upd  = $desc_estado_upd == 'Completado' ? 3 : ($desc_estado_upd == 'Retrasado' ? 2  : 1);
                         $restricciones = [
                             'id'              => $data['codAnaResActividad'],
                             'codProyecto'     => $eachdata['codProyecto'],
@@ -202,8 +208,8 @@ class IndicatorsController extends Controller
                             'desAnaResFase'   => $sevdata['desAnaResFase'],
                             'dayFechaRequerida'     => $data['dayFechaRequerida'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaRequerida'])),
                             'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaCreacion'])),
-                            'codEstadoActividad' => $data['codEstadoActividad'],
-                            'estado' => $data['desEstadoActividad'],
+                            'codEstadoActividad' => $cod_estado_upd,
+                            'estado' => $desc_estado_upd ,  //$data['desEstadoActividad'],
                             'codresponsable'  => $data['idUsuarioResponsable'] == '' ? '9999' : $data['idUsuarioResponsable'] ,
                             'responsable' => $des_usuarioResponsable == "" ? 'No Asignado' : $des_usuarioResponsable,
                             'desActividad'       => $data['desActividad'],

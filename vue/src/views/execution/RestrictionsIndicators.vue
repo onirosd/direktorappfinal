@@ -261,14 +261,14 @@
 
         <div class=" xl:w-3/12   md:w-6/12  sm:w-5/12 h-full border border-[#D0D9F1] rounded-md h-[60px] items-center justify-center" >
             <!-- 15  -->
-            <div class="text-[1.4em] font-bold mt-1">{{indicadorCumplimiento}}</div>
+            <div class="text-[1.4em] font-bold mt-1">{{indicadorCumplimiento}} <n class="text-xs">dias</n></div>
             <div class="text-xs"> # Promedio Cumplimiento</div>
         </div>
 
 
         <div @click="validamosdatos" class=" xl:w-3/12  md:w-6/12 sm:w-5/12 h-full border border-[#D0D9F1] rounded-md h-[60px] items-center justify-center" >
             <!-- 15  -->
-            <div class="text-[1.4em] font-bold mt-1">{{indicadorAnticipacion}}</div>
+            <div class="text-[1.4em] font-bold mt-1">{{indicadorAnticipacion}} <n class="text-xs">dias</n></div>
             <div class="text-xs"> # Promedio Anticipacion</div>
         </div>
 
@@ -392,8 +392,8 @@
                     <td class="w-1/5">{{ item['desActividad'] }}</td>
                     <td class="w-1/5">{{ item['desTipoRestriccion'] }}</td>
                     <td class="w-1/5">{{ item['responsable'] }}</td>
-                    <td class="w-1/5">{{ item['dayFechaConciliada'] }}</td>
-                    <td class="w-1/5">{{ item['dayFechaRequerida'] }}</td>
+                    <td class="w-1/5">{{ formatDate(item['dayFechaConciliada'])  }}</td>
+                    <td class="w-1/5">{{ formatDate(item['dayFechaRequerida']) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -449,8 +449,8 @@ export default {
         {id: 10, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'completado', codresponsable : 2,responsable : 'Javier Melendez', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'}
       ],
       rawDataColor:{
-        'Pendiente': "#cccccc",
-        'Proceso': "#e56b37",
+        'Pendiente' : "#cccccc",
+        'Retrasado' : "#e56b37",
         'Completado': "#3ac189",
 
       },
@@ -498,6 +498,19 @@ export default {
   },
 
   methods: {
+    formatDate(date) {
+      const d = new Date(date);
+      let day = d.getDate();
+      let month = d.getMonth() + 1; // Los meses comienzan desde 0, por lo que añadimos 1.
+      const year = d.getFullYear().toString().substr(-2); // Obtén solo los dos últimos dígitos del año.
+
+      // Asegúrate de que tanto el día como el mes siempre tengan dos dígitos.
+      day = day < 10 ? '0' + day : day;
+      month = month < 10 ? '0' + month : month;
+
+      return `${day}/${month}/${year}`;
+    },
+
     validamosdatos(){
 
       console.log("proyecto :: "+this.selectedProyecto)
