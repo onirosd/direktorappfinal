@@ -318,7 +318,7 @@
         @emitFilters="updateFilters"
         @removeFilters="removeFilters"
 
-        :height = "'240'"
+        :height = "'220'"
         class ="xl:w-8/12 md:w-full  sm:w-full   border border-[#D0D9F1] rounded-md h-[13em] md:hidden lg:block sm:hidden"
        />
 
@@ -438,6 +438,7 @@ export default {
   data: function () {
     return {
 
+      flagFilter:false,
       projectloadflag:false,
       pageloadflag :true,
       rawDataProyecto :[
@@ -458,6 +459,7 @@ export default {
         {id: 10, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'completado', codresponsable : 2,responsable : 'Javier Melendez', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'}
       ],
       rawDataColor:{
+        'nada'         : "#08377c",
         'Pendiente'    : "#cccccc",
         'Retrasado'    : "#d13f5a",
         'Comp.Retraso' : "#3ac189",
@@ -630,11 +632,13 @@ export default {
       this.filterEstado       = data.estado;
       this.filterPeriodo      = data.periodo;
       this.filterResponsable  = data.responsable;
+      this.flagFilter         = true;
     },
     removeFilters(data){
       this.filterEstado   = undefined;
       this.filterPeriodo  = undefined;
       this.filterResponsable  = undefined;
+      this.flagFilter         = false;
     },
     updateCharts(label) {
       console.log(label);
@@ -978,7 +982,7 @@ export default {
           width: '100%',
         },
 
-        colors: this.orderedColors,
+        colors: this.flagFilter ?  this.orderedColors :  this.orderedColors.slice(1),
 
         plotOptions: {
               bar: {
@@ -1102,7 +1106,7 @@ export default {
             colors: ["#fff", "#f2f2f2"]
           }
         },
-        colors: this.orderedColors,
+        colors: this.flagFilter ?  this.orderedColors :  this.orderedColors.slice(1),
         xaxis: {
           categories: Object.keys(this.groupedByState),
           labels: {
@@ -1183,7 +1187,7 @@ export default {
           width: '100%',
         },
 
-        colors: this.orderedColors,
+        colors: this.flagFilter ?  this.orderedColors :  this.orderedColors.slice(1),
 
         plotOptions: {
               bar: {
@@ -1276,6 +1280,7 @@ export default {
 
     this.orderColors();
     this.pageloadflag = false;
+    this.$store.state.sidebar = false;
 
   }
 };
