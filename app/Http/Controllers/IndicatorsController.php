@@ -202,7 +202,7 @@ class IndicatorsController extends Controller
                             )
                         );
 
-                        $cod_estado_upd  = $desc_estado_upd == 'CompletadoS' ? 4 : ($desc_estado_upd == 'CompletadoR' ? 3 :  ($desc_estado_upd == 'Retrasado' ? 2  : 1));
+                        $cod_estado_upd  = $desc_estado_upd == 'Comp.Plazo' ? 4 : ($desc_estado_upd == 'Comp.Retraso' ? 3 :  ($desc_estado_upd == 'Retrasado' ? 2  : 1));
                         $restricciones = [
                             'id'              => $data['codAnaResActividad'],
                             'codProyecto'     => $eachdata['codProyecto'],

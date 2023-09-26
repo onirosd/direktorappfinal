@@ -674,18 +674,20 @@ export default {
         let contador = 0;
 
         this.rolProyecto
-        // console.log(">>> empesamos a ver el cumplimiento")
+       console.log(">>> empesamos a ver el cumplimiento")
         this.rawData.forEach((item) => {
 
-                if (item.dayFechaLevantamiento != '' && item.dayFechaRequerida != '' && item.codEstadoActividad == 3){
+                if (item.dayFechaLevantamiento != '' && item.dayFechaRequerida != '' && ( item.codEstadoActividad == 3 || item.codEstadoActividad == 4)){
 
                 let partes_fl = item.dayFechaLevantamiento.split("/");
                 let partes_fr = item.dayFechaRequerida.split("/");
 
+                // console.log()
+
                 let fechaLevantamiento = new Date(partes_fl[0], partes_fl[1] - 1, partes_fl[2]);
                 let dayFechaRequerida  = new Date(partes_fr[0], partes_fr[1] - 1, partes_fr[2]);
                 let diferenciaDias = Math.round((dayFechaRequerida - fechaLevantamiento) / (1000 * 60 * 60 * 24));
-                console.log(fechaLevantamiento)
+                console.log(fechaLevantamiento+"------"+dayFechaRequerida)
 
                 totalDias += diferenciaDias;
                 contador++;
