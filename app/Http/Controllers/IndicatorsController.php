@@ -193,8 +193,8 @@ class IndicatorsController extends Controller
 
                         // $data['idIntegrante']
 
-                        $desc_estado_upd = ($data['codEstadoActividad'] == '3' && (Carbon::parse($data['dayFechaLevantamiento']) <=  Carbon::parse($data['dayFechaConciliada'])))   ? 'CompletadoS' : (
-                            ($data['codEstadoActividad'] == '3' && (Carbon::parse($data['dayFechaLevantamiento']) >  Carbon::parse($data['dayFechaConciliada']))) ? 'CompletadoR' : (
+                        $desc_estado_upd = ($data['codEstadoActividad'] == '3' && (Carbon::parse($data['dayFechaLevantamiento']) <=  Carbon::parse($data['dayFechaConciliada'])))   ? 'Comp.Plazo' : (
+                            ($data['codEstadoActividad'] == '3' && (Carbon::parse($data['dayFechaLevantamiento']) >  Carbon::parse($data['dayFechaConciliada']))) ? 'Comp.Retraso' : (
 
                                 ( $data['codEstadoActividad']  != 3 && (Carbon::parse($data['dayFechaConciliada']) >= Carbon::now() ) ) ? 'Pendiente' :
                                 ( ($data['codEstadoActividad'] != 3 && (Carbon::parse($data['dayFechaConciliada']) < Carbon::now())) ? 'Retrasado' : 0 )

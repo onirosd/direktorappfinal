@@ -378,7 +378,14 @@
         <thead class="border-b border-gray-300 text-[12px]">
             <tr>
                 <!-- Asegúrate de ajustar las clases de ancho (w-1/5) según tus necesidades -->
-                <td v-for="value in headerCols" :id="value" class="w-1/5">{{ value }}</td>
+                <!-- <td v-for="value in headerCols" :id="value" class="w-1/5">{{ value }}</td> -->
+                <td class="w-2/9">Actividad</td>
+                <td class="w-2/9">Restricción</td>
+                <td class="w-1/9">Responsable</td>
+                <td class="w-1/9">Estado</td>
+                <td class="w-1/9">F.Conciliada</td>
+                <td class="w-1/9">F.Requerida</td>
+                <td class="w-1/9">F.Real</td>
             </tr>
         </thead>
     </table>
@@ -389,11 +396,13 @@
             <tbody>
                 <tr v-for="(item, index) in rawData" :id="index">
                     <!-- Asegúrate de ajustar las clases de ancho (w-1/5) según tus necesidades -->
-                    <td class="w-1/5">{{ item['desActividad'] }}</td>
-                    <td class="w-1/5">{{ item['desRestriccion'] }}</td>
-                    <td class="w-1/5">{{ item['responsable'] }}</td>
-                    <td class="w-1/5">{{ formatDate(item['dayFechaConciliada'])  }}</td>
-                    <td class="w-1/5">{{ formatDate(item['dayFechaRequerida']) }}</td>
+                    <td class="w-2/9">{{ item['desActividad'] }}</td>
+                    <td class="w-2/9">{{ item['desRestriccion'] }}</td>
+                    <td class="w-1/9">{{ item['responsable'] }}</td>
+                    <td class="w-1/9">{{ item['estado'] }}</td>
+                    <td class="w-1/9">{{ formatDate(item['dayFechaConciliada'])  }}</td>
+                    <td class="w-1/9">{{ formatDate(item['dayFechaRequerida']) }}</td>
+                    <td class="w-1/9">{{ formatDate(item['dayFechaLevantamiento']) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -449,10 +458,10 @@ export default {
         {id: 10, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'completado', codresponsable : 2,responsable : 'Javier Melendez', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'}
       ],
       rawDataColor:{
-        'Pendiente'   : "#cccccc",
-        'Retrasado'   : "#d13f5a",
-        'CompletadoR' : "#3ac189",
-        'CompletadoS' : "#e56b37",
+        'Pendiente'    : "#cccccc",
+        'Retrasado'    : "#d13f5a",
+        'Comp.Retraso' : "#3ac189",
+        'Comp.Plazo'   : "#e56b37"
 
       },
       frentes: [],
