@@ -318,7 +318,7 @@
         @emitFilters="updateFilters"
         @removeFilters="removeFilters"
 
-        :height = "'200'"
+        :height = "'240'"
         class ="xl:w-8/12 md:w-full  sm:w-full   border border-[#D0D9F1] rounded-md h-[13em] md:hidden lg:block sm:hidden"
        />
 
@@ -390,7 +390,7 @@
                 <tr v-for="(item, index) in rawData" :id="index">
                     <!-- Asegúrate de ajustar las clases de ancho (w-1/5) según tus necesidades -->
                     <td class="w-1/5">{{ item['desActividad'] }}</td>
-                    <td class="w-1/5">{{ item['desTipoRestriccion'] }}</td>
+                    <td class="w-1/5">{{ item['desRestriccion'] }}</td>
                     <td class="w-1/5">{{ item['responsable'] }}</td>
                     <td class="w-1/5">{{ formatDate(item['dayFechaConciliada'])  }}</td>
                     <td class="w-1/5">{{ formatDate(item['dayFechaRequerida']) }}</td>
@@ -449,9 +449,10 @@ export default {
         {id: 10, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'completado', codresponsable : 2,responsable : 'Javier Melendez', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'}
       ],
       rawDataColor:{
-        'Pendiente' : "#cccccc",
-        'Retrasado' : "#e56b37",
-        'Completado': "#3ac189",
+        'Pendiente'   : "#cccccc",
+        'Retrasado'   : "#d13f5a",
+        'CompletadoR' : "#3ac189",
+        'CompletadoS' : "#e56b37",
 
       },
       frentes: [],
