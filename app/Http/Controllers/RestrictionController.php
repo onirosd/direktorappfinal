@@ -47,13 +47,15 @@ class RestrictionController extends Controller
         from (
         select
         ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion,
-        ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , min(ad.isInvitado) as isInvitado
+        ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto , min(ad.isInvitado) as isInvitado,
+        max(ad.rol) as rol
 
         from (
         select
         ar.*,
         pp.desNombreProyecto as desnombreproyecto,
-        0 as isInvitado
+        0 as isInvitado,
+        0 as rol
         from anares_analisisrestricciones  ar
         inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
         where
@@ -64,7 +66,8 @@ class RestrictionController extends Controller
         select
         ar.*,
         pp.desNombreProyecto as desnombreproyecto,
-        1 as isInvitado
+        1 as isInvitado,
+        pi2.codRolIntegrante as rol
         from anares_analisisrestricciones  ar
         inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
         inner join proy_integrantes pi2 on ar.codProyecto  = pi2.codProyecto
@@ -76,7 +79,6 @@ class RestrictionController extends Controller
         group BY ad.codProyecto , ad.codEstado , ad.dayFechaCreacion , ad.desUsuarioCreacion ,ad.indNoRetrasados,ad.indRetrasados,
         ad.codAnaRes, ad.desColOcultas, ad.desnombreproyecto
         ) fin
-
 
         ";
         $valores      = array($request['id'],$request['id']);

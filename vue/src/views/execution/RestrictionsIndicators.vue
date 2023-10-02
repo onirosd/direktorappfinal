@@ -446,24 +446,24 @@ export default {
         {codProyecto : 11, desNombreProyecto : 'Proyecto Modificado 002'}
       ],
       rawDataInicial : [
-        {id: 1, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'completado', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Encofrado', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
-        {id: 2, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'completado', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Enchape', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
-        {id: 3, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/05', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:2, estado: 'En proceso', codresponsable : 2, responsable : 'Javier Melendez', desActividad : 'Enchape', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 1, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'Comp.Retraso', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Encofrado', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 2, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'Comp.Retraso', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Enchape', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 3, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/05', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:2, estado: 'Retrasado', codresponsable : 2, responsable : 'Javier Melendez', desActividad : 'Enchape', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
         {id: 4, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/05', dayFechaIdentificacion: '2023/01/01' , codEstadoActividad:1 ,estado: 'Pendiente', codresponsable : 3, responsable : 'Juan Perez', desActividad : 'Encofrado 2', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
         {id: 5, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/08', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:1,  estado: 'Pendiente', codresponsable : 3, responsable : 'Juan Perez', desActividad : 'Cimentacion', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
 
-        {id: 6, codProyecto: 10, codAnaResFrente : 2 , desAnaResFrente : 'Frente Nuevo 002', codAnaResFase : 3, desAnaResFase : 'Fase 002' , dayFechaRequerida: '2023/02/09', dayFechaIdentificacion: '2023/02/01' ,codEstadoActividad:1, estado: 'Pendiente', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Cimentacion', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
-        {id: 7, codProyecto: 10, codAnaResFrente : 2 , desAnaResFrente : 'Frente Nuevo 002', codAnaResFase : 3, desAnaResFase : 'Fase 002' , dayFechaRequerida: '2023/02/10', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:2,estado: 'En proceso', codresponsable : 3, responsable : 'Juan Perez', desActividad : 'Cimentacion', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
-        {id: 8, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/10', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:2, estado: 'En proceso', codresponsable : 2, responsable : 'Javier Melendez', desActividad : 'Cimentacion', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
-        {id: 9, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'completado', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
-        {id: 10, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'completado', codresponsable : 2,responsable : 'Javier Melendez', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'}
+        {id: 6, codProyecto: 10, codAnaResFrente : 2 , desAnaResFrente : 'Frente Nuevo 002', codAnaResFase : 3, desAnaResFase : 'Fase 002' , dayFechaRequerida: '2023/02/09', dayFechaIdentificacion: '2023/02/01' ,codEstadoActividad:1, estado: 'Comp.Retraso', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Cimentacion', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 7, codProyecto: 10, codAnaResFrente : 2 , desAnaResFrente : 'Frente Nuevo 002', codAnaResFase : 3, desAnaResFase : 'Fase 002' , dayFechaRequerida: '2023/02/10', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:2,estado: 'Comp.Plazo', codresponsable : 3, responsable : 'Juan Perez', desActividad : 'Cimentacion', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 8, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/10', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:2, estado: 'Comp.Plazo', codresponsable : 2, responsable : 'Javier Melendez', desActividad : 'Cimentacion', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 9, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'Retrasado', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 10, codProyecto: 11, codAnaResFrente : 3 , desAnaResFrente : 'Frente Modificado', codAnaResFase : 4, desAnaResFase : 'Fase Modificado' , dayFechaRequerida: '2023/02/11', dayFechaIdentificacion: '2023/02/01' , codEstadoActividad:3, estado: 'Pendiente', codresponsable : 2,responsable : 'Javier Melendez', desActividad : 'Techo', desTipoRestriccion: 'Construccion', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'}
       ],
       rawDataColor:{
-        'nada'         : "#08377c",
+
         'Pendiente'    : "#cccccc",
         'Retrasado'    : "#d13f5a",
-        'Comp.Retraso' : "#3ac189",
-        'Comp.Plazo'   : "#e56b37"
+        'Comp.Retraso' : "#e56b37",
+        'Comp.Plazo'   : "#3ac189",
 
       },
       frentes: [],
@@ -726,6 +726,18 @@ export default {
     },
 
 
+    estadosColores() {
+      // Obtener todos los valores únicos de la columna "estado" de rawDataInicial
+      const estadosUnicos = [...new Set(this.rawData.map(item => item.estado))];
+
+      // Hacer un match con las claves de rawDataColor y obtener los valores correspondientes
+      // Iterar sobre las claves de rawDataColor para mantener el orden
+      const coloresMatch = Object.keys(this.rawDataColor)
+        .filter(estado => estadosUnicos.includes(estado)) // Filtrar solo los estados que están en estadosUnicos
+        .map(estado => this.rawDataColor[estado]); // Obtener el color correspondiente de rawDataColor
+
+      return coloresMatch;
+    },
     rawData() {
       let filtered = this.rawDataInicial;
 
@@ -984,7 +996,7 @@ export default {
           width: '100%',
         },
 
-        colors: this.flagFilter ?  this.orderedColors :  this.orderedColors.slice(1),
+        colors: this.estadosColores,
 
         plotOptions: {
               bar: {
@@ -1108,7 +1120,7 @@ export default {
             colors: ["#fff", "#f2f2f2"]
           }
         },
-        colors: this.flagFilter ?  this.orderedColors :  this.orderedColors.slice(1),
+        colors: this.estadosColores,
         xaxis: {
           categories: Object.keys(this.groupedByState),
           labels: {
@@ -1189,7 +1201,7 @@ export default {
           width: '100%',
         },
 
-        colors: this.flagFilter ?  this.orderedColors :  this.orderedColors.slice(1),
+        colors: this.estadosColores,
 
         plotOptions: {
               bar: {

@@ -41,7 +41,7 @@
     </td>
     <td>
       <button
-        v-if="row.isInvitado == 0 && row.codEstado == 0"
+        v-if="row.rol == 3 && row.codEstado == 0"
         class="bg-[#DCE4F9] w-6 h-6 rounded-md justify-center flex items-center"
         @click="$emit('selectUserFunc', {codProyecto:row.codProyecto, index:index}); openModal({param: 'selectusers'})"
         v-click-outside="hide"
