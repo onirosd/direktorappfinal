@@ -104,7 +104,8 @@ class RestrictionController extends Controller
                 'indNoRetrasados'  => $eachdata['indNoRetrasados'],
                 'indRetrasados'    => $eachdata['indRetrasados'],
                 'codAnaRes'        => $eachdata['codAnaRes'],
-                'isInvitado'        => $eachdata['isInvitado'],
+                'isInvitado'       => $eachdata['isInvitado'],
+                'rol'              => $eachdata['rol'],
                 'integrantes'      => [],
                 'integrantesProy'  => []
             ];
