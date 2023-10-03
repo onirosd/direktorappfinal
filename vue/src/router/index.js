@@ -20,7 +20,7 @@ import AddRestrictions2 from "../views/execution/AddRestrictions2.vue";
 import RestrictionsIndicators from "../views/execution/RestrictionsIndicators.vue";
 
 
-import Dashboard2 from "../views/Dashboard2.vue";
+// import Dashboard2 from "../views/Dashboard2.vue";
 
 import Graphic from "../views/execution/Graphic.vue";
 import Person from "../views/person/Person.vue";
@@ -75,12 +75,12 @@ var routes = [
         meta: { layout: 'login', sidebarOpen: false },
 
       },
-      {
-        path: "/Dashboard",
-        name: "Dashboard",
-        component: Dashboard2,
-        meta: { layout: 'login' , sidebarOpen: false},
-      },
+      // {
+      //   path: "/Dashboard",
+      //   name: "Dashboard",
+      //   component: Dashboard2,
+      //   meta: { layout: 'login' , sidebarOpen: false},
+      // },
 
 
     ],

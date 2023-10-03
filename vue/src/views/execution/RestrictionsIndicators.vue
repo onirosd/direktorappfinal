@@ -674,7 +674,7 @@ export default {
         let contador = 0;
 
         this.rolProyecto
-       console.log(">>> empesamos a ver el cumplimiento")
+      //  console.log(">>> empesamos a ver el cumplimiento")
         this.rawData.forEach((item) => {
 
                 if (item.dayFechaLevantamiento != '' && item.dayFechaRequerida != '' && ( item.codEstadoActividad == 3 || item.codEstadoActividad == 4)){
@@ -687,7 +687,7 @@ export default {
                 let fechaLevantamiento = new Date(partes_fl[0], partes_fl[1] - 1, partes_fl[2]);
                 let dayFechaRequerida  = new Date(partes_fr[0], partes_fr[1] - 1, partes_fr[2]);
                 let diferenciaDias = Math.round((dayFechaRequerida - fechaLevantamiento) / (1000 * 60 * 60 * 24));
-                console.log(fechaLevantamiento+"------"+dayFechaRequerida)
+                // console.log(fechaLevantamiento+"------"+dayFechaRequerida)
 
                 totalDias += diferenciaDias;
                 contador++;
@@ -816,8 +816,8 @@ export default {
       statesSet.add(row.estado);
     });
 
-    console.log(">>> vemos el final de las condiocoones")
-    console.log(groups)
+    // console.log(">>> vemos el final de las condiocoones")
+    // console.log(groups)
 
     for (const responsable in groups) {
       // console.log(`Semana ||| : ${semana}`);
@@ -839,8 +839,8 @@ export default {
     const data = {}
     data['responsables']  = groups
 
-    console.log('>>>>>>>>> aqui vemos que tal los responsables')
-    console.log(groups)
+    // console.log('>>>>>>>>> aqui vemos que tal los responsables')
+    // console.log(groups)
 
     return data;
     },
@@ -852,7 +852,7 @@ export default {
 
       this.rawData.forEach(row => {
         // Lógica para determinar la semana (esto es un ejemplo)
-        const week = `Sem. ${new Date(row.dayFechaRequerida).getWeek()}`;
+        const week  = `Sem. ${new Date(row.dayFechaRequerida).getWeek()}`;
         const month = `${new Date(row.dayFechaRequerida).getYearAndMonthNumber()}`;
 
         if (!groups[week]) {
@@ -971,6 +971,7 @@ export default {
     }));
 
     console.log(">>>>>>> apexseries del primero ")
+    console.log(labels)
     console.log(apexSeries)
 
     return {

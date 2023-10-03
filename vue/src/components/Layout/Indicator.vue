@@ -11,7 +11,7 @@
       <button
         title=" Crea un nuevo proyecto , asigne personal y asigne reportes."
         class="h-8 sm:w-10/12 bg-orange text-white text-[0.8rem] leading-4 px-4 rounded"
-        @click="$emit('indicadoresRestricciones')"
+        @click="$emit(desAccion)"
       >
       <i class="fa-regular fa-star text-[1.2rem]"></i>
         {{ buttonText }}
@@ -24,6 +24,7 @@
 export default {
   name: "indicator-component",
   props: {
+    desAccion: String,
     header: String,
     paragraph: String,
     buttonText: String,

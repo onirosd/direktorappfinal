@@ -89,6 +89,9 @@ export default {
 
       this.showIcon = true;
       console.log("_>>> entrando")
+      console.log(config.seriesIndex)
+      console.log(config.dataPointIndex)
+      console.log(this.chartSeries[config.seriesIndex])
 
       const seriesIndex = config.seriesIndex;
       const dataPointIndex = config.dataPointIndex;
@@ -98,11 +101,6 @@ export default {
       var selectPeriod   = this.periodos[dataPointIndex] == undefined ? undefined : this.periodos[dataPointIndex]
       var selectedValue  = this.chartSeries[seriesIndex].data[dataPointIndex] == undefined ? undefined : this.chartSeries[seriesIndex].data[dataPointIndex];
 
-
-      // console.log(selectWeek)
-      // console.log(selectState)
-      // console.log(selectPeriod)
-      // console.log(selectedValue)
 
       if(this.tipo  == 2){
 
@@ -115,6 +113,14 @@ export default {
         selectResponsable =   this.chartOptions.xaxis.categories[dataPointIndex] == undefined ? undefined : this.chartOptions.xaxis.categories[dataPointIndex] ;
         selectPeriod      =   undefined
       }
+
+      console.log(">>>> no llegamos aqui o queee")
+
+      console.log(selectResponsable)
+      console.log(selectState)
+      console.log(selectPeriod)
+      console.log(selectedValue)
+
 
       this.$emit('emitFilters', {estado:selectState , periodo:selectPeriod, responsable:selectResponsable});
 

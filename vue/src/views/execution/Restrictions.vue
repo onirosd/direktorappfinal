@@ -24,6 +24,7 @@
       :header="'Análisis de restricciones'"
       :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno'"
       :buttonText="'Ver indicadores'"
+      :desAccion = "'indicadoresRestricciones'"
       @indicadoresRestricciones = "redireccionarIndicadores"
     />
     <div class="mb-8 border border-[#D0D9F1] rounded-lg">
