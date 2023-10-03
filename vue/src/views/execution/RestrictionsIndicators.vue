@@ -705,19 +705,31 @@ export default {
       let totalDias = 0;
       let contador = 0;
 
+      console.log("<>>>>>> entrando a ver el indicador ")
+
+
       this.rawData.forEach((item) => {
 
+            console.log("identificador :::: "+item.dayFechaIdentificacion)
+            console.log("requerida ::::: "+item.dayFechaRequerida)
 
-            if (item.dayFechaRequerida  !="" && item.dayFechaIdentificacion != "") {
+            if (item.dayFechaRequerida != "" && item.dayFechaIdentificacion != "") {
+
               let dayFechaRequerida = new Date(item.dayFechaRequerida);
               let fechaIdentificacion = new Date(item.dayFechaIdentificacion);
               let diferenciaDias = Math.round((dayFechaRequerida - fechaIdentificacion) / (1000 * 60 * 60 * 24));
+              console.log(">>>> diferencia en dias")
+              console.log(diferenciaDias)
               totalDias += diferenciaDias;
               contador++;
+
             }
 
-
       });
+
+      console.log(">>>> como sale ")
+      console.log(totalDias)
+      console.log(contador)
 
       let promedioDias = Math.round(totalDias / contador);
       return promedioDias;

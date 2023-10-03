@@ -49,10 +49,10 @@ class ReportController extends Controller
 
         aa.desActividad as ndescripcionactividad ,
         aa.desRestriccion as ndescripcionrestriccion,
-        aa.dayFechaCreacion  as nfechaidentificacion,
-        case when aa.dayFechaConciliada is null then   aa.dayFechaRequerida else aa.dayFechaConciliada end  as nfecharequerida,
+        DATE_FORMAT(aa.dayFechaCreacion, '%Y-%m-%d') as nfechaidentificacion,
+        case when aa.dayFechaConciliada is null then  DATE_FORMAT(aa.dayFechaRequerida, '%Y-%m-%d') else DATE_FORMAT(aa.dayFechaConciliada, '%Y-%m-%d') end  as nfecharequerida,
         concat(u2.name,' ',u2.lastname) as nresponsablelevantamiento,
-        aa.dayFechaLevantamiento  as nfecharealfinlevantamiento,
+        DATE_FORMAT(aa.dayFechaLevantamiento, '%Y-%m-%d')  as nfecharealfinlevantamiento,
         -- pa.desArea as netapa,
         -- ce.desEstado as nestado,
 	    CASE
