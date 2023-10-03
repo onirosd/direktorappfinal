@@ -57,6 +57,7 @@ export default {
       ? this.chartData.series.map((dataset) => ({
           name: dataset.name,  // Aquí debería ir el nombre del estado
           periodo: dataset.periodo == undefined ? undefined : dataset.periodo,
+          weekYear: dataset.weekYear == undefined ? undefined : dataset.weekYear,
           data: dataset.data,
 
         }))
@@ -120,6 +121,9 @@ export default {
       console.log(selectState)
       console.log(selectPeriod)
       console.log(selectedValue)
+
+      console.log(">>>>>>> periodos")
+      console.log(this.periodos)
 
 
       this.$emit('emitFilters', {estado:selectState , periodo:selectPeriod, responsable:selectResponsable});

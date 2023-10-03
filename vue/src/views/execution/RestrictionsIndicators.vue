@@ -763,8 +763,11 @@ export default {
       if (this.filterPeriodo !== undefined) {
 
         filtered = filtered.filter(item => {
-          const date = new Date(item.dayFechaRequerida).getYearAndMonthNumber();
-          return date == this.filterPeriodo
+          const  date = `${new Date(item.dayFechaRequerida).getModifiedWeekYearFormat()}`;
+          console.log(">>>>>>>>>> imporesion impresion sdaaaa")
+          console.log(date)
+          console.log(this.filterPeriodo)
+          return date == `${this.filterPeriodo}`
         });
       }
 
@@ -852,24 +855,37 @@ export default {
 
       this.rawData.forEach(row => {
         // Lógica para determinar la semana (esto es un ejemplo)
-        const week  = `Sem. ${new Date(row.dayFechaRequerida).getWeek()}`;
-        const month = `${new Date(row.dayFechaRequerida).getYearAndMonthNumber()}`;
+        const fullcalendar = `${new Date(row.dayFechaRequerida).getModifiedWeekMonthYearFormat()}`;
+
+        // const week     = `Sem. ${new Date(row.dayFechaRequerida).getUniqueWeekNumber()}`;
+        const week     = `Sem. ${fullcalendar.substring(0, 2)}`;
+        // const month    = `${new Date(row.dayFechaRequerida).getYearAndMonthNumber()}`;
+        const month    = `${fullcalendar.slice(-4)}`+`${fullcalendar.substring(2, 4)}`;
+        const weekYear = `${new Date(row.dayFechaRequerida).toWeekFormat()}`;
+
+        // console.log(fullcalendar)
+        // console.log(month)
+
+        if (month == '202307' || month == '202308'){
+          console.log("<>>> solo imprimimos agosto ")
+          console.log(week)
+          console.log(fullcalendar)
+          console.log(row.dayFechaRequerida)
+        }
 
         if (!groups[week]) {
           groups[week]            = {};
           groups[week]['data']    = {};
           groups[week]['periodo'] = month;
+          groups[week]['weekYear'] = `${fullcalendar.substring(0, 2)}`+`${fullcalendar.slice(-4)}`;
         }
         if (!groups_m[month]) groups_m[month] = {};
 
-        // if (!groups_m[month]){
-          if (groups_m?.[month]?.[week] == undefined) {
-            groups_m[month][week] = 1
-            // groups_m[month][week]['mes'] = 1
-            // groups_m[month][week]['anio'] = 1
-          }
 
-        // }
+        if (groups_m?.[month]?.[week] == undefined) {
+          groups_m[month][week] = 1
+        }
+
 
         if (!groups[week]['data'][row.estado]) {
             groups[week]['data'][row.estado] = 0 // [row.estado] = 0;
@@ -878,6 +894,7 @@ export default {
 
         groups[week]['data'][row.estado]++;
         statesSet.add(row.estado);
+
       });
 
       // console.log(groups)
@@ -885,7 +902,7 @@ export default {
       for (const semana in groups) {
         // console.log(`Semana ||| : ${semana}`);
         // console.log(groups[semana]['periodo'])
-        this.graph2_data.push(groups[semana]['periodo'])
+        this.graph2_data.push(groups[semana]['weekYear'])
 
         this.uniqueStates.forEach((estado) => {
           if (groups[semana]['data'][estado] == undefined){
@@ -910,8 +927,8 @@ export default {
       data['weeks']  = groups
       data['groups'] = groups_months
 
-      console.log('>>>>>>>>> aqui vemos que tal')
-      console.log(groups)
+      console.log('>>>>>>>>> aqui vemos la clasificacion de meses')
+      console.log(groups_months)
 
       return data;
     },
@@ -947,8 +964,9 @@ export default {
       Object.keys(data['data']).forEach(state => {
         if (!series[state]) {
           series[state] = [];
-          series[state]['data']    = [];
-          series[state]['periodo'] = data['periodo'];
+          series[state]['data']     = [];
+          series[state]['periodo']  = data['periodo'];
+          series[state]['weekYear'] = data['weekYear'];
         }
 
         series[state]['data'].push(data['data'][state]);
@@ -967,6 +985,7 @@ export default {
     const apexSeries = Object.keys(ordered).map(state => ({
       name: state,
       periodo : ordered[state]['periodo'],
+      weekYear : ordered[state]['weekYear'],
       data: ordered[state]['data']
     }));
 
