@@ -267,7 +267,7 @@ class ProjectController extends Controller
             ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , min(ad.isInvitado) as isInvitado , max(ad.rol) as rol
 
             from (
-            select  pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado , 0 as rol
+            select  pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado , 3 as rol
             from proy_proyecto pp
             inner join conf_maestro_empresas mp on pp.desEmpresa  = mp.cod_Empresa
             inner join conf_ubigeo cu on pp.codUbigeo  = cu.codUbigeo

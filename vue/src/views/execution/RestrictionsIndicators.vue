@@ -272,6 +272,13 @@
             <div class="text-xs"> # Promedio Anticipacion</div>
         </div>
 
+
+        <div @click="validamosdatos" class=" xl:w-3/12  md:w-6/12 sm:w-5/12 h-full border border-[#D0D9F1] rounded-md h-[60px] items-center justify-center" >
+            <!-- 15  -->
+            <div class="text-[1.4em] font-bold mt-1">{{indicadorPorcentajeRetrasados}} <n class="text-xs">%</n></div>
+            <div class="text-xs"> % Completados con Retraso </div>
+        </div>
+
       </div>
 
 
@@ -667,6 +674,42 @@ export default {
     },
     isLoadingProject: function(){
       return this.projectloadflag
+    },
+    indicadorPorcentajeRetrasados: function (){
+
+      let totalDias = 0;
+      let contador = 0;
+
+      //  console.log(">>> empesamos a ver el cumplimiento")
+      let conteo_retraso     = 0;
+      let conteo_completados = 0;
+
+      this.rawData.forEach((item) => {
+
+                if (item.dayFechaLevantamiento != '' && item.dayFechaRequerida != '' && ( item.codEstadoActividad == 3 || item.codEstadoActividad == 4)){
+
+                  if (item.codEstadoActividad == 3 || item.codEstadoActividad == 4 ){
+
+                    conteo_completados++;
+
+                  }
+
+                  if (item.codEstadoActividad == 3 ){
+
+                    conteo_retraso++;
+
+                  }
+
+
+                }
+
+        });
+
+        if (conteo_completados === 0) {
+            return 0;
+        }
+
+        return Math.ceil((conteo_retraso / conteo_completados) * 100);
     },
     indicadorCumplimiento: function (){
 
