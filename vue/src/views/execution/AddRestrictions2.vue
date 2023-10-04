@@ -160,6 +160,22 @@
           <span class="badge absolute top-[-2] right-[-4] h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
         </button>
 
+
+        <button
+          class="ml-1 bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+          @click="openModal({ param: 'enviarNoti' })"
+          :disabled="disabledItemsEnviarCorreos"
+          :class="{
+                'border-orange': !disabledItemsEnviarCorreos,
+                'border-[#DCE4F9]': disabledItemsEnviarCorreos,
+              }"
+
+          >
+          <i class="fas fa-calendar"></i> Calendario Sem.
+          <span class="badge absolute top-[-2] right-[-4] h-5 w-5 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px] text-[0.7rem]" >New</span>
+        </button>
+
       </div>
       <div class=" flex  w-[50%] sm:w-full" v-if="fullScreen">
             <ul class="text-[#8A9CC9] items-center flex text-xs">
