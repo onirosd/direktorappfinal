@@ -18,27 +18,13 @@ axiosClient.interceptors.request.use(config => {
 axiosClient.interceptors.response.use(response => {
   return response;
 }, error => {
-  if (error.response) {
-    switch (error.response.status) {
-      case 401:
-        sessionStorage.removeItem('TOKEN');
-        router.push({name: 'Login'});
-        break;
-      case 404:
-        router.push({name: 'NotFound'});
-        break;
-      default:
-        // Aquí puedes manejar otros códigos de estado o mostrar un mensaje genérico
-        console.error("Error del servidor:", error.response.data.message || 'Error desconocido');
-        console.log(error.response)
-        break;
-    }
-  } else {
-    // Si no hay respuesta del servidor
-    console.error("Error de red o del servidor:", error.message);
+  if (error.response.status === 401) {
+    sessionStorage.removeItem('TOKEN')
+    router.push({name: 'Login'})
+  } else if (error.response.status === 404) {
+    router.push({name: 'NotFound'})
   }
-  return Promise.reject(error); // Esto es importante para que puedas manejar el error en tus llamadas axios
-});
-
+  throw error;
+})
 
 export default axiosClient;
