@@ -21,10 +21,10 @@ use App\Http\Controllers\IndicatorsController;
 
 
 
-// header("Access-Control-Allow-Origin: http://localhost:3000/");
+// header("Access-Control-Allow-Origin: https://direktor.com.pe");
 
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With");
+// header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+// header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With");
 
 /*
 |--------------------------------------------------------------------------
@@ -64,20 +64,9 @@ Route::post('/recuperar_credenciales', [ForgotPasswordController::class, 'submit
 // Route::get('/survey-by-slug/{survey:slug}', [\App\Http\Controllers\SurveyController::class, 'showForGuest']);
 // Route::post('/survey/{survey}/answer', [\App\Http\Controllers\SurveyController::class, 'storeAnswer']);
 
-
-// Aplicando a un grupo de rutas
-// Route::middleware(['cors'])->group(function () {
-
-//     Route::post('/create_project', [ProjectController::class, 'create_project']);
-
-// });
-
-Route::post('/create_project', [ProjectController::class, 'create_project']);
-// Route::get('/create_project', 'ExampleController@show')->middleware('cors');
-
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/create_project', [ProjectController::class, 'create_project']);
 Route::get('/sendMails/{user}', [ProjectController::class, 'sendMails']);
 Route::post('/get_project', [ProjectController::class, 'get_project']);
 Route::post('/get_restrictions', [RestrictionController::class, 'get_restriction']);
