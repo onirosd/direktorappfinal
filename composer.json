@@ -12,8 +12,8 @@
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "maatwebsite/excel": "*",
-        "phpoffice/phpspreadsheet": "^1.28"
+        "phpoffice/phpspreadsheet": "^1.28",
+        "psr/simple-cache": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -53,7 +53,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": ["laravel/maatwebsite"]
         }
     },
     "config": {

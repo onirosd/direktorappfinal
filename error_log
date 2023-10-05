@@ -1,0 +1,4 @@
+[21-May-2023 19:46:38 UTC] PHP Fatal error:  Allowed memory size of 2147483648 bytes exhausted (tried to allocate 44855464 bytes) in phar:///usr/local/bin/composer1.phar/src/Composer/Util/RemoteFilesystem.php on line 462
+[21-May-2023 19:49:17 UTC] PHP Fatal error:  Allowed memory size of 2147483648 bytes exhausted (tried to allocate 134217736 bytes) in phar:///usr/local/bin/composer1.phar/src/Composer/DependencyResolver/RuleSet.php on line 83
+[21-May-2023 20:16:58 UTC] PHP Fatal error:  Allowed memory size of 2147483648 bytes exhausted (tried to allocate 134217736 bytes) in phar:///usr/local/bin/composer1.phar/src/Composer/DependencyResolver/RuleSet.php on line 83
+[21-May-2023 21:05:49 UTC] PHP Fatal error:  Allowed memory size of 2147483648 bytes exhausted (tried to allocate 134217736 bytes) in phar:///usr/local/bin/composer1.phar/src/Composer/DependencyResolver/RuleSet.php on line 83
