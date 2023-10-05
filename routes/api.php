@@ -22,6 +22,7 @@ use App\Http\Controllers\IndicatorsController;
 
 
 // header("Access-Control-Allow-Origin: https://direktor.com.pe");
+
 // header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 // header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With");
 
