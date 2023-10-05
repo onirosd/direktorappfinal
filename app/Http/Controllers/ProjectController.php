@@ -88,6 +88,8 @@ class ProjectController extends Controller
 
 
     public function create_project (Request $request) {
+
+        $id   = $request['id'] | 0;
         $mail = false;
         $data = $request->validate([
             'projectName' => 'required|string',
@@ -102,7 +104,7 @@ class ProjectController extends Controller
             'codEstado' => 0,
             'desEmpresa' => $request['business'],
             'numPlazo' => intval($request['term']),
-            'id' => $request['id'] | 0,
+            'id' => $id,
             'numAreaTechado' => intval($request['coveredArea']),
             'codTipoProyecto' => intval($request['projectType']),
             'codUbigeo' => intval($request['district']),
@@ -117,20 +119,29 @@ class ProjectController extends Controller
             'codMoneda' => intval($request['codMoneda'])
         ]);
 
+        // echo "Ingresamos a ver el valor";
+
         foreach($request['userInvData'] as $user) {
 
             $userEmail = $user['userEmail'];
             $userRole  = $user['userRole'];
             $userArea  = $user['userArea'];
-            $userId    = isset($user['id']) ? $user['id'] : -999;
+            $userId    = array_key_exists('id', $user) ? $user['id'] : -999; // isset($user['id']) ? $user['id'] : -999;
+
+            // echo "valor del usuario  !!!";
+            // print_r($user);
+
+
+            // echo "valor del request !!";
+            // print_r($request);
 
             if(ltrim(rtrim($userEmail)) != '' &&  ltrim(rtrim($userRole)) != '' && ltrim(rtrim($userRole)) != '')
             {
 
                 $usercreate = ProjectUser::create([
                     'codProyecto'         => $codPro,
-                    'id'                  => $request['id'],
-                    'codEstadoInvitacion' => $request['id'] == $user['id'] ? 1 : 0,
+                    'id'                  => $id,
+                    'codEstadoInvitacion' =>  array_key_exists('id', $user) ? ($id == $user['id'] ? 1 : 0) : 0,
                     'codRolIntegrante'    => intval($userRole),
                     'dayFechaInvitacion'  => $request['date'],
                     'codArea'             => intval($userArea),
@@ -140,7 +151,7 @@ class ProjectController extends Controller
 
             }
 
-            if(!isset($user['id']) ){
+            if(!array_key_exists('id', $user)){
 
                 $datos_enviar = array();
                 $datos_enviar['des_correo']        = $userEmail;
@@ -149,7 +160,7 @@ class ProjectController extends Controller
                 $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
 
 
-                Helper::enviarEmail($datos_enviar, 'invitacion', "Correo de Invitación", $request['id'] ,$userEmail);
+                Helper::enviarEmail($datos_enviar, 'invitacion', "Correo de Invitación", $id ,$userEmail);
 
                 // $conf_colacorreos                    = new conf_colacorreos;
                 // $conf_colacorreos->desMensaje        = view('emails.invitation',$datos_enviar)->render();
@@ -165,7 +176,7 @@ class ProjectController extends Controller
         }
 
 
-        $useremail = User::where('id', $request['id'])->get('email');
+        $useremail = User::where('id', $id)->get('email');
         $restrictioncreate = Restriction::create([
             'codProyecto' => $codPro,
             'codEstado' => 0,
@@ -258,6 +269,7 @@ class ProjectController extends Controller
         // ->join('conf_ubigeo', 'proy_proyecto.codUbigeo', '=', 'conf_ubigeo.codUbigeo')
         // ->where('proy_proyecto.id', $request['id'])
         // ->get();
+        $id    = $request['id'];
         $query = "
 
             select
@@ -291,7 +303,7 @@ class ProjectController extends Controller
 
         ";
 
-        $valores = array($request['id'], $request['id'] , 1);
+        $valores = array($id, $id, 1);
         $project = DB::select($query, $valores);
 
         return $project;

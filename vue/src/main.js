@@ -25,7 +25,6 @@ app.use(store);
 app.use(VCalendar, {});
 app.use(router);
 app.provide('emitter', emitter);
-
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.config.productionTip = false
 

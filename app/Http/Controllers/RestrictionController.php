@@ -55,7 +55,7 @@ class RestrictionController extends Controller
         ar.*,
         pp.desNombreProyecto as desnombreproyecto,
         0 as isInvitado,
-        0 as rol
+        3 as rol
         from anares_analisisrestricciones  ar
         inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
         where
