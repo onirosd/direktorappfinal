@@ -185,14 +185,16 @@ class ProjectController extends Controller
             'indNoRetrasados' => 0,
             'indRetrasados' => 0,
         ]);
-        /* $restrictionid = Restriction::where('codProyecto', $codPro[0]['codProyecto'])->get('codAnaRes');
+        
+        $restrictionid = Restriction::where('codProyecto', $codPro)->first();
         $restrictionmember = RestrictionMember::create([
-            'codProyecto' => $codPro[0]['codProyecto'],
-            'codAnaRes' => $restrictionid[0]['codAnaRes'],
-            'codEstado' => 1,
+            'codProyecto' => $codPro,
+            'codAnaRes'   => $restrictionid->codAnaRes,
+            'codEstado'   => 1,
             'dayFechaCreacion' => $request['date'],
             'desUsuarioCreacion' => '',
-        ]); */
+        ]);
+        
         foreach($request['reports'] as $report) {
             /* create util_reportes table record */
             $utilreportcreate = ProjectUtilReport::create([

@@ -55,7 +55,7 @@ class RestrictionController extends Controller
         ar.*,
         pp.desNombreProyecto as desnombreproyecto,
         0 as isInvitado,
-        0 as rol
+        3 as rol
         from anares_analisisrestricciones  ar
         inner join proy_proyecto pp  on ar.codProyecto  = pp.codProyecto
         where
@@ -111,13 +111,13 @@ class RestrictionController extends Controller
             ];
 
             // $members = RestrictionMember::where('codAnaRes', $eachdata['codAnaRes']);
-            $integrantes = RestrictionMember::select("ana_integrantes.*", "proy_integrantes.desCorreo as desProyIntegrante")
-            ->Join('proy_integrantes', function($join){
-                $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
-                $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
+            $integrantes = RestrictionMember::select("ana_integrantes.*")
+            // ->Join('proy_integrantes', function($join){
+            //     $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
+            //     $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
 
-            })
-            ->where('ana_integrantes.codAnaRes', $eachdata['codAnaRes'])->get();
+            // })
+            ->where('ana_integrantes.codProyecto', $eachdata['codProyecto'])->get();
 
             $integrantes_Proy = ProjectUser::where('codProyecto', $eachdata['codProyecto'])->get();
 
