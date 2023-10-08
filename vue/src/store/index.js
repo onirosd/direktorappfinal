@@ -1330,6 +1330,7 @@ const store = createStore({
 
     Set_Restriction(state, ResData) {
       state.Restrictionlist_P = ResData;
+      state.Restrictionlist   = [];
       ResData.map( (i) => {
         state.Restrictionlist.push({name: i.desTipoRestricciones, value: i.codTipoRestricciones})
       })

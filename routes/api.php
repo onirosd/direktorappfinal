@@ -137,3 +137,6 @@ Route::post('/get_data_restricciones_indicators' , [IndicatorsController::class,
 Route::post('/get_project_indicators' , [IndicatorsController::class, 'get_project_indicators']);
 
 
+
+Route::post('/get_week_restrictions_by_date', [RestrictionController::class, 'get_week_restrictions_by_date']);
+

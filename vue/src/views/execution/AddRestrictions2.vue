@@ -26,7 +26,7 @@
 
 
     <div class="flex flex-col">
-      <div class="flex justify-start"  v-if="!fullScreen">
+      <div class="flex justify-start"  v-if="!fullScreen" >
 
 
 
@@ -865,9 +865,16 @@ export default {
         Estado[h] = response.estados[h]['desEstado'];
       }
 
-      for (let h = 0; h < response.integrantesAnaReS.length; h ++){
-        Responsable[h] = response.integrantesAnaReS[h]['desProyIntegrante'];
+      for (let j = 0; j < response.integrantesAnaReS.length; j ++){
+        // Responsable[j] = response.integrantesAnaReS[j]['desProyIntegrante'];
+        Responsable.push(response.integrantesAnaReS[j]['desProyIntegrante'])
       }
+
+
+
+      // Responsable = ['diego@gmail.com', 'no@gmail.com', 'nadaaa@gmail.com']
+      // Responsable.push('gpino@inarco.com.pe', 'ejurado@inarco.com.pe', 'bloayza@inarco.com.pe', 'mcatalina@inarco.com.pe', 'jpucuhuayla@inarco.com.pe', 'eborda@inarco.com.pe', 'randrade@inarco.com.pe', 'ebeltran@inarco.com.pe', 'kaliaga@inarco.com.pe', 'ranton@inarco.com.pe', 'mclavijo@inarco.com.pe');
+      // console.log(Responsable)
 
       Solicitante.push(response.solicitanteActual);
       const data_array = [
@@ -887,6 +894,8 @@ export default {
 
       const workbook = new excelJs.Workbook();
       const ws = workbook.addWorksheet('Restricciones');
+
+
       ws.addRow(["Frente", "Fase", "Actividad", "Restriccion", "Tipo Restriccion", "Fecha Requerida", "Fecha Conciliada", "Responsable", "Estado", "Solicitante"]);
       ws.addRow(["", "", "", "", "", "", "", "", "", ""]);
 
@@ -1005,6 +1014,34 @@ export default {
 
 
 
+      // 1. Crear una segunda hoja llamada "Valores"
+      const wsValores = workbook.addWorksheet('Valores');
+
+      // 2. Imprimir los valores de Responsable en la columna A de la segunda hoja
+      for(let i = 0; i < Responsable.length; i++) {
+          wsValores.getCell('A' + (i + 1)).value = Responsable[i];
+      }
+
+      // Hacer la hoja "Valores" oculta
+      wsValores.state = 'hidden';
+
+      // const responsablesColumnIndex = 26; // 26 corresponde a la columna Z en Excel
+
+      // for (let i = 0; i < Responsable.length; i++) {
+      //     ws.getCell(i + 1, responsablesColumnIndex).value = Responsable[i];
+      // }
+
+
+      // const startRow = 1; // Supongamos que comienzas en la fila 1
+      // const endRow = startRow + Responsable.length - 1; // Calcula la fila final basándote en la longitud de tu array
+      // const formula = `'\$Z\$${startRow}:\$Z\$${endRow}'`;
+
+      // ws.getColumn('Z').hidden = true;
+
+      // const responsablesColumnIndex = 26; // 26 corresponde a la columna Z
+      //     for (let i = 0; i < data_array[0].H.length; i++) {
+      //         ws.getCell(i + 1, responsablesColumnIndex).value = data_array[0].H[i];
+      //     }
 
       for(let i = 2; i < 100; i ++){
         const validationCell_Frente = ws.getCell('A'+`"${i}"`);
@@ -1031,13 +1068,17 @@ export default {
           formulae: [`"${data_array[0].E.join(',')}"`],
         };
 
-        const validationCell_Res = ws.getCell('H'+`"${i}"`);
+
+    //       // console.log(data_array[0].H)
+        const validationCell_Res = ws.getCell('H' + i);
         validationCell_Res.dataValidation = {
-          type: 'list',
-          allowBlank: false,
-          showDropDown: true,
-          formulae: [`"${data_array[0].H.join(',')}"`],
+            type: 'list',
+            // formulae: ['$Z$1:$Z$'+Responsable.length], //formula, // Usa la fórmula que construiste
+            formulae: ['Valores!$A$1:$A$'+Responsable.length],
+            showDropDown: true
         };
+
+
 
         const validationCell_Estado = ws.getCell('I'+`"${i}"`);
         validationCell_Estado.dataValidation = {
