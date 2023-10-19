@@ -72,6 +72,7 @@
             :paragraph="'Acá podrás visualizar tus proyectos creados y los datos más importantes. Podrás editarlo.'"
             :buttonText="'Crear proyecto'"
             :desAccion = "'createNewProject'"
+            :grafico = "'nuevo'"
             @createNewProject="createNewProject"
             class="w-full"
           />
