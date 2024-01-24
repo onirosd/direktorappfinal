@@ -39,9 +39,13 @@ php artisan queue:listen connection
 
 php artisan queue:work
 
+######### production #########3
+
+## build vue js
+direktor-hito3/vue > npm install
 
 ## clean cache routes
-php artisan route:clearer
+php artisan route:clear
 
 
 ## LIBRERIA QUE SE UTILIZA PARA EL DRAG.

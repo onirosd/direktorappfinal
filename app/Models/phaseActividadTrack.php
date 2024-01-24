@@ -30,8 +30,10 @@ class PhaseActividadTrack extends Model
         'desComentarioFinal'
     ];
 
+    // tenemos algo
+
     protected $table      = 'anares_actividad_tracking';
     protected $primaryKey = 'codAnaResActividadTrack';
     public $timestamps = false;
-    //sadsdsd vermos que
+
 }
