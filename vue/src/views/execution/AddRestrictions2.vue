@@ -14,7 +14,9 @@
     <Breadcrumb
       :paths="['Inicio', 'Análisis de restricciones', nameProyecto]"
       :urls ="['home', 'restricciones']"
-      :settingFlag="true"
+      :settingFlag="false"
+      :perfilFlag ="1"
+      :perfilDesc ="rolUsuarioDesc"
     />
 
     <!-- <div class="h-[25px] w-[60px]">
@@ -27,10 +29,6 @@
 
     <div class="flex flex-col">
       <div class="flex justify-start"  v-if="!fullScreen" >
-
-
-
-
 
       <!-- <div @click="mverificamos"> hacer clicks para probar</div> -->
       <div class="flex justify-between space-x-4">
@@ -87,95 +85,253 @@
   <div class="flex-1 flex flex-col space-y-2 w-[12em]">
     <!-- Aquí puedes agregar los dos indicadores adicionales siguiendo el formato anterior -->
   </div>
-</div>
+      </div>
 
 
-
-
-
-
-
-
-    </div>
+      </div>
 
       <br>
 
+      <div class="tabs-wrapper" v-if="!fullScreen">
+        <!-- Cabecera de las pestañas -->
+        <div class="tabs-container">
+          <div
+            v-for="(tab, index) in tabsfiltrado"
+            :key="index"
+            class="tab text-xs"
+            :class="{ 'active': aprobacionesactiveTab === index }"
+            @click="cargarAprobaciones({ 'idtab': index }); aprobacionesactiveTab = index; "
+          >
+          <i :class="['fa', aprobacionesactiveTab === index ? 'fa-check-square' : 'fa-square']"></i>
+
+            <span>{{ tab.title }} <b v-if="index == 3 ">({{cantAprobacion}})</b></span>
+            <!-- <div class="notification-dot"></div> -->
+          </div>
+        </div>
+
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" >
+          <transition name="fade">
+            <div key="content">
+              <div v-if="aprobacionesactiveTab === 0">
+                <div class=" flex  justify-between  sm:flex-col">
+                <!-- Contenido para la pestaña 1 -->
+                <div class=" flex w-[50%] sm:w-full " v-if="!fullScreen">
+
+                <button
+                    :disabled="isDisabled"
+                    class="bg-white w-[18%]  sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+                    @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+                    @click="openModal({ param: 'addFront' })"
+                    :class="{
+                        'border-orange': !isDisabled,
+                        'border-[#DCE4F9]': isDisabled,
+                      }"
+
+                    >
+                    <i class="fas fa-plus-circle"></i> Agregar frente
+                </button>
+
+                <button
+                  class="ml-1 bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+                  @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+                  :disabled="isDisabled"
+                  @click="openModal({ param: 'addPhase' })"
+                  :class="{
+                        'border-orange': !isDisabled,
+                        'border-[#DCE4F9]': isDisabled,
+                      }"
+
+                  >
+                  <i class="fas fa-plus-circle"></i> Agregar fase
+                </button>
+
+                <button
+                  class="ml-1 bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
+                  @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+                  :disabled="isDisabled"
+                  :class="{
+                        'border-orange': !isDisabled,
+                        'border-[#DCE4F9]': isDisabled,
+                      }"
+                  @click="openModal({ param: 'deleteFront' })"
+
+                  >
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+
+                </div>
+
+
+
+                <div class=" flex flex-col w-[20%] sm:w-full justify-end " v-if="!fullScreen">
+                <div class="flex-1 relative z-10">
+                  <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
+
+                  <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[30px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 text-[0.6rem]">
+
+
+                  <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
+                    <span>{{ filter }}</span>
+                    <i class="fas fa-times cursor-pointer " @click="removeFilter(index)"></i>
+                  </div>
+
+                  <transition name="fade">
+
+                  <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg text-[0.8rem]" v-if="showOptions" ref="dropdown">
+                    <div v-for="(option, index) in visibleOptions" :key="index" class="px-2 py-1 cursor-pointer mb-2 shadow-sm"  @click="optionClicked(option)">
+                      <div class="font-normal flex justify-between">
+                        <span>{{option.name}}</span>
+                        <span v-if="option.subOptions">
+                        <i :class="option.showSubOptions ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
+                        </span>
+                      </div>
+                      <div v-if="option.subOptions && option.showSubOptions" class="pl-2">
+                      <div v-for="(subOption) in option.subOptions" :key="subOption.id" class="px-2 py-1 cursor-pointer hover:bg-blue-100 font-normal text-xs" @click.stop="selectOption(option, subOption)">
+                        {{subOption.name}}
+                      </div>
+                    </div>
+                    </div>
+                    <div v-if="!anyResults" class="px-2 py-1 text-xs">No se tienen resultado de la búsqueda.</div>
+                  </div>
+
+                </transition>
+                </div>
+                </div>
+
+              </div>
+
+              </div>
+              <div v-if="aprobacionesactiveTab === 1">
+                <!-- Contenido para la pestaña 2 -->
+                  <div class=" flex w-[50%] sm:w-full " v-if="!fullScreen">
+
+
+            <button
+              class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+              @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+              @click="openModal({ param: 'enviarNoti' })"
+              :disabled="disabledItemsEnviarCorreos"
+              :class="{
+                    'border-orange': !disabledItemsEnviarCorreos,
+                    'border-[#DCE4F9]': disabledItemsEnviarCorreos,
+                  }"
+
+              >
+              <i class="fas fa-envelope"></i> Enviar Correos
+              <span class="badge absolute top-[-2] right-[-4] h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
+            </button>
+
+            <button
+              class="ml-1 bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
+              @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+              @click="openModal({ param: 'calendarDg' })"
+              :disabled="disabledItemsEnviarCorreos"
+              :class="{
+                    'border-orange': !disabledItemsEnviarCorreos,
+                    'border-[#DCE4F9]': disabledItemsEnviarCorreos,
+                  }"
+
+              >
+              <i class="fas fa-calendar"></i> Calendario Sem.
+              <span class="badge absolute top-[-2] right-[-4] h-5 w-5 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px] text-[0.7rem]" >New</span>
+            </button>
+
+                <button class="ml-1 px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[18%] h-[30px] text-[0.55rem]" @click="download_template_for_project">
+                  <i class="fas fa-file-download"></i> Descargar Plantilla
+                </button>
+
+                <button class="ml-1 px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[18%] h-[30px] text-[0.55rem]" @click="openModal({ param: 'uploadExcel' })">
+                  <i class="fas fa-file-upload"></i> Subir Plantilla
+                </button>
+
+
+                  </div>
+              </div>
+              <div v-if="aprobacionesactiveTab === 2">
+                <!-- Contenido para la pestaña 3 -->
+                <div class=" flex w-[50%] sm:w-full " v-if="!fullScreen">
+                <!-- <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled "> -->
+                  <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-[0.55rem]" @click="download_reporte_for_project">
+                    <i class="fas fa-file-download"></i> Reporte Restricciones
+                  </button>
+                </div>
+
+              </div>
+              <div v-if="aprobacionesactiveTab === 3">
+              <br>
+              <div
+                v-if="aprobacionisLoading == false"
+                class="h-full flex justify-center sm:items-start"
+              >
+                <loading
+                  v-model:active="aprobacionisLoadingActive"
+                  :can-cancel="false"
+                  :is-full-page="true"
+                  loader="dots"
+                />
+              </div>
+
+              <div v-if="aprobacionisLoading == true" class="tbl_aprobaciones relative overflow-x-auto shadow-md sm:rounded-lg">
+                  <table class="w-[100%] text-xs text-gray-500 dark:text-gray-400">
+                      <thead class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <tr>
+                              <th px-2 py-2class="px-2 py-2 px-2 py-">
+                                  ID
+                              </th>
+                              <th px-2 py-2class="px-2 py-2 px-2 py-">
+                                  Actividad
+                              </th>
+                              <th px-2 py-2class="px-2 py-2 px-2 py-">
+                                  Restricción
+                              </th>
+                              <th px-2 py-2class="px-2 py-2 px-2 py-">
+                                  Estado Justificación
+                              </th>
+                              <th px-2 py-2class="px-2 py-2 px-2 py-">
+                                  Fecha Justificación
+                              </th>
+                              <th px-2 py-2class="px-2 py-2 px-2 py-">
+                                  Operaciones
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center" v-for="(aprobacion, index2) in aprobacionesListas" :key="index2">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{aprobacion.id}}
+                              </th>
+                              <td class="px-2 py-2">
+                                {{aprobacion.actividad}}
+                              </td>
+                              <td class="px-2 py-2">
+                                {{aprobacion.restriccion}}
+                              </td>
+                              <td class="px-2 py-2">
+                                <!-- {{aprobacion.estado}} -->
+                                <AprobacionesEstados :codEstado="aprobacion.codEstadoAprobacion"></AprobacionesEstados>
+                              </td>
+                              <td class="px-2 py-2">
+                                {{aprobacion.fechaJustificacion}}
+                              </td>
+                              <td class="px-2 py-2 ">
+                                  <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" @click="openModal({ param: 'aprobaciones' }); aprobacionesDetalle = aprobacion.justificacion; aprobacionesId = aprobacion.id; aprobacionComentarioFinal = aprobacion.comentarioFinal; " ><i class="fa fa-search " ></i> Ver Justificación</a>
+                              </td>
+                          </tr>
+
+                      </tbody>
+                  </table>
+              </div>
+
+              </div>
+            </div>
+          </transition>
+        </div>
+      </div>
+
     <div class=" flex  justify-between  sm:flex-col">
       <!-- Sección izquierda -->
-      <div class=" flex w-[50%] sm:w-full " v-if="!fullScreen">
-        <button
-            :disabled="isDisabled"
-            class="bg-white w-[18%]  sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
-            @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-            @click="openModal({ param: 'addFront' })"
-            :class="{
-                'border-orange': !isDisabled,
-                'border-[#DCE4F9]': isDisabled,
-              }"
 
-            >
-            <i class="fas fa-plus-circle"></i> Agregar frente
-        </button>
-
-        <button
-          class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
-          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-          :disabled="isDisabled"
-          @click="openModal({ param: 'addPhase' })"
-          :class="{
-                'border-orange': !isDisabled,
-                'border-[#DCE4F9]': isDisabled,
-              }"
-
-          >
-          <i class="fas fa-plus-circle"></i> Agregar fase
-        </button>
-
-        <button
-          class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange"
-          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-          :disabled="isDisabled"
-          :class="{
-                'border-orange': !isDisabled,
-                'border-[#DCE4F9]': isDisabled,
-              }"
-          @click="openModal({ param: 'deleteFront' })"
-
-          >
-          <i class="fas fa-trash"></i> Eliminar
-        </button>
-
-        <button
-          class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
-          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-          @click="openModal({ param: 'enviarNoti' })"
-          :disabled="disabledItemsEnviarCorreos"
-          :class="{
-                'border-orange': !disabledItemsEnviarCorreos,
-                'border-[#DCE4F9]': disabledItemsEnviarCorreos,
-              }"
-
-          >
-          <i class="fas fa-envelope"></i> Enviar Correos
-          <span class="badge absolute top-[-2] right-[-4] h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
-        </button>
-
-        <button
-          class="ml-1 bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
-          @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
-          @click="openModal({ param: 'calendarDg' })"
-          :disabled="disabledItemsEnviarCorreos"
-          :class="{
-                'border-orange': !disabledItemsEnviarCorreos,
-                'border-[#DCE4F9]': disabledItemsEnviarCorreos,
-              }"
-
-          >
-          <i class="fas fa-calendar"></i> Calendario Sem.
-          <span class="badge absolute top-[-2] right-[-4] h-5 w-5 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px] text-[0.7rem]" >New</span>
-        </button>
-
-      </div>
       <div class=" flex  w-[50%] sm:w-full" v-if="fullScreen">
             <ul class="text-[#8A9CC9] items-center flex text-xs">
               <li class="flex">
@@ -192,66 +348,14 @@
             </ul>
       </div>
 
-      <div class=" flex  w-[50%] sm:w-full justify-end" v-if="!fullScreen">
-        <div class=" flex flex-col w-[60%] sm:w-full space-x-1" v-if="!isDisabled ">
-          <div class="flex-1 flex justify-end text-xs ">
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[35%] h-[30px] text-[0.55rem]" @click="download_template_for_project">
-              <i class="fas fa-file-download"></i> Descargar Plantilla
-            </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[32%] h-[30px] text-[0.55rem]" @click="openModal({ param: 'uploadExcel' })">
-              <i class="fas fa-file-upload"></i> Subir Plantilla
-            </button>
-            <button class="px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[25%] h-[30px] text-[0.55rem]" @click="download_reporte_for_project">
-              <i class="fas fa-file-download"></i> Reporte
-            </button>
-          </div>
-        </div>
-
-        <div class=" flex flex-col w-[40%] sm:w-full ">
-            <div class="flex-1 relative z-10">
-              <i class="fas fa-filter absolute right-3 top-2 text-orange cursor-pointer" @click="toggleFilterOptions"></i>
-
-              <input type="text" v-model="search" @input="filterOptions" placeholder="Filtro .. " class="h-[30px] px-2 py-1 border border-[#8A9CC9] rounded text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-200 text-[0.6rem]">
-
-              <!-- Lista de filtros seleccionados -->
-              <div v-for="(filter, index) in selectedFilters" :key="index" class="mt-1 px-2 py-1 border border-gray-300 rounded flex justify-between font-normal text-xs">
-                <span>{{ filter }}</span>
-                <i class="fas fa-times cursor-pointer " @click="removeFilter(index)"></i>
-              </div>
-
-              <transition name="fade">
-
-              <div class="absolute left-0 mt-1 w-full bg-white rounded shadow-lg text-[0.8rem]" v-if="showOptions" ref="dropdown">
-                <div v-for="(option, index) in visibleOptions" :key="index" class="px-2 py-1 cursor-pointer mb-2 shadow-sm"  @click="optionClicked(option)">
-                  <div class="font-normal flex justify-between">
-                    <span>{{option.name}}</span>
-                    <span v-if="option.subOptions">
-                    <i :class="option.showSubOptions ? 'fas fa-chevron-down' : 'fas fa-chevron-right'"></i>
-                    </span>
-                  </div>
-                  <div v-if="option.subOptions && option.showSubOptions" class="pl-2">
-                  <div v-for="(subOption) in option.subOptions" :key="subOption.id" class="px-2 py-1 cursor-pointer hover:bg-blue-100 font-normal text-xs" @click.stop="selectOption(option, subOption)">
-                    {{subOption.name}}
-                  </div>
-                </div>
-                </div>
-                <div v-if="!anyResults" class="px-2 py-1 text-xs">No se tienen resultado de la búsqueda.</div>
-              </div>
-
-            </transition>
-            </div>
-          </div>
-      </div>
     </div>
 
 
 
     </div>
-
-
     <br>
-    <div class="flex flex-col">
-      <!-- <div v-if="!fullScreen"> -->
+    <!-- 4 hace referencia a la pestaña de aprobaciones , si estamos en la pestaña de aprobaciones se oculta todo lo referente a restricciones -->
+    <div class="flex flex-col" v-if = "aprobacionesactiveTab !== 3" >
       <div v-if="!fullScreen">
         <div v-for="(frente, index1) in rows" :key="index1">
           <!-- <hr v-if="index1 !== 0" class="mb-6 bg-[#D0D9F1]" /> -->
@@ -366,7 +470,7 @@
                     <div
                       key="1"
                       v-if="showifUpd"
-                      class="flex items-end mb-6 cursor-pointer text-xs text-[#002B6B]"
+                      class="flex items-end mb-6 cursor-pointer text-xs text-[#002B6B] pr-4"
                     >
                       <img
                         src="../../assets/upload.svg"
@@ -424,7 +528,7 @@
           </div>
         </div>
       </div>
-      <div v-if="fullScreen" class="mt-12">
+      <div v-if="fullScreen" >
         <div class="flex sm:flex-col justify-between sm:mb-10">
           <div
             class="flex mb-6 items-start cursor-pointer"
@@ -565,6 +669,19 @@
       @closeModal="closeModal"
       @deleteFront="deleteFront"
     />
+    <Aprobaciones
+      :bloq="aprobacionesBloq"
+      :confirmHeader="''"
+      :header="'Detalle de Justificación'"
+      :paragraphs="[aprobacionesDetalle] "
+      :buttons="['Sí, Aprobar', 'No, Aprobar', 'Cerrar Visualización']"
+      :idAprobacion = "aprobacionesId"
+      :rolProyecto  = "rolProyecto"
+      :comentarioFinal = "aprobacionComentarioFinal"
+      v-if="modalName === 'aprobaciones' "
+      @closeModal="closeModal"
+      @confirmStatus="enviarAprobaciones"
+    />
     <uploadExcel
     v-if="modalName === 'uploadExcel'"
     @closeModal="closeModal"
@@ -581,7 +698,12 @@
     />
     <CalendarDg
       v-if="modalName === 'calendarDg'"
+      :rolUsuarioDesc        = "rolUsuarioDesc"
+      :rolProyecto           = "rolProyecto"
+      :verCalendarioTodasAct = "verCalendarioTodasAct"
       @closeModal="closeModal"
+      @cambioVertodasmisactividades = "cambioVertodasmisactividades"
+      @recargarDesdecalendario  = "recargarDesdecalendario"
     />
   </div>
 </template>
@@ -611,6 +733,8 @@ import CalendarDg from "../../components/CalendarDg.vue";
 // import DownloadReport from "../../components/DownloadReport.vue";
 import SelectOption from "../../components/SelectOption.vue";
 import DeleteFront from "../../components/DeleteFront.vue";
+import Aprobaciones from "../../components/Aprobaciones.vue";
+import AprobacionesEstados from "../../components/AprobacionesEstados.vue";
 import Loading from "vue-loading-overlay";
 
 import AddRowData from "../../components/AddRowData.vue";
@@ -634,6 +758,8 @@ export default {
     UploadExcel,
     ConfirmBloq,
     CalendarDg,
+    Aprobaciones,
+    AprobacionesEstados,
     // ScrollTableRow,
     // RestrictionPerson,
 
@@ -646,6 +772,26 @@ export default {
   },
   data: function () {
     return {
+      aprobacionesactiveTab: 0,
+      aprobacionesListas : [
+
+        { id: 1, actividad: "Actividad 1", restriccion: "...", estado: "...", justificacion: "Aqui tenemos algo que verrrr", fechaJustificacion: "2024-01-01" },
+
+      ],
+      aprobacionesDetalle : "",
+      aprobacionesId :"",
+      aprobacionesRpta: 0,
+      aprobacionesBloq: false,
+      aprobacionisLoading: false,
+      aprobacionisLoadingActive : true,
+      aprobacionComentarioFinal : "",
+
+      tabs: [
+        { title: ' Operaciones', icon: 'fa-check-square' },
+        { title: ' Utilitarios', icon: 'fa-square' },
+        { title: ' Reporteria ', icon: 'fa-square' },
+        { title: ' Aprobaciones ', icon: 'fa-square' },
+      ],
       valor_defecto:2,
       data_array: [],
       bloqConfirmNotification:false,
@@ -661,6 +807,9 @@ export default {
       statusRestriction: true,
       rolProyecto:0,
       areaUsuario:0,
+      cantAprobacion:0,
+      rolUsuarioDesc:"",
+      verCalendarioTodasAct: false,
 
       statusDraggable: true,
       pageloadflag: false,
@@ -797,6 +946,32 @@ export default {
     };
   },
   methods: {
+
+    async recargarDesdecalendario(){
+
+     await this.callMounted();
+
+    },
+
+    cargarAprobaciones(data){
+      if(data.idtab == 3){
+          this.aprobacionisLoading = false;
+          // console.log(" >>>> veremos que sucede ")
+          data = {'data':this.rolProyecto},
+
+          store.dispatch("get_datos_aprobaciones", data).then((response) => {
+
+           this.aprobacionesListas  =  this.$store.state.PendienteAprobacion;
+           this.aprobacionisLoading =  true;
+
+          })
+
+      }
+    },
+
+    cambioVertodasmisactividades(data){
+      this.verCalendarioTodasAct  = !this.verCalendarioTodasAct;
+    },
 
     capturamos_veremos(data){
       console.log(">>>>> entrada")
@@ -1210,16 +1385,31 @@ export default {
     },
     closeModal: async function () {
 
-      if (this.modalName == 'uploadExcel'){
+      if (this.modalName == 'uploadExcel' || this.modalName == 'aprobaciones'){
 
         await this.callMounted();
 
       }
 
-      console.log(">>>>> mira mira")
 
       this.modalName = "";
       this.personalizeOpen = false;
+    },
+
+    enviarAprobaciones: function (payload) {
+      let point = this;
+      this.aprobacionesBloq  = true;
+      store.dispatch("push_enviar_aprobaciones", payload).then((response) => {
+        this.closeModal()
+        this.cargarAprobaciones({'idtab':3});
+        this.aprobacionesBloq  = false;
+
+        // this.aprobacionesListas = $this.store.
+
+      });
+
+      // this.aprobacionisLoading = true;
+
     },
 
     enviarNotificaciones: function (payload) {
@@ -1564,9 +1754,9 @@ export default {
                     }
                   }
 
-                    this.setTimeifUpd(500, "Se inserto nuevo registro");
+                    this.setTimeifUpd(500, "Inserción de nuevo registro !");
                   } else {
-                    this.setTimeifUpd(500, "Se actualizo datos");
+                    this.setTimeifUpd(500, "Se actualizarón los datos !");
                   }
 
                     /* Despues ya actualizamos la fecha de levantamiento si es que tuviera*/
@@ -2010,7 +2200,9 @@ export default {
 
         this.statusRestriction = this.$store.state.estadoRestriccion;
         this.rolProyecto       = this.$store.state.rolProyecto;
+        this.rolUsuarioDesc    = this.$store.state.rolProyecto == 0 ? 'Administrador' : this.$store.state.rolUsuarioDesc;
         this.areaUsuario       = this.$store.state.areaUsuario;
+        this.cantAprobacion       = this.$store.state.cantAprobacion;
 
         this.$store.state.sidebar = false;
 
@@ -2028,11 +2220,18 @@ export default {
 
             /* Si el rol no es creador , ni administrador */
             if (this.rolProyecto != 0 && this.rolProyecto != 3){
+
               this.disabledItems = true;
               this.disabledItemsEnviarCorreos = false;
             }
 
         }
+
+        if(this.rolProyecto == 3 || this.rolProyecto == 0){
+          this.verCalendarioTodasAct = true;
+        }
+
+
 
         /*Al iniciar la ventana cargamos los valores para los tipos de restricciones y de vencimiento,  estos no se modifican es data unica ,
           es mejor cargarlo una sola vez. */
@@ -2230,12 +2429,24 @@ export default {
   },
   computed: {
 
+    // contentStyle() {
+    //   return {
+    //     backgroundColor: this.activeTab === 0 ? 'green' : 'transparent',
+    //   };
+    // },
+
+    tabsfiltrado : function (){
+
+       return ( this.rolProyecto == 3  || this.rolProyecto == 0 ||  this.rolProyecto == 8 )?  this.tabs :  this.tabs.filter(tab => tab.title.trim() !== 'Aprobaciones');
+        //  return this.tabs
+
+    },
+
     indicadorCumplimiento: function (){
 
     let totalDias = 0;
     let contador = 0;
 
-    this.rolProyecto
 
     this.restrictions.forEach((restriccion) => {
       restriccion.listaFase.forEach((fase) => {
@@ -2438,6 +2649,13 @@ export default {
 
     await this.callMounted();
 
+    // Editores y clientes por defecto se abre el calendario.
+
+    if(this.rolProyecto == 2 || this.rolProyecto == 8){
+          // this.verCalendarioTodasAct = true;
+          this.openModal({ param: 'calendarDg' })
+    }
+
   },
 
   created: function () {},
@@ -2506,6 +2724,62 @@ export default {
   right: -5px;
   box-shadow: 0 0 1px #333;
 }
+
+.tabs-container {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #c7c7c7;
+  margin-bottom: 3px;
+  /* background-color: #f0f0f0; Fondo gris suave para las cabeceras de las pestañas */
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #d0d0d0; /* Borde para marcar los límites de las pestañas */
+  border-bottom: none; /* Elimina el borde inferior para fusionarlo con el contenido */
+  margin-bottom: -1px; /* Alinea el borde inferior de las pestañas con el contenido */
+}
+
+
+.tab.active {
+  border-top: 3px solid #eb5d00;
+  color: #eb5d00;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.tab-content {
+  width: 100%; /* Ocupa el ancho completo */
+
+  /* Tus estilos para el contenido... */
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
+
+
+
+.tbl_aprobaciones th:nth-child(1) { width: 5% !important; }
+.tbl_aprobaciones th:nth-child(2) { width: 15% !important; }
+.tbl_aprobaciones th:nth-child(3) { width: 15% !important; }
+.tbl_aprobaciones th:nth-child(4) { width: 10% !important; }
+.tbl_aprobaciones th:nth-child(5) { width: 10% !important; }
+.tbl_aprobaciones th:nth-child(6) { width: 45% !important; }
 
 
 </style>

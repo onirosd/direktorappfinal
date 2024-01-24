@@ -7,11 +7,12 @@
     </div>
     <div v-if="mostrarOpciones" class="opciones ">
       <div
-      class="opcion"
-    v-for="(opcion, index) in opciones"
-    :key="opcion.id"
-    :class="{ 'opcion-seleccionada': index === selectedIndex }"
-    @click="!disabled && seleccionarBandera(opcion)"
+        class="opcion"
+        v-for="(opcion, index) in opcionesFiltradas"
+
+        :key="opcion.id"
+        :class="{ 'opcion-seleccionada': index === selectedIndex }"
+        @click="!disabled && seleccionarBandera(opcion)"
       >
         <div class="icon-container">
           <FlagIcon :style="{ color: opcion.color, width: '20px', height: '20px' }"/>
@@ -48,6 +49,7 @@ export default {
         { id: "1", color: '#ccc' },
         { id: "2", color: '#e56b37' },
         { id: "3", color: '#3ac189' },
+        { id: "4", color: '#cd4fb2' }
       ],
       banderaSeleccionada: null
     };
@@ -121,7 +123,12 @@ export default {
     document.removeEventListener('click', this.handleClickOutside);
     this.$el.removeEventListener('keydown', this.handleKeyDown);  // Eliminar el listener
 
+  },
+  computed: {
+  opcionesFiltradas() {
+    return this.opciones.filter(opcion => opcion.id !== '4');
   }
+}
 };
 </script>
 

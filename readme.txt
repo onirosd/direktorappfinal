@@ -32,8 +32,16 @@ direktor-hito3 > php artisan serve
 direktor-hito3/vue > npm run dev
 
 
+## prender las colas
+php artisan queue:work --queue=high,default
+php artisan queue:work --queue=default
+php artisan queue:listen connection
+
+php artisan queue:work
 
 
+## clean cache routes
+php artisan route:clearer
 
 
 ## LIBRERIA QUE SE UTILIZA PARA EL DRAG.

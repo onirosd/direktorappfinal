@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
+// import Login from "../views/Login.vue";
 import Login2 from "../views/Login2.vue";
 import Register from "../views/Register.vue";
-import Prueba2 from "../views/Prueba2.vue";
+// import Prueba2 from "../views/Prueba2.vue";
 import Project from "../views/start/Project.vue";
 // import Welcome from "../views/start/Welcome.vue";
 import NotFound from "../views/NotFound.vue";
@@ -13,7 +13,7 @@ import DefaultLayout from "../components/core/DefaultLayout.vue";
 // import PageLayout from "../components/Ant_PageComponent.vue";
 import Restrictions from "../views/execution/Restrictions.vue";
 // import WhiteProject from "../views/execution/WhiteProject.vue";
-import AddRestrictions from "../views/execution/AddRestrictions.vue";
+// import AddRestrictions from "../views/execution/AddRestrictions.vue";
 import AddRestrictions2 from "../views/execution/AddRestrictions2.vue";
 
 

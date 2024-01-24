@@ -3,7 +3,91 @@ import 'moment-timezone';
 
 
 
+Date.prototype.sumar_restar_Fecha = function(dias) {
 
+
+  // Crear un objeto moment a partir de la fecha actual
+
+  // let fechaMoment = moment(fecha);
+  const fechaMoment = moment.tz(this, 'America/Lima');
+
+  // fechaMoment.locale('es');
+
+  // Sumar o restar los días especificados
+  fechaMoment.add(dias, 'days');
+
+  // Devolver el resultado como una nueva fecha
+  return fechaMoment.format('YYYY-MM-DD');
+};
+
+
+
+// Date.prototype.getDayAdjusted = function() {
+//   let day = this.getDay();
+//   return (day + 6) % 7;  // 0: Lunes, 1: Martes, ..., 6: Domingo
+// };
+
+Date.prototype.getDayCorta= function(day_data) {
+  // Convertir el objeto Date a un objeto moment
+  // const fechaMoment = moment(this);
+  const fechaMoment = moment(day_data, 'YYYYMMDD');
+
+  // Sumar la cantidad especificada de días y formatear la fecha al formato deseado
+  // return fechaMoment.add(daysToAdd, 'days').format('YYYY-MM-DD');
+
+return fechaMoment.locale('es').format('MMMDD/YY');
+};
+
+
+Date.prototype.getDayAdjusted = function() {
+  // Convertir el objeto Date a un objeto moment
+  const fechaMoment = moment(this);
+
+  // Establecer el primer día de la semana como lunes
+  fechaMoment.locale('es');  // En la mayoría de las configuraciones locales en español, el lunes se considera el primer día de la semana
+
+  // Obtener el día de la semana (0: Lunes, 1: Martes, ..., 6: Domingo)
+  let day = fechaMoment.isoWeekday() - 1;
+
+  return day;
+};
+
+// Extender el prototipo de Date para ajustar el día de la semana con una fecha opcional
+Date.prototype.getDayAdjustedforDate = function(dateString) {
+  let fechaMoment;
+
+  // Si se proporciona dateString, analizar esa fecha
+  if (dateString) {
+    fechaMoment = moment(dateString, 'YYYYMMDD');
+  } else {
+    // De lo contrario, usar el objeto Date actual
+    fechaMoment = moment(this);
+  }
+
+  // Establecer el primer día de la semana como lunes
+  fechaMoment.locale('es'); // En la mayoría de las configuraciones locales en español, el lunes se considera el primer día de la semana
+
+  // Obtener el día de la semana (0: Lunes, 1: Martes, ..., 6: Domingo)
+  let day = fechaMoment.isoWeekday() - 1;
+
+  return day;
+};
+
+Date.prototype.addDays = function(daysToAdd = 1) {
+  // Convertir el objeto Date a un objeto moment
+  const fechaMoment = moment(this);
+
+  // Sumar la cantidad especificada de días y formatear la fecha al formato deseado
+  return fechaMoment.add(daysToAdd, 'days').format('YYYY-MM-DD');
+};
+
+
+Date.prototype.getFormattedDateType1 = function() {
+  const year = this.getFullYear();
+  const month = String(this.getMonth() + 1).padStart(2, '0');  // Los meses son 0-indexados
+  const day = String(this.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 Date.prototype.getModifiedWeekMonthYearFormat = function(timezone = 'America/Lima') {
   const momentDate = moment.tz(this, timezone);
@@ -67,7 +151,6 @@ Date.prototype.getUniqueWeekNumber = function(timezone = 'America/Lima') {
 
   return weekNumber;
 };
-
 
 
 Date.prototype.getWeek = function(timezone = 'America/Lima') {

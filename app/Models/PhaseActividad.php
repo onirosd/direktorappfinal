@@ -26,7 +26,8 @@ class PhaseActividad extends Model
         'codAnaResFrente',
         'codProyecto',
         'codAnaRes',
-        'numOrden'
+        'numOrden',
+        'codAnaResActividadTrackLast'
     ];
 
     protected $table = 'anares_actividad';

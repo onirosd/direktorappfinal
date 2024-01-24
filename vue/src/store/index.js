@@ -100,6 +100,7 @@ const store = createStore({
     anaEstado:[],
     solicitanteActual:'',
     rolProyecto:0,
+    rolUsuarioDesc:"",
     areaUsuario:0,
     estadoRestriccion:false,
     createStatus: false,
@@ -135,12 +136,17 @@ const store = createStore({
         codcargo:0
       }
     },
+    PendienteAprobacion: [],
     Restrictionlist:[],
     Restrictionlist_P:[],
     /* lista tipo dia programacion - programming day type list */
     programmingDayTypes: [],
     notifications: [],
-    hiddenCols:[]
+    hiddenCols:[],
+    estadosSelecCalendar: [{ label: 'Pendiente', value: 1, iconColor: 'red' }],
+    motivosSelecCalendar: [],
+    fechasSelecCalendar: null,
+    cantAprobacion:0,
   },
   getters: {
 
@@ -514,7 +520,32 @@ const store = createStore({
       .then(res => {
         //console.log(res.data)
         commit('setCurrentUsers', res.data)
-      })
+      });
+    },
+    update_restriction_state_calendar({commit}, datos) {
+      const updateRes = {
+        cod_proyecto          : sessionStorage.getItem('constraintid'),
+        cod_restriccion       : datos.cod_restriccion,
+        cod_estado            : datos.cod_estado,
+        user_id               : sessionStorage.getItem('Id'),
+      }
+
+      return axiosClient.post('/update_state_restriction', updateRes);
+    },
+
+    update_restriction_state_calendar_retrasado({commit}, datos) {
+      const updateRes = {
+        rol_proyecto          : datos.rol_proyecto,
+        cod_proyecto          : sessionStorage.getItem('constraintid'),
+        cod_restriccion       : datos.cod_restriccion,
+        cod_estado            : datos.cod_estado,
+        cod_motivo_retraso    : datos.cod_motivo_retraso,
+        desc_motivo_retraso   : datos.desc_comentario_retraso,
+        user_id               : sessionStorage.getItem('Id'),
+      }
+
+      return axiosClient.post('/update_state_restriction_with_retraso', updateRes);
+
     },
     update_restricciones({commit}, restriction) {
 
@@ -652,6 +683,17 @@ const store = createStore({
         commit('setAnaDataMembers', res.data)
       })
     },
+    get_datos_aprobaciones({commit}, data){
+
+      console.log(">>>>>>>> vemos que imprimir ")
+      console.log(data)
+
+      const dataenviar = { codProyecto: sessionStorage.getItem('constraintid') , codUser: sessionStorage.getItem('Id') , rolUsuario : data.data }
+      return axiosClient.post('get_data_aprobaciones', dataenviar).then(res => {
+          commit('SetPendienteAprobacion', res.data)
+      });
+
+    },
     get_datos_restricciones({commit}){
       // let id = sessionStorage.getItem('Id');
       const anaresdata = { id: sessionStorage.getItem('constraintid') , codsuser: sessionStorage.getItem('Id') }
@@ -667,7 +709,11 @@ const store = createStore({
         commit('setEstadoRestriccion', res.data.estadoRestriccion)
         commit('setSolicitanteActual', res.data.solicitanteActual)
         commit('setRolProyecto', res.data.rolUsuario)
+        commit('setRolUsuarioDesc', res.data.desrolUsuario)
         commit('setAreaUsuario', res.data.areaUsuario)
+        commit('setFechaActual', res.data.fechaActual)
+        commit('setcantPendAprobacion', res.data.canAprobacion)
+
 
         if (!(res.data.columnasOcultas == null || res.data.columnasOcultas == '')){
 
@@ -677,20 +723,34 @@ const store = createStore({
         return(res.data)
       })
     },
+    get_datos_project_calendario({commit}, data){
 
+      console.log(">>>> vceromes que tal ")
+      console.log(data.verCalendarioTodasAct)
+      const projectData = { codProyecto: sessionStorage.getItem('constraintid') , fecha : data.fecha , codUser: sessionStorage.getItem('Id') , flgtodo: data.verCalendarioTodasAct}
+      let resultado     =  axiosClient.post('get_week_restrictions_by_date', projectData);
+      resultado.then(res => {
+
+        commit('setEstadosSelecCalendar', res.data.listaEstados)
+        commit('setMotivosSelecCalendar', res.data.listaMotivos)
+
+      });
+
+      return resultado;
+
+    },
     get_datos_project_indicators({commit}){
 
       const anaresdata = { coduser: sessionStorage.getItem('Id') }
       return axiosClient.post('get_project_indicators', anaresdata);
 
     },
+    // get_datos_project_indicators({commit}){
 
-    get_datos_project_indicators({commit}){
+    //   const anaresdata = { coduser: sessionStorage.getItem('Id') }
+    //   return axiosClient.post('get_project_indicators', anaresdata);
 
-      const anaresdata = { coduser: sessionStorage.getItem('Id') }
-      return axiosClient.post('get_project_indicators', anaresdata);
-
-    },
+    // },
 
 
     get_data_restricciones_indicators({commit}, data){
@@ -709,7 +769,7 @@ const store = createStore({
       const url_reporte = import.meta.env.VITE_API_BASE_URL+`/api/generar_reporte?${paramString.toString()}`;
       window.open(url_reporte);
 
-
+      get_data_aprobaciones
     },
 
     push_enviar_notificaciones({commit}){
@@ -718,6 +778,26 @@ const store = createStore({
       return axiosClient.post('push_enviar_notificaciones', anaresdata);
 
     },
+
+    push_enviar_aprobaciones({commit}, data){
+      // const codProyecto =  { id: sessionStorage.getItem('constraintid') }
+      const datafinal = {
+
+        idAprobacion  : data.idAprobacion,
+        estAprobacion : data.param,
+        comentario    : data.comentario,
+        codProyecto   : sessionStorage.getItem('constraintid'),
+        codUser       : sessionStorage.getItem('Id')
+
+      }
+
+      return axiosClient.post('push_enviar_aprobaciones', datafinal);
+      //   .then(res => {
+      //     console.log(res.data);
+      //   commit('deleteFront', data)
+      // })
+    },
+
     get_restriccionesMember({commit}){
       const anaresdata = { id: sessionStorage.getItem('constraintid') }
       // const anaresdata = 107;
@@ -1320,12 +1400,34 @@ const store = createStore({
     setRolProyecto(state, ResData){
       state.rolProyecto = ResData;
     },
+    setRolUsuarioDesc(state, ResData){
+      state.rolUsuarioDesc = ResData;
+    },
     setAreaUsuario(state, ResData){
       state.areaUsuario = ResData;
+    },
+    setFechaActual(state, ResData){
+      state.fechasSelecCalendar = ResData;
+    },
+    setcantPendAprobacion(state, ResData){
+      state.cantAprobacion = ResData;
     },
     setEstadoRestriccion(state, ResData){
       state.estadoRestriccion = ResData
 
+    },
+    setEstadosSelecCalendar(state, ResData){
+      state.estadosSelecCalendar = ResData
+
+    },
+    setMotivosSelecCalendar(state, ResData){
+      state.motivosSelecCalendar = ResData
+
+    },
+
+
+    SetPendienteAprobacion(state, ResData) {
+      state.PendienteAprobacion  = ResData;
     },
 
     Set_Restriction(state, ResData) {

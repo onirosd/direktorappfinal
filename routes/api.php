@@ -139,4 +139,9 @@ Route::post('/get_project_indicators' , [IndicatorsController::class, 'get_proje
 
 
 Route::post('/get_week_restrictions_by_date', [RestrictionController::class, 'get_week_restrictions_by_date']);
+Route::post('/update_state_restriction', [RestrictionController::class, 'update_state_restriction']);
+Route::post('/update_state_restriction_with_retraso', [RestrictionController::class, 'update_state_restriction_with_retraso']);
 
+
+Route::post('/get_data_aprobaciones', [RestrictionController::class, 'get_data_aprobaciones']);
+Route::post('/push_enviar_aprobaciones', [RestrictionController::class, 'push_enviar_aprobaciones']);

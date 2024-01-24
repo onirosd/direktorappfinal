@@ -5,10 +5,12 @@ use App\Models\RestrictionMember;
 use App\Models\Restriction;
 use App\Models\ProjectUser;
 use App\Models\PhaseActividad;
+use App\Models\PhaseActividadTrack;
 use App\Models\RestrictionPerson;
 use App\Models\RestrictionFront;
 use App\Models\RestrictionPhase;
 use App\Models\Conf_Estado;
+use App\Models\Conf_MotivosRetraso;
 use App\Models\Ana_TipoRestricciones;
 use App\Models\Proy_AreaIntegrante;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -32,15 +34,48 @@ class RestrictionController extends Controller
 
     public function get_week_restrictions_by_date(Request $request){
 
-        $enviar            = array();
-        $datos_estado      = Conf_Estado::where('desModulo', 'ANARES')->get();
-        $fecha             = $request['fecha'];
-        $proyecto          = $request['codProyecto'];
-        $results           = DB::select('call PR_restriccionesxproyectofecha(?,?)', [$fecha, $proyecto]);
+        $fecha                   = $request['fecha'];
+        $proyecto                = $request['codProyecto'];
+        $coduser                 = $request['codUser'];
+        $flgtodo                 = $request['flgtodo'];
+
+        $defaultodo              = $flgtodo == false ? '0' : '1';
+
+        $PR_restriccionesxproyectofecha =  "call PR_restriccionesxproyectofecha('".$fecha."',".$proyecto.",".$coduser.",".$defaultodo.")";
+        $enviar                  = array();
+        $query                   = "
+                                    SELECT
+                                        codEstado as value,
+                                        desEstado as label,
+                                        iconColor
+                                    FROM conf_estado
+                                    WHERE desModulo = 'ANARES'
+
+                                    ";
+
+        $datos_estado            = DB::select($query);
+        $datos_estado            = array_map(function ($value) {
+            return (array)$value;
+        }, $datos_estado);
 
 
-        $enviar['estados']       = $datos_estado;
-        $enviar['restricciones'] = $results;
+        $datos_motivosrestraso   = Conf_MotivosRetraso::all(); //  Conf_Estado::where('desModulo', 'ANARES')->get();
+        $data_fecha              = DB::select("call PR_obtenerInfoSemana(?)", [$fecha]);
+        $data_calendario         = DB::select($PR_restriccionesxproyectofecha);
+
+        // $enviar['fechaActual']  = $data_fecha[0]['fechaActual'];
+        $enviar['fechaFin']                 = $data_fecha[0]->fechaFin;
+        $enviar['fechaIni']                 = $data_fecha[0]->fechaIni;
+        $enviar['fechaActual']              = $data_fecha[0]->fechaActual;
+        $enviar['numSemana']                = $data_fecha[0]->numSemana;
+        $enviar['isSemanaActual']           = $data_fecha[0]->isSemanaActual;
+
+        // $enviar['nada']                    ='asasa';
+        $enviar['listaData']                = $data_calendario;
+        $enviar['listaEstados']             = $datos_estado;
+        $enviar['listaMotivos']             = $datos_motivosrestraso;
+        // $enviar['listaestados']       = $datos_estado;
+        // $enviar['listaData'] = $data_calendario;
 
         return $enviar;
     }
@@ -227,6 +262,133 @@ class RestrictionController extends Controller
      return $enviar;
 
     }
+    public function update_state_restriction_with_retraso(Request $request) {
+        //$restrictionid = Restriction::where('codProyecto', $request['codProyecto'])->get('codAnaRes');
+        $enviar            = array();
+        $enviar["mensaje"] = "Se actualizo con exito el registro.";
+        $enviar["estado"]  = false;
+
+        $rolProyecto             = $request['rol_proyecto'];
+        $codrestriccion          = $request['cod_restriccion'];
+        $codestado               = $request['cod_estado'];
+        $cod_proyecto            = $request['cod_proyecto'];
+        $cod_motivo_retraso      = $request['cod_motivo_retraso'];
+        $des_motivo_retraso      = $request['desc_motivo_retraso'];
+        $user_id                 = $request['user_id'];
+
+        // los usuarios que tengan rol como cliente, siempre tendran que justificar la
+        // tardanza de sus actividades
+
+        $flag_cliente            = $rolProyecto == 8 ? 1: 0;
+        $codestado               = $flag_cliente == 1 ? 4 : $codestado;
+
+        try {
+
+            $actividad    = PhaseActividad::find($codrestriccion);
+            $dataTracking = PhaseActividadTrack::insertGetId([
+                'codAnaResActividad'   => $codrestriccion,
+                'codProyecto'          => $cod_proyecto,
+                'codEstadoActividadInicial' => $actividad->codEstadoActividad,
+                'codEstadoActividadFinal'   =>  $codestado,
+                // 'codEstadoActividad'   => $codestado,
+                'codRetrasoMotivo'     => $cod_motivo_retraso,
+                'desRetrasoComentario' => $des_motivo_retraso,
+                // 'codEstadoAprobacion'  => 0,
+                // 'flagUseAprobacion'    => 0,
+                'dayFechaCreacion' => date('Y-m-d H:i:s'),
+                'desUsuarioCreacion' => '',
+                'codUsuarioCreacion' => $user_id,
+                'flagRetrasoAprobacion' => $flag_cliente == 1 ? 1 : -1,
+                'codEstadoAprobacion' => $flag_cliente == 1 ? 0 : -1,
+                'codUsuarioAprobacion' => -1
+                // 'codProyIntegrante' => (String)$user
+            ]);
+            // $trackdata->dayfec   = date('Y-m-d H:i:s');
+            $resultado = PhaseActividad::where('codProyecto',(int)$cod_proyecto)
+            ->where('codAnaResActividad', $codrestriccion)
+            ->update([
+                'codEstadoActividad'          => $codestado,
+                'codAnaResActividadTrackLast' => $dataTracking,
+                'dayFechaLevantamiento'       => date('Y-m-d H:i:s')
+            ]);
+
+            $enviar["estado"]         = true;
+            $enviar["estadoCambiado"] = $codestado;
+
+            } catch (\Throwable $th) {
+
+            $enviar["mensaje"] = "No se puede actualizar el registro , recargue la pagina.";
+        }
+
+     return $enviar;
+
+    }
+    public function update_state_restriction(Request $request) {
+        //$restrictionid = Restriction::where('codProyecto', $request['codProyecto'])->get('codAnaRes');
+        $enviar            = array();
+        $enviar["mensaje"] = "Se actualizo con exito el registro.";
+        $enviar["estado"]  = false;
+
+
+        $codrestriccion    = $request['cod_restriccion'];
+        $codestado         = $request['cod_estado'];
+        $cod_proyecto      = $request['cod_proyecto'];
+        $user_id           = $request['user_id'];
+
+        try {
+
+
+            // $dataTracking = PhaseActividadTrack::insertGetId([
+            //     'codAnaResActividad'   => $codrestriccion,
+            //     'codProyecto'          => $cod_proyecto,
+            //     'codEstadoActividad'   => $codestado,
+            //     'codRetrasoMotivo'     => 0,
+            //     'desRetrasoComentario' => "",
+            //     'codEstadoAprobacion'  => 0,
+            //     'flagUseAprobacion'    => 0,
+            //     'dayFechaCreacion' => date('Y-m-d H:i:s'),
+            //     'desUsuarioCreacion' => '',
+            //     'codUsuarioCreacion' => $user_id
+            //     // 'codProyIntegrante' => (String)$user
+            // ]);
+            $actividad    = PhaseActividad::find($codrestriccion);
+            $dataTracking = PhaseActividadTrack::insertGetId([
+                'codAnaResActividad'   => $codrestriccion,
+                'codProyecto'          => $cod_proyecto,
+                'codEstadoActividadInicial' => $actividad->codEstadoActividad,
+                'codEstadoActividadFinal'   =>  $codestado,
+                // 'codEstadoActividad'   => $codestado,
+                'codRetrasoMotivo'     => -1,
+                'desRetrasoComentario' => '',
+                // 'codEstadoAprobacion'  => 0,
+                // 'flagUseAprobacion'    => 0,
+                'dayFechaCreacion' => date('Y-m-d H:i:s'),
+                'desUsuarioCreacion' => '',
+                'codUsuarioCreacion' => $user_id,
+                'flagRetrasoAprobacion' => -1,
+                'codEstadoAprobacion' => -1,
+                'codUsuarioAprobacion' => -1
+                // 'codProyIntegrante' => (String)$user
+            ]);
+
+            $resultado = PhaseActividad::where('codProyecto',(int)$cod_proyecto)
+            ->where('codAnaResActividad', $codrestriccion)
+            ->update([
+                'codEstadoActividad'          => $codestado,
+                'codAnaResActividadTrackLast' => $dataTracking
+            ]);
+
+            $enviar["estado"]  = true;
+
+            } catch (\Exception $e) {
+
+            $enviar["mensaje"] = "No se puede actualizar el registro , recargue la pagina.";
+            $enviar["error"]   = $e;
+        }
+
+     return $enviar;
+
+    }
     public function update_hidden(Request $request) {
         //$restrictionid = Restriction::where('codProyecto', $request['codProyecto'])->get('codAnaRes');
         $enviar =  array();
@@ -309,6 +471,7 @@ class RestrictionController extends Controller
         return $enviar;
     }
 
+    /* DEPRECADO !! */
     public function add_Actividad(Request $request) {
         $codAnaRes = Restriction::where('codProyecto', $request['projectid'])->get('codAnaRes');
 
@@ -558,6 +721,26 @@ class RestrictionController extends Controller
 
                     if($value['codAnaResActividad'] > 0){
 
+                        $actividad    = PhaseActividad::find($value['codAnaResActividad']);
+                        $dataTracking = PhaseActividadTrack::insertGetId([
+                            'codAnaResActividad'   => $value['codAnaResActividad'],
+                            'codProyecto'          => $request['projectId'],
+                            'codEstadoActividadInicial' => $actividad->codEstadoActividad,
+                            'codEstadoActividadFinal'   =>  $value['codEstadoActividad'],
+                            // 'codEstadoActividad'   => $codestado,
+                            'codRetrasoMotivo'     => -1,
+                            'desRetrasoComentario' => '',
+                            // 'codEstadoAprobacion'  => 0,
+                            // 'flagUseAprobacion'    => 0,
+                            'dayFechaCreacion' => date('Y-m-d H:i:s'),
+                            'desUsuarioCreacion' => '',
+                            'codUsuarioCreacion' => $request['userId'],
+                            'flagRetrasoAprobacion' => -1,
+                            'codEstadoAprobacion' => -1,
+                            'codUsuarioAprobacion' => -1
+                            // 'codProyIntegrante' => (String)$user
+                        ]);
+
                         $resultado = PhaseActividad::where('codAnaResActividad',(int)$value['codAnaResActividad'])->update([
                             'codTipoRestriccion' => $value['codTipoRestriccion'],
                             'desActividad'       => (string)$value['desActividad'],
@@ -567,7 +750,8 @@ class RestrictionController extends Controller
                             'dayFechaRequerida'      => ($fecha == 'null' || $fecha == '') ? null : $fecha,
                             'dayFechaConciliada'     => ($fechac == 'null' || $fechac == '') ? null : $fechac,
                             'flgNoti'                => 0,
-                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now() : null
+                            'dayFechaLevantamiento'  => $value['codEstadoActividad'] == 3 ? Carbon::now() : null,
+                            'codAnaResActividadTrackLast' => $dataTracking
                             // 'numOrden'               => $value['numOrden']
                         ]);
 
@@ -587,8 +771,8 @@ class RestrictionController extends Controller
 
                     }else{
 
-                        $codAnaRes = Restriction::where('codProyecto', $request['projectId'])->get('codAnaRes');
-                        $idactividad = PhaseActividad::insertGetId([
+                        $codAnaRes              = Restriction::where('codProyecto', $request['projectId'])->get('codAnaRes');
+                        $idactividad            = PhaseActividad::insertGetId([
                             'codTipoRestriccion'     => $value['codTipoRestriccion'],
                             'desActividad'           => (string)$value['desActividad'],
                             'desRestriccion'         => (string)$value['desRestriccion'],
@@ -606,15 +790,36 @@ class RestrictionController extends Controller
                             'dayFechaCreacion'       => Carbon::now()
                         ]);
 
+                        $actividad    = PhaseActividad::find($value['codAnaResActividad']);
+                        $dataTracking = PhaseActividadTrack::insertGetId([
+                            'codAnaResActividad'   => $idactividad,
+                            'codProyecto'          => $request['projectId'],
+                            'codEstadoActividadInicial' => -1 ,
+                            'codEstadoActividadFinal'   =>  $value['codEstadoActividad'],
+                            // 'codEstadoActividad'   => $codestado,
+                            'codRetrasoMotivo'     => -1,
+                            'desRetrasoComentario' => 'Creacion de la actividad',
+                            // 'codEstadoAprobacion'  => 0,
+                            // 'flagUseAprobacion'    => 0,
+                            'dayFechaCreacion' => date('Y-m-d H:i:s'),
+                            'desUsuarioCreacion' => '',
+                            'codUsuarioCreacion' => $request['userId'],
+                            'flagRetrasoAprobacion' => -1,
+                            'codEstadoAprobacion' => -1,
+                            'codUsuarioAprobacion' => -1
+                            // 'codProyIntegrante' => (String)$user
+                        ]);
+
+                        PhaseActividad::where('codAnaResActividad', $idactividad)->update(['codAnaResActividadTrackLast' => $dataTracking]);
+
                         $tiporesultado = "ins";
 
-                        // $resultado = PhaseActividad::find($idactividad);
-                        $fechaCreacion = PhaseActividad::where('codAnaResActividad', $idactividad)->value('dayFechaCreacion');
+                        // $fechaCreacion = PhaseActividad::where('codAnaResActividad', $idactividad)->value('dayFechaCreacion');
 
                         $datos                    = array();
                         $datos['idPivote']        = $value['codAnaResActividad'];
                         $datos["idReal"]          = $idactividad;
-                        $datos["fechaIdentificacion"] = date("Y-m-d", strtotime($fechaCreacion));
+                        $datos["fechaIdentificacion"] = date("Y-m-d", strtotime(Carbon::now()));
                         $enviar["inserciones"][]  = $datos;
 
                     }
@@ -660,6 +865,7 @@ class RestrictionController extends Controller
 
     public function get_data_restricciones(Request $request) {
 
+        $codTipoRestriccionCliente = 11;
         $query_integrantes = "
 
         select
@@ -671,10 +877,12 @@ class RestrictionController extends Controller
         end as desProyIntegrante,
         pi2.codArea,
         pi2.idIntegrante,
-        pi2.codRolIntegrante
+        pi2.codRolIntegrante,
+        pr.desRolIntegrante
         from ana_integrantes ai
         inner join proy_integrantes pi2
         left  join users u on pi2.desCorreo  = u.email
+        left  join proy_rolintegrante pr on pi2.codRolIntegrante = pr.codRolIntegrante
         on
         ai.codProyIntegrante  = pi2 .codProyIntegrante and
         ai.codProyecto        = pi2.codProyecto
@@ -683,6 +891,7 @@ class RestrictionController extends Controller
         ";
         $rolUsuario   = 0; // en estos momentos el rolusuario cero es el creador del proyecto.
         $areaUsuario  = 0;
+        $desrolUsuario= "";
         $coduser      = $request['codsuser'];
         $valores      = array($request['id']);
         $integrantesAnaRes = DB::select($query_integrantes, $valores);
@@ -692,13 +901,40 @@ class RestrictionController extends Controller
 
         foreach ($integrantesAnaRes as $integrante) {
             if ($integrante['idIntegrante'] == $coduser){
-                $rolUsuario  = $integrante['codRolIntegrante'];
-                $areaUsuario = $integrante['codArea'];
+                $rolUsuario    = $integrante['codRolIntegrante'];
+                $desrolUsuario = $integrante['desRolIntegrante'];
+                $areaUsuario   = $integrante['codArea'];
                 break;
             }
         }
 
-        $frontdata   = RestrictionFront::where('codProyecto', $request['id'])->get();
+        $validar_rol  = $rolUsuario == 8 ? 1 : 0;
+        $query_frente = "
+
+
+                    select distinct
+                    af.codAnaResFrente ,
+                    af.desAnaResFrente ,
+                    af.dayFechaCreacion ,
+                    af.codProyecto ,
+                    af.codAnaRes
+                    from anares_frente af
+                    inner join anares_actividad aa
+                    on af.codAnaResFrente = aa.codAnaResFrente
+                    where
+                    (1 = ?  and  (af.codProyecto = ? and  aa.codTipoRestriccion = ?)) or
+                    (0 = ?  and  (af.codProyecto = ? ))
+
+
+        ";
+
+        $valores_frente      = array($validar_rol , $request['id'] , $codTipoRestriccionCliente , $validar_rol , $request['id']);
+        $frontdata           = DB::select($query_frente, $valores_frente);
+        $frontdata           = array_map(function ($value) {
+            return (array)$value;
+        }, $frontdata);
+
+        // $frontdata   = RestrictionFront::where('codProyecto', $request['id'])->get();
         $restriction = Restriction::where('codProyecto', $request['id'])->get();
         $usuario     = $project = User::select('users.name','users.lastname')->where('id', $coduser)->get();
 
@@ -716,7 +952,34 @@ class RestrictionController extends Controller
                 'listaFase'   => [],
             ];
 
-            $phasedata   = RestrictionPhase::where('codAnaResFrente', $eachdata['codAnaResFrente'])->get();
+            // $phasedata   = RestrictionPhase::where('codAnaResFrente', $eachdata['codAnaResFrente'])->get();
+            $query_fase = "
+            select
+            distinct
+            af.codAnaResFase ,
+            af.desAnaResFase ,
+            af.dayFechaCreacion ,
+            af.codAnaResFrente ,
+            af.codProyecto ,
+            af.codAnaRes
+            from anares_fase af
+            inner join anares_actividad aa
+            on af.codAnaResFase = aa.codAnaResFase
+            where
+            (1 = ?  and  (af.codAnaResFrente = ? and  aa.codTipoRestriccion = ?)) or
+            (0 = ?  and  (af.codAnaResFrente = ? ))
+
+
+            ";
+
+            $valores_fase        = array($validar_rol , $eachdata['codAnaResFrente'] , $codTipoRestriccionCliente , $validar_rol , $eachdata['codAnaResFrente']);
+            $phasedata           = DB::select($query_fase, $valores_fase);
+            $phasedata           = array_map(function ($value) {
+                return (array)$value;
+            }, $phasedata);
+
+
+
             $conteo_fase = 0;
             foreach($phasedata as $sevdata) {
                 $dataFase = [
@@ -747,9 +1010,19 @@ class RestrictionController extends Controller
                  ->leftJoin('users', function($join){
                     $join->on('anares_actividad.codUsuarioSolicitante', '=', 'users.id');
                  })
-                ->where('conf_estado.desModulo','=',  'ANARES')
-                ->where('anares_actividad.codAnaResFase','=',  $sevdata['codAnaResFase'])
-                ->where('anares_actividad.codAnaResFrente','=', $eachdata['codAnaResFrente'])
+                 ->where(function ($query) use ($validar_rol, $sevdata, $eachdata, $codTipoRestriccionCliente) {
+                    $query->whereRaw('1 = ?', [$validar_rol])
+                        ->where('conf_estado.desModulo','=',  'ANARES')
+                        ->where('anares_actividad.codAnaResFase','=',  $sevdata['codAnaResFase'])
+                        ->where('anares_actividad.codAnaResFrente','=', $eachdata['codAnaResFrente'])
+                        ->where('anares_actividad.codTipoRestriccion','=', $codTipoRestriccionCliente);
+                })
+                ->orWhere(function ($query) use ($validar_rol, $sevdata, $eachdata) {
+                    $query->whereRaw('0 = ?', [$validar_rol])
+                        ->where('conf_estado.desModulo','=',  'ANARES')
+                        ->where('anares_actividad.codAnaResFase','=',  $sevdata['codAnaResFase'])
+                        ->where('anares_actividad.codAnaResFrente','=', $eachdata['codAnaResFrente']);
+                })
                 ->orderBy('anares_actividad.numOrden', 'ASC')
                 ->get();
 
@@ -773,7 +1046,7 @@ class RestrictionController extends Controller
                             $frequerida_enabled  = true;
                             $fconciliada_enabled = true;
 
-                        }elseif ($data['codRolIntegrante'] == 2  && $data['idIntegrante']  == $coduser ) {
+                        }elseif (($data['codRolIntegrante'] == 2 || $data['codRolIntegrante'] == 8)  && $data['idIntegrante']  == $coduser ) {
 
                             $habilitado = true;
 
@@ -823,6 +1096,15 @@ class RestrictionController extends Controller
         $tipoRestricciones = Ana_TipoRestricciones::All();
         $areaIntegrante    = Proy_AreaIntegrante::all();
         $datos_estado      = Conf_Estado::where('desModulo', 'ANARES')->get();
+        $data_fecha        = DB::select('call PR_ObtenerDiaActual()');
+
+
+        // PhaseActividad::where('codEstadoActividad', '4')
+        //               ->where('codProyecto', $request['id'])
+
+        $canPendienteAprobacion     = PhaseActividad::where('codEstadoActividad', '4')
+        ->where('codProyecto', $request['id'])
+        ->count();
 
         $enviar['estadoRestriccion'] = $restriction[0]['codEstado'] == 0 ? true : false;
         $enviar['estados']           = $datos_estado;
@@ -833,7 +1115,11 @@ class RestrictionController extends Controller
         $enviar['columnasOcultas']   = $restriction[0]['desColOcultas'];
         $enviar['solicitanteActual'] = $usuario[0]['name']." ".$usuario[0]['lastname'];
         $enviar['rolUsuario']        = $rolUsuario;
+        $enviar['desrolUsuario']     = $desrolUsuario;
         $enviar['areaUsuario']       = $areaUsuario;
+        $enviar['fechaActual']       = $data_fecha[0]->FechaActual;
+        $enviar['canAprobacion']     = $canPendienteAprobacion;
+
 
         return $enviar;
     }
@@ -1155,5 +1441,122 @@ class RestrictionController extends Controller
         catch (\Exception $e) {
             return ["error"=>true,"message"=>$e->getMessage()];
         }
+    }
+
+
+    public function push_enviar_aprobaciones(Request $request) {
+        //  estado  = 0 , pendiente de aprobacion  ,
+        //  estado  = 1 , indicado aprobado  ,
+        //  estado  = 2 , indica no aprovado , por lo tanto regresa a su estado anterior
+
+         $codProyecto       = $request['codProyecto'];
+         $codUser           = $request['codUser'];
+         $idAprobacion      = $request['idAprobacion'];
+         $estAprobacion     = $request['estAprobacion'];
+         $comentario        = $request['comentario'];
+
+         $trackdata         = PhaseActividadTrack::find($idAprobacion);
+         if (!$trackdata) {
+            // Manejar el caso en que el cliente no se encontró
+            return response()->json(['error' => 'Track Id no encontrado'], 404);
+        }
+
+        if($estAprobacion == '1'){
+
+            $trackdata->codEstadoAprobacion  = 1;// ya no esta en esta pendiente la solicitud
+            $trackdata->codUsuarioAprobacion = $codUser;
+            $trackdata->desComentarioFinal   = $comentario;
+            $trackdata->dayFechaAprobacion   = date('Y-m-d H:i:s');
+
+            $estado = $trackdata->save();
+
+            if ($estado) {
+
+                $codActividad   = $trackdata->codAnaResActividad;
+                $actividadData  = PhaseActividad::find($codActividad);
+                $actividadData->codEstadoActividad = 3; // despues de confirmar  la aprobacion para a cerrado.
+                $estado2        = $actividadData->save();
+                // $actividadData->codEstadoActividad = $trackdata->codEstadoActividadFinal;
+                return response()->json(['success' => 'Aprobacion Finalizada con exito', ]);
+
+            } else {
+                return response()->json(['error' => 'Error al actualizar el cliente']);
+            }
+
+        }else{
+
+            if($estAprobacion == '2'){
+
+                $trackdata->codEstadoAprobacion  = 2; // ya no esta en esta pendiente la solicitud
+                $trackdata->codUsuarioAprobacion = $codUser;
+                $trackdata->desComentarioFinal   = $comentario;
+                $trackdata->dayFechaAprobacion   = date('Y-m-d H:i:s');
+
+                $estado = $trackdata->save();
+
+                if ($estado) {
+
+                    $codActividad   = $trackdata->codAnaResActividad;
+                    $actividadData  = PhaseActividad::find($codActividad);
+                    $actividadData->codEstadoActividad    = $trackdata->codEstadoActividadInicial;
+                    $actividadData->dayFechaLevantamiento = null;
+
+                    $estado2        = $actividadData->save();
+                    // $actividadData->codEstadoActividad = $trackdata->codEstadoActividadFinal;
+                    return response()->json(['success' => 'Desaprobación Finalizada con exito', ]);
+
+                } else {
+                    return response()->json(['error' => 'Error al actualizar el cliente']);
+                }
+
+
+            }
+        }
+
+
+
+    }
+
+    public function get_data_aprobaciones(Request $request) {
+
+         $codProyecto       = $request['codProyecto'];
+         $codUser           = $request['codUser'];
+         $rol               = $request['rolUsuario'];
+        //  $data_aprobaciones = PhaseActividadTrack::where('codProyecto', '=', $codProyecto)
+        //                       ->where('flagRetrasoAprobacion', '=', 1)
+        //                       ->where('codEstadoAprobacion', '=', 0)
+        //                       ->get();
+
+         $condicion_admin    = ($rol == '0' || $rol == '3') ? " and aat.codEstadoAprobacion = 0 " : " and aat.codUsuarioCreacion=".$codUser." ";
+         $query_aprobaciones = "
+
+                                select
+                                    aat.codAnaResActividadTrack  as id,
+                                    aa.desActividad as actividad,
+                                    aa.desRestriccion as restriccion,
+                                    CASE
+                                        WHEN aat.codEstadoAprobacion = '0' THEN 'Pendiente'
+                                        WHEN aat.codEstadoAprobacion = '1' THEN 'Aprobado'
+                                        WHEN aat.codEstadoAprobacion = '2' THEN 'Desaprobado' -- Asumiendo que '2' es para 'Desaprobado'
+                                    END AS estado,
+                                    aat.codEstadoAprobacion,
+                                    aat.dayFechaCreacion as fechaJustificacion,
+                                    aat.desRetrasoComentario as justificacion,
+                                    aat.desComentarioFinal as comentarioFinal
+                                from anares_actividad_tracking aat
+                                inner join anares_actividad aa on aat.codAnaResActividad  = aa.codAnaResActividad
+                                where aat.codProyecto  = ? and aat.flagRetrasoAprobacion  = 1 ".$condicion_admin." order by aat.codEstadoAprobacion desc
+
+                              ";
+
+
+         $valores          = array($codProyecto);
+         $aprobacionesData = DB::select($query_aprobaciones, $valores);
+         $aprobacionesData = array_map(function ($value) {
+           return (array)$value;
+         }, $aprobacionesData);
+
+         return $aprobacionesData;
+
     }
 }

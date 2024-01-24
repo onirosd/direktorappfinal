@@ -18,10 +18,16 @@
         {{ path }}
       </li>
     </ul>
-    <span class="text-orange flex text-tinysm items-center" v-if="settingFlag">
+    <span  v-if="settingFlag">
       <span class="mr-1 sm:hidden"> Configurar reporte </span>
       <img src="../../assets/setting.svg" alt="" />
     </span>
+
+    <span  v-else-if="settingFlag == false && get_perfilFlag == 1" class="text-[#8A9CC9] flex text-xs items-center">
+      <span class=" sm:hidden font-bold "> Perfil del Proyecto : {{get_perfilDesc}} </span>
+      <!-- <img src="../../assets/setting.svg" alt="" /> -->
+    </span>
+
   </div>
 </template>
 
@@ -31,7 +37,23 @@ export default {
   props: {
     paths: Array,
     settingFlag: Boolean,
+    perfilFlag: {
+            type: Number,
+            default: 0
+        },
+    perfilDesc: {
+        type: String,
+        default: ""
+    },
     urls:Array
+  },
+  computed:{
+    get_perfilFlag(){
+      return this.perfilFlag
+    },
+    get_perfilDesc(){
+      return this.perfilDesc.toUpperCase()
+    }
   },
   methods: {
     handleRedirect(path) {
