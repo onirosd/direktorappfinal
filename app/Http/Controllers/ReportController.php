@@ -125,7 +125,10 @@ class ReportController extends Controller
         order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
 
 
+
         ";
+
+        // no tenemos nada que agregar
         $v1 = array($id_restriction);
         $qregistros  = DB::select($query_restricciones, $v1);
         $qregistros = array_map(function ($value) {
