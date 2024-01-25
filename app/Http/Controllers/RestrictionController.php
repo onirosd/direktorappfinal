@@ -1519,7 +1519,7 @@ class RestrictionController extends Controller
                                     DATE_FORMAT(aa2.dayFechaRequerida, '%Y-%m-%d')  as fecharequerida,
                                     DATE_FORMAT(aa2.dayFechaConciliada, '%Y-%m-%d')  as fechaconciliada ,
                                     DATE_FORMAT(aa.dayFechaAprobacion, '%Y-%m-%d') as fecharechazo,
-                                    aa.desRetrasoComentario as observacion,
+                                    aa.desComentarioFinal as observacion,
                                     u.email as correo,
                                     pp.desNombreProyecto as proyecto
                                     from anares_actividad_tracking aa
