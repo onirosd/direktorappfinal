@@ -51,7 +51,7 @@ class ReportController extends Controller
         aa.desRestriccion as ndescripcionrestriccion,
         DATE_FORMAT(aa.dayFechaCreacion, '%Y-%m-%d') as nfechaidentificacion,
         case when aa.dayFechaConciliada is null then  DATE_FORMAT(aa.dayFechaRequerida, '%Y-%m-%d') else DATE_FORMAT(aa.dayFechaConciliada, '%Y-%m-%d') end  as nfecharequerida,
-        concat(u2.name,' ',u2.lastname) as nresponsablelevantamiento,
+        concat(u.name,' ',u.lastname) as nresponsablelevantamiento,
         DATE_FORMAT(aa.dayFechaLevantamiento, '%Y-%m-%d')  as nfecharealfinlevantamiento,
         -- pa.desArea as netapa,
         -- ce.desEstado as nestado,
@@ -120,9 +120,9 @@ class ReportController extends Controller
         left join proy_areaintegrante pa on pi2.codArea  = pa.codArea
         left join conf_estado ce on aa.codEstadoActividad  = ce.codEstado and ce.desModulo = 'ANARES'
         left join users u2 on aa.codUsuarioSolicitante  = u2.id
+
         where aa.codProyecto = ?
         order by aa.codAnaResFrente,aa.codAnaResFase, aa.numOrden
-
 
 
         ";
