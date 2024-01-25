@@ -22,6 +22,8 @@ class Helper{
             $plantilla =  'emails.forgetPassword';
         }elseif ($tipo_plantilla == 'retrasos') {
             $plantilla =  'emails.alertaretraso';
+        }elseif ($tipo_plantilla == 'rechazo') {
+            $plantilla =  'emails.alertarechazo';
         }
 
 

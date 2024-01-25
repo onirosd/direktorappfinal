@@ -273,6 +273,28 @@
               </div>
 
               <div v-if="aprobacionisLoading == true" class="tbl_aprobaciones relative overflow-x-auto shadow-md sm:rounded-lg">
+                  <transition name="fade2">
+                      <div
+                        key="3"
+                        v-if="!showifUpd"
+                        class="flex items-end mb-6 cursor-pointer"
+                      ></div>
+                  </transition>
+                  <transition name="fade2">
+                            <div
+                              key="1"
+                              v-if="showifUpd"
+                              class="flex items-end mb-6 cursor-pointer text-xs text-[#002B6B]"
+                            >
+                              <img
+                                src="../../assets/upload.svg"
+                                alt=""
+                                class="mr-1"
+                              />
+                              {{ showifUpdMsg }}
+                            </div>
+                  </transition>
+
                   <table class="w-[100%] text-xs text-gray-500 dark:text-gray-400">
                       <thead class="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                           <tr>
@@ -1400,9 +1422,17 @@ export default {
       let point = this;
       this.aprobacionesBloq  = true;
       store.dispatch("push_enviar_aprobaciones", payload).then((response) => {
+
         this.closeModal()
         this.cargarAprobaciones({'idtab':3});
         this.aprobacionesBloq  = false;
+
+        if (response.data.correo != undefined) {
+
+          this.setTimeifUpd(1000, response.data.correo);
+
+        }
+
 
         // this.aprobacionesListas = $this.store.
 

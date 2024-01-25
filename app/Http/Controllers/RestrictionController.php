@@ -1046,7 +1046,7 @@ class RestrictionController extends Controller
                             $frequerida_enabled  = true;
                             $fconciliada_enabled = true;
 
-                        }elseif (($data['codRolIntegrante'] == 2 || $data['codRolIntegrante'] == 8)  && $data['idIntegrante']  == $coduser ) {
+                        }elseif (($data['codRolIntegrante'] == 2)  && $data['idIntegrante']  == $coduser ) {
 
                             $habilitado = true;
 
@@ -1502,10 +1502,64 @@ class RestrictionController extends Controller
                     $actividadData->dayFechaLevantamiento = null;
 
                     $estado2        = $actividadData->save();
+
+                    if($estado2){
+
+                            $query_rechazos = "
+
+                                    select
+                                    af.desAnaResFrente as frente ,
+                                    af2.desAnaResFase as fase,
+                                    aa2.desActividad ,
+                                    aa2.desRestriccion ,
+                                    case when aa.codEstadoAprobacion  = '1' then 'Aprobado'
+                                        when aa.codEstadoAprobacion  = '2' then 'Rechazado'
+                                    else ''
+                                    end as estado,
+                                    DATE_FORMAT(aa2.dayFechaRequerida, '%Y-%m-%d')  as fecharequerida,
+                                    DATE_FORMAT(aa2.dayFechaConciliada, '%Y-%m-%d')  as fechaconciliada ,
+                                    DATE_FORMAT(aa.dayFechaAprobacion, '%Y-%m-%d') as fecharechazo,
+                                    aa.desRetrasoComentario as observacion,
+                                    u.email as correo,
+                                    pp.desNombreProyecto as proyecto
+                                    from anares_actividad_tracking aa
+                                    inner join anares_actividad aa2 on aa.codAnaResActividad  = aa2.codAnaResActividad
+                                    inner join anares_frente af on aa2.codAnaResFrente = af.codAnaResFrente
+                                    inner join anares_fase   af2  on aa2.codAnaResFase  = af2.codAnaResFase
+                                    inner join users u            on aa.codUsuarioCreacion = u.id
+                                    inner join proy_proyecto pp on aa2.codProyecto = pp.codProyecto
+                                    where aa.codAnaResActividadTrack  =  ?
+
+
+                            ";
+
+                            $valores          = array($idAprobacion);
+                            $rechazosData = DB::select($query_rechazos, $valores);
+                            $rechazosData = array_map(function ($value) {
+                            return (array)$value;
+                            }, $rechazosData);
+
+
+                            if (!empty($rechazosData)) {
+
+                                $datos_enviar = array();
+                                $datos_enviar['actividades']       = $rechazosData;
+                                $datos_enviar['des_correo']        = $rechazosData[0]['correo'];
+                                $datos_enviar['des_proyecto']      = $rechazosData[0]['proyecto'];
+                                $datos_enviar['des_link']          = Config::get('global.URL');
+                                $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
+
+                                Helper::enviarEmail($datos_enviar, 'rechazo', "Aprobaciones rechazadas para el proyecto  -  ".$rechazosData[0]['proyecto'], $codUser , $rechazosData[0]['correo']);
+
+                            }
+
+                    }
+
                     // $actividadData->codEstadoActividad = $trackdata->codEstadoActividadFinal;
-                    return response()->json(['success' => 'Desaprobación Finalizada con exito', ]);
+                    return response()->json(['success' => 'Desaprobación Finalizada con exito', 'correo' => 'Se envio notificación de rechazo con exito !!.' ]);
 
                 } else {
+
                     return response()->json(['error' => 'Error al actualizar el cliente']);
                 }
 
