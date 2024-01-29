@@ -1,43 +1,54 @@
 <template>
-    <Modal :header="'Selecciona Integrantes'" :modalType="'selectusers'" :status="status">
-        <div class="flex mb-4">
+    <Modal :header="'Selecciona Integrantes'" :modalType="'selectusers'" :status="status" class="flex  ">
+    <!-- Campo de búsqueda -->
+    <div class="flex  w-full  mb-4">
+        <input
+            type="text"
+            v-model="searchQuery"
+            class="w-full h-10 border border-[#8A9CC9] rounded p-2"
+            placeholder="Buscar usuario..."
+        />
+    </div>
+
+    <!-- Seleccionar todo -->
+    <div id="seleccionartodo" class="flex justify-start mb-4 ">
+        <input
+            type="checkbox"
+            name="selall"
+            id="selall"
+            value="selall"
+            class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
+            @change="selectAll"
+        />
+        <label for="selall">
+            <span class="font-bold text-sm leading-6">
+            Todos los usuarios
+            </span>
+        </label>
+    </div>
+
+
+    <!-- Listar usuarios con scroll -->
+    <div id="listarusuarios" class="flex mb-6 flex-col w-full overflow-auto max-h-[300px]">
+        <div v-for="(user, index) in filteredUsers" :key="index" class="flex mb-4">
             <input
                 type="checkbox"
-                name="selall"
-                id="selall"
-                value="selall"
+                :name="'user_'+index"
+                :id="'user_'+index"
+                :value="user.codProyIntegrante"
                 class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
-                @change="selectAll"
+                v-model="this.$store.state.restriction_rows_real[rowIndex].integrantes"
+                @change="capturamosCambios"
             />
-            <label for="selall">
-                <span class="font-bold text-sm leading-6">
-                Todos los usuarios
+            <label :for="'user_'+index">
+                <span class="font-medium text-sm leading-6">
+                {{ user.desCorreo }}
                 </span>
             </label>
         </div>
-        <div class="flex mb-6 flex-col w-full" v-for="(user, index) in modelValue" :key="index">
-            <div class="flex mb-4">
-                <input
-                    type="checkbox"
-                    :name="'user_'+index"
-                    :id="'user_'+index"
-                    :value="user.codProyIntegrante"
-                    class="w-6 h-6 border border-[#8A9CC9] rounded mr-4 accent-orange"
-                    v-model="this.$store.state.restriction_rows_real[rowIndex].integrantes"
-                    @change="capturamosCambios"
+    </div>
+</Modal>
 
-                />
-                <label :for="'user_'+index">
-                    <span class="font-medium text-sm leading-6">
-                    {{user.desCorreo}}
-                    </span>
-                </label>
-            </div>
-        </div>
-
-
-
-    </Modal>
   </template>
 
   <script>
@@ -58,6 +69,7 @@
     },
     data: function () {
         return {
+            searchQuery: '',
             status: false,
             // selUsers: this.$store.state.restriction,
             selAllState: false
@@ -104,6 +116,16 @@
 
       // this.updSelectAll()
 
-    }
+    },
+    computed: {
+        filteredUsers() {
+            if (!this.searchQuery) {
+                return this.modelValue;
+            }
+            return this.modelValue.filter(user =>
+                user.desCorreo.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+        },
+    },
   };
   </script>

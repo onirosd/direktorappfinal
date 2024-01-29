@@ -47,6 +47,11 @@ direktor-hito3/vue > npm install
 ## clean cache routes
 php artisan route:clear
 
+## clean cache
+php artisan cache:clear
+
+## clean view
+php artisan view:clear
 
 ## LIBRERIA QUE SE UTILIZA PARA EL DRAG.
 

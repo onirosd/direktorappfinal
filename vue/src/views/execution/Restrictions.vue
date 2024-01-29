@@ -83,14 +83,18 @@
             <span class="text-xs leading-5 mr-1">Equipo:</span>
           </div>
           <div class=" mb-2 text-xs">
+            <div class="mb-2 text-xs">
               <template v-for="(equipment, index) in row.integrantesProy" :key="index">
-
-                <div  v-if ="row.integrantes.includes(equipment.codProyIntegrante)">
-                {{ equipment.desCorreo }}
+                <div v-if="index <= 5">
+                  {{ equipment.desCorreo }}
                 </div>
-
-
               </template>
+              <span v-if="row.integrantesProy.length > 5">
+                <strong>Se tienen {{ row.integrantesProy.length - 5 }} integrantes adicionales ..</strong>
+              </span>
+            </div>
+
+
           </div>
           <div class="flex mb-4">
             <span class="text-xs leading-5 mr-1">Acciones usuario:</span>

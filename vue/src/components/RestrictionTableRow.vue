@@ -31,11 +31,20 @@
       <span class="flex flex-col text-[0.6rem]">
         <template v-for="(equipment, index) in row.integrantesProy" :key="index">
 
-          <span  v-if ="row.integrantes.includes(equipment.codProyIntegrante)">
-           {{ equipment.desCorreo }}
-          </span>
-
+          <div v-if="index <= 2">
+                  {{ equipment.desCorreo }}
+          </div>
         </template>
+
+        <span v-if="row.integrantesProy.length > 2">
+              <strong>Se tienen {{ row.integrantesProy.length - 2 }} integrantes adicionales ..</strong>
+        </span>
+
+          <!-- <span  v-if ="row.integrantes.includes(equipment.codProyIntegrante)">
+           {{ equipment.desCorreo }}
+          </span> -->
+
+
 
       </span>
     </td>

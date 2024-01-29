@@ -102,10 +102,50 @@
             :class="{ 'active': aprobacionesactiveTab === index }"
             @click="cargarAprobaciones({ 'idtab': index }); aprobacionesactiveTab = index; "
           >
-          <i :class="['fa', aprobacionesactiveTab === index ? 'fa-check-square' : 'fa-square']"></i>
+            <i :class="['fa', aprobacionesactiveTab === index ? 'fa-check-square' : 'fa-square']"></i>
 
             <span>{{ tab.title }} <b v-if="index == 3 ">({{cantAprobacion}})</b></span>
             <!-- <div class="notification-dot"></div> -->
+          </div>
+          <div
+             v-if="!disabledItemsEnviarCorreos"
+             class="tab text-xs relative active"
+             @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+             @click="openModal({ param: 'enviarNoti' }); aprobacionesactiveTab = 0; "
+
+
+          >
+            <i class="fa fa-check-square "></i>
+            <span class=""> Enviar Correo </span>
+            <span class="badge absolute top-[-2] right-[-4] h-5 w-5 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px] text-[0.7rem] z-10" >{{countNotNoti}}</span>
+          </div>
+          <div
+             v-if="disabledItemsEnviarCorreos"
+             class="tab text-xs relative "
+          >
+            <i class="fa fa-square text-gray-400"></i>
+            <span class="text-gray-400 "> Enviar Correo </span>
+          </div>
+
+
+          <div
+              v-if="!disabledItemsEnviarCorreos"
+              class="tab text-xs active relative"
+              @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
+              @click="openModal({ param: 'calendarDg' }); aprobacionesactiveTab = 0; "
+          >
+            <i class="fa fa-check-square"></i>
+            <span> Calendario </span>
+            <span class="badge absolute top-[-2] right-[-4] h-5 w-5 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px] text-[0.7rem]" >New</span>
+          </div>
+
+
+          <div
+              v-if="disabledItemsEnviarCorreos"
+              class="tab text-xs  relative"
+          >
+            <i class="fa fa-square text-gray-400"></i>
+            <span class="text-gray-400"> Calendario </span>
           </div>
         </div>
 
@@ -207,7 +247,7 @@
                   <div class=" flex w-[50%] sm:w-full " v-if="!fullScreen">
 
 
-            <button
+            <!-- <button
               class="bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
               @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
               @click="openModal({ param: 'enviarNoti' })"
@@ -220,9 +260,9 @@
               >
               <i class="fas fa-envelope"></i> Enviar Correos
               <span class="badge absolute top-[-2] right-[-4] h-4 w-4 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px]" >{{countNotNoti}}</span>
-            </button>
+            </button> -->
 
-            <button
+            <!-- <button
               class="ml-1 bg-white w-[18%] sm:w-[25%] h-[30px] text-[0.6rem] hover:bg-gray-100 px-2 py-1 border border-orange rounded shadow text-orange relative"
               @mouseover="hoverEffect" @mouseleave="removeHoverEffect"
               @click="openModal({ param: 'calendarDg' })"
@@ -235,7 +275,7 @@
               >
               <i class="fas fa-calendar"></i> Calendario Sem.
               <span class="badge absolute top-[-2] right-[-4] h-5 w-5 bg-red400-500 rounded-full text-white text-center text-tinysm min-w-[10px] text-[0.7rem]" >New</span>
-            </button>
+            </button> -->
 
                 <button class="ml-1 px-2 py-1 border border-gray-400 rounded hover:bg-gray-100 w-[18%] h-[30px] text-[0.55rem]" @click="download_template_for_project">
                   <i class="fas fa-file-download"></i> Descargar Plantilla
@@ -346,6 +386,7 @@
               </div>
 
               </div>
+
             </div>
           </transition>
         </div>
@@ -751,7 +792,7 @@ import AddRow from "../../components/AddRow.vue";
 import DeleteRow from "../../components/DeleteRow.vue";
 import UploadExcel from "../../components/UploadExcel.vue";
 import ConfirmBloq from "../../components/ConfirmBloq.vue";
-import CalendarDg from "../../components/CalendarDg.vue";
+import CalendarDg from "../../components/CalendarDg2.vue";
 // import DownloadReport from "../../components/DownloadReport.vue";
 import SelectOption from "../../components/SelectOption.vue";
 import DeleteFront from "../../components/DeleteFront.vue";

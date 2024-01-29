@@ -1033,18 +1033,19 @@ export default {
       cant_retrasados: 0
     }
 
-    let diaActual = new Date().getDayAdjustedforDate(fechaActual);
-    console.log(">>>>> dia :"+diaActual)
+    // let diaActual = new Date().getDayAdjustedforDate(fechaActual);
+    // console.log(">>>>> dia :"+diaActual)
     let ordenDias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 
-    // Determinar la posición de inserción
+    // // Determinar la posición de inserción
     let posicionInsertar;
-    if (diaActual === 0) {  // Domingo
-      diaActual        = 1;
-      posicionInsertar = 0;  // Insertar antes del domingo
-    } else {
-      posicionInsertar = diaActual;  // Insertar antes del día actual
-    }
+    // if (diaActual === 0) {  // Domingo
+    //   diaActual        = 1;
+    //   posicionInsertar = 0;  // Insertar antes del domingo
+    // } else {
+    //   posicionInsertar = diaActual;  // Insertar antes del día actual
+    // }
+    posicionInsertar = 0
 
     console.log(">>> posicion :"+posicionInsertar)
 

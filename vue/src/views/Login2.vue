@@ -1,7 +1,19 @@
 <template>
  <section class="bg-gray-50 min-h-screen flex items-center justify-center">
-  <!-- login container -->
-  <div class="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
+  <!-- load effects div-->
+  <div
+    v-if="isLoading == false"
+    class="h-full flex justify-center sm:items-start w-[1020px]"
+  >
+    <loading
+      v-model:active="isLoadingTrue"
+      :can-cancel="false"
+      :is-full-page="true"
+      loader="dots"
+    />
+  </div>
+  <!-- page login div-->
+  <div v-if="isLoading" class="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
     <!-- form -->
     <div class="md:w-1/2 px-2 md:px-4">
       <h2 class="font-bold text-2xl text-[#002D74]">Iniciar Sesión</h2>
@@ -140,14 +152,7 @@
 
 
 <script>
-//  import draggable from "vuedraggable";
-//  import Vue from 'vue';
-//  import { LockClosedIcon } from "@vue-hero-icons/solid"
-//  import VueMultiselect from 'vue-multiselect'
-//  import Alert from "../components/core/Alert.vue";
-//  import TButtonLoading from "../components/core/TButtonLoading.vue";
-//  import { ref } from "vue";
-//  import store from "../store";
+ import Loading from "vue-loading-overlay";
  import Alert from "../components/core/Alert.vue";
  import TButtonLoading from "../components/core/TButtonLoading.vue";
  import { ref } from "vue";
@@ -160,11 +165,13 @@
     // LockClosedIcon,
     Alert,
     TButtonLoading,
+    Loading,
     // VueMultiselect,
     ref
    },
    data() {
      return {
+       pageloadflag: false,
        inputType: 'password',
        isVisible: false,
        loading  : false,
@@ -178,6 +185,25 @@
      };
    },
    methods:{
+
+    async callMounted(){
+
+    const params   = new URLSearchParams(this.$route.query);
+    let mensaje    = params.get("msg") || "";
+
+    if(this.$route.query.msg != undefined){
+      let  datosDesencriptados = decrypt(this.$route.query.msg);
+      let  data = JSON.parse(datosDesencriptados);
+
+      this.successMsg = data.msg;
+      setTimeout(() => {
+        this.successMsg = '';
+
+      }, 3000);
+
+    }
+
+    },
     handleRedirect(url){
 
       this.$router.push({ name: url});
@@ -210,23 +236,22 @@
    },
    computed: {
 
+    isLoadingTrue() {
+      return true;
+    },
+
+    isLoading: function () {
+      return this.pageloadflag;
+    },
+
    },
-   mounted: async function () {
+    mounted: async function () {
 
-    const params   = new URLSearchParams(this.$route.query);
-    let mensaje    = params.get("msg") || "";
+    this.pageloadflag = false;
 
-    if(this.$route.query.msg != undefined){
-      let  datosDesencriptados = decrypt(this.$route.query.msg);
-      let  data = JSON.parse(datosDesencriptados);
+    await this.callMounted()
 
-      this.successMsg = data.msg;
-      setTimeout(() => {
-        this.successMsg = '';
-
-      }, 3000);
-
-    }
+    this.pageloadflag = true;
 
    }
 
@@ -234,6 +259,9 @@
 
 </script>
 <style>
+[v-cloak] {
+  display: none;
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease-in-out;
