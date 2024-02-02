@@ -15,13 +15,19 @@
         {{ buttons[0] }}
       </button>
       <button
-        class="h-14 w-[48%] sm:w-full rounded bg-orange text-base leading-4 text-white mb-4"
-        :class="{ 'w-48': buttons[1].length > 11, 'px-8': buttons[1].length < 12 }"
+        :disabled="bloq"
+        class="h-14 w-[48%] sm:w-full rounded  text-base leading-4 text-white mb-4"
+        :class="{ 'w-48': buttons[1].length > 11, 'px-8': buttons[1].length < 12  , 'bg-gray-400': bloq , 'bg-orange' : !bloq }"
         @click="$emit('closeModal', {param: false})"
       >
         {{ buttons[1] }}
       </button>
+      <br>
+
     </div>
+    <span v-if="bloq"  class="font-medium text-base leading-7 text-activeText " >
+       Enviando notificaciones , espere un momento ......
+    </span>
   </Modal>
 </template>
 
