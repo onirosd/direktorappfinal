@@ -36,8 +36,8 @@
           </div>
         </template>
 
-        <span v-if="row.integrantesProy.length > 2">
-              <strong>Se tienen {{ row.integrantesProy.length - 2 }} integrantes adicionales ..</strong>
+        <span v-if="row.integrantesProy.length > 3">
+              <strong>Se tienen {{ row.integrantesProy.length - 3 }} integrantes adicionales ..</strong>
         </span>
 
           <!-- <span  v-if ="row.integrantes.includes(equipment.codProyIntegrante)">

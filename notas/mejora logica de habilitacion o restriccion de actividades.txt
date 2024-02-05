@@ -1,0 +1,55 @@
+                        $arrayColumnasValidas      = [
+                            'exercise'        => true,
+                            'restriction'     => true,
+                            'restrictionType' => true,
+                            'date_required'   => true,
+                            'date_conciliad'  => true,
+                            'date_identity'   => true,
+                            'responsible'     => true,
+                            'responsible_area' => true,
+                            'condition'=> true,
+                            'applicant'=> true
+                        ];
+
+
+estado de restriccion : cuando la restriccion esta cerrada ,
+automaticamente todas las restricciones pasan a modo de lectura
+
+
+
+restriccion habilitada : habilita o inabilita una restriccion ,
+usualmente , usualmente cuando son restricciones de tipo cliente
+o terminadas.
+
+###### LOGICA A SEGUIR  #####
+** esto impacta en backend como en front end
+
+
+estado de restriccion = 1 => inabilita todas las columnas
+
+estado de restriccion = 0 =>
+          codperfil 0 or codperfil =  3  =>
+                        si estado = 4  => inabilitado
+                        si estado = 3  =>
+                                          col estado = habilitado
+                                          col extras = inabilitados
+
+                        si estado es otros => habilitado
+
+          codperfil 2  =>
+                        si estado 3    =>
+                                          col estado si dueño = habilitado
+                                          col extras = inabilitados
+
+                        si estado 1 or estado = 2 =>
+                                          col estado si dueño = habilitado
+                                          col actividad si dueño = habilitado
+                                          col restriccion si dueño = habilitado
+                                          col extras = inabilitados
+                        si estado  = 4 => inabilitado
+
+         codperfil 1  =>
+                        all columns = inabilitados
+         codperfil 4  =>
+                        filtrar codTipoRestriccionCliente  = 11
+                        all columns = inabilitado

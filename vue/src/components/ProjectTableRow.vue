@@ -8,7 +8,7 @@
         <img src="../assets/edit.svg" alt="" class="cursor-pointer" @click="openModal({param: 'editStatus', id: row.projectId})" />
       </span>
     </td>
-    <td > ------- </td>
+    <td > ---- </td>
     <td>
       <!-- <span class="flex flex-col text-[0.6rem]">
         <span v-for="(equipment, index) in row.users" :key="index">{{
@@ -18,21 +18,23 @@
 
       <template v-for="(equipment, index) in row.users" :key="index">
 
-<div v-if="index <= 2"  class = "text-[0.6rem]">
-        {{ equipment }}
-</div>
-</template>
+      <div v-if="index <= 2"  class = "text-[0.6rem]">
+              {{ equipment }}
+      </div>
+      </template>
 
-<span v-if="row.users.length > 2" class=" text-[0.6rem]">
-    <strong>Se tienen {{ row.users.length - 2 }} personas adicionales ..</strong>
-</span>
+      <span v-if="row.users.length > 3" class=" text-[0.6rem]">
+          <strong>Se tienen {{ row.users.length - 3 }} personas adicionales ..</strong>
+      </span>
 
 
     </td>
 
     <td>
       <span class="flex flex-col text-[0.68rem] text-orange">
-        <span v-if="row.rol == 3 && row.codEstado == 0" class="cursor-pointer" @click="$emit('editProject', row.projectId)">Editar</span>
+        <span v-if="row.rol == 3 && row.codEstado == 0" class="cursor-pointer" @click="$emit('editProject', row.projectId)"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</span>
+        <span v-if="row.rol == 3 && row.codEstado == 0" class="cursor-pointer" @click="$emit('editUsuarios', row.projectId)"><i class="fa fa-user-plus" aria-hidden="true"></i> Agregar</span>
+        <br>
         <!-- <span class="cursor-pointer" @click="$emit('viewProject', row.id); openModal({param: 'viewproject', id: row.id})">Ver</span> -->
       </span>
     </td>

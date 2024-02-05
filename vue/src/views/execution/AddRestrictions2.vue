@@ -784,9 +784,6 @@ import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 import AddFront from "../../components/AddFront.vue";
 import AddPhase from "../../components/AddPhase.vue";
 import DataTableRestricciones from "../../components/DataTableRestricciones.vue";
-// import DataTableRestriccionesRow from "../../components/DataTableRestriccionesRow.vue";
-// import RestrictionPerson from "../../components/RestrictionPerson.vue";
-
 import ToggleColumn from "../../components/ToggleColumn.vue";
 import AddRow from "../../components/AddRow.vue";
 import DeleteRow from "../../components/DeleteRow.vue";
@@ -1807,6 +1804,12 @@ export default {
 
 
                       codNuevo            = response.data.inserciones[index1]["idReal"];
+
+                      this.restrictions[enviar[i].idfrente]["listaFase"][
+                        enviar[i].idfase
+                      ]["listaRestricciones"][enviar[i].idrestriccion][
+                        "isNewRecord"
+                      ] = false;
 
                       this.restrictions[enviar[i].idfrente]["listaFase"][
                         enviar[i].idfase

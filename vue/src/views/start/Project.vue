@@ -90,6 +90,7 @@
                   :index="index"
                   @openModal="openModal"
                   @editProject="editProject"
+                  @editUsuarios="editUsuarios"
                   @viewProject="viewProject"
                 />
               </template>
@@ -237,6 +238,7 @@ export default {
       rowId: '',
       footerFlag: true,
       status: 0,
+      flagAddemembers: false,
       headerColsRef: {
 
         project_name: "Nombre del proyecto",
@@ -377,6 +379,16 @@ export default {
     // },
     nextStatus: async function () {
       // console.log(this.status)
+      console.log("<>> entrando  a actualizar el estado ")
+      console.log(this.createstatus)
+      if(this.flagAddemembers){
+
+        this.status = 3;
+
+      }
+
+      console.log(this.status)
+
       if (this.createstatus == true) {
         this.status++;
         this.status > 1 && (this.footerFlag = false);
@@ -488,9 +500,8 @@ export default {
               break;
 
             }
-
-
           case 4:
+            console.log(">>> aqi llegamos")
             const nowdate = new Date();
             const month = nowdate.getMonth() / 1 + 1;
             const savedate =
@@ -546,10 +557,134 @@ export default {
 
             });
 
+            this.flagAddemembers = false;
             await this.cleanInputs();
 
         }
       }
+
+    },
+    editUsuarios: function (payload) {
+      /* El edit ocurre luego de que se hayan cargado las tablas de utilitarios*/
+      store.dispatch("get_utilitarios").then((response) => {
+        this.status = 2;
+        this.flagAddemembers = true;
+        this.createstatus = false;
+        this.projectId = payload;
+        const projects = this.$store.state.projects;
+        const reports = [];
+
+        this.$refs.step3.reports = [];
+        this.$store.state.projectUsers = [];
+
+        /* Llenamos las listas desplegables para el step 1*/
+
+        this.$refs.step1.listaTiposproyectos = [];
+        this.$refs.step1.listaUbigeos = [];
+        this.$refs.step1.listaMonedas = [];
+
+        this.$refs.step1.listaTiposproyectos = this.$store.state.tiposproyectos;
+        this.$refs.step1.listaUbigeos = this.$store.state.ubigeos;
+        this.$refs.step1.listaMonedas = this.$store.state.moneda;
+
+        /* Llenamos las listas desplegables para el step 1*/
+
+        /* Limpiamos y llenamos de nuevo las listas para el step 2*/
+        const users = [];
+
+        this.$refs.step2.areaIntegrantes = [];
+        this.$refs.step2.rolIntegrantes = [];
+
+        let tareaintegrante = this.$store.state.areaintegrante;
+        for (let index = 0; index < tareaintegrante.length; index++) {
+          this.$refs.step2.areaIntegrantes.push({
+            value: tareaintegrante[index]["codArea"],
+            name: tareaintegrante[index]["desArea"],
+          });
+        }
+
+        let trolintegrante = this.$store.state.rolintegrante;
+        for (let index = 0; index < trolintegrante.length; index++) {
+          this.$refs.step2.rolIntegrantes.push({
+            value: trolintegrante[index]["codRolIntegrante"],
+            name: trolintegrante[index]["desRolIntegrante"],
+          });
+        }
+
+        this.$refs.step3.programmingDayTypes = [];
+        this.$refs.step3.programmingDayTypes = this.$store.state.programmingDayTypes;
+
+        /* Limpiamos y llenamos de nuevo las listas para el step 2*/
+
+        projects.forEach((pro) => {
+          if (pro.codProyecto == payload) {
+            var dayFechainicio = new Date(pro.dayFechaInicio);
+
+            this.$refs.step1.projectName = pro.desNombreProyecto;
+            this.$refs.step1.business = pro.desEmpresa;
+            this.$refs.step1.searchText = pro.nombreEmpresa;
+            this.$refs.step1.term = String(pro.numPlazo);
+            this.$refs.step1.coveredArea = String(pro.numAreaTechado);
+            this.$refs.step1.projectType = pro.codTipoProyecto;
+            // this.$refs.step1.district=pro.codUbigeo;
+            this.$refs.step1.startDate = dayFechainicio;
+            this.$refs.step1.referenceAmount = String(pro.numMontoReferencial);
+            this.$refs.step1.area = String(pro.numAreaTechada);
+            this.$refs.step1.builtArea = String(pro.numAreaConstruida);
+            this.$refs.step1.country = pro.desPais;
+            this.$refs.step1.address = pro.desDireccion;
+            this.$refs.step1.ubigeo = pro.codUbigeo;
+            this.$refs.step1.searchTextUbigeo = pro.desUbigeo;
+            this.$refs.step1.codMoneda = pro.codMoneda;
+            // this.$refs.step1.placeholder = pro.desUbigeo;
+
+            const invusers = pro.desUsuarioCreacion
+              .substr(0, pro.desUsuarioCreacion.length - 1)
+              .split(", ");
+          }
+        });
+
+        store.dispatch("get_projectuser", payload).then(() => {
+          const prousers = this.$store.state.currentprojectusers;
+          /* Llenamos la lista de correos */
+          prousers.forEach((user) => {
+            const temp = {
+              codProyIntegrante : user.codProyIntegrante,
+              userEmail: user.desCorreo,
+              userRole: user.codRolIntegrante,
+              userArea: user.codArea,
+              id: user.idIntegrante,
+              flgInsertado: true,
+              suggestiondata: [],
+            };
+            users.push(temp);
+          });
+          this.$refs.step2.users = users;
+          /* Llenamos la lista de correos */
+          this.$refs.step3.users = users;
+        });
+
+        store.dispatch("get_projectreport", payload).then(() => {
+          this.$refs.step3.reports = this.$store.state.currentprojectreport;
+
+          /* When editing a specific project, set step3 TypeFrequency from the current project report */
+          if (this.$store.state.currentprojectreport[0]) {
+            let proDayCode =
+              this.$store.state.currentprojectreport[0].proDayCode;
+            let matchObj = this.$refs.step3.programmingDayTypes.find(
+              (obj) => obj.value === proDayCode
+            );
+            this.$refs.step3.TypeFrequency = matchObj
+              ? matchObj.typeFrequency
+              : "";
+            this.$refs.step3.programmingDayTypeCode = matchObj ? proDayCode : 0;
+          }
+        });
+
+        // this.status = 3;
+      });
+      // this.cleanInputs();
+
 
     },
     editProject: function (payload) {
@@ -690,7 +825,8 @@ export default {
       this.viewprojectData = projectInfo;
     },
     cancel: function () {
-      this.status = 4;
+      this.status          = 4;
+      this.flagAddemembers = false;
       this.cleanInputs();
     },
     createNewProject: function () {

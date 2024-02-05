@@ -107,9 +107,22 @@
           <td class="downExcel" :class="{'hidden': hideCols.indexOf('date_required') > -1}">
 
             <input
-            v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFRequerida )"
+            v-if="(typeof restriction_data.isNewRecord !== 'undefined' && restriction_data.isNewRecord)"
              name="date_required"
+             @keydown.backspace.prevent
+             @keydown.delete.prevent
+             @change="verificarCambio({name:'dayFechaRequerida', value: formated_val(restriction_data.dayFechaRequerida)})"
+             v-model="restriction_data.dayFechaRequerida"
+             type="date"
+             class="text-[0.6rem] w-full border border-[#8A9CC9] px-2 h-6 rounded text-gray-800"
 
+            />
+
+            <input
+            v-else-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFRequerida )"
+             name="date_required"
+             @keydown.backspace.prevent
+             @keydown.delete.prevent
              @change="verificarCambio({name:'dayFechaRequerida', value: formated_val(restriction_data.dayFechaRequerida)})"
              v-model="restriction_data.dayFechaRequerida"
              type="date"
@@ -118,10 +131,11 @@
             />
 
             <input
-             v-if="!INIstateRestriction || ( restriction_data.codEstadoActividad == 3 || restriction_data.codEstadoActividad == 4)  || restriction_data.isEnabledFRequerida == false "
+             v-else-if="!INIstateRestriction || ( restriction_data.codEstadoActividad == 3 || restriction_data.codEstadoActividad == 4)  || restriction_data.isEnabledFRequerida == false "
              name="date_required"
              :disabled="true"
-
+             @keydown.backspace.prevent
+             @keydown.delete.prevent
              :value="formated_val(restriction_data.dayFechaRequerida)"
              type="text" class="w-full border border-[#8A9CC9] px-2 text-[0.6rem] h-6  rounded"
              :class="{'border-[#cd4fb2]': (restriction_data.codEstadoActividad == 4), 'border-[#3ac189]': (restriction_data.codEstadoActividad == 3),'border-[#e56b37]': (restriction_data.codEstadoActividad == 2),'border-[#ccc]': (restriction_data.codEstadoActividad == 1),
@@ -138,6 +152,8 @@
               <input
                     v-if="(INIstateRestriction && restriction_data.codEstadoActividad < 3 && restriction_data.isEnabledFConciliada )"
                     name="date_conciliad"
+                    @keydown.backspace.prevent
+                    @keydown.delete.prevent
                     @change="verificarCambio({name:'dayFechaConciliada', value: restriction_data.dayFechaConciliada})"
                     v-model="restriction_data.dayFechaConciliada"
                     type="date"
@@ -148,6 +164,8 @@
               <input
                     v-if="!INIstateRestriction || ( restriction_data.codEstadoActividad == 3 || restriction_data.codEstadoActividad == 4)  || restriction_data.isEnabledFConciliada == false"
                     name="date_conciliad"
+                    @keydown.backspace.prevent
+                    @keydown.delete.prevent
                     :disabled="true"
                     :value=formated_val(restriction_data.dayFechaConciliada)
                     type="text"
@@ -304,6 +322,36 @@ export default {
   },
   methods:{
 
+    verificarFecha(name){
+
+       // Verifica que la fecha tenga el formato dd/mm/aaaa.
+       const partes = this.restriction_data[name].split('-');
+       console.log(">>>>>>  ver .... "+this.restriction_data[name])
+       console.log(partes)
+
+      if (partes.length === 3) {
+        const [año, mes, dia] = partes;
+        if (!dia || !mes || !año || dia.length !== 2 || mes.length !== 2 || año.length !== 4) {
+          // alert('Por favor, introduzca una fecha válida en el formato dd/mm/aaaa.');
+          // Puedes reestablecer la fecha a un valor por defecto o la última fecha válida conocida aquí.
+          console.log(">>>>>> con error 1")
+          return false;
+
+        }else{
+          console.log(">>>>>> esta todo bien ")
+          return true;
+        }
+
+      } else {
+        // alert('Por favor, introduzca una fecha válida en el formato dd/mm/aaaa.');
+          console.log(">>>>>> con error 2")
+          return false;
+        // Puedes reestablecer la fecha a un valor por defecto o la última fecha válida conocida aquí.
+      }
+
+
+    },
+
     updatedColorBorder(){
 
     },
@@ -450,17 +498,6 @@ export default {
     },
     verificarCambio(data) {
 
-
-      // console.log(data)
-      // console.log(">>>> deta de props")
-      // console.log(this.restriction_data['desActividad'])
-
-
-      // console.log(">>>> deta de rows llenados")
-      // console.log(this.restriction_row['desActividad'])
-
-
-
       if (this.statusRestriction == false){
         return;
       }
@@ -484,10 +521,15 @@ export default {
       var input                       = updRow[data.name]
       var comparar                    = this.restriction_row[data.name]
 
-      console.log(">>>>> comparar")
-      console.log(">>"+input+" ||| "+comparar)
+      // console.log(">>>>> comparar")
+      // console.log(">>"+input+" ||| "+comparar)
 
       if ( data.name == 'dayFechaRequerida' || data.name == 'dayFechaConciliada' ){
+
+        if(!this.verificarFecha(data.name)){
+          return;
+        }
+
         if (input != null){
            // input             = input != "" ? input.toLocaleDateString('en-CA').split('T')[0] : input
            // comparar          = comparar != "" ?  comparar.split(' ')[0] : comparar

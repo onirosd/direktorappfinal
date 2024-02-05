@@ -185,7 +185,7 @@ class ProjectController extends Controller
             'indNoRetrasados' => 0,
             'indRetrasados' => 0,
         ]);
-        
+
         $restrictionid = Restriction::where('codProyecto', $codPro)->first();
         $restrictionmember = RestrictionMember::create([
             'codProyecto' => $codPro,
@@ -194,7 +194,7 @@ class ProjectController extends Controller
             'dayFechaCreacion' => $request['date'],
             'desUsuarioCreacion' => '',
         ]);
-        
+
         foreach($request['reports'] as $report) {
             /* create util_reportes table record */
             $utilreportcreate = ProjectUtilReport::create([
@@ -280,7 +280,7 @@ class ProjectController extends Controller
             ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
             ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
             ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
-            ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , min(ad.isInvitado) as isInvitado , max(ad.rol) as rol
+            REGEXP_REPLACE(ad.desUsuarioCreacion, ',$', '') as desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , min(ad.isInvitado) as isInvitado , max(ad.rol) as rol
 
             from (
             select  pp.* , mp.des_Empresa as nombreEmpresa, cu.desUbigeo  as desUbigeo, 0 as isInvitado , 3 as rol
@@ -302,7 +302,7 @@ class ProjectController extends Controller
             ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
             ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
             ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
-            ad.desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo
+            REGEXP_REPLACE(ad.desUsuarioCreacion, ',$', '')  , ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo
 
 
         ";

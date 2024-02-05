@@ -1035,10 +1035,11 @@ const store = createStore({
             desTipoRestriccion:"",
             desUsuarioResponsable:"",
             idUsuarioResponsable:"",
-            isEnabled:true,
+            isEnabled:false,
             isupdate:false,
             isEnabledFRequerida:true,
             isEnabledFConciliada:true,
+            isNewRecord:true,
             numOrden:0,
 
             dayFechaLevantamiento : "",
@@ -1101,11 +1102,12 @@ const store = createStore({
                 desTipoRestriccion:"",
                 desUsuarioResponsable:"",
                 idUsuarioResponsable:"",
-                isEnabled:true,
+                isEnabled:false,
                 isupdate:false,
                 numOrden:0,
                 isEnabledFRequerida:true,
                 isEnabledFConciliada:true,
+                isNewRecord:true,
 
                 dayFechaLevantamiento : "",
                 codAreaRestriccion : payload.codAreaUsuario,
@@ -1373,7 +1375,10 @@ const store = createStore({
       const struser = projectData.desUsuarioCreacion;
       //tempProject.equipments = struser.substr(0, struser.length-1).split(', ');
       if(struser){
-        tempProject.users = struser.substr(0, struser.length-1).split(', ');
+
+        tempProject.users = struser.substr(0, struser.length-1).split(',');
+        console.log(">>>>> verificar que se guarda aqui ")
+        console.log(tempProject)
         state.project_rows.push(tempProject)
         // state.project_rows = state.restriction_rows;
       }

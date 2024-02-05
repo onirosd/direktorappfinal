@@ -18,7 +18,7 @@
     <Breadcrumb
       :paths="['Inicio', 'Análisis de restricciones']"
       :urls ="['home']"
-      :settingFlag="true"
+      :settingFlag="false"
     />
     <Indicator
       :header="'Análisis de restricciones'"
