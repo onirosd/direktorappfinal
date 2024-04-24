@@ -4,86 +4,17 @@
 
       <div v-if="mostrarFlotante" class="fixed inset-0 bg-black bg-opacity-50 z-10"></div>
 
-      <!-- Panel de justificacion de retrasados  - Inicio -->
-      <transition name="fade" v-if="get_rolProyecto != 8">
-        <div id="flotante" v-show="mostrarFlotante" class="fixed h-[32em] right-10 bg-gray-50 shadow-2xl p-6 rounded-lg w-[22em] z-20 border border-[#d13f5a] flex flex-col">
-          <h2 class="text-xl font-semibold mb-2 text-red-400 ">{{form_titulo}}</h2>
-          <img
-            src="../assets/modal-close.svg"
-            alt=""
-            class="absolute top-4 right-4 cursor-pointer w-6"
-            @click="mostrarFlotante = false;"
-          />
-
-          <!-- Contenedor de Instrucciones -->
-          <div class="text-xs text-red-400 mb-4">
-            <p>* Elija el motivo del retraso y añada un comentario de manera obligatoria.</p>
-            <!-- <p>* </p>
-            <p>Instrucción 3</p> -->
-          </div>
-
-          <!-- Select -->
-          <nav class="text-xs text-red-400 ">Elegir Motivos de retraso</nav>
-          <select v-model="form_seleccion" class="text-xs mb-2 p-2 rounded-md w-full bg-white border border-red-400 focus:border-red-500 focus:ring focus:ring-red-400 focus:ring-opacity-50">
-            <option disabled value="">Elegir una opción</option>
-            <option v-for="opcion in motivosRetraso" :key="opcion.codRetrasoMotivo" :value="opcion.codRetrasoMotivo">{{ opcion.desRetrasoMotivo }}</option>
-          </select>
-
-          <!-- Área de Comentarios -->
-          <textarea v-model="form_comentario" class="mb-4 p-3 text-xs rounded-md bg-white border border-red-400  focus:border-red-500 focus:ring focus:ring-red-400 focus:ring-opacity-50 h-[15em]" placeholder="Comentarios adicionales"></textarea>
-          <!-- Mensaje de error -->
-          <div v-if="mostrarError" class="text-red-500 text-xs mb-2">
-            {{ mensajeError }}
-          </div>
-
-          <!-- Botón de Guardar -->
-          <div class="mt-auto">
-            <button @click="guardarFormulario" class="w-full bg-red-400 hover:bg-red-600 text-white p-3 rounded-md transition duration-300">Guardar Comentarios</button>
-          </div>
-        </div>
-      </transition>
       <!-- Panel de justificacion de retrasados  - Final -->
+      <justificacionRetrasoCliente
 
-            <!-- Panel de justificacion de retrasados  - Inicio -->
-      <transition name="fade" v-if="get_rolProyecto == 8">
-        <div id="flotante" v-show="mostrarFlotante" class="fixed h-[32em] right-10 bg-gray-50 shadow-2xl p-6 rounded-lg w-[22em] z-20 border flex flex-col">
-          <div class="text-xl font-semibold mb-2   ">Justificar Cambio - Cliente</div>
-          <div class="text-sm  mb-2 ">Actividad  :  {{form_titulo}}</div>
-          <img
-            src="../assets/modal-close.svg"
-            alt=""
-            class="absolute top-4 right-4 cursor-pointer w-6"
-            @click="mostrarFlotante = false;"
-          />
-
-          <!-- Contenedor de Instrucciones -->
-          <div class="text-xs ">
-            <p>* Sustente el motivo de cambio de estado correctamente</p>
-            <p>* Luego de esto se validara el sustento y se aprobara el cambio.</p>
-            <!-- <p>* </p>
-            <p>Instrucción 3</p> -->
-          </div>
-
-          <!-- Select -->
-          <nav class="text-xs text-red-400 ">Elegir Motivos de retraso</nav>
-          <select v-model="form_seleccion" class="text-xs mb-2 p-2 rounded-md w-full bg-white border border-red-400 focus:border-red-500 focus:ring focus:ring-red-400 focus:ring-opacity-50">
-            <option disabled value="">Elegir una opción</option>
-            <option v-for="opcion in motivosRetraso" :key="opcion.codRetrasoMotivo" :value="opcion.codRetrasoMotivo">{{ opcion.desRetrasoMotivo }}</option>
-          </select>
-
-          <!-- Área de Comentarios -->
-          <textarea v-model="form_comentario" class="mb-4 p-3 text-xs rounded-md bg-white border border-red-400  focus:border-red-500 focus:ring focus:ring-red-400 focus:ring-opacity-50 h-[15em]" placeholder="Comentarios adicionales"></textarea>
-          <!-- Mensaje de error -->
-          <div v-if="mostrarError" class="text-red-500 text-xs mb-2">
-            {{ mensajeError }}
-          </div>
-
-          <!-- Botón de Guardar -->
-          <div class="mt-auto">
-            <button @click="guardarFormulario" class="w-full bg-gray-400 hover:bg-red-600 text-white p-3 rounded-md transition duration-300">Enviar Justificación</button>
-          </div>
-        </div>
-      </transition>
+         :get_rolProyecto="get_rolProyecto"
+         :mostrarFlotante="mostrarFlotante"
+         :form_data="form_data"
+         :motivosRetraso="motivosRetraso"
+         @actualizarFlotante = "actualizarFlotante"
+         @guardarFormulario = "guardarFormulario"
+      >
+      </justificacionRetrasoCliente>
       <!-- Panel de justificacion de retrasados  - Final -->
 
       <img
@@ -315,6 +246,7 @@
 <script>
 import Loading from "vue-loading-overlay";
 import SelectPer2 from "./SelectPer2.vue";
+import justificacionRetrasoCliente from "./justificacionRetrasoCliente.vue";
 import store      from "../store";
 import moment from 'moment-timezone';
 export default {
@@ -323,6 +255,7 @@ export default {
   components: {
     Loading,
     SelectPer2,
+    justificacionRetrasoCliente,
     moment
 
   },
@@ -338,6 +271,18 @@ export default {
       isloading : true,
       mensajeError: '',
       mostrarError: false,
+      form_data : {
+
+        form_titulo: '',
+        form_seleccion: '',
+        form_comentario: '',
+        form_cod_estado: 0,
+        form_cod_restriccion : 0,
+
+        mostrarError: false,
+        mensajeError: '',
+
+      },
       form_titulo: '',
       form_seleccion: '',
       form_comentario: '',
@@ -572,6 +517,12 @@ export default {
   },
   methods: {
 
+    actualizarFlotante(data) {
+      this.mostrarFlotante = data.valor;
+
+    },
+
+
     callMountedTotal (fechaReferencia = ""){
 
 
@@ -773,35 +724,37 @@ export default {
 
     },
 
-     async guardarFormulario() {
-    // Aquí procesas los datos
-    if (this.form_seleccion === '' || this.form_comentario.length < 20) {
-      this.mensajeError = 'Por favor, elige una opción y escribe al menos 20 caracteres en el comentario.';
-      this.mostrarError = true;
+     async guardarFormulario(formulario) {
 
-      setTimeout(() => {
-        this.mostrarError = false;
-      }, 10000); // Oculta el mensaje después de 10 segundos
+      this.form_data = formulario.data;
+      // Aquí procesas los datos
+      if (this.form_data.form_seleccion === '' || this.form_data.form_comentario.length < 20) {
+        this.form_data.mensajeError = 'Por favor, elige una opción y escribe al menos 20 caracteres en el comentario.';
+        this.form_data.mostrarError = true;
 
-      return;
-    }
+        setTimeout(() => {
+          this.form_data.mostrarError = false;
+        }, 10000); // Oculta el mensaje después de 10 segundos
+
+        return;
+      }
 
 
-    const elemento = this.rawDataPrincipal.listaData.find(item => item.cod_restriccion === this.form_cod_restriccion);
+    const elemento = this.rawDataPrincipal.listaData.find(item => item.cod_restriccion === this.form_data.form_cod_restriccion);
     // Si el elemento existe, actualiza cod_estado
     if (elemento) {
 
-      elemento.cod_estado             = this.form_cod_estado;
-      elemento.cod_motivo_retraso     = this.form_seleccion;
-      elemento.desc_comentario_retraso = this.form_comentario;
+      elemento.cod_estado             = this.form_data.form_cod_estado;
+      elemento.cod_motivo_retraso     = this.form_data.form_seleccion;
+      elemento.desc_comentario_retraso = this.form_data.form_comentario;
 
 
       let cambios = {
             rol_proyecto       : this.rolProyecto,
-            cod_restriccion    : this.form_cod_restriccion,
-            cod_estado         : this.form_cod_estado,
-            cod_motivo_retraso : this.form_seleccion,
-            desc_comentario_retraso : this.form_comentario
+            cod_restriccion    : this.form_data.form_cod_restriccion,
+            cod_estado         : this.form_data.form_cod_estado,
+            cod_motivo_retraso : this.form_data.form_seleccion,
+            desc_comentario_retraso : this.form_data.form_comentario
           }
 
       this.isloading = true
@@ -834,9 +787,9 @@ export default {
       if(isretrasado == 1 && data.cod_select == 3 ){
 
         this.mostrarFlotante      = !this.mostrarFlotante;
-        this.form_titulo          = desc_restriccion;
-        this.form_cod_estado      = data.cod_select;
-        this.form_cod_restriccion = data.cod_restriccion;
+        this.form_data.form_titulo          = desc_restriccion;
+        this.form_data.form_cod_estado      = data.cod_select;
+        this.form_data.form_cod_restriccion = data.cod_restriccion;
 
       }else{
 
@@ -844,20 +797,18 @@ export default {
         // Si el elemento existe, actualiza cod_estado
         if (elemento) {
           this.isloading = true
+
           let cambios    = {
             cod_restriccion : data.cod_restriccion,
             cod_estado      : data.cod_select
           }
 
           this.$store.dispatch("update_restriction_state_calendar", cambios).then((response) => {
-            // console.log(">>>>>> verificamos el estados de la actualizacion")
-            // console.log(response)
 
-            // recargarDesdecalendario
-            this.$emit('recargarDesdecalendario', {cambio: 1 })
+              this.$emit('recargarDesdecalendario', {cambio: 1 })
 
-            elemento.cod_estado = data.cod_select;
-            this.isloading      = false
+              elemento.cod_estado = data.cod_select;
+              this.isloading      = false
 
           }).catch({
 
