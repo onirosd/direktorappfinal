@@ -52,6 +52,28 @@ const store = createStore({
         }
       ]
     }],
+    rrhh_rows: [{
+      codAnaRes:1,
+      codEstado:1,
+      codProyecto:1,
+      indNoRetrasados:0,
+      indRetrasados:0,
+      integrantes: [],
+      integrantesProy: [
+        {
+          codProyIntegrante : 0,
+          codProyecto       : 0,
+          id                : 0,
+          desCorreo         : ""
+        },
+        {
+          codProyIntegrante : 1,
+          codProyecto       : 1,
+          id                : 1,
+          desCorreo         : ""
+        }
+      ]
+    }],
     restriction_rows: [
       {
         id: 1,
@@ -171,6 +193,11 @@ const store = createStore({
     },
     statusRestriction: (state) => (id) => {
       const row = state.restriction_rows_real.find((row) => row.codProyecto === id);
+      if (typeof row === "undefined") return false;
+      return row.codEstado;
+    },
+    statusRrHh: (state) => (id) => {
+      const row = state.rrhh_rows.find((row) => row.codProyecto === id);
       if (typeof row === "undefined") return false;
       return row.codEstado;
     },
@@ -485,6 +512,22 @@ const store = createStore({
         // this.state.projects.forEach (pro => {
         //   commit('copyProjectFromDB', pro)
         // })
+        console.log('->:' ,res.data)
+      })
+    },
+    // RECURSOS HUMANOS
+    get_rrhh({commit}) {
+      const id = {
+        id: sessionStorage.getItem('Id')
+      }
+      this.state.restriction_rows = []
+      return axiosClient.post('/get_rrhh', id)
+      .then(res => {
+        commit('setRrHh', res.data)
+        // this.state.projects.forEach (pro => {
+        //   commit('copyProjectFromDB', pro)
+        // })
+        console.log('->:' ,res.data)
       })
     },
     get_project({commit}) {
@@ -581,6 +624,14 @@ const store = createStore({
 
       return axiosClient.post('/update_restriction_member', updateRes);
     },
+    update_rrhh_member({commit}, restriction) {
+      const updateRes = {
+        codProyecto : restriction.codProyecto,
+        users       : restriction.lista,
+      }
+
+      return axiosClient.post('/update_rrhh_member', updateRes);
+    },
     update_restriction_state({commit}, dataUpdate) {
       // console.log(">>>> verificamos")
       // console.log(dataUpdate)
@@ -590,6 +641,16 @@ const store = createStore({
       }
 
       return axiosClient.post('/update_restriction_state', updateRes);
+    },
+    update_rrhh_state({commit}, dataUpdate) {
+      // console.log(">>>> verificamos")
+      // console.log(dataUpdate)
+      const updateRes = {
+        codProyecto : dataUpdate.codProyecto,
+        state       : dataUpdate.state,
+      }
+
+      return axiosClient.post('/update_rrhh_state', updateRes);
     },
     update_project_state({commit}, dataUpdate) {
       // console.log(">>>> verificamos")
@@ -924,6 +985,9 @@ const store = createStore({
     },
     toggleEstado(state, payload) {
       state.restriction_rows_real.find((row) => row.codProyecto === payload.id).codEstado = payload.estado
+    },
+    toggleEstadoRrHh(state, payload) {
+      state.rrhh_rows.find((row) => row.codProyecto === payload.id).codEstado = payload.estado
     },
     toggleEstadoProject(state, payload) {
 
@@ -1281,6 +1345,9 @@ const store = createStore({
     },
     setRestrictionReal: (state, restrictions) => {
       state.restriction_rows_real = restrictions;
+    },
+    setRrHh: (state, rrhh) => {
+      state.rrhh_rows = rrhh;
     },
     setCargos: (state, cargos) => {
       state.cargos = cargos;

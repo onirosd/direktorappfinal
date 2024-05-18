@@ -31,6 +31,7 @@ import PasswordForgotten from "../views/PasswordForgotten.vue";
 import PasswordRecover from "../views/PasswordRecover.vue";
 
 import store from "../store";
+import HumanResources from "../views/execution/HumanResources.vue";
 
 var path_general = import.meta.env.VITE_WEB_BASE_URL;
 var routes = [
@@ -159,6 +160,15 @@ var routes = [
         name: "person_edit",
         component: Person_edit,
         meta: { layout: 'home' , sidebarOpen: true},
+      },
+      {
+        path: "/human_resources",
+        name: "human_resources",
+        component: HumanResources,
+        meta: { layout: 'home' , sidebarOpen: true},
+        // children:[
+
+        // ]
       },
 
     ],

@@ -19,6 +19,8 @@ use App\Http\Controllers\ConfController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\IndicatorsController;
 
+use App\Http\Controllers\RrHhController;
+
 
 
 // header("Access-Control-Allow-Origin: https://direktor.com.pe");
@@ -70,6 +72,7 @@ Route::post('/create_project', [ProjectController::class, 'create_project']);
 Route::get('/sendMails/{user}', [ProjectController::class, 'sendMails']);
 Route::post('/get_project', [ProjectController::class, 'get_project']);
 Route::post('/get_restrictions', [RestrictionController::class, 'get_restriction']);
+
 Route::post('/edit_project', [ProjectController::class, 'edit_project']);
 Route::post('/get_projectreport', [ProjectController::class, 'get_projectreport']);
 Route::post('/get_projectuser', [ProjectController::class, 'get_projectuser']);
@@ -77,6 +80,12 @@ Route::post('/update_restriction_member', [RestrictionController::class, 'update
 Route::post('/update_restriction_state', [RestrictionController::class, 'update_state']);
 Route::post('/update_project_state', [ProjectController::class, 'update_state']);
 Route::post('/update_hidden_columns', [RestrictionController::class, 'update_hidden']);
+
+/* Recursos Humanos */
+Route::post('/get_rrhh', [RrHhController::class, 'get_rrhh']);
+Route::post('/update_rrhh_member', [RrHhController::class, 'update_member']);
+Route::post('/update_rrhh_state', [RrHhController::class, 'update_state']);
+Route::post('/get_all_rrhh', [ProjectController::class, 'create_rrhh_for_projects']);
 
 Route::post('/add_front', [RestrictionController::class, 'add_front']);
 Route::post('/add_phase', [RestrictionController::class, 'add_phase']);
@@ -145,3 +154,6 @@ Route::post('/update_state_restriction_with_retraso', [RestrictionController::cl
 
 Route::post('/get_data_aprobaciones', [RestrictionController::class, 'get_data_aprobaciones']);
 Route::post('/push_enviar_aprobaciones', [RestrictionController::class, 'push_enviar_aprobaciones']);
+
+
+

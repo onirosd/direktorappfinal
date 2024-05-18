@@ -140,6 +140,13 @@ export default {
               title: "Pagina en construcción",
               cerrar: false
             },
+            {
+              id: "human_resources",
+              label: "RRHH",
+              path: "/human_resources",
+              title: "Pagina en construcción",
+              cerrar: false
+            },
           ],
         },
         {
@@ -176,6 +183,7 @@ export default {
 
     handleRedirect(path) {
       this.$router.push(path);
+      this.$emitter.emit('setStatus', 4);
     },
     handleClick(id) {
       // console.log(">>> verificamossss ")
