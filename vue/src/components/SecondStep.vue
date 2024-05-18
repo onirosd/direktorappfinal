@@ -4,12 +4,12 @@
     <span @click="probar" class="text-xl mb-4"
       >Asigna los miembros de tu primer proyecto
     </span>
-    <div class="flex justify-between sm:flex-col mb-8">
+    <div class="justify-between sm:flex-col mb-8 md:flex hidden">
       <div class="flex flex-col w-[6%] sm:w-full sm:mb-8">
-        <span class="text-xs leading-6 mb-4">Acción</span>
+        <span class="text-xs leading-6 mb-4 text-center">Acción</span>
 
         <div
-              class="h-[32px] w-full mb-4  rounded px-4"
+              class="h-[32px] w-full mb-4  rounded px-4 flex items-center"
               v-for="(user, index) in users"
               :key="index"
         >
@@ -31,7 +31,7 @@
       <div class="flex flex-col w-[30%] sm:w-full sm:mb-8">
         <span class="text-xs leading-6 mb-4">Ingresa el correo del miembro</span>
         <div
-            class="autocompleteel h-[32px] w-full mb-4 border border-[#8A9CC9] rounded rounded flex items-center justify-center"
+            class="autocompleteel h-[32px] w-full mb-4 border border-[#8A9CC9] rounded flex items-center justify-center"
             :class="{ 'invalid-input': (user.error_userEmail != undefined)  }"
             v-for="(user, index) in users" v-bind:key="user.id" >
 
@@ -92,7 +92,7 @@
 
       </div>
       <div class="flex flex-col w-[30%] sm:w-full">
-        <span class="text-xs leading-6 mb-4"
+        <span class="text-xs leading-6 mb-4 whitespace-nowrap"
           >Selecciona área al que pertenece</span
         >
 
@@ -113,7 +113,108 @@
 
       </div>
     </div>
-    <div class="flex cursor-pointer mb-8" >
+
+    <div :class="{ 'invalid-input': (user.error_userEmail != undefined)}" class=" md:hidden"
+          v-for="(user, index) in users" v-bind:key="user.id">
+
+      <div class="flex w-full rounded-2xl p-6 bg-white shadow-tooltip my-4 last:mb-0 flex-col">
+        <div class="flex flex-col w-full sm:mb-8">
+          <span class="text-xs leading-6 mb-2">Ingresa el correo del miembro</span>
+          <div
+              class="autocompleteel h-[32px] w-full border border-[#8A9CC9] rounded flex items-center justify-center"
+               >
+
+              <input type="hidden" v-model="user.id">
+              <input
+                type="text"
+                :disabled="user.flgInsertado"
+                :key="index"
+                placeholder="Correo electrónico"
+                v-model="user.userEmail"
+                class="w-full pt-1.5 pb-1.5 rounded px-4"
+                @keyup='loadSuggestions(user.userEmail, index);'
+                @focus="limpiarErrores()"
+              />
+              <br>
+                  <div class="w-[110%] mx-[-5%] rounded bg-white border border-gray-300 px-4 py-2 space-y-1 relative z-50"
+                  v-if="user.suggestiondata.length > 0 "
+                  >
+                  <ul>
+                      <li
+                      class="px-1 pt-1 pb-2 font-bold border-b border-gray-200"
+                      >
+                      Mostrando {{ user.suggestiondata.length }} resultados
+                      </li>
+                      <li
+                      v-for= 'item in user.suggestiondata'
+                      v-bind:key="item.id"
+                      v-bind:value = "item.email"
+
+                      @click="user.userEmail = item.email; user.id = item.id; user.suggestiondata = [];"
+                      class="cursor-pointer hover:bg-gray-100 p-1"
+                      >
+                        {{ item.email }}
+                      </li>
+                  </ul>
+                  </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-full sm:mb-8">
+          <span class="text-xs leading-6 mb-2">Selecciona el rol</span>
+          <select
+          v-model="user.userRole"
+          :key="index"
+          class="h-[32px] w-full border border-[#8A9CC9] rounded px-4"
+          :class="{ 'invalid-input': (user.error_userRole != undefined)  }"
+          @focus="limpiarErrores()"
+          >
+            <option
+            v-for="item in rolIntegrantes" v-bind:key="item.value" v-bind:value = "item.value" :selected="user.userRole" >
+              {{ item.name }}
+            </option>
+
+          </select>
+        </div>
+
+      <div class="flex flex-col w-full">
+        <span class="text-xs leading-6 mb-2"
+          >Selecciona área al que pertenece</span
+        >
+        <select
+        v-model="user.userArea"
+        :key="index"
+        class="h-[32px] w-full border border-[#8A9CC9] rounded px-4 mb-5"
+        :class="{ 'invalid-input': (user.error_userArea != undefined)  }"
+        @focus="limpiarErrores()"
+        >
+          <option
+          v-for="item in areaIntegrantes" v-bind:key="item.value" v-bind:value = "item.value" :selected="user.userArea" >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <div
+              class="h-[32px] w-full mb-0 rounded px-4 flex items-center justify-end"
+              :key="index"
+        >
+          <button
+            @click="eliminarUsuario(user.codProyIntegrante)"
+            class="px-2 py-1 rounded-md text-red-500 text-base w-auto border-2 border-red-500"
+          >
+          Eliminar
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+
+    <div class="flex cursor-pointer my-8" >
       <img
         src="../assets/tooltip-person-add-active.svg"
         class="mr-2"
@@ -169,7 +270,7 @@ export default {
 
 
       });
-
+      console.log('usuarios', this.users);
     },
     validarMiembros : function (){
       return this.users.length > 0 ? true : false

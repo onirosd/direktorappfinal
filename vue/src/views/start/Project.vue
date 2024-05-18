@@ -35,7 +35,7 @@
         <FooterStep
           :buttons="[
             'Cancelar',
-            createstatus ? 'Crear proyecto' : 'Editar proyecto',
+            createstatus ? (status !== 3 ? 'Siguiente' : 'Crear proyecto') : (status !== 3 ? 'Siguiente' : 'Crear proyecto'),
           ]"
           :flag="footerFlag"
           :text="'*Campos obligatorios'"
@@ -226,6 +226,9 @@ export default {
 
 
     `;
+    this.$emitter.on('setStatus', (value)=>{
+      this.status = value;
+    })
   },
   data: function () {
     return {

@@ -146,7 +146,8 @@ export default {
         return this.statusRestriction
       },
       mstatusDraggable: function() {
-        return this.rolProyecto != 3 ? true: this.statusDraggable
+        //return this.rolProyecto != 3 ? true: this.statusDraggable
+        return this.rolProyecto === 3 ? true: this.statusDraggable
       },
       // mRestrictionData: {
       //       get () {

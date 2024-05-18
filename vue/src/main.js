@@ -20,13 +20,15 @@ library.add(faUserSecret)
 const emitter = mitt();
 
 const app = createApp(App);
+app.config.globalProperties.$emitter = emitter;
 app.use(VueApexCharts);
 app.use(store);
 app.use(VCalendar, {});
 app.use(router);
 app.provide('emitter', emitter);
-
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.config.productionTip = false
 
 app.mount('#app');
+
+

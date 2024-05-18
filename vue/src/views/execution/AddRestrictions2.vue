@@ -1048,32 +1048,50 @@ export default {
 
     },
 
-   get_retrasados(datos){
-    let conteo            = 0
-    try {
+    get_retrasados(datos) {
+      let conteo = 0;
+      try {
+          // Obtener la fecha actual en la zona horaria de Lima/Perú y formatearla como YYYY-MM-DD
+          const hoy = new Date().toLocaleDateString("es-PE", { timeZone: 'America/Lima' });
 
-      const hoy     = new Date();
-       conteo        = datos.filter(item => parseInt(item.codEstadoActividad,10) < 3 && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy).length;
+          conteo = datos.filter(item => {
+              // Verificar si dayFechaConciliada es nulo o vacío, y en ese caso usar dayFechaRequerida.
+              const fechaConciliada = (item.dayFechaConciliada && item.dayFechaConciliada.trim() !== "") ? item.dayFechaConciliada : item.dayFechaRequerida;
 
-    } catch (error) {
+              // Formatear fechaConciliada para obtener sólo la fecha en formato YYYY-MM-DD considerando la zona horaria de Lima/Perú
+              const fechaComparar = new Date(fechaConciliada + "T00:00:00-05:00").toLocaleDateString("es-PE", { timeZone: 'America/Lima' });
 
-    }
-    return conteo;
-   },
-   get_noretrasados(datos){
-    let conteo            = 0
-    try {
+              return parseInt(item.codEstadoActividad, 10) !== 3 && fechaComparar < hoy;
+          }).length;
 
-      const hoy    = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
-      // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo       = datos.filter(item => parseInt(item.codEstadoActividad,10) < 3 && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
+      } catch (error) {
+          console.error('Error al calcular conteo:', error);
+      }
 
-    } catch (error) {
+      return conteo;
+  },
+  get_noretrasados(datos) {
+      let conteo = 0;
+      try {
+          // Obtener la fecha actual en la zona horaria de Lima/Perú y formatearla como YYYY-MM-DD
+          const hoy = new Date().toLocaleDateString("es-PE", { timeZone: 'America/Lima' });
 
-    }
+          conteo = datos.filter(item => {
+              // Verificar si dayFechaConciliada es nulo o vacío, y en ese caso usar dayFechaRequerida.
+              const fechaConciliada = (item.dayFechaConciliada && item.dayFechaConciliada.trim() !== "") ? item.dayFechaConciliada : item.dayFechaRequerida;
 
-    return conteo;
-   },
+              // Formatear fechaConciliada para obtener sólo la fecha en formato YYYY-MM-DD considerando la zona horaria de Lima/Perú
+              const fechaComparar = new Date(fechaConciliada + "T00:00:00-05:00").toLocaleDateString("es-PE", { timeZone: 'America/Lima' });
+
+              return parseInt(item.codEstadoActividad, 10) !== 3 && fechaComparar >= hoy;
+          }).length;
+
+      } catch (error) {
+          console.error('Error al calcular conteo:', error);
+      }
+
+      return conteo;
+  },
    download_reporte_for_project(){
 
     store.dispatch("report_restrictions_for_project");

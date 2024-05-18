@@ -4,8 +4,8 @@
     <div class="flex sm:flex-col items-center">
       <span class="font-medium text-[0.7rem]  shrink-0 sm:mb-8 sm:w-full" v-if="flag">{{ text }}</span>
       <div class="flex w-full justify-end sm:flex-col-reverse">
-        <button class="h-6 px-2 border-2 border-orange rounded text-orange text-[0.6rem] leading-4 mr-4 sm:mr-0" @click="$emit('cancel')">{{ buttons[0] }}</button>
-        <button class="h-6 px-2 rounded bg-orange text-white text-[0.6rem] leading-4 sm:mb-4" @click="$emit('next')">{{ buttons[1] }}</button>
+        <button class="h-8 px-6 border-2 border-orange rounded text-orange text-[0.8rem] leading-4 mr-4 sm:mr-0" @click="$emit('cancel')">{{ buttons[0] }}</button>
+        <button class="h-8 px-6 rounded bg-orange text-white text-[0.8rem] leading-4 sm:mb-4" @click="$emit('next')">{{ buttons[1] }}</button>
       </div>
     </div>
   </div>
