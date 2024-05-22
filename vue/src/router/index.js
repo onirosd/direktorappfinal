@@ -162,7 +162,7 @@ var routes = [
         meta: { layout: 'home' , sidebarOpen: true},
       },
       {
-        path: "/human_resources",
+        path: "/recursos_humanos",
         name: "human_resources",
         component: HumanResources,
         meta: { layout: 'home' , sidebarOpen: true},

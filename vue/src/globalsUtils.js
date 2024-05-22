@@ -95,6 +95,9 @@ Date.prototype.getModifiedWeekMonthYearFormat = function(timezone = 'America/Lim
   // Determinar el número de semana de la fecha dada
   let weekOfYear = momentDate.week();
 
+  // Asegurar que el numero semana se presente en 2 digitos
+  weekOfYear = String(weekOfYear).padStart(2, '0');
+
   // Obtener el primer día de la semana
   let startOfWeek = momentDate.clone().startOf('week');
 

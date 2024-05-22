@@ -355,9 +355,9 @@
       @emitFilters="updateFilters"
       @removeFilters="removeFilters"
 
-      :height = "'220'"
+      :height = "chartHeigth"
 
-      class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden"
+      class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden overflow-y-scroll pr-1 " 
 
     />
 
@@ -674,6 +674,13 @@ export default {
     },
     isLoadingProject: function(){
       return this.projectloadflag
+    },
+    chartHeigth(){
+      const maxVisiblePoints = 10;
+      const pointHeight = 55;
+      const totalPoints = this.barDatabyResponsable.labels.length;
+      console.log('xdd', totalPoints);
+      return totalPoints > maxVisiblePoints ? maxVisiblePoints * pointHeight : (totalPoints>5 ? 320 : totalPoints * pointHeight);
     },
     indicadorPorcentajeRetrasados: function (){
 

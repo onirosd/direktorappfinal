@@ -143,7 +143,7 @@ export default {
             {
               id: "human_resources",
               label: "RRHH",
-              path: "/human_resources",
+              path: "/recursos_humanos",
               title: "Pagina en construcción",
               cerrar: false
             },
