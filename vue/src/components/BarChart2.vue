@@ -6,7 +6,7 @@
       <i class="fa-solid fa-filter-circle-xmark cursor-pointer" v-if="showIcon" @click="removerFiltros"></i>
     </div>
 
-    <apexchart  :height="height" type="bar" :options="chartOptions" :series="chartSeries" @dataPointSelection = "onClick" ></apexchart>
+    <apexchart :height="height" type="bar" :options="chartOptions" :series="chartSeries" @dataPointSelection = "onClick" ></apexchart>
   </div>
 </template>
 
@@ -87,7 +87,6 @@ export default {
     // },
 
     onClick(event, chartContext, config) {
-
       this.showIcon = true;
       console.log("_>>> entrando")
       console.log(config.seriesIndex)
@@ -121,10 +120,9 @@ export default {
       console.log(selectState)
       console.log(selectPeriod)
       console.log(selectedValue)
-
+      console.log('altura', this.height)
       console.log(">>>>>>> periodos")
       console.log(this.periodos)
-
 
       this.$emit('emitFilters', {estado:selectState , periodo:selectPeriod, responsable:selectResponsable});
 

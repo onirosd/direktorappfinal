@@ -355,7 +355,7 @@
       @emitFilters="updateFilters"
       @removeFilters="removeFilters"
 
-      :height = "chartHeigth"
+      :height = "'350'"
 
       class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden overflow-y-scroll pr-1 " 
 
@@ -429,7 +429,7 @@
 import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 import store from "../../store";
 import Loading from 'vue-loading-overlay';
-import BarChart2 from '../../components/barchart2.vue';
+import BarChart2 from '../../components/Barchart2.vue';
 
 import { DateTime } from 'luxon';
 import { mapState } from 'vuex';
@@ -679,8 +679,8 @@ export default {
       const maxVisiblePoints = 10;
       const pointHeight = 55;
       const totalPoints = this.barDatabyResponsable.labels.length;
-      console.log('xdd', totalPoints);
-      return totalPoints > maxVisiblePoints ? maxVisiblePoints * pointHeight : (totalPoints>5 ? 320 : totalPoints * pointHeight);
+      const height = totalPoints > maxVisiblePoints ? maxVisiblePoints * pointHeight : (totalPoints>5 ? 320 : totalPoints * pointHeight);
+      return height;
     },
     indicadorPorcentajeRetrasados: function (){
 
@@ -906,7 +906,8 @@ export default {
 
     // console.log('>>>>>>>>> aqui vemos que tal los responsables')
     // console.log(groups)
-
+    console.log('GROUPS', groups);
+    console.log('DATA', data);
     return data;
     },
 
@@ -1241,16 +1242,14 @@ export default {
         if (!series[state]) {
           series[state] = [];
           series[state]['data']    = [];
-        //   series[state]['periodo'] = data['periodo'];
+       
         }
-
         series[state]['data'].push(data['data'][state]);
 
       });
     });
-
+    
     const ordered = {};
-
      // Iteramos sobre cada clave en rawDataColor
      Object.keys(this.rawDataColor).forEach((key) => {
       if (series.hasOwnProperty(key)) {
@@ -1260,7 +1259,7 @@ export default {
 
     const apexSeries = Object.keys(ordered).map(state => ({
       name: state,
-    //   periodo : ordered[state]['periodo'],
+   
       data: ordered[state]['data']
     }));
 
@@ -1271,7 +1270,6 @@ export default {
       labels,
       series: apexSeries
     };
-
   },
 
 
@@ -1289,6 +1287,7 @@ export default {
               bar: {
                 borderRadius: 2,
                 horizontal: true,
+                
                 dataLabels: {
                   total: {
                     enabled: true,
@@ -1299,10 +1298,10 @@ export default {
                   },
                   position: 'center'
                 }
-              }
+              },
         },
         dataLabels: {
-          enabled: true
+          enabled: true, 
         },
         grid: {
           row: {
@@ -1317,6 +1316,11 @@ export default {
                     fontWeight: 700
                   },
           },
+          labels: {
+            style: {
+              fontSize: '11px',
+            }
+          }
         },
         xaxis: {
           categories: Object.keys(this.groupedByResponsable['responsables']),
