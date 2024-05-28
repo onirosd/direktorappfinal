@@ -12,7 +12,7 @@
 
         :key="opcion.id"
         :class="{ 'opcion-seleccionada': index === selectedIndex }"
-        @click="!disabled && seleccionarBandera(opcion)"
+        @click="seleccionarBandera(opcion)"
       >
         <div class="icon-container">
           <FlagIcon :style="{ color: opcion.color, width: '20px', height: '20px' }"/>

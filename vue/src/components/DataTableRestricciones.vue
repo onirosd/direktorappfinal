@@ -1,7 +1,7 @@
 <template>
   <div>
 
-  <!-- <nav @click="validamosArray"> click aqui para ver </nav> -->
+  <nav @click="validamosArray"> click aqui para ver </nav>
   <table class="w-full tbldownload">
     <thead class="bg-[#DCE4F9]">
       <tr :class="{ 'h-10': tableType === 'scroll' }">
@@ -79,6 +79,7 @@
             @updateRow = "updateRow"
             @RegistrarCambioRow = "RegistrarCambioRow"
             @updalidarUpd = "updalidarUpd"
+            :flagfilter   = "mflagfilter"
             >
           </DataTableRestriccionesRow2>
       </template>
@@ -123,7 +124,8 @@ export default {
 
     validarUpd: Boolean,
     ResizeActually: Number,
-    solicitanteActual:String
+    solicitanteActual:String,
+    flagfilter:Number
 
     // rowsCant:Number
   },
@@ -149,14 +151,7 @@ export default {
         //return this.rolProyecto != 3 ? true: this.statusDraggable
         return this.rolProyecto === 3 ? true: this.statusDraggable
       },
-      // mRestrictionData: {
-      //       get () {
-      //           return this.name
-      //       },
-      //       set (idx) {
-      //           this.name = new_name
-      //       }
-      // },
+
       midxFront : function() {
         return this.idxFront
 
@@ -177,6 +172,9 @@ export default {
       mvalidarUpd : function() {
         return this.validarUpd
       },
+      mflagfilter : function(){
+        return this.flagfilter
+      }
 
   },
   methods: {

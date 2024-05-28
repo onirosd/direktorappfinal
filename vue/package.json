@@ -30,7 +30,7 @@
     "mitt": "^3.0.0",
     "module_name": "^1.0.0",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.43",
+    "moment-timezone": "^0.5.45",
     "uuid": "^8.3.2",
     "v-calendar": "^3.0.0-alpha.8",
     "v-click-outside": "^3.2.0",
