@@ -12,6 +12,7 @@ use App\Models\Conf_Tipodiaprogramacion;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class UtilsController extends Controller
 {
@@ -86,6 +87,10 @@ class UtilsController extends Controller
 
     }
 
+    public function normalizarEmpresa($texto){
+        return strtolower(preg_replace('/[^\p{L}\p{N}]/u', '', str_replace(" ", "", iconv('UTF-8', 'ASCII//TRANSLIT', $texto))));
+    }
+
     public function set_new_empresa(Request $request){
         $enviar                    = array();
         $enviar["mensaje"]         = "";
@@ -97,30 +102,40 @@ class UtilsController extends Controller
             'ruc'     => 'required|numeric'
         ]);
 
-        $id = Conf_Empresa::insertGetId([
-            'des_Empresa' => $request['company'],
-            'num_Ruc'     => intval($request['ruc'])
-        ]);
+        /*
+        $empresaExistente = Conf_Empresa::where('des_Empresa', $request['company'])->exists();
+        if($empresaExistente){
+            $enviar["mensaje"] = "La empresa ya existe.";
+            return $enviar;
+        }*/
 
-        if($id > 0){
+        $companyNormalizado = $this->normalizarEmpresa($request['company']);     
+        $empresas = DB::table('conf_maestro_empresas')->select('des_Empresa')->get();
 
-            $enviar["mensaje"]  = "Se inserto con exito la empresa.";
-            $enviar["flag"]     = 1;
-            $enviar["registro"]["des_Empresa"] = $request['company'];
-            $enviar["registro"]["cod_Empresa"] = $id;
+        $empresasNormalizadas = $empresas->map(function($empresa){
+            return $this->normalizarEmpresa($empresa->des_Empresa);
+        });
 
+        if($empresasNormalizadas->contains($companyNormalizado)){
+            $enviar["mensaje"] = "La empresa ya existe.";
         }else{
+            $id = Conf_Empresa::insertGetId([
+                'des_Empresa' => $request['company'],
+                'num_Ruc'     => intval($request['ruc'])
+            ]);
+            if($id > 0){
 
-            $enviar["mensaje"]  = "No se pudo Insertar los valores!";
-
-
+                $enviar["mensaje"]  = "Se inserto con exito la empresa.";
+                $enviar["flag"]     = 1;
+                $enviar["registro"]["des_Empresa"] = $request['company'];
+                $enviar["registro"]["cod_Empresa"] = $id;
+    
+            }else{
+                $enviar["mensaje"]  = "No se pudo Insertar los valores!";
+            }
         }
 
-      return $enviar;
+        return $enviar;
     }
-
-
-
-
 
 }

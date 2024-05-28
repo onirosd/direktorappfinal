@@ -8,6 +8,8 @@ use App\Models\ProjectReport;
 use App\Models\ProjectUtilReport;
 use App\Models\Restriction;
 use App\Models\RestrictionMember;
+use App\Models\RrHh_IngresoPersonal;
+use App\Models\RrHh_Integrantes;
 use App\Models\User;
 use App\Models\Notification;
 use App\Models\Notification_User;
@@ -195,6 +197,26 @@ class ProjectController extends Controller
             'desUsuarioCreacion' => '',
         ]);
 
+        $rrhhcreate = RrHh_IngresoPersonal::create([
+            'codProyecto' => $codPro,
+            'codEstado' => 0,
+            'dayFechaCreacion' => $request['date'],
+            'desUsuarioCreacion' => $useremail[0]['email'],
+            'indNoRetrasados' => 0,
+            'indRetrasados' => 0,
+        ]);
+
+        $rrhhid = RrHh_IngresoPersonal::where('codProyecto', $codPro)->first();
+        $rrhhmember = RrHh_Integrantes::create([
+            'codProyecto' => $codPro,
+            'codRrHh'   => $rrhhid->codRrHh,
+            'codEstado'   => 1,
+            'dayFechaCreacion' => $request['date'],
+            'desUsuarioCreacion' => '',
+        ]);
+
+        //$this->createRRHHModule($codPro, $request['date']);
+
         foreach($request['reports'] as $report) {
             /* create util_reportes table record */
             $utilreportcreate = ProjectUtilReport::create([
@@ -244,6 +266,39 @@ class ProjectController extends Controller
         return $this->get_project($request);
     }
 
+    public function create_rrhh_for_projects(){
+        $proyectos = Project::all();
+
+        foreach($proyectos as $proyecto){
+            $existingRRHH = RrHh_IngresoPersonal::where('codProyecto', $proyecto->codProyecto)->first();
+        
+            if(!$existingRRHH){
+                $date = $proyecto->dayFechaCreacion;
+                $userId = $proyecto->id;
+                $usermail = User::where('id', $userId)->value('email');
+
+                //$this->createRRHHModule($proyecto->codProyecto, $date, $usermail);
+                $rrhhcreate = RrHh_IngresoPersonal::create([
+                    'codProyecto' => $proyecto->codProyecto,
+                    'codEstado' => 0,
+                    'dayFechaCreacion' => $date,
+                    'desUsuarioCreacion' => $usermail,
+                    'indNoRetrasados' => 0,
+                    'indRetrasados' => 0,
+                ]);
+        
+                $rrhhid = RrHh_IngresoPersonal::where('codProyecto', $proyecto->codProyecto)->first();
+                $rrhhmember = RrHh_Integrantes::create([
+                    'codProyecto' => $proyecto->codProyecto,
+                    'codRrHh'   => $rrhhid->codRrHh,
+                    'codEstado'   => 1,
+                    'dayFechaCreacion' => $date,
+                    'desUsuarioCreacion' => '',
+                ]); 
+            }
+        }
+    }
+
 
 
     public function sendMails($id){
@@ -278,7 +333,7 @@ class ProjectController extends Controller
 
             select
             ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
-            ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
+            ad.numAreaTechado,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
             ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
             REGEXP_REPLACE(ad.desUsuarioCreacion, ',$', '') as desUsuarioCreacion, ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo , min(ad.isInvitado) as isInvitado , max(ad.rol) as rol
 
@@ -300,7 +355,7 @@ class ProjectController extends Controller
             ) ad
             group by
             ad.codProyecto ,ad.desNombreProyecto,ad.codEstado, ad.id, ad.desEmpresa ,ad.numPlazo,
-            ad.numAreaTechada,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
+            ad.numAreaTechado,ad.codTipoProyecto, ad.codUbigeo,ad.dayFechaInicio, ad.numMontoReferencial,
             ad.numAreaTechada , ad.numAreaConstruida, ad.desPais, ad.desDireccion, ad.dayFechaCreacion,
             REGEXP_REPLACE(ad.desUsuarioCreacion, ',$', '')  , ad.codMoneda, ad.nombreEmpresa, ad.desUbigeo
 
@@ -558,6 +613,7 @@ class ProjectController extends Controller
         $projectuser = ProjectUser::where('codProyecto', $request['projectId'])->get();
         return $projectuser;
     }
+
 
     /* ************************** DESARROLLADOR  POR EL PROGRAMADOR  ******************************* */
 

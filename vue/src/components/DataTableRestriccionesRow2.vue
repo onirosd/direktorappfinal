@@ -294,7 +294,8 @@ export default {
 
 
     ResizeActually:Number,
-    solicitanteActual:String
+    solicitanteActual:String,
+    flagfilter:Number
   },
   data: function () {
     return {
@@ -349,10 +350,6 @@ export default {
         // Puedes reestablecer la fecha a un valor por defecto o la última fecha válida conocida aquí.
       }
 
-
-    },
-
-    updatedColorBorder(){
 
     },
 
@@ -462,8 +459,6 @@ export default {
 
         this.restriction_row.dayFechaIdentificacion = this.restriction_data.dayFechaIdentificacion
         this.restriction_row.dayFechaLevantamiento  = this.restriction_data.dayFechaLevantamiento
-        // this.restriction_row.dayFechaRequerida      = this.restriction_data.dayFechaRequerida.toString().split(' ')[0]
-        // this.restriction_row.dayFechaConciliada     = this.restriction_data.dayFechaConciliada.toString().split(' ')[0]
 
         this.restriction_row.dayFechaRequerida2     =  this.restriction_data.dayFechaRequerida.toString().split(' ')[0]
         this.restriction_row.dayFechaConciliada2    =  this.restriction_data.dayFechaConciliada.toString().split(' ')[0]
@@ -498,6 +493,8 @@ export default {
     },
     verificarCambio(data) {
 
+
+
       if (this.statusRestriction == false){
         return;
       }
@@ -521,9 +518,16 @@ export default {
       var input                       = updRow[data.name]
       var comparar                    = this.restriction_row[data.name]
 
-      // console.log(">>>>> comparar")
-      // console.log(">>"+input+" ||| "+comparar)
+      console.log(">>>>>> VALIDAMOS SI HAY ALGUN CAMBIO <<<<<<< ")
+      console.log(">> inicial")
+      console.log(updRow)
+      console.log(">> final")
+      console.log(this.restriction_row)
 
+      // console.log(">>>>> comparar")
+      console.log(">>"+input+" ||| "+comparar)
+
+      // return
       if ( data.name == 'dayFechaRequerida' || data.name == 'dayFechaConciliada' ){
 
         if(!this.verificarFecha(data.name)){
@@ -600,27 +604,18 @@ export default {
   },
   watch: {
 
-    validarUpd(newValor, oldValor) {
-      // console.log(">>>>>>> validamos que se esten haciendo la escucha del flag de cambios")
+    flagfilter(newValor, oldValor) {
+      // console.log(">>>>>>> validamos si efectivamente cambia todo")
       // console.log(newValor)
-      if(newValor == true){
+      // console.log(oldValor)
+      // if(newValor == true){
 
-        // console.log("###################")
-        // console.log(">> guardado")
-        // console.log(this.restriction_row)
-        // console.log(">> actualizado")
-        // console.log(this.restriction_data)
-
-        // this.loadRow()
-
-        // console.log(">>> despues de la actualizacion")
-
-        // console.log(">> guardado")
-        // console.log(this.restriction_row)
-        // console.log(">> actualizado")
-        // console.log(this.restriction_data)
-        // console.log("###################")
-        // this.$emit('updalidarUpd', false);
+      // }
+      if(newValor !== oldValor){
+        // console.log(">>>>>>> validamos si efectivamente cambia todo")
+        // console.log(newValor)
+        // console.log(oldValor)
+        this.loadRow();
 
       }
 

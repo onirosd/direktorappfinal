@@ -19,7 +19,7 @@
     <Breadcrumb
       :paths="['Inicio', 'Análisis de restricciones', 'Indicadores']"
       :urls ="['home','restricciones']"
-      :settingFlag="true"
+      :settingFlag="false"
     />
     <!-- <Indicator
       :header="'Análisis de restricciones'"
@@ -355,9 +355,9 @@
       @emitFilters="updateFilters"
       @removeFilters="removeFilters"
 
-      :height = "'220'"
+      :height = "'400'"
 
-      class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden"
+      class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden overflow-y-auto"
 
     />
 
@@ -872,15 +872,11 @@ export default {
 
       groups[responsable]['data'][row.estado]++;
       statesSet.add(row.estado);
+
     });
 
-    // console.log(">>> vemos el final de las condiocoones")
-    // console.log(groups)
 
     for (const responsable in groups) {
-      // console.log(`Semana ||| : ${semana}`);
-      // console.log(groups[semana]['periodo'])
-      // this.graph2_data.push(groups[responsable]['periodo'])
 
       this.uniqueStates.forEach((estado) => {
         if (groups[responsable]['data'][estado] == undefined){
@@ -891,11 +887,23 @@ export default {
 
     }
 
-    // this.availableStates = [...statesSet];
+    // Convertir el objeto en un array, calcular el total, y ordenar
+    const sortedArray = Object.entries(groups).map(([name, details]) => ({
+    name,
+    details, // Guardar todos los detalles
+    total: Object.values(details.data).reduce((sum, num) => sum + num, 0) // Suma de todos los estados
+    }))
+    .sort((a, b) => b.total - a.total);
+
+    // Convertir el array ordenado de nuevo a un objeto manteniendo la estructura completa
+    const sortedObject = sortedArray.reduce((obj, item) => {
+        obj[item.name] = item.details; // Asignar los detalles completos bajo el nombre original
+        return obj;
+    }, {});
 
 
     const data = {}
-    data['responsables']  = groups
+    data['responsables']  = sortedObject
 
     // console.log('>>>>>>>>> aqui vemos que tal los responsables')
     // console.log(groups)
@@ -907,32 +915,37 @@ export default {
       const groups    = {};
       const groups_m  = {};
       const statesSet = new Set();
+      console.log(">>> entramos a la funcion groupedByWeek")
 
       this.rawData.forEach(row => {
         // Lógica para determinar la semana (esto es un ejemplo)
         const fullcalendar = `${new Date(row.dayFechaRequerida).getModifiedWeekMonthYearFormat()}`;
 
         // const week     = `Sem. ${new Date(row.dayFechaRequerida).getUniqueWeekNumber()}`;
-        const week     = `Sem. ${fullcalendar.substring(0, 2)}`;
+        const week     =  row.desNumSemana //`Sem. ${fullcalendar.substring(0, 2)}`;
         // const month    = `${new Date(row.dayFechaRequerida).getYearAndMonthNumber()}`;
-        const month    = `${fullcalendar.slice(-4)}`+`${fullcalendar.substring(2, 4)}`;
-        const weekYear = `${new Date(row.dayFechaRequerida).toWeekFormat()}`;
+        const month    =  row.numAnioMes// `${fullcalendar.slice(-4)}`+`${fullcalendar.substring(2, 4)}`;
+        const weekYear =  row.numSemanaAnio// `${new Date(row.dayFechaRequerida).toWeekFormat()}`;
 
-        // console.log(fullcalendar)
-        // console.log(month)
 
-        if (month == '202307' || month == '202308'){
-          console.log("<>>> solo imprimimos agosto ")
-          console.log(week)
-          console.log(fullcalendar)
-          console.log(row.dayFechaRequerida)
+        // console.log(week)
+        // console.log(weekYear)
+
+        if (weekYear == '172024'){
+          console.log(" Impresion de semana 172024")
+          // console.log(`${new Date(row.dayFechaRequerida).toWeekFormat()}`)
+          // console.log(`${fullcalendar.substring(0, 2)}`+`${fullcalendar.slice(-4)}`)
+          //   // console.log(week)
+          //   // console.log(fullcalendar)
+          //   console.log(row)
+          //   console.log(row.dayFechaRequerida)
         }
 
         if (!groups[week]) {
           groups[week]            = {};
           groups[week]['data']    = {};
           groups[week]['periodo'] = month;
-          groups[week]['weekYear'] = `${fullcalendar.substring(0, 2)}`+`${fullcalendar.slice(-4)}`;
+          groups[week]['weekYear'] =  weekYear //`${fullcalendar.substring(0, 2)}`+`${fullcalendar.slice(-4)}`;
         }
         if (!groups_m[month]) groups_m[month] = {};
 

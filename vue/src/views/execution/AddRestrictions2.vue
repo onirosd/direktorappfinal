@@ -579,10 +579,9 @@
                       @updalidarUpd="updalidarUpd"
                       @openModal="openModal"
                       @addRowData="addRowData"
+                      :flagfilter= "optionFilterIndex"
                     >
-                      <!-- <template #default="{ tr, id }">
-                        <DataTableRestriccionesRow :statusRestriction="statusRestriction"  :listindex="[index1,index2,id]" :restriction_data="tr" :isupdate="tr.isupdate" :frontId="frente.codFrente" :phaseId="fase.codFase" :hideCols="hideCols" | @openModal="openModal" @updateRow = "updateRow" @RegistrarCambioRow = "RegistrarCambioRow"   />
-                      </template> -->
+
                     </DataTableRestricciones>
                   </div>
                 </div>
@@ -774,7 +773,6 @@
 <script>
 // import excelParser from "../excel-parser";
 // import { AdjustmentsIcon } from "@vue-hero-icons/solid"
-import moment from 'moment'
 import * as XLSX from "xlsx"
 import FileSaver from 'file-saver';
 import excelJs from 'exceljs'
@@ -827,8 +825,7 @@ export default {
     SelectOption,
     ToggleColumn,
     AddRowData,
-    exportFromJSON,
-    moment
+    exportFromJSON
   },
   data: function () {
     return {
@@ -995,17 +992,45 @@ export default {
       treeIndex: 0,
       idxFront_pivot:0,
       idxPhase_pivot:0,
-
-
-
       optionFilterIndex:0,
       optionFilterSelected : null,
       optionSubFilterSelected : null,
-
       indAvanceGeneral:0
     };
   },
+  inject: ['moment'],
   methods: {
+
+
+    buscarCodAnaResActividad(codAnaResActividad) {
+    const data = this.restrictions; // Suponiendo que tienes el array en `this.arrayData`
+
+    for (let i = 0; i < data.length; i++) {
+      const frente = data[i];
+
+      for (let j = 0; j < frente.listaFase.length; j++) {
+        const fase = frente.listaFase[j];
+
+        for (let k = 0; k < fase.listaRestricciones.length; k++) {
+          const restriccion = fase.listaRestricciones[k];
+
+          if (restriccion.codAnaResActividad === codAnaResActividad) {
+            return {
+              indices: {
+                frenteIndex: i,
+                faseIndex: j,
+                restriccionIndex: k
+              },
+              restriccion: restriccion
+            };
+
+          }
+        }
+      }
+    }
+
+    return null; // Si no se encuentra el codAnaResActividad
+  },
 
     async recargarDesdecalendario(){
 
@@ -1016,9 +1041,7 @@ export default {
     cargarAprobaciones(data){
       if(data.idtab == 3){
           this.aprobacionisLoading = false;
-          // console.log(" >>>> veremos que sucede ")
           data = {'data':this.rolProyecto},
-
           store.dispatch("get_datos_aprobaciones", data).then((response) => {
 
            this.aprobacionesListas  =  this.$store.state.PendienteAprobacion;
@@ -1033,47 +1056,59 @@ export default {
       this.verCalendarioTodasAct  = !this.verCalendarioTodasAct;
     },
 
-    capturamos_veremos(data){
-      console.log(">>>>> entrada")
-      console.log(this.valor_defecto)
-    },
 
-    mverificamos(){
-      console.log(">> impresion de la var. restricciones")
-      console.log(this.restrictions)
-
-      console.log(">> impresion de la var. rows")
-      console.log(this.rows)
-
-
-    },
-
-   get_retrasados(datos){
-    let conteo            = 0
+  get_retrasados(datos) {
+    let conteo = 0;
     try {
+        // Obtener la fecha actual en la zona horaria de Lima/Perú
+        // const hoy = new Date();
+        const hoy = this.moment().startOf('day').format('YYYY-MM-DD HH:mm:ss');
 
-      const hoy     = new Date();
-       conteo        = datos.filter(item => parseInt(item.codEstadoActividad,10) < 3 && new Date(item.dayFechaConciliada+ "T00:00:00-05:00") < hoy).length;
+
+        conteo = datos.filter(item => {
+            // Verificar si dayFechaConciliada es nulo o vacío, y en ese caso usar dayFechaRequerida.
+            const fechaConciliada = (item.dayFechaConciliada && item.dayFechaConciliada.trim() !== "") ? item.dayFechaConciliada : item.dayFechaRequerida;
+
+            // Convertir fechaConciliada a objeto Date
+            const fechaComparar = this.moment(fechaConciliada).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+
+            // Comparar las fechas usando objetos Date directamente
+            return parseInt(item.codEstadoActividad, 10) != 3 && fechaComparar < hoy ;
+
+        }).length;
+
+        // console.log(">> fecha del dia de hoy ")
+        // console.log(this.moment().format('YYYY-MM-DD HH:mm:ss'))
 
     } catch (error) {
-
-    }
-    return conteo;
-   },
-   get_noretrasados(datos){
-    let conteo            = 0
-    try {
-
-      const hoy    = new Date().toLocaleString("es-PE",{ hourCycle: 'h24'});
-      // let fecha_comparacion = new Date(item.dayFechaRequerida).toLocaleString("es-PE",{ hourCycle: 'h24'})
-      conteo       = datos.filter(item => parseInt(item.codEstadoActividad,10) < 3 && new Date(item.dayFechaConciliada+ "T00:00:00-05:00").toLocaleString("es-PE",{ hourCycle: 'h24'}) > hoy).length;
-
-    } catch (error) {
-
+        console.error('Error al calcular conteo:', error);
     }
 
     return conteo;
-   },
+  },
+  get_noretrasados(datos) {
+      let conteo = 0;
+      try {
+          // Obtener la fecha actual en la zona horaria de Lima/Perú y formatearla como YYYY-MM-DD
+          const hoy = this.moment().startOf('day').format('YYYY-MM-DD HH:mm:ss');
+
+          conteo = datos.filter(item => {
+              // Verificar si dayFechaConciliada es nulo o vacío, y en ese caso usar dayFechaRequerida.
+              const fechaConciliada = (item.dayFechaConciliada && item.dayFechaConciliada.trim() !== "") ? item.dayFechaConciliada : item.dayFechaRequerida;
+
+              // Formatear fechaConciliada para obtener sólo la fecha en formato YYYY-MM-DD considerando la zona horaria de Lima/Perú
+              const fechaComparar = this.moment(fechaConciliada).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+
+              return parseInt(item.codEstadoActividad, 10) !== 3 && fechaComparar >= hoy;
+
+          }).length;
+
+      } catch (error) {
+          console.error('Error al calcular conteo:', error);
+      }
+
+      return conteo;
+  },
    download_reporte_for_project(){
 
     store.dispatch("report_restrictions_for_project");
@@ -1348,14 +1383,15 @@ export default {
     setColumnsStatus: function (payload) {
       let point = this;
       store.dispatch("update_hidden_columns", payload).then((response) => {
-        console.log(response);
+        // console.log(response);
 
         if (response.data.estado) {
           this.$store.state.hiddenCols = payload.hideCols;
           this.closeModal();
         } else {
-          console.log(">>> tenemos problemas ");
-          console.log(response.data.mensaje);
+        //   console.log(">>> tenemos problemas ");
+        //   console.log(response.data.mensaje);
+        // }
         }
       });
 
@@ -1366,10 +1402,9 @@ export default {
       id === "filter" && (this.filterOpen = !this.filterOpen);
     },
     toggleOpen: function (param) {
-      console.log(">>>>> vemos los valores");
-      console.log(param);
+
       this.rows.map((row) => {
-        console.log(row);
+
         if (row.desFrente === param) {
           row.isOpen = !row.isOpen;
         }
@@ -1382,8 +1417,6 @@ export default {
 
 
         if (frente.codFrente === codfrente) {
-
-          console.log(frente)
 
           frente.listaFase.map((fase) => {
 
@@ -1400,9 +1433,6 @@ export default {
 
     },
 
-    pruebavalidar: function (payload) {
-      console.log(this.restrictions);
-    },
     toggleFullScreen: function (payload) {
       this.frontId = payload.frontId;
       this.phaseId = payload.phaseId;
@@ -1413,11 +1443,10 @@ export default {
       this.idxFront_pivot = payload.idxFront;
       this.idxPhase_pivot = payload.idxPhase;
 
-      console.log(">>>>>> verificamos que restrictions")
-      console.log(payload.restrictions)
+
     },
     openModal: function (param) {
-      // console.log(param)
+
       if (typeof param !== "string") {
         if (param.param != "duplicateRow") {
           this.frontId =
@@ -1496,7 +1525,6 @@ export default {
           });
 
 
-          console.log(response.data);
           mensaje = "Se enviaron las notificaciones !! ";
 
         }else{
@@ -1518,7 +1546,6 @@ export default {
     },
 
     deleteFront: function (payload) {
-      console.log(payload);
       store.dispatch("delete_front", payload);
       this.closeModal();
     },
@@ -1580,7 +1607,6 @@ export default {
       let faseId = this.phaseId;
       let restriccionId = this.exercise;
 
-      console.log(frenteId + " -- " + faseId + " -- " + restriccionId);
       let enviar = { codAnaResActividad: this.exercise };
       let point = this;
 
@@ -1603,7 +1629,7 @@ export default {
       });
     },
     duplicateRow: function (payload) {
-      // console.log(payload)
+
       let frenteId = payload.frontId;
       let faseId = payload.phaseId;
       let restriccionId = payload.exercise;
@@ -1699,9 +1725,9 @@ export default {
           .dispatch("update_restricciones", enviar)
           .then((response) => {
             if (response.data.flag == 1) {
-              console.log(">>>> llegue a updateRow dd")
-              console.log(response.data)
-              console.log("cuantos_ registros tenemos "+enviar.length.toString())
+              // console.log(">>>> llegue a updateRow dd")
+              // console.log(response.data)
+              // console.log("cuantos_ registros tenemos "+enviar.length.toString())
 
               for (let i = 0; i < enviar.length; i++) {
 
@@ -1780,6 +1806,8 @@ export default {
                 ]["listaRestricciones"][enviar[i].idrestriccion][
                   "desUsuarioSolicitante"
                 ] = this.solicitanteActual;
+
+                console.log(">>>> llegamos a este nivel ")
 
                 /* Siempre se actualiza las nuevas restricciones se tiene que actualizar el codigo real en el registros */
                 if (response.data.inserciones.length > 0) {
@@ -1895,14 +1923,34 @@ export default {
     RegistrarCambioRow: function (data) {
 
       console.log(">>> llegamos a este punto en registrarCmabio")
-      // console.log("idfrente :"+data.idfrente+" || idfase :"+data.idfase+" || codActividad : "+datafinal["codAnaResActividad"]+" || isupdate : "+datafinal["isupdate"])
+      console.log(this.restrictions)
       console.log(data)
-      let idfrente = data.idfrente;
-      let idfase = data.idfase;
+
+      let idfrente   = 0
+      let idfase     = 0
+
+      if (this.optionFilterIndex){
+        // Siempre que estemos actualizando desde algun filtro primero buscamos los indices correctos del frente y la fase
+        let data_busqueda  =  this.buscarCodAnaResActividad(data.idrestriccion)
+        idfrente           =  data_busqueda.indices.frenteIndex;
+        idfase             =  data_busqueda.indices.faseIndex;
+
+      }else{
+
+        idfrente       = data.idfrente;
+        idfase         = data.idfase;
+
+      }
+      // console.log(this.buscarCodAnaResActividad(data.indices.frenteIndex))
+      // console.log("idfrente :"+data.idfrente+" || idfase :"+data.idfase+" || codActividad : "+datafinal["codAnaResActividad"]+" || isupdate : "+datafinal["isupdate"])
+      // console.log(data)
+      // return
+
+
       let idrestriccion = 0; //data.idrestriccion
-      let datafinal = data.data;
-      let codActividad = datafinal["codAnaResActividad"];
-      let isupdate = datafinal["isupdate"];
+      let datafinal     = data.data;
+      let codActividad  = datafinal["codAnaResActividad"];
+      let isupdate      = datafinal["isupdate"];
 
       let llave = null;
       let unid = -1;
@@ -1933,7 +1981,6 @@ export default {
           }
         });
 
-        console.log(">>> llegamos a este punto en registrarCmabio2")
         this.restrictionsUpd.splice(llave, unid);
 
         let dr = datafinal["dayFechaRequerida"];
@@ -1950,7 +1997,7 @@ export default {
             "listaRestricciones"
           ][idrestriccion]["codAnaResActividad"];
 
-        console.log(">>> llegamos a este punto en registrarCmabio 3")
+
         let row = {
           idfrente: idfrente,
           idfase: idfase,
@@ -1978,9 +2025,7 @@ export default {
       // console.log(">>> Verificamos lo que enviamos  ")
       // console.log(this.restrictionsUpd)
     },
-    revision: function () {
-      console.log(this.restrictions);
-    },
+
     movimientoRow: function (data) {
       this.$store.dispatch("update_numOrden", data).then((response) => {
         console.log(response);
@@ -2149,7 +2194,7 @@ export default {
     },
     getExpirationRows(payload) {
 
-      return this.$store.state.whiteproject_rows.map((row) => {
+      return this.restrictions.map((row) => {
         const nuevasFases = row.listaFase.map((fase) => {
           const match = fase.listaRestricciones.some(
             (restriction) =>  parseInt(restriction.codEstadoActividad,10) != this.$store.state.anaEstado.find(

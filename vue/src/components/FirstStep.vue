@@ -31,7 +31,7 @@
 
 
       			>	<br>
-		  		<div class="w-[100%]  rounded bg-white border border-gray-300 px-4 py-2 space-y-1 relative z-50 foco_empresa"
+		  		<div class="w-[100%] rounded bg-white border border-gray-300 px-4 py-2 space-y-1 relative z-50 foco_empresa"
           v-if="suggestiondata.length"
 
           >
@@ -46,7 +46,7 @@
                 Mostrando {{ suggestiondata.length }} resultados.
 
               </div>
-              <div class="flex flex-col w-[10%] foco_empresa">
+              <div class="flex flex-col w-[10%] foco_empresa ">
 
                 <img
                   src="../assets/close.svg"
@@ -66,6 +66,7 @@
                   v-bind:value = "item.cod_Empresa"
                   @click='itemSelected(item.cod_Empresa);'
                   class="cursor-pointer hover:bg-gray-100 p-1 foco_empresa text-[0.7rem]"
+                  :class="item.cod_Empresa === -999 ? 'text-orange' : '' "
                   >
                     {{ item.des_Empresa }}
                   </li>
@@ -78,22 +79,25 @@
 
 
       <div class="mb-4 ">
-        <input
-          type="text"
+        <div class="flex h-[32px]">
+          <input
+          type="number"
           placeholder="Plazo"
           v-model="term"
           @keypress="onlyNumber"
-          class="h-[32px] w-full border border-[#8A9CC9] rounded px-4 text-[0.7rem]"
+          class="h-[32px] w-full border border-[#8A9CC9] rounded-l px-4 text-[0.7rem] w-[82%]"
           :class="{ 'invalid-input': (errors.term != undefined)  }"
           @focus="limpiarErrores()"
+          @input="checkMinValue"
         />
-
+          <div class="w-[18%] border border-[#8A9CC9] rounded-r px-4 flex justify-center items-center">
+              <p class="font-normal text-[0.7rem]">mes</p>
+          </div>
+        </div>
         <div class="text-[0.7em]">{{ errors.coveredArea }}</div>
+      </div>
 
-
-       </div>
-
-        <div class=" mb-4">
+      <div class=" mb-4">
         <div class="flex">
           <input
             type="text"
@@ -109,14 +113,11 @@
               :class="{ 'invalid-input': (errors.coveredArea != undefined)  }"
           >
             <p class="font-normal text-[0.7rem] ml-[10%]">m2</p>
-
           </div>
         </div>
-
         <div class="text-[0.7em]">{{ errors.coveredArea }}</div>
-
-        </div>
-
+      </div>
+      
         <div class=" mb-4 w-full">
 
           <select
@@ -302,7 +303,8 @@
           @closeModal   ="closeModal"
           @crearEmpresa = "datosProyecto"
           v-model="datapasar"
-
+          :mensaje = "mensaje"
+          @limpiarMensaje = "limpiar"
         />
 
     </div>
@@ -376,10 +378,15 @@ export default {
       test: {},
       items: [
       ],
+      mensaje: "",
     };
   },
   methods: {
-
+    checkMinValue(){
+      if(this.term<1){
+        return this.term=1;
+      }
+    },
     formatNumber() {
       // remueve los puntos que haya en el string monto
       let number = this.referenceAmount.replace(/\./g, '')
@@ -485,7 +492,11 @@ export default {
     limpiarErrores: function (campo) {
       this.errors = [];
       // delete this.errors[campo];
+      this.mensaje = "";
+    },
 
+    limpiar(){
+      this.mensaje="";
     },
 
     dataVerificamos: function () {
@@ -615,8 +626,11 @@ export default {
       this.$store.dispatch('save_newempresa', datos)
           .then((response) => {
 
-            this.modalName      = "";
-            this.suggestiondata = [];
+            if(response["flag"]==0){
+              this.mensaje = response["mensaje"]      
+            }else{
+              this.modalName      = "";
+              this.suggestiondata = [];
 
             if (response["flag"] == 1){
 
@@ -624,11 +638,13 @@ export default {
               this.searchText = response["registro"]["des_Empresa"];
 
             }
+            }
+
+            
 
       });
 
     },
-
     loadSuggestions: function(e){
 				var el = this;
 				this.suggestiondata = [];
@@ -639,10 +655,10 @@ export default {
           .then((response) => {
             let data = []
             //console.log(response)
+            data.push({cod_Empresa:-999, des_Empresa: '+ Agregar Nueva Empresa'})
             for (let index = 0; index < response.length; index++) {
               data.push({cod_Empresa:response[index]["cod_Empresa"], des_Empresa: response[index]["des_Empresa"]})
             }
-            data.push({cod_Empresa:-999, des_Empresa: '+ Agregar Nueva Empresa'})
             el.suggestiondata  = data
           })
 
@@ -682,10 +698,12 @@ export default {
 
           if (id == -100){
 
+            /*
             let buscar = [this.business]
+            
             let name   = buscar.map((id) => (this.suggestiondata.find(x => x.cod_Empresa == id).des_Empresa));
-
             this.searchText     = name[0];
+            */
             this.suggestiondata = [];
             // this.business       = id
 
@@ -694,6 +712,7 @@ export default {
           }else if (id == -999){
 
             this.modalName      = 'newproject';
+            this.suggestiondata = [];
 
           }else{
 
@@ -718,6 +737,7 @@ export default {
       else if (param === 'district') this.districtStatus = !this.districtStatus;
     },
     onlyNumber: function ($event) {
+
       //console.log($event.keyCode); //keyCodes value
       let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
       if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) { // 46 is dot
@@ -757,9 +777,13 @@ export default {
 
   mounted() {
 
+    this.searchTextUbigeoFlg = 1
+
   this.$el.addEventListener('click',(e) =>
     {
        let elementClass = e.target.className;
+       
+        
 
         if (elementClass !== '') {
 
@@ -781,6 +805,7 @@ export default {
 
 
         }
+        
 
     // // If element has no classes
     // else {

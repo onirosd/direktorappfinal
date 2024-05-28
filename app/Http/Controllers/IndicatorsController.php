@@ -122,7 +122,11 @@ class IndicatorsController extends Controller
         u.lastname as lastname,
         d.id as codCreador,
         d.codProyecto as codProyecto,
-        d.desNombreProyecto as desNombreProyecto
+        d.desNombreProyecto as desNombreProyecto,
+        CONCAT('Sem.', LPAD(WEEK(a.dayFechaRequerida, 3), 2, '0')) as desNumSemana,
+        fgetyearmonthnum(a.dayFechaRequerida) as numAnioMes,
+        fgetyearmonthdesc(a.dayFechaRequerida) as desAnioMes,
+        fgetweekyear(a.dayFechaRequerida) as numSemanaAnio
         from anares_actividad a
         inner join anares_frente af on a.codAnaResFrente = af.codAnaResFrente
         inner join anares_fase af2  on a.codAnaResFase   = af2.codAnaResFase
@@ -158,8 +162,6 @@ class IndicatorsController extends Controller
                 }
             }
 
-
-
             $desc_estado_upd = ($data['codEstadoActividad'] == '3' && (Carbon::parse($data['dayFechaLevantamiento']) <=  Carbon::parse($data['dayFechaConciliada'])))   ? 'Comp.Plazo' : (
                 ($data['codEstadoActividad'] == '3' && (Carbon::parse($data['dayFechaLevantamiento']) >  Carbon::parse($data['dayFechaConciliada']))) ? 'Comp.Retraso' : (
 
@@ -169,8 +171,8 @@ class IndicatorsController extends Controller
                 )
             );
 
-                $cod_estado_upd  = $desc_estado_upd == 'Comp.Plazo' ? 4 : ($desc_estado_upd == 'Comp.Retraso' ? 3 :  ($desc_estado_upd == 'Retrasado' ? 2  : 1));
-                $restricciones = [
+            $cod_estado_upd  = $desc_estado_upd == 'Comp.Plazo' ? 4 : ($desc_estado_upd == 'Comp.Retraso' ? 3 :  ($desc_estado_upd == 'Retrasado' ? 2  : 1));
+            $restricciones   = [
                     'id'              => $data['codAnaResActividad'],
                     'codProyecto'     => $data['codProyecto'],
                     'codAnaResFrente' => $data['codAnaResFrente'],
@@ -181,14 +183,19 @@ class IndicatorsController extends Controller
                     'dayFechaIdentificacion'    => $data['dayFechaCreacion'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaCreacion'])),
                     'codEstadoActividad' => $cod_estado_upd,
                     'estado' => $desc_estado_upd ,  //$data['desEstadoActividad'],
-                    'codresponsable'  => $data['idUsuarioResponsable'] == '' ? '9999' : $data['idUsuarioResponsable'] ,
-                    'responsable' => $des_usuarioResponsable == "" ? 'No Asignado' : $des_usuarioResponsable,
+                    'codresponsable'     => $data['idUsuarioResponsable'] == '' ? '9999' : $data['idUsuarioResponsable'] ,
+                    'responsable'        => $des_usuarioResponsable == "" ? 'No Asignado' : $des_usuarioResponsable,
                     'desActividad'       => $data['desActividad'],
                     'codTipoRestriccion' => $data['codTipoRestriccion'],
                     'desTipoRestriccion' => $data['desTipoRestriccion'],
                     'dayFechaConciliada'    => $data['dayFechaConciliada'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaConciliada'])),
-                    'dayFechaLevantamiento'    => $data['dayFechaLevantamiento'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaLevantamiento'])),
-                    'desRestriccion'     => $data['desRestriccion']
+                    'dayFechaLevantamiento' => $data['dayFechaLevantamiento'] == null ? '' : date("Y/m/d", strtotime($data['dayFechaLevantamiento'])),
+                    'desRestriccion'        => $data['desRestriccion'],
+                    'desNumSemana'          => $data['desNumSemana'],
+                    'desAnioMes'            => $data['desAnioMes'],
+                    'numSemanaAnio'         => $data['numSemanaAnio'],
+                    'numAnioMes'            => $data['numAnioMes']
+
                 ];
                 array_push($anarestricciones, $restricciones);
             }
