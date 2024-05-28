@@ -140,13 +140,13 @@ export default {
               title: "Pagina en construcción",
               cerrar: false
             },
-            {
-              id: "human_resources",
-              label: "RRHH",
-              path: "/recursos_humanos",
-              title: "Pagina en construcción",
-              cerrar: false
-            },
+            // {
+            //   id: "human_resources",
+            //   label: "RRHH",
+            //   path: "/recursos_humanos",
+            //   title: "Pagina en construcción",
+            //   cerrar: false
+            // },
           ],
         },
         {
