@@ -299,7 +299,7 @@
       @removeFilters="removeFilters"
 
       :height = "'200'"
-      class =" xl:w-4/12 md:w-full sm:w-full  border border-[#D0D9F1] rounded-md h-[13em] md:hidden lg:block sm:block"
+      class =" xl:w-4/12 md:w-full sm:w-full  border border-[#D0D9F1] rounded-md h-[15.5em] md:hidden lg:block sm:block"
        />
 
        <BarChart2
@@ -326,7 +326,8 @@
         @removeFilters="removeFilters"
 
         :height = "'220'"
-        class ="xl:w-8/12 md:w-full  sm:w-full   border border-[#D0D9F1] rounded-md h-[13em] md:hidden lg:block sm:hidden"
+        :width = "'1300'"
+        class ="xl:w-8/12 md:w-full  sm:w-full   border border-[#D0D9F1] rounded-md h-[15.5em] md:hidden lg:block sm:hidden overflow-x-auto"
        />
 
        <BarChart2
@@ -507,13 +508,14 @@ export default {
       // console.log(">>> entrando al watch")
       // console.log(newVal)
       // console.log(oldVal)
+      this.removeFilters()
       if (newVal != oldVal) {
 
         this.responsables        = [];
         this.selectedResponsable = "";
 
       }
-    }
+    },
   },
 
   methods: {
@@ -528,6 +530,13 @@ export default {
       month = month < 10 ? '0' + month : month;
 
       return `${day}/${month}/${year}`;
+    },
+    chartWidth(){
+      const maxVisiblePoints = 10;
+      const pointWidth = 130;
+      const totalPoints = Object.keys(this.groupedByWeek['weeks']).length
+      const width = totalPoints > maxVisiblePoints ? pointWidth*totalPoints: '100%';
+      return width;
     },
 
     validamosdatos(){
@@ -565,9 +574,8 @@ export default {
       await store.dispatch('get_data_restricciones_indicators', {codProyecto:this.selectedProyecto}).then(res => {
           // console.log(">>> impresion al cambiar codproyecto")
 
-          console.log(res.data)
+          //console.log(res.data)
           this.rawDataInicial = res.data.restricciones
-          // console.log(res.data)
 
       });
 
@@ -675,13 +683,7 @@ export default {
     isLoadingProject: function(){
       return this.projectloadflag
     },
-    chartHeigth(){
-      const maxVisiblePoints = 10;
-      const pointHeight = 55;
-      const totalPoints = this.barDatabyResponsable.labels.length;
-      const height = totalPoints > maxVisiblePoints ? maxVisiblePoints * pointHeight : (totalPoints>5 ? 320 : totalPoints * pointHeight);
-      return height;
-    },
+    
     indicadorPorcentajeRetrasados: function (){
 
       let totalDias = 0;
@@ -882,7 +884,7 @@ export default {
     });
 
     // console.log(">>> vemos el final de las condiocoones")
-    // console.log(groups)
+    //console.log('groups', groups)
 
     for (const responsable in groups) {
       // console.log(`Semana ||| : ${semana}`);
@@ -995,7 +997,7 @@ export default {
 
       return data;
     },
-
+    
     groupedByState() {
       const groups = {};
 
@@ -1076,13 +1078,14 @@ export default {
         chart: {
           type: 'bar',
           stacked: true,
-          width: '100%',
+          width: this.chartWidth() ? this.chartWidth() : '100%'
         },
 
         colors: this.estadosColores,
 
         plotOptions: {
               bar: {
+                columnWidth: '90%',
                 borderRadius: 2,
                 dataLabels: {
                   total: {
@@ -1118,7 +1121,7 @@ export default {
           group: {
                   style: {
                     fontSize: '11px',
-                    fontWeight: 700
+                    fontWeight: 700,
                   },
                   groups: this.groupedByWeek['groups']
                 },
@@ -1129,7 +1132,6 @@ export default {
           //           fontWeight: 700
           //         },
           // },
-
         },
         title: {
           text: "Estado y Cantidad de restricciones x corte de semana",
@@ -1248,7 +1250,7 @@ export default {
 
       });
     });
-    
+  
     const ordered = {};
      // Iteramos sobre cada clave en rawDataColor
      Object.keys(this.rawDataColor).forEach((key) => {
@@ -1377,7 +1379,6 @@ export default {
         this.rawDataProyecto = res.data
 
     });
-
     this.orderColors();
     this.pageloadflag = false;
     this.$store.state.sidebar = false;
@@ -1385,3 +1386,9 @@ export default {
   }
 };
 </script>
+
+<style>
+  ::-webkit-scrollbar {
+    height: 9px;
+  }
+</style>

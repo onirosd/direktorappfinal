@@ -6,7 +6,7 @@
       <i class="fa-solid fa-filter-circle-xmark cursor-pointer" v-if="showIcon" @click="removerFiltros"></i>
     </div>
 
-    <apexchart :height="height" type="bar" :options="chartOptions" :series="chartSeries" @dataPointSelection = "onClick" ></apexchart>
+    <apexchart :width="width"  :height="height" type="bar" :options="chartOptions" :series="chartSeries" @dataPointSelection = "onClick" ></apexchart>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   },
   props: {
     filterHidden:Boolean,
-    width:Number,
+    width:[Number,String],
     height:Number,
     periodos:Array,
     tipo:Number,
@@ -40,6 +40,8 @@ export default {
   },
   computed: {
     chartSeries() {
+      console.log('chartData', this.chartData);
+      console.log('chartOptions', this.chartOptions);
       // Transforma los datos para que coincidan con el formato de ApexCharts
       // Asume que chartData tiene un campo 'datasets'
       if (this.tipo == 2){
@@ -64,7 +66,6 @@ export default {
       : [];
 
         console.log("Las series que se pasarán a ApexCharts son:", result);
-
         return result;
 
 
@@ -87,11 +88,12 @@ export default {
     // },
 
     onClick(event, chartContext, config) {
+      console.log('widh', this.width);
       this.showIcon = true;
       console.log("_>>> entrando")
-      console.log(config.seriesIndex)
-      console.log(config.dataPointIndex)
-      console.log(this.chartSeries[config.seriesIndex])
+      console.log('config.seriesIndex->', config.seriesIndex)
+      console.log('config.dataPointIndex->', config.dataPointIndex)
+      console.log('this.chartSeries[config.seriesIndex->', this.chartSeries[config.seriesIndex])
 
       const seriesIndex = config.seriesIndex;
       const dataPointIndex = config.dataPointIndex;
@@ -132,7 +134,6 @@ export default {
   mounted() {
 
     this.showIcon = this.filterHidden
-
   }
 
 };
@@ -147,6 +148,7 @@ export default {
   position: absolute;
   top: 0px;
   right: 30px;
-  z-index: 1;
+  z-index:1;
 }
+
 </style>
