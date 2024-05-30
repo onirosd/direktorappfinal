@@ -2745,7 +2745,6 @@ export default {
     //   return this.$store.getters.hideCols({id: this.frontId, phaseId: this.phaseId});
     // }
   },
-
   watch: {
   restrictions: {
     deep: true,  // Observa los cambios profundos en el objeto
@@ -2761,7 +2760,6 @@ export default {
     },
   },
 },
-
 
   mounted: async function () {
     document.addEventListener('click', this.outsideClickListener);

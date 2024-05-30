@@ -39,10 +39,11 @@ php artisan queue:listen connection
 
 php artisan queue:work
 
-######### production #########3
+############# production #############3
 
 ## build vue js
 direktor-hito3/vue > npm install
+direktor-hito3/vue > npm run build 
 
 ## clean cache routes
 php artisan route:clear
@@ -52,6 +53,14 @@ php artisan cache:clear
 
 ## clean view
 php artisan view:clear
+
+## start queue in production
+nohup php artisan queue:work &
+
+## in the other moment
+https://laravel-news.com/how-to-run-workers-in-production
+ -- install supervisor or admins queue
+
 
 ## LIBRERIA QUE SE UTILIZA PARA EL DRAG.
 

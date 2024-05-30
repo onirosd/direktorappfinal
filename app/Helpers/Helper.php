@@ -32,12 +32,44 @@ class Helper{
         $conf_colacorreos->dayFechaRegistro   = date('Y-m-d H:i:s');
         $conf_colacorreos->desMotivo          = $motivo;
         // "dayFechaEnvio" => date('Y-m-d H:i:s'),
+        $conf_colacorreos->desCorreosBCC      = "[]";
         $conf_colacorreos->codUsuarioRegistro = $codUsuarioRegistro;
         $conf_colacorreos->desCorreoEnvio     = $correoEnvio;
         if($conf_colacorreos->save()) $mail   = true;
 
     }
 
+    public static function enviarEmailconCopia($datos_enviar, $tipo_plantilla, $motivo, $codUsuarioRegistro, $correoEnvio, $correosBCC = [])
+    {
+
+        $plantilla  = "";
+        if($tipo_plantilla == 'retrasos'){
+            $plantilla =  'emails.alertaretraso';
+
+        }
+
+        $conf_colacorreos = new conf_colacorreos([
+            'desMensaje'         => view($plantilla, $datos_enviar)->render(),
+            'dayFechaRegistro'   => now(),
+            'desMotivo'          => $motivo,
+            'codUsuarioRegistro' => $codUsuarioRegistro,
+            'desCorreoEnvio'     => $correoEnvio,
+            'desCorreosBCC'      => json_encode($correosBCC)  // Guardar como JSON en la base de datos
+        ]);
+
+        $conf_colacorreos->save();
+
+
+        // $conf_colacorreos                     = new conf_colacorreos;
+        // $conf_colacorreos->desMensaje         = view($plantilla , $datos_enviar)->render();
+        // $conf_colacorreos->dayFechaRegistro   = date('Y-m-d H:i:s');
+        // $conf_colacorreos->desMotivo          = $motivo;
+        // $conf_colacorreos->codUsuarioRegistro = $codUsuarioRegistro;
+        // $conf_colacorreos->desCorreoEnvio     = $correoEnvio;
+        // $conf_colacorreos->desCorreosBCC      = json_encode($correosBCC);
+        // if($conf_colacorreos->save()) $mail   = true;
+
+    }
 
     public static function callNotification($titulo , $mensaje, $proyecto){
 
