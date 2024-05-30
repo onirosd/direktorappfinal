@@ -43,25 +43,25 @@ class SendEmails implements ShouldQueue
 
 
     public function handle()
-{
-    $results = conf_colacorreos::whereNull('dayFechaEnvio')->get();
-    foreach ($results as $mail) {
-        $correosBCC = json_decode($mail->desCorreosBCC, true); // Asume que los correos BCC están almacenados en formato JSON en la columna desCorreosBCC
+    {
+        $results = conf_colacorreos::whereNull('dayFechaEnvio')->get();
+        foreach ($results as $mail) {
+            $correosBCC = json_decode($mail->desCorreosBCC, true); // Asume que los correos BCC están almacenados en formato JSON en la columna desCorreosBCC
 
-        // Crear una instancia del Mailable
-        $email = new InvitationEmail($mail->desMensaje, $mail->desMotivo);
+            // Crear una instancia del Mailable
+            $email = new InvitationEmail($mail->desMensaje, $mail->desMotivo);
 
-        // Configurar el destinatario principal y los BCC
-        Mail::to($mail->desCorreoEnvio)
-            ->bcc($correosBCC) // Añadir BCC si existen
-            ->send($email);
+            // Configurar el destinatario principal y los BCC
+            Mail::to($mail->desCorreoEnvio)
+                ->bcc($correosBCC) // Añadir BCC si existen
+                ->send($email);
 
-        // Actualizar el registro para marcarlo como enviado
-        conf_colacorreos::where('codColaCorreo', $mail->codColaCorreo)->update([
-            "dayFechaEnvio" => now()
-        ]);
+            // Actualizar el registro para marcarlo como enviado
+            conf_colacorreos::where('codColaCorreo', $mail->codColaCorreo)->update([
+                "dayFechaEnvio" => now()
+            ]);
+        }
     }
-}
 
     // public function handle()
     // {
