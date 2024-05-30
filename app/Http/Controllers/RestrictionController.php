@@ -499,7 +499,6 @@ class RestrictionController extends Controller
             select pp.codProyecto , pp.desNombreProyecto as desproyecto
             from  proy_proyecto pp
             where
-            pp.codProyecto = 10 and
             pp.codEstado   = 0 and
             (
                         select count(1) from anares_actividad aa
