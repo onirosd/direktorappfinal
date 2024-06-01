@@ -2346,9 +2346,9 @@ export default {
 
         }
 
-        if(this.rolProyecto == 3 || this.rolProyecto == 0){
+        //if(this.rolProyecto == 3 || this.rolProyecto == 0){
           this.verCalendarioTodasAct = true;
-        }
+        //}
 
 
 
@@ -2770,10 +2770,11 @@ export default {
 
     // Editores y clientes por defecto se abre el calendario.
 
+    /*
     if(this.rolProyecto == 2 || this.rolProyecto == 8){
           // this.verCalendarioTodasAct = true;
           this.openModal({ param: 'calendarDg' })
-    }
+    }*/
 
   },
 

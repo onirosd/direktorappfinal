@@ -126,7 +126,7 @@
 
             </div>
 
-            <div :ref="'body_'+day" class="h-[100%]">
+          <div :ref="'body_'+day" class="h-[100%]">
 
             <!-- impresion de los pendiente a aprobar , siempre van primero -->
             <!-- <div class="border rounded text-xs mb-1 py-1 px-3 border-[#cd4fb2] " v-for="item in data.list.filter(el =>el.cod_estado == 4)" :key="item.index">
@@ -212,7 +212,7 @@
               </div>
 
             </div>
-            </div>
+          </div>
             <div :ref="'footer_'+day"  class="mt-auto z-20"  v-if="get_buttonOverStatusDias[day] == true" @click="buttonOverChangeStatus(day)">
                  <button class="bg-gray-600 text-white w-full rounded my-1 h-[30px] text-xs">
                   Ver mas...
@@ -664,7 +664,7 @@ export default {
 
 
       await this.limpiarCalendario()
-
+      
       await this.$nextTick(() => {
 
       this.checkOverflow(1, 'body_Lunes');
@@ -678,8 +678,8 @@ export default {
         fechaObj.add(-7, 'days');
         let nuevaFecha         = fechaObj.format('YYYY-MM-DD')
         this.fechaReferencia   = nuevaFecha
-        await this.callMounted(nuevaFecha);
-
+        //await this.callMounted(nuevaFecha);
+        this.callMountedTotal(nuevaFecha)
 
       }else{
 
@@ -689,8 +689,8 @@ export default {
           fechaObj.add(7, 'days');
           let nuevaFecha         = fechaObj.format('YYYY-MM-DD')
           this.fechaReferencia   = nuevaFecha
-          await this.callMounted(nuevaFecha);
-
+          //await this.callMounted(nuevaFecha);
+          this.callMountedTotal(nuevaFecha)
 
         }
       }
@@ -827,7 +827,7 @@ export default {
       this.buttonOverStatusDias[day]  = !this.buttonOverStatusDias[day];
       const elements    = this.$refs['body_'+day];
 
-            elements.forEach(element => {
+        elements.forEach(element => {
               // element.classList.remove("h-[100%]");
               // element.style.height = this.overPixelesInicial + 'px';
               element.classList.add("overflow-y-auto");
@@ -878,9 +878,9 @@ export default {
 
       this.rawDataPrincipal = info ;
     },
-     calculateVerticalSizeDivHijos(refName) {
+      calculateVerticalSizeDivHijos(refName) {
       let height = 0;
-
+      
        // try {
       const element =  this.$refs[refName][0];
            // Asegúrate de que el elemento exista
@@ -889,7 +889,7 @@ export default {
             // height = element[0].offsetHeight;
 
             for (const child of element.children) {
-              height += child.offsetHeight; // offsetHeight incluye el padding y el border
+              height += child.offsetHeight; // offsetHeight incluye el padding y el border            
             }
           }
 
@@ -938,8 +938,8 @@ export default {
           // });
 
           console.log(">>>> obtenemos los tamaños iniciales - finales ")
-          console.log(overPixelesFinal)
-          console.log(this.overPixelesInicial)
+          console.log('Final', overPixelesFinal)
+          console.log('Inicial', this.overPixelesInicial)
 
           if (overPixelesFinal >  (this.overPixelesInicial + 10)){
 
