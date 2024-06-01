@@ -2161,7 +2161,7 @@ export default {
           listaFase: nuevasFases,
           shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
+      }).filter(row => row.shouldShow).map((row) => {row.isOpen = true; return row});; // Filtramos las filas que no tienen fases coincidentes
 
     },
     getApplicantRows(payload) {
@@ -2188,7 +2188,7 @@ export default {
           listaFase: nuevasFases,
           shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
+      }).filter(row => row.shouldShow).map((row) => {row.isOpen = true; return row}); // Filtramos las filas que no tienen fases coincidentes
 
 
     },
@@ -2221,7 +2221,7 @@ export default {
           listaFase: nuevasFases,
           shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      }).filter(row => row.shouldShow);
+      }).filter(row => row.shouldShow).map((row) => {row.isOpen = true; return row});
 
 
     },
@@ -2249,7 +2249,7 @@ export default {
           listaFase: nuevasFases,
           shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
+      }).filter(row => row.shouldShow).map((row) => {row.isOpen = true; return row});; // Filtramos las filas que no tienen fases coincidentes
     },
 
     getResEstados(payload) {
@@ -2275,7 +2275,7 @@ export default {
           listaFase: nuevasFases,
           shouldShow: nuevasFases.length > 0 // Aquí determinamos si la fila debe mostrarse
         };
-      }).filter(row => row.shouldShow); // Filtramos las filas que no tienen fases coincidentes
+      }).filter(row => row.shouldShow).map((row) => {row.isOpen = true; return row}); // Filtramos las filas que no tienen fases coincidentes
     },
 
     countActivities(codFrente) {
@@ -2745,7 +2745,6 @@ export default {
     //   return this.$store.getters.hideCols({id: this.frontId, phaseId: this.phaseId});
     // }
   },
-
   watch: {
   restrictions: {
     deep: true,  // Observa los cambios profundos en el objeto
@@ -2761,7 +2760,6 @@ export default {
     },
   },
 },
-
 
   mounted: async function () {
     document.addEventListener('click', this.outsideClickListener);

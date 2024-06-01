@@ -496,7 +496,7 @@ class RestrictionController extends Controller
         $query_proyectos_retrasados = "
 
 
-            select pp.codProyecto
+            select pp.codProyecto , pp.desNombreProyecto as desproyecto
             from  proy_proyecto pp
             where
             pp.codEstado   = 0 and
@@ -516,7 +516,10 @@ class RestrictionController extends Controller
         }, $proyectos);
 
         foreach($proyectos as $proy) {
+
             $codProyecto       = $proy['codProyecto'];
+            $desProyecto       = $proy['desproyecto'];
+
             $query_actividades = "
 
                 select
@@ -553,33 +556,57 @@ class RestrictionController extends Controller
             $actividades    = DB::select($query_actividades, $valores);
 
 
-            $integrantes  = RestrictionMember::select("proy_integrantes.desCorreo as correo", "proy_proyecto.desNombreProyecto as proyecto", "proy_integrantes.idIntegrante as idIntegrante")
-            ->Join('proy_proyecto', 'proy_proyecto.codProyecto','=','ana_integrantes.codProyecto')
-            ->leftJoin('proy_integrantes', function($join){
-                $join->on('proy_integrantes.codProyIntegrante', '=', 'ana_integrantes.codProyIntegrante');
-                $join->on('proy_integrantes.codProyecto', '=', 'ana_integrantes.codProyecto');
+            $query_integrantes = "
 
-            })
-            ->where('ana_integrantes.codProyecto', $codProyecto)
-            ->where('proy_integrantes.codEstadoInvitacion', 1)
-            ->get();
+                select pi2.desCorreo as correo, pp.desNombreProyecto as proyecto, pi2.idIntegrante as idIntegrante
+                from ana_integrantes ai
+                inner join  proy_proyecto pp on ai.codProyecto = pp.codProyecto
+                left  join  proy_integrantes pi2 on pi2.codProyIntegrante  = ai.codProyIntegrante and pi2.codProyecto = ai.codProyecto
+                where ai.codProyecto = :codProyecto and pi2.codEstadoInvitacion  = 1
 
-            foreach ($integrantes as $key => $value) {
+            ";
 
-                $datos_enviar = array();
-                $datos_enviar['actividades']       = $actividades;
-                $datos_enviar['des_correo']        = $value['correo'];
-                $datos_enviar['des_proyecto']      = $value['proyecto'];
-                $datos_enviar['des_link']          = Config::get('global.URL');
-                $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
+            $integrantes            = DB::select($query_integrantes, ['codProyecto' => $codProyecto]);
+            $integrantes            = collect($integrantes);
 
-                Helper::enviarEmail($datos_enviar, 'retrasos', "Actividades con Retrasos en el proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
+            if($integrantes->isNotEmpty()) {
+
+                $correoPrincipal = Config::get('global.MAIL_FROM_ADDRESS'); //$integrantes->first()->correo;
+                $correosBCC      = $integrantes->pluck('correo')->toArray();
+
+                print_r($correosBCC);
+
+                $datos_enviar = [
+                    'actividades'         => $actividades,
+                    'des_proyecto'        => $desProyecto,
+                    'des_correo'          => "Usuario ",
+                    'des_link'            => Config::get('global.URL'),
+                    'des_direktor_icon'   => Config::get('global.ICON_DIREKTOR')
+                ];
+
+                Helper::enviarEmailconCopia($datos_enviar, 'retrasos', "Actividades con Retrasos en el proyecto " . $desProyecto, null, $correoPrincipal, $correosBCC);
+
             }
+
+
+            // foreach ($integrantes as $key => $value) {
+
+            //     $datos_enviar = array();
+            //     $datos_enviar['actividades']       = $actividades;
+            //     $datos_enviar['des_correo']        = $value['correo'];
+            //     $datos_enviar['des_proyecto']      = $value['proyecto'];
+            //     $datos_enviar['des_link']          = Config::get('global.URL');
+            //     $datos_enviar['des_direktor_icon'] = Config::get('global.ICON_DIREKTOR');
+
+            //     Helper::enviarEmail($datos_enviar, 'retrasos', "Actividades con Retrasos en el proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
+            // }
 
         }
 
 
     }
+
+
     public function push_enviar_notificaciones (Request $request){
 
         $enviar             = array();
@@ -651,16 +678,17 @@ class RestrictionController extends Controller
                 Helper::enviarEmail($datos_enviar, 'alerta', "Correo de Seguimiento de Analisis de Restricciones - Proyecto ".$value['proyecto'], $value['idIntegrante'] ,$value['correo']);
             }
 
-            foreach ($actividades as $key => $value) {
+            // // notificacion para el mobil
+            // foreach ($actividades as $key => $value) {
 
 
-                $proyecto  = str_replace(' ', '', $value->proyecto);
-                $mensaje   =  "La restriccion ".$value->codAnaResActividad." con nombre :".$value->Actividad." y de estado actual :  ".$value->Estado_Actividad.", fue actualizada, si requiere mas detalle del cambio consultar la web.";
+            //     $proyecto  = str_replace(' ', '', $value->proyecto);
+            //     $mensaje   =  "La restriccion ".$value->codAnaResActividad." con nombre :".$value->Actividad." y de estado actual :  ".$value->Estado_Actividad.", fue actualizada, si requiere mas detalle del cambio consultar la web.";
 
-                Helper::callNotification("ACTUALIZACIONES : Proyecto ".$value->proyecto, $mensaje, $proyecto);
+            //     Helper::callNotification("ACTUALIZACIONES : Proyecto ".$value->proyecto, $mensaje, $proyecto);
 
 
-            }
+            // }
 
             /* Actualizamos el estado de la notificacion */
             $arr_ids = array();
@@ -678,15 +706,6 @@ class RestrictionController extends Controller
             $enviar["flag"]                   =  1;
             $enviar["mensaje"]                = "Registros Actualizados !";
             $enviar["idsupd"]                 = $arr_ids;
-
-
-
-
-
-        // } catch (\Throwable $e) {
-        //     $enviar["mensaje"]                = $e;
-        // }
-
 
         return $enviar;
 
