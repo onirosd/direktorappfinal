@@ -124,6 +124,10 @@ export default {
     this.$el.removeEventListener('keydown', this.handleKeyDown);  // Eliminar el listener
 
   },
+  updated() {
+    this.banderaSeleccionada = this.opciones.find(opcion => opcion.id === this.modelValue) || this.opciones[0];
+    this.selectedIndex = this.opciones.findIndex(o => o.id === this.modelValue);
+  },
   computed: {
   opcionesFiltradas() {
     return this.opciones.filter(opcion => opcion.id !== '4');

@@ -80,6 +80,7 @@
             @RegistrarCambioRow = "RegistrarCambioRow"
             @updalidarUpd = "updalidarUpd"
             :flagfilter   = "mflagfilter"
+            :key="element.desRestriccion"
             >
           </DataTableRestriccionesRow2>
       </template>
