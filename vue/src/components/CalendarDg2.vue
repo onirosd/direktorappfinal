@@ -678,8 +678,9 @@ export default {
         fechaObj.add(-7, 'days');
         let nuevaFecha         = fechaObj.format('YYYY-MM-DD')
         this.fechaReferencia   = nuevaFecha
-        //await this.callMounted(nuevaFecha);
-        this.callMountedTotal(nuevaFecha)
+        await this.callMounted(nuevaFecha);
+        this.callMountedTotal(nuevaFecha);
+        console.log('cambio izq')
 
       }else{
 
@@ -689,9 +690,9 @@ export default {
           fechaObj.add(7, 'days');
           let nuevaFecha         = fechaObj.format('YYYY-MM-DD')
           this.fechaReferencia   = nuevaFecha
-          //await this.callMounted(nuevaFecha);
-          this.callMountedTotal(nuevaFecha)
-
+          await this.callMounted(nuevaFecha);
+          this.callMountedTotal(nuevaFecha);
+          console.log('cambio der')
         }
       }
 
