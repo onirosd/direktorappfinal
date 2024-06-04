@@ -82,9 +82,9 @@
 
       <div v-if="isloading == false" class="grid gap-1 grid-flow-col overflow-x-auto overflow-y-hidden border-double br-gray-600 border-b-4 border-t-4 h-[30em] text-base text">
 
-        <div  v-for="(data, day) in listaSemana" :key="day" class="grid grid-cols-1 w-[220px] px-[0.1px] z-0">
+        <div  v-for="(data, day) in listaSemana" :key="day" class="grid grid-cols-1 w-[220px] px-[0.1px] z-0 overflow-y-auto">
           <!-- Si es reatrasados -->
-          <div :ref="'ref_'+day" v-if="day == 'Retrasados'" class=" flex flex-col bg-red-100  h-full justify-between">
+          <div :ref="'ref_'+day" v-if="day == 'Retrasados'" class=" flex flex-col bg-red-100 h-full justify-between">
 
               <div :ref="'top_'+day" class="border-2 border-[#d13f5a] rounded grid items-center justify-center text-xs mb-2"><span class="w-full ">{{ 'Actividades Retrasadas ' }} <i class="fa fa-warning text-[#d13f5a] pl-2 text-[1.5em]"></i> </span></div>
               <!-- retrasado diferente de completado -->
@@ -102,17 +102,18 @@
 
                 </div>
               </div>
+              <!--
               <div :ref="'footer_'+day"  class="mt-auto z-20"  v-if="get_buttonOverStatusDias[day] == true" @click="buttonOverChangeStatus(day)">
                  <button class="border-[#d13f5a] bg-[#d13f5a] text-white w-full rounded my-1 h-[30px] text-xs">
                   Ver mas...
                  </button>
               </div>
-              <div :ref="'footer_'+day" v-else class="mt-auto z-20"  >
+              <div :ref="'footer_'+day" class="mt-auto z-20"  >
                 <button disabled class="bg-gray-300 text-white w-full rounded my-1 h-[30px] text-xs">
                     (0) Registros adicionales
                 </button>
               </div>
-
+-->
           </div>
           <!-- Si no es retrasados -->
           <div :ref="'ref_'+day"   v-else  :class="data.isthisday == 1 ? ' bg-[#e2e2e2]' : '   bg-[#fbfbfb]'" class=" flex flex-col justify-between z-10">
@@ -213,17 +214,18 @@
 
             </div>
           </div>
+          <!--
             <div :ref="'footer_'+day"  class="mt-auto z-20"  v-if="get_buttonOverStatusDias[day] == true" @click="buttonOverChangeStatus(day)">
                  <button class="bg-gray-600 text-white w-full rounded my-1 h-[30px] text-xs">
                   Ver mas...
                  </button>
             </div>
-            <div :ref="'footer_'+day"  v-else class="mt-auto z-20"  >
+            <div :ref="'footer_'+day"  class="mt-auto z-20"  >
               <button disabled class="bg-gray-300 text-white w-full rounded my-1 h-[30px] text-xs">
                   (0) Registros adicionales
               </button>
             </div>
-
+-->
           </div>
 
         </div>
@@ -529,7 +531,7 @@ export default {
       this.$nextTick(() => {
           this.checkOverflow(1, 'body_Lunes');
         });
-
+        
         this.callMounted(fechaReferencia);
 
         this.$nextTick();
@@ -678,9 +680,7 @@ export default {
         fechaObj.add(-7, 'days');
         let nuevaFecha         = fechaObj.format('YYYY-MM-DD')
         this.fechaReferencia   = nuevaFecha
-        await this.callMounted(nuevaFecha);
-        this.callMountedTotal(nuevaFecha);
-        console.log('cambio izq')
+        await this.callMounted(nuevaFecha)
 
       }else{
 
@@ -690,9 +690,7 @@ export default {
           fechaObj.add(7, 'days');
           let nuevaFecha         = fechaObj.format('YYYY-MM-DD')
           this.fechaReferencia   = nuevaFecha
-          await this.callMounted(nuevaFecha);
-          this.callMountedTotal(nuevaFecha);
-          console.log('cambio der')
+          await this.callMounted(nuevaFecha)
         }
       }
 
@@ -901,7 +899,7 @@ export default {
 
       // Accede al elemento a través de la referencia
       const element =  this.$refs[refName];
-
+      
       if (element) {
         // Obtiene la altura del elemento
         height = element[0].offsetHeight;
