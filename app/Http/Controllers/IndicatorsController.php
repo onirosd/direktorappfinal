@@ -194,8 +194,9 @@ class IndicatorsController extends Controller
                     'desNumSemana'          => $data['desNumSemana'],
                     'desAnioMes'            => $data['desAnioMes'],
                     'numSemanaAnio'         => $data['numSemanaAnio'],
-                    'numAnioMes'            => $data['numAnioMes']
-
+                    'numAnioMes'            => $data['numAnioMes'],
+                    'codArea'               => $data['codArea'],
+                    'desArea'               => $data['desArea'],
                 ];
                 array_push($anarestricciones, $restricciones);
             }
