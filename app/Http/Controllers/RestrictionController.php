@@ -1320,7 +1320,9 @@ class RestrictionController extends Controller
                 // Get the row data as an array
                 $rowData = $worksheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, null, true, false)[0];
                 $Frente = $rowData[0];
-                $Fase = $rowData[1];
+                // $rowData[1] receive the name in this format -> 'frente::fase'
+                $Fase = strpos($rowData[1], "::") ? explode('::', $rowData[1])[1] : $rowData[1];
+                $FrenteFromFase = strpos($rowData[1], "::") ? explode('::', $rowData[1])[0] : null;
                 $Actividad = $rowData[2];
                 $Restriccion = $rowData[3];
                 $TipoRestriccion = $rowData[4];
@@ -1421,23 +1423,46 @@ class RestrictionController extends Controller
                                         if($Solicitante){
                                             // $anares_actividad->codEstadoActividad = $id;
                                         }
-                                        if(!$frente_already) $anares_frente->save();
-                                        if($anares_frente){
-                                            if(!$fase_already){
-                                                $anares_fase->codAnaResFrente = $anares_frente->codAnaResFrente;
-                                                $anares_fase->save();
-                                            }
-                                            if($anares_fase){
-                                                $anares_actividad->codAnaResFrente = $anares_frente->codAnaResFrente;
-                                                $anares_actividad->codAnaResFase = $anares_fase->codAnaResFase;
-                                                if($anares_actividad->save()){
-                                                    $success = true;
+
+                                        if (($frente_already && $FrenteFromFase == $Frente) || ($frente_already && is_null($FrenteFromFase))) {
+                                            if($anares_frente){
+                                                if(!$fase_already){
+                                                    $anares_fase->codAnaResFrente = $anares_frente->codAnaResFrente;
+                                                    $anares_fase->save();
+                                                }
+                                                if($anares_fase){
+                                                    $anares_actividad->codAnaResFrente = $anares_frente->codAnaResFrente;
+                                                    $anares_actividad->codAnaResFase = $anares_fase->codAnaResFase;
+                                                    if($anares_actividad->save()){
+                                                        $success = true;
+                                                    }
+                                                    else $error = true;
                                                 }
                                                 else $error = true;
                                             }
                                             else $error = true;
+                                        } elseif (!$frente_already && is_null($FrenteFromFase)) {
+                                            $anares_frente->save();
+                                            if($anares_frente){
+                                                if(!$fase_already){
+                                                    $anares_fase->codAnaResFrente = $anares_frente->codAnaResFrente;
+                                                    $anares_fase->save();
+                                                }
+                                                if($anares_fase){
+                                                    $anares_actividad->codAnaResFrente = $anares_frente->codAnaResFrente;
+                                                    $anares_actividad->codAnaResFase = $anares_fase->codAnaResFase;
+                                                    if($anares_actividad->save()){
+                                                        $success = true;
+                                                    }
+                                                    else $error = true;
+                                                }
+                                                else $error = true;
+                                            }
+                                            else $error = true;
+                                        } else {
+                                            $error = true;
+                                            $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "desFase no corresponde al desFrente en esta fila."];
                                         }
-                                        else $error = true;
                                     }
                                     else $error_ar = ["row" => "> Error en la fila: ".$row,'value' => "'desEstado' and 'desModulo'=>'ANARES' no coinciden en esta fila."];
                                 }

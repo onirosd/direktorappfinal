@@ -358,7 +358,7 @@
 
       :height = "'400'"
 
-      class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden overflow-y-auto"
+      class ="xl:w-6/12 md:w-6/12  border border-[#D0D9F1] rounded-md h-[13em]  sm:hidden overflow-y-auto overflow-x-hidden"
 
     />
 
@@ -535,10 +535,16 @@ export default {
       const maxVisiblePoints = 10;
       const pointWidth = 130;
       const totalPoints = Object.keys(this.groupedByWeek['weeks']).length
-      const width = totalPoints > maxVisiblePoints ? pointWidth*totalPoints: '100%';
+      const width = totalPoints > maxVisiblePoints ? pointWidth*totalPoints : '100%';
       return width;
     },
-
+    chartHeight(){
+      const maxVisiblePoints = 8;
+      const pointHeight = 55;
+      const totalPoints = this.barDatabyResponsable.labels.length;
+      const height = totalPoints > maxVisiblePoints ? totalPoints * pointHeight : '100%';
+      return height;
+    },
     validamosdatos(){
 
       console.log("proyecto :: "+this.selectedProyecto)
@@ -682,13 +688,6 @@ export default {
     },
     isLoadingProject: function(){
       return this.projectloadflag
-    },
-    chartHeigth(){
-      const maxVisiblePoints = 10;
-      const pointHeight = 55;
-      const totalPoints = this.barDatabyResponsable.labels.length;
-      const height = totalPoints > maxVisiblePoints ? maxVisiblePoints * pointHeight : (totalPoints>5 ? 320 : totalPoints * pointHeight);
-      return height;
     },
     indicadorPorcentajeRetrasados: function (){
 
@@ -1303,7 +1302,7 @@ export default {
         chart: {
           type: 'bar',
           stacked: true,
-          width: '100%',
+          height: this.chartHeight() ? 400 : '100%'
         },
 
         colors: this.estadosColores,
