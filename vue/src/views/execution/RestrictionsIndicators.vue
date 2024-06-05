@@ -84,6 +84,20 @@
         <div class="xl:w-2/12 md:w-3/12  mt-1" >
 
 
+          <nav class="text-[11px]">Área</nav>
+          <select :disabled="!selectedProyecto" v-model="selectedArea" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option value="" >Todos</option>
+          <option v-for="area in areas" :key="area.codArea" :value="area.codArea">
+              {{ area.desArea }}
+          </option>
+          </select>
+
+
+        </div>
+
+        <div class="xl:w-2/12 md:w-3/12  mt-1" >
+
+
           <nav class="text-[11px]">Frente</nav>
           <select :disabled="!selectedProyecto" v-model="selectedFrente" @change="loadFase" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
           <option value="" >Todos</option>
@@ -189,6 +203,20 @@
           {{ proyecto.desNombreProyecto }}
         </option>
         </select>
+
+
+        </div>
+
+        <div class="sm:w-3/12 mt-1" >
+
+
+          <nav class="text-[11px]">Área</nav>
+          <select :disabled="!selectedProyecto" v-model="selectedArea" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option value="" >Todos</option>
+          <option v-for="area in areas" :key="area.codArea" :value="area.codArea">
+              {{ area.desArea }}
+          </option>
+          </select>
 
 
         </div>
@@ -454,7 +482,7 @@ export default {
         {codProyecto : 11, desNombreProyecto : 'Proyecto Modificado 002'}
       ],
       rawDataInicial : [
-        {id: 1, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'Comp.Retraso', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Encofrado', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
+        {id: 1, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'Comp.Retraso', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Encofrado', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12', codArea: 0, desArea: ''},
         {id: 2, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/01', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:3, estado: 'Comp.Retraso', codresponsable : 1, responsable : 'Diego Warthon', desActividad : 'Enchape', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
         {id: 3, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/05', dayFechaIdentificacion: '2023/01/01' ,codEstadoActividad:2, estado: 'Retrasado', codresponsable : 2, responsable : 'Javier Melendez', desActividad : 'Enchape', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
         {id: 4, codProyecto: 10, codAnaResFrente : 1 , desAnaResFrente : 'Frente 001', codAnaResFase : 2, desAnaResFase : 'Fase 001' , dayFechaRequerida: '2023/01/05', dayFechaIdentificacion: '2023/01/01' , codEstadoActividad:1 ,estado: 'Pendiente', codresponsable : 3, responsable : 'Juan Perez', desActividad : 'Encofrado 2', desTipoRestriccion: 'Arquitectura', dayFechaConciliada: '2020/10/12', dayFechaLevantamiento: '2020/10/12'},
@@ -474,10 +502,12 @@ export default {
         'Comp.Plazo'   : "#3ac189",
 
       },
+      areas: [],
       frentes: [],
       fases: [],
       responsables: [],
       selectedProyecto: "",
+      selectedArea: "",
       selectedFrente: "",
       selectedFase: "",
       selectedResponsable: "",
@@ -574,20 +604,44 @@ export default {
       this.responsables = uniqueResponsables;
     },
 
+    loadAreas() {
+
+      const filteredAreas = this.rawDataInicial.filter(item => item.codProyecto === this.selectedProyecto);
+
+      // Creamos un arreglo de objetos únicos
+      const uniqueAreas = [];
+      const addedAreas = new Set();
+
+      for (const area of filteredAreas) {
+        if (!addedAreas.has(area.desArea)) {
+          uniqueAreas.push({
+            codArea: area.codArea,
+            desArea: area.desArea
+          });
+          addedAreas.add(area.desArea);
+        }
+      }
+
+      this.areas = uniqueAreas;
+      },
+
     async loadFrentes() {
 
       this.projectloadflag = true;
       await store.dispatch('get_data_restricciones_indicators', {codProyecto:this.selectedProyecto}).then(res => {
           // console.log(">>> impresion al cambiar codproyecto")
 
-          //console.log(res.data)
+          console.log('loadfrentes:', res.data.areaIntegrante)
           this.rawDataInicial = res.data.restricciones
 
       });
 
       this.loadResponsables();
 
+      this.loadAreas();
+
       const filteredFrentes = this.rawDataInicial.filter(item => item.codProyecto === this.selectedProyecto);
+      console.log('filteredFrentes:', filteredFrentes)
 
       // Creamos un arreglo de objetos únicos
       const uniqueFrentes = [];
@@ -605,6 +659,7 @@ export default {
 
       this.frentes = uniqueFrentes;
       this.fases = [];
+      this.selectedArea  = "";
       this.selectedFrente  = "";
       this.selectedFase    = "";
       this.projectloadflag = false;
@@ -812,6 +867,9 @@ export default {
 
       if (this.selectedProyecto != "") {
         filtered = filtered.filter(item => item.codProyecto === this.selectedProyecto);
+      }
+      if (this.selectedArea != "") {
+        filtered = filtered.filter(item => item.codArea === this.selectedArea);
       }
       if (this.selectedFrente != "") {
         filtered = filtered.filter(item => item.codAnaResFrente === this.selectedFrente);
