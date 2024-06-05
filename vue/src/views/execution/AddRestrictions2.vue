@@ -1127,7 +1127,9 @@ export default {
         Frente[i] = response.restricciones[i]['desFrente'];
         if (response.restricciones[i]['listaFase'].length > 0){
 
-          Fase[i]   = response.restricciones[i]['listaFase'][0]['desFase'];
+          for (let j = 0; j < response.restricciones[i]['listaFase'].length; j++) {
+            Fase.push(response.restricciones[i]['desFrente']+"::"+response.restricciones[i]['listaFase'][j]['desFase'])
+          }
 
         }
 
@@ -1291,9 +1293,13 @@ export default {
       // 1. Crear una segunda hoja llamada "Valores"
       const wsValores = workbook.addWorksheet('Valores');
 
-      // 2. Imprimir los valores de Responsable en la columna A de la segunda hoja
+      // 2. Imprimir los valores de Responsable en la columna A y de Fases en la B de la segunda hoja
       for(let i = 0; i < Responsable.length; i++) {
           wsValores.getCell('A' + (i + 1)).value = Responsable[i];
+      }
+
+      for(let i = 0; i < Fase.length; i++) {
+          wsValores.getCell('B' + (i + 1)).value = Fase[i];
       }
 
       // Hacer la hoja "Valores" oculta
@@ -1331,7 +1337,7 @@ export default {
           type: 'list',
           allowBlank: false,
           showDropDown: true,
-          formulae: [`"${data_array[0].B.join(',')}"`],
+          formulae: ['Valores!$B$1:$B$'+Fase.length],
         };
 
         const validationCell_Tipo = ws.getCell('E'+`"${i}"`);
