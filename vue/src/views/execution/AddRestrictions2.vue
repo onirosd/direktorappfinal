@@ -692,7 +692,7 @@
       :rows="rows"
       v-if="modalName === 'addFront'"
       @closeModal="closeModal"
-      @addFront="addFront"
+      :codAreaUsuario="areaUsuario"
     />
     <AddPhase
       :rows="rows"
@@ -1556,19 +1556,6 @@ export default {
       this.closeModal();
     },
 
-    addFront: function (payload) {
-      payload['codAreaUsuario'] = this.areaUsuario
-      let point = this;
-      store.dispatch("add_front", payload).then((response) => {
-        payload["codFrenteReal"] = response.data.codFrente;
-        point.$store.commit({
-          type: "addFront",
-          ...payload,
-        });
-      });
-
-      this.closeModal();
-    },
     addPhase: function (payload) {
       // let codFaseTemp = this.$store.commit({
       //   type: 'addFront',

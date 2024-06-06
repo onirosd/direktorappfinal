@@ -443,6 +443,14 @@ class RestrictionController extends Controller
         return $enviar;
     }
     public function add_front(Request $request) {
+        $enviar = array();
+        $enviar["error"] = false;
+        $frenteExiste = RestrictionFront::where('desAnaResFrente',$request['name'])->where('codProyecto', $request['id'])->exists();
+        if ($frenteExiste) {
+            $enviar["error"] = true;
+            $enviar["mensaje"] = "El nombre de este frente ya existe en el proyecto";
+            return $enviar;
+        }
         $codAnaRes = Restriction::where('codProyecto', $request['id'])->get('codAnaRes');
         $resFrente = RestrictionFront::insertGetId([
             'desAnaResFrente' => $request['name'],
@@ -451,8 +459,8 @@ class RestrictionController extends Controller
             'codProyecto' => $request['id'],
             'codAnaRes' => $codAnaRes[0]['codAnaRes'],
         ]);
-        $enviar = array();
         $enviar["codFrente"] = $resFrente;
+        $enviar["mensaje"] = "El frente ".$request['name']." se creo correctamente";
         return $enviar;
     }
 

@@ -10,26 +10,19 @@
             type="text"
             v-model="frontName"
             class="h-[52px] w-full px-4 rounded border border-[#8A9CC9] font-normal text-base text-activeText"
-            placeholder="Selecciona un frente"
+            placeholder="Ingresa el nombre de un nuevo frente"
+            @click="cleanMessage()"
           />
-          <img
-            src="../assets/ic_arrow-down.svg"
-            class="absolute top-1/2 -translate-y-1/2 right-6 sm:right-4 transition cursor-pointer"
-            alt=""
-            :class="{ 'rotate-180': isOpen, 'rotate-0': !isOpen }"
-            @click="handleClick"
-          />
+          <p v-show="message.error === true" class="alert alert-danger">{{ message.info }}</p>
+          <p v-show="message.error === false" class="alert alert-success">{{ message.info }}</p>
         </div>
       </div>
 
-      <button
-        class="h-14 sm:w-full rounded px-8 text-base leading-4 mt-10 bg-orange text-white"
-        :class="frontName === '' ? 'opacity-80' : ''"
-        @click="$emit('addFront', {frontId: frontId, frontName: frontName})"
-        :disabled="frontName === ''"
-      >
-        Guardar cambios
-      </button>
+    <button class="h-14 sm:w-full rounded px-8 text-base leading-4 mt-10 bg-orange text-white"
+      :class="frontName === '' ? 'opacity-80' : ''" @click="addFront({ frontId: frontId, frontName: frontName })"
+      :disabled="frontName === ''">
+      Guardar cambios
+    </button>
   </Modal>
 </template>
 
@@ -43,6 +36,7 @@ export default {
   },
   props: {
     rows: Array,
+    codAreaUsuario: "",
   },
   data: function () {
     return {
@@ -50,11 +44,38 @@ export default {
       frontName: '',
       isOpen: false,
       paragraphs: [],
+      message: {
+        error: null,
+        info: "",
+      }
     };
   },
   methods: {
-    handleClick: function () {
-      this.isOpen = !this.isOpen;
+    cleanMessage: function() {
+      if (this.message.info) {
+        this.message.info = ""
+        this.message.error = null
+      }
+    },
+    addFront: function (payload) {
+      payload['codAreaUsuario'] = this.areaUsuario
+      let point = this;
+      this.$store.dispatch("add_front", payload).then((response) => {
+        payload["codFrenteReal"] = response.data.codFrente;
+        if (response.data.error) {
+          this.message.error = true
+          this.message.info = response.data.mensaje
+          this.frontName = ""
+          return;
+        };
+        this.message.error = false
+        this.message.info = response.data.mensaje
+        this.frontName = ""
+        point.$store.commit({
+            type: "addFront",
+            ...payload,
+          });
+      });
     },
   },
 };
