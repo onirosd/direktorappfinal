@@ -1,0 +1,35 @@
+name: FullDeploymenttoProduction
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies and build Vue app
+      run: |
+        cd vue
+        npm install
+        npm run build
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: SSH and Deploy Backend and Frontend
+      run: |
+        ssh -o "StrictHostKeyChecking=no" -p 65002 u278888007@89.116.147.34 "cd domains/api.direktor.com.pe && git pull"
+        rsync -avz --delete ./vue/dist/ u278888007@89.116.147.34:/domains/direktor.com.pe/public_html/
