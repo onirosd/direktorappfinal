@@ -32,4 +32,5 @@ jobs:
     - name: SSH and Deploy Backend and Frontend
       run: |
         ssh -o "StrictHostKeyChecking=no" -p 65002 u278888007@89.116.147.34 "cd domains/api.direktor.com.pe && git pull"
-        rsync -avz --delete ./vue/dist/ u278888007@89.116.147.34:/domains/direktor.com.pe/public_html/
+        rsync -avz -e "ssh -p 65002" --delete ./vue/dist/ u278888007@89.116.147.34:/domains/direktor.com.pe/public_html/
+
