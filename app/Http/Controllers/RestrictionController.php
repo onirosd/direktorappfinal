@@ -13,6 +13,8 @@ use App\Models\Conf_Estado;
 use App\Models\Conf_MotivosRetraso;
 use App\Models\Ana_TipoRestricciones;
 use App\Models\Proy_AreaIntegrante;
+use Cache;
+use Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -448,7 +450,7 @@ class RestrictionController extends Controller
         $frenteExiste = RestrictionFront::where('desAnaResFrente',$request['name'])->where('codProyecto', $request['id'])->exists();
         if ($frenteExiste) {
             $enviar["error"] = true;
-            $enviar["mensaje"] = "El nombre de este frente ya existe en el proyecto";
+            $enviar["mensaje"] = "El Nombre del Frente ya Existe";
             return $enviar;
         }
         $codAnaRes = Restriction::where('codProyecto', $request['id'])->get('codAnaRes');
@@ -460,7 +462,7 @@ class RestrictionController extends Controller
             'codAnaRes' => $codAnaRes[0]['codAnaRes'],
         ]);
         $enviar["codFrente"] = $resFrente;
-        $enviar["mensaje"] = "El frente ".$request['name']." se creo correctamente";
+        $enviar["mensaje"] = "El Frente ".$request['name']." se creo correctamente";
         return $enviar;
     }
 
