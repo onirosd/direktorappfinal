@@ -458,7 +458,7 @@
 import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 import store from "../../store";
 import Loading from 'vue-loading-overlay';
-import BarChart2 from '../../components/Barchart2.vue';
+import BarChart2 from '../../components/BarChart2.vue';
 
 import { DateTime } from 'luxon';
 import { mapState } from 'vuex';
