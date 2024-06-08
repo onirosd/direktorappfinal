@@ -21,8 +21,8 @@
       :settingFlag="false"
     />
     <Indicator
-      :header="'Análisis de restricciones 444'"
-      :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno 222'"
+      :header="'Análisis de restricciones'"
+      :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno.'"
       :buttonText="'Ver indicadores'"
       :desAccion = "'indicadoresRestricciones'"
       :grafico = "'indicador'"
