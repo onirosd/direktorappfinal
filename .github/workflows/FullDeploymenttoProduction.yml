@@ -35,18 +35,21 @@ jobs:
 
     - name: Install lftp for FTP upload
       run: sudo apt-get update && sudo apt-get install lftp
-
+      
     - name: Upload Frontend via FTP
       run: |
+        sudo apt-get update && sudo apt-get install lftp
         lftp -e "
-          set ssl:verify-certificate no;
-          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }};
-          lcd ./vue/dist;  # Local directory
-          cd public_html;  # Remote directory, adjust if necessary
-          mirror --reverse --delete --verbose;  # Upload and sync
+          set ftp:ssl-allow no;  # Ajusta esta opción si tu servidor FTP no usa SSL/TLS
+          set ssl:verify-certificate no;  # Omitir la verificación de certificados, ajusta según tu configuración
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -p 21 ${{ secrets.FTP_SERVER }};
+          lcd ./vue/dist;  # Cambia al directorio local donde están los archivos
+          mirror --reverse --delete --verbose;  # Sube y sincroniza los archivos
           bye;
         "
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+    
+        
