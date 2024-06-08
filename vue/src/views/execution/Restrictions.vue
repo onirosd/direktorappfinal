@@ -16,7 +16,7 @@
   </div>
   <div v-if="isLoading">
     <Breadcrumb
-      :paths="['Inicio', 'Análisis de restricciones 22 ']"
+      :paths="['Inicio', 'Análisis de restricciones']"
       :urls ="['home']"
       :settingFlag="false"
     />
