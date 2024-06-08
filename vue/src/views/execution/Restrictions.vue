@@ -16,13 +16,13 @@
   </div>
   <div v-if="isLoading">
     <Breadcrumb
-      :paths="['Inicio', 'Análisis de restricciones']"
+      :paths="['Inicio', 'Análisis de restricciones 22 ']"
       :urls ="['home']"
       :settingFlag="false"
     />
     <Indicator
       :header="'Análisis de restricciones 444'"
-      :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno'"
+      :paragraph="'Acá podrás visualizar las restricciones de tus proyectos y entrar al detalle de cada uno 222'"
       :buttonText="'Ver indicadores'"
       :desAccion = "'indicadoresRestricciones'"
       :grafico = "'indicador'"
