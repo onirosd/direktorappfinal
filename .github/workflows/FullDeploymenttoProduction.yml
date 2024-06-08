@@ -31,7 +31,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        apt-get update && apt-get install -y expect
+        sudo apt-get update && sudo apt-get install -y expect
         echo '#!/usr/bin/expect -f' > ~/.ssh/expect_ssh_add.sh
         echo 'spawn ssh-add ~/.ssh/id_rsa' >> ~/.ssh/expect_ssh_add.sh
         echo 'expect "Enter passphrase for /home/runner/.ssh/id_rsa:"' >> ~/.ssh/expect_ssh_add.sh
