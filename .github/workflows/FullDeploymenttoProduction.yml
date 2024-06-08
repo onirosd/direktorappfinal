@@ -24,11 +24,21 @@ jobs:
         npm install
         npm run build
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }} 
+    - name: Setup SSH key with passphrase
+      env:
+        SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        apt-get update && apt-get install -y expect
+        echo '#!/usr/bin/expect -f' > ~/.ssh/expect_ssh_add.sh
+        echo 'spawn ssh-add ~/.ssh/id_rsa' >> ~/.ssh/expect_ssh_add.sh
+        echo 'expect "Enter passphrase for /home/runner/.ssh/id_rsa:"' >> ~/.ssh/expect_ssh_add.sh
+        echo 'send "$SSH_PASSPHRASE\r"' >> ~/.ssh/expect_ssh_add.sh
+        echo 'expect eof' >> ~/.ssh/expect_ssh_add.sh
+        chmod +x ~/.ssh/expect_ssh_add.sh
+        ~/.ssh/expect_ssh_add.sh
 
     - name: SSH and Deploy Backend and Frontend
       run: |
