@@ -29,7 +29,24 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: SSH and Deploy Backend and Frontend
+    - name: SSH and Deploy Backend
       run: |
           ssh -o "StrictHostKeyChecking=no" -p 65002 u278888007@89.116.147.34 "cd domains/api.direktor.com.pe && git pull"
-          rsync -avz --copy-links -e "ssh -p 65002" ./vue/dist/ u278888007@89.116.147.34:public_html/
+
+    - name: Install lftp for FTP upload
+      run: sudo apt-get update && sudo apt-get install lftp
+
+    - name: Upload Frontend via FTP
+      run: |
+        lftp -e "
+          set ssl:verify-certificate no;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }};
+          lcd ./vue/dist;  # Local directory
+          cd public_html;  # Remote directory, adjust if necessary
+          mirror --reverse --delete --verbose;  # Upload and sync
+          bye;
+        "
+      env:
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
