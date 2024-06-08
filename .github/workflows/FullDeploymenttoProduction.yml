@@ -29,17 +29,25 @@ jobs:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa  # Asegura eliminar retornos de carro extra
+        # Asegura de que los caracteres de fin de línea sean correctos y guarda la clave privada
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ls -la ~/.ssh/  # Lista los archivos en .ssh para verificar que id_rsa está allí
+        # Lista el contenido de .ssh para asegurar que el archivo está presente
+        ls -lah ~/.ssh/
+        # Instala expect
         sudo apt-get update && sudo apt-get install -y expect
-        eval $(ssh-agent -s)  # Inicia el agente SSH
+        # Inicia el agente SSH
+        eval $(ssh-agent -s)
+        # Verifica que el agente SSH esté corriendo
+        ssh-add -l
+        # Crea el script de expect
         echo '#!/usr/bin/expect -f' > ~/.ssh/expect_ssh_add.sh
         echo 'spawn ssh-add ~/.ssh/id_rsa' >> ~/.ssh/expect_ssh_add.sh
         echo 'expect "Enter passphrase for /home/runner/.ssh/id_rsa:"' >> ~/.ssh/expect_ssh_add.sh
         echo 'send "$env(SSH_PASSPHRASE)\r"' >> ~/.ssh/expect_ssh_add.sh
         echo 'expect eof' >> ~/.ssh/expect_ssh_add.sh
         chmod +x ~/.ssh/expect_ssh_add.sh
+        # Ejecuta el script de expect
         ~/.ssh/expect_ssh_add.sh
 
     - name: SSH and Deploy Backend and Frontend
