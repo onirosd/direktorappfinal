@@ -29,10 +29,11 @@ jobs:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa  # Asegura la correcta formateación y elimina retornos de carro extra
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa  # Asegura eliminar retornos de carro extra
         chmod 600 ~/.ssh/id_rsa
+        ls -la ~/.ssh/  # Lista los archivos en .ssh para verificar que id_rsa está allí
         sudo apt-get update && sudo apt-get install -y expect
-        eval $(ssh-agent -s)  # Iniciar el agente SSH
+        eval $(ssh-agent -s)  # Inicia el agente SSH
         echo '#!/usr/bin/expect -f' > ~/.ssh/expect_ssh_add.sh
         echo 'spawn ssh-add ~/.ssh/id_rsa' >> ~/.ssh/expect_ssh_add.sh
         echo 'expect "Enter passphrase for /home/runner/.ssh/id_rsa:"' >> ~/.ssh/expect_ssh_add.sh
