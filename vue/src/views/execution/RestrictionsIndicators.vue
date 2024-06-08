@@ -458,7 +458,7 @@
 import Breadcrumb from "../../components/Layout/Breadcrumb.vue";
 import store from "../../store";
 import Loading from 'vue-loading-overlay';
-import BarChart2 from '../../components/barchart2.vue';
+import BarChart2 from '../../components/Barchart2.vue';
 
 import { DateTime } from 'luxon';
 import { mapState } from 'vuex';
@@ -1074,7 +1074,7 @@ export default {
 
       return data;
     },
-    
+
     groupedByState() {
       const groups = {};
 
@@ -1328,7 +1328,7 @@ export default {
 
       });
     });
-    
+
     const ordered = {};
 
      // Iteramos sobre cada clave en rawDataColor
