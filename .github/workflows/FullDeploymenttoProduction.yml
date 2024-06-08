@@ -28,8 +28,12 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-  
-    - name: Upload Frontend via curl and verify
+
+    - name: Deploy Backend with SSH
+      run: |
+        ssh -o "StrictHostKeyChecking=no" -p 65002 u278888007@89.116.147.34 "cd domains/api.direktor.com.pe && git pull"
+
+    - name: Deploy Frontend with curl 
       run: |
         cd vue/dist
         find . -type f -exec curl --ftp-create-dirs -T {} ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}/{} \;
