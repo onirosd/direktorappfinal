@@ -9,16 +9,16 @@
           <input
             type="text"
             v-model="frontName"
-            class="h-[52px] w-full px-4 rounded border border-[#8A9CC9] font-normal text-base text-activeText"
+            :class="`h-[52px] w-full px-4 rounded border border-[#8A9CC9] font-normal text-base text-activeText ${message.error === true ? 'border-red-500' : ''}`"
             placeholder="Ingresa el nombre de un nuevo frente"
             @click="cleanMessage()"
           />
-          <p v-show="message.error === true" class="alert alert-danger">{{ message.info }}</p>
-          <p v-show="message.error === false" class="alert alert-success">{{ message.info }}</p>
+          <p v-show="message.error === true" class="text-red-500 mt-4">{{ message.info }}</p>
+          <p v-show="message.error === false" class="text-green-500 mt-4">{{ message.info }}</p>
         </div>
       </div>
 
-    <button class="h-14 sm:w-full rounded px-8 text-base leading-4 mt-10 bg-orange text-white"
+    <button class="h-14 sm:w-full rounded px-8 text-base leading-4 bg-orange text-white"
       :class="frontName === '' ? 'opacity-80' : ''" @click="addFront({ frontId: frontId, frontName: frontName })"
       :disabled="frontName === ''">
       Guardar cambios
