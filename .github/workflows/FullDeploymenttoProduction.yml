@@ -31,9 +31,8 @@ jobs:
   
     - name: Upload Frontend via curl and verify
       run: |
-        find ./vue/dist -type f -exec curl --ftp-create-dirs -T {} ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}/domains/direktor.com.pe/public_html/{} \;
-        curl ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}/domains/direktor.com.pe/public_html/ -l
-
+        cd vue/dist
+        find . -type f -exec curl --ftp-create-dirs -T {} ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}/{} \;
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
