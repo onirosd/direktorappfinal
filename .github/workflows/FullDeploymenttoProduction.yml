@@ -76,6 +76,14 @@ jobs:
       run: |
         ssh -o "StrictHostKeyChecking=no" -p 65002 u278888007@89.116.147.34 "cd domains/api.direktor.com.pe && git pull"
 
+    - name: Upload .env file to FTP parent directory
+      run: |
+        curl --ftp-create-dirs -T .env ftp://${{ secrets.FTP_USERNAME_API }}:${{ secrets.FTP_PASSWORD_API }}@${{ secrets.FTP_SERVER_API }}/../
+      env:
+        FTP_SERVER_ALT: ${{ secrets.FTP_SERVER_API }}
+        FTP_USERNAME_ALT: ${{ secrets.FTP_USERNAME_API }}
+        FTP_PASSWORD_ALT: ${{ secrets.FTP_PASSWORD_API }}
+        
     - name: Deploy Frontend with curl 
       run: |
         cd vue/dist
