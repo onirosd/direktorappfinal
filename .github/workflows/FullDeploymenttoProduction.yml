@@ -78,7 +78,7 @@ jobs:
 
     - name: Upload .env file to FTP parent directory
       run: |
-        curl --ftp-create-dirs -T .env ftp://${{ secrets.FTP_USERNAME_API }}:${{ secrets.FTP_PASSWORD_API }}@${{ secrets.FTP_SERVER_API }}/../
+        curl --ftp-create-dirs -T .env ftp://${{ secrets.FTP_USERNAME_API }}:${{ secrets.FTP_PASSWORD_API }}@${{ secrets.FTP_SERVER_API }}/domains/api.direktor.com.pe/
       env:
         FTP_SERVER_ALT: ${{ secrets.FTP_SERVER_API }}
         FTP_USERNAME_ALT: ${{ secrets.FTP_USERNAME_API }}
